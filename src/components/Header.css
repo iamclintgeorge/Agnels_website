@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/* index.css */
+
+/* Marquee Animation */
+.marquee {
+  display: flex;
+  white-space: nowrap;
+  overflow: hidden;
+  position: relative;
+}
+
+.marquee span {
+  display: inline-block;
+  padding-right: 100%; /* Ensures smooth looping by offsetting duplicate text */
+  animation: marquee 30s linear infinite;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
+
+/* Latest News Styling */
+.latest-news {
+  position: relative;
+  z-index: 1;
+  box-shadow: 8px 0 15px -5px rgba(0, 0, 0, 0.5);
+  margin-right: -10px; /* Overlap with headline */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Headline Container */
+.headline-container {
+  position: relative;
+  z-index: 0; /* Ensure it stays below .latest-news */
+}
