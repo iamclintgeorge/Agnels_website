@@ -1,5 +1,5 @@
 import React from "react";
-import "./Header.css";
+import "../styles/Header.css";
 import instalogo from "../imgs/instagramlogo.webp"
 import fblogo from "../imgs/facebooklogo.png"
 import linklogo from "../imgs/linkedinlogo.png"
