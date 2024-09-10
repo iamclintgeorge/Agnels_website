@@ -3,6 +3,7 @@ import Header from "./components/Header.jsx";
 import News from "./components/News.jsx";
 import Welcome from "./components/Welcome.jsx";
 import Widgets from "./components/Widgets.jsx";
+import Footer from "./components/Footer.jsx";
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
       <News />
       <Welcome />
       <Widgets />
+      <Footer />
     </div>
   );
 }
