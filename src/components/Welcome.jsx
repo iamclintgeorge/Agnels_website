@@ -1,9 +1,9 @@
 import React from "react";
-import "./Welcome.css";
+import "../styles/Welcome.css";
 
 const Welcome = () => {
   return (
-    <div className="flex min-h-screen p-8">
+    <div className="flex p-8">
       {/* Left side for Welcome Text */}
       <div className="w-1/2 pr-4">
         <h1 className="text-3xl font-bold mb-4">Welcome to</h1>
