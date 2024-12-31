@@ -2,25 +2,19 @@ import { useState, ChangeEvent, FormEvent } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-// Define a type for the form values state
-interface FormValues {
-  name: string;
-  password: string;
-  email_id: string;
-}
 
 function Signup() {
   const navigate = useNavigate();
 
   // Set initial values with a type declaration
-  const [values, setValues] = useState<FormValues>({
+  const [values, setValues] = useState({
     name: "",
     password: "",
     email_id: "",
   });
 
   // Handle input changes with proper event typing
-  const handleInput = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleInput = () => {
     const { name, value } = event.target;
     setValues((prev) => ({
       ...prev,
@@ -29,7 +23,7 @@ function Signup() {
   };
 
   // Handle form submission with proper event typing
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async () => {
     event.preventDefault();
 
     try {
