@@ -2,26 +2,21 @@ import { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-// Define the shape of the form state
-interface LoginValues {
-  email_id: string;
-  password: string;
-}
 
 function Login() {
-  const [values, setValues] = useState<LoginValues>({
+  const [values, setValues] = useState({
     email_id: "",
     password: "",
   });
 
-  const [loading, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState(true);
 
   axios.defaults.withCredentials = true;
 
   const navigate = useNavigate();
 
   // Handle form input changes
-  const handleInput = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleInput = () => {
     const { name, value } = event.target;
     setValues((prev) => ({
       ...prev,
@@ -30,7 +25,7 @@ function Login() {
   };
 
   // Handle form submission
-  const handleSubmit = async (event: FormEvent) => {
+  const handleSubmit = async () => {
     event.preventDefault();
 
     try {
