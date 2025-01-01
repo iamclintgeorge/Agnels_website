@@ -1,0 +1,60 @@
+
+
+a {
+  text-decoration: none;
+}
+
+h1, h2, h3 {
+  margin: 0;
+}
+
+ul {
+  padding: 0;
+  list-style-type: none;
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+strong {
+  font-weight: bold;
+}
+
+
+
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  height: 100%;
+}
+
+
+#main {
+  overflow: hidden;
+  position: relative;
+}
+
+[data-scroll-container] {
+  height: 100%;
+}
+
+.section {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+[data-scroll] {
+  opacity: 0;
+  transition: opacity 0.5s ease-out;
+}
+
+[data-scroll-in-view] {
+  opacity: 1;
+}

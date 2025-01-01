@@ -1,0 +1,60 @@
+.whats-new {
+  padding: 40px 20px;
+}
+
+.whats-new h2 {
+  
+  color: #004080;
+  margin-bottom: 20px;
+  font-size: 2.8rem;
+  padding-left: 70px;
+}
+
+.underline {
+  width: 170px;
+  height: 5px;
+  background-color: #ffcc00;
+  margin: 10px 40px 20px;
+  
+}
+
+.cards {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.card {
+  background-color: #f5f5f5;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  width: 400px;
+  height: 300px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.card h3 {
+  background-color: #00274d;
+  color: white;
+  font-size: 1.8rem;
+  text-align: center;
+  padding: 10px;
+  border-radius: 10px 10px 0 0;
+}
+
+.tabs {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  padding: 15px;
+  font-size: 1.3rem;
+  text-align: center;
+}
+
+.tabs span {
+  display: block;
+  padding: 8px 10px;
+  background: #fff;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
