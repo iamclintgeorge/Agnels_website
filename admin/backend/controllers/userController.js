@@ -3,21 +3,16 @@ import { signupUser, loginUser } from "../models/userModels.js";
 
 export const signupController = async (req, res) => {
   try {
+    console.log("req.body:  ", req.body);
     const { emailId, userName, password } = req.body;
+    console.log("emailId, userName, password: ", emailId, userName, password);
 
     if (!emailId || !userName || !password) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
-    const existingUser = await signupUser.checkIfUserExists(emailId, userName);
-    if (existingUser) {
-      return res
-        .status(400)
-        .json({ message: "Email or username already in use" });
-    }
-
     const hashedPassword = await bcrypt.hash(password, 10);
-    const user = await signupUser.createUser(emailId, userName, hashedPassword);
+    const user = await signupUser(emailId, userName, hashedPassword);
 
     if (!user) {
       return res.status(500).json({ message: "Failed to create user" });
@@ -29,7 +24,9 @@ export const signupController = async (req, res) => {
       userName: user.userName,
     };
 
-    res.cookie("uid", req.session.user.id, { httpOnly: true });
+    console.log("req.session.user", req.session.user);
+
+    // res.cookie("uid", req.session.user.id, { httpOnly: true });
 
     res.status(201).json({ message: "User created successfully", user });
   } catch (err) {
@@ -42,13 +39,13 @@ export const signupController = async (req, res) => {
 
 export const loginController = async (req, res) => {
   try {
-    const { userName, password } = req.body;
+    const { emailId, password } = req.body;
 
-    if (!userName || !password) {
+    if (!emailId || !password) {
       return res.status(400).json({ message: "All fields are required" });
     }
 
-    const user = await loginUser(userName);
+    const user = await loginUser(emailId, password);
     if (!user) {
       return res.status(401).json({ message: "Invalid username or password" });
     }
@@ -63,8 +60,6 @@ export const loginController = async (req, res) => {
       emailId: user.emailId,
       userName: user.userName,
     };
-
-    res.cookie("uid", req.session.user.id, { httpOnly: true });
 
     res.status(200).json({ message: "User successfully logged in", user });
   } catch (err) {

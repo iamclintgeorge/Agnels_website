@@ -1,4 +1,4 @@
-import db from "../config/db.js"; // Import the db pool from db.ts
+import db from "../config/db.js";
 import bcrypt from "bcrypt";
 
 // The signupUser function
@@ -7,38 +7,33 @@ export const signupUser = async (emailId, userName, hashedPassword) => {
     "INSERT INTO users (emailId, userName, password) VALUES (?, ?, ?)";
   const values = [emailId, userName, hashedPassword];
 
-  // Execute the query using the pool connection
   try {
     const [result] = await db.promise().query(query, values);
-    // Assuming the inserted user id is returned in result.insertId
     return { id: result.insertId, emailId, userName };
-  } catch (error) {
-    console.error("Error inserting user:", error);
+  } catch (err) {
+    console.error("Error inserting user:", err);
     throw new Error("Failed to sign up the user");
   }
 };
 
 // The loginUser function
-export const loginUser = async (userName, password) => {
-  const query = "SELECT * FROM users WHERE userName = ?";
-  const values = [userName];
+export const loginUser = async (emailId, password) => {
+  const query = "SELECT * FROM users WHERE emailId = ?";
+  const values = [emailId];
 
-  // Execute the query using the pool connection
   try {
     const [rows] = await db.promise().query(query, values);
-    const user = rows[0]; // Assuming the result contains the user record
+    const user = rows[0];
 
     if (!user) {
-      return null; // User not found
+      return null;
     }
 
-    // Compare the provided password with the hashed password stored in DB
     const match = await bcrypt.compare(password, user.password);
     if (!match) {
-      return null; // Password doesn't match
+      return null;
     }
 
-    // Return the user if authentication is successful
     return user;
   } catch (error) {
     console.error("Error fetching user:", error);

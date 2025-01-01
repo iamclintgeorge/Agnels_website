@@ -1,36 +1,28 @@
-import { useState, ChangeEvent, FormEvent } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-
 function Signup() {
   const navigate = useNavigate();
+  const [userName, setName] = useState("");
+  const [password, setPassword] = useState("");
+  const [emailId, setEmail] = useState("");
 
-  // Set initial values with a type declaration
-  const [values, setValues] = useState({
-    name: "",
-    password: "",
-    email_id: "",
-  });
-
-  // Handle input changes with proper event typing
-  const handleInput = () => {
-    const { name, value } = event.target;
-    setValues((prev) => ({
-      ...prev,
-      [name]: value, // Correctly update the state with the input field value
-    }));
-  };
-
-  // Handle form submission with proper event typing
-  const handleSubmit = async () => {
+  // Handle form submission
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
+    const userData = {
+      emailId,
+      userName,
+      password,
+    };
+
     try {
-      // Make an API call
-      const res = await axios.post("http://localhost:3663/signup", values);
-      console.log("Hello Signup Response", res);
-      navigate("/"); // Navigate to home page after successful signup
+      const res = await axios.post("http://localhost:3663/signup", userData);
+      console.log("Hello Signup Response");
+      console.log(res);
+      navigate("/");
     } catch (err) {
       console.error("Signup failed:", err);
     }
@@ -42,35 +34,37 @@ function Signup() {
         <div className="flex flex-1 flex-col">
           <div className="pl-5 pt-7">
             <form onSubmit={handleSubmit}>
-              <h1 className="text-2xl font-semibold text-center mr-4 mb-7">SIGN UP</h1>
+              <h1 className="text-2xl font-semibold text-center mr-4 mb-7">
+                SIGN UP
+              </h1>
               
               <input
                 className="bg-gray-200 pl-3 py-2 mb-3"
                 type="text"
                 name="name"
                 placeholder="Username"
-                value={values.name} // Bind the value from the state
-                onChange={handleInput}
+                value={userName} 
+                onChange={(e) => setName(e.target.value)}
               />
               <input
                 className="bg-gray-200 pl-3 py-2 mb-3"
                 type="password"
                 name="password"
                 placeholder="Password"
-                value={values.password} // Bind the value from the state
-                onChange={handleInput}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)} 
               />
               <input
                 className="bg-gray-200 pl-3 py-2 mb-5"
-                type="text"
-                name="email_id"
+                type="email" 
+                name="email"
                 placeholder="Email ID"
-                value={values.email_id} // Bind the value from the state
-                onChange={handleInput}
+                value={emailId}
+                onChange={(e) => setEmail(e.target.value)} 
               />
+              
               <button
                 className="bg-green-950 text-white px-14 py-2 rounded-sm ml-12 mt-3"
-                name="signup"
                 type="submit"
               >
                 Sign Up

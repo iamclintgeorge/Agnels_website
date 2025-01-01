@@ -23,19 +23,21 @@ app.use(express.json());
 app.use(
   //Learn
   session({
-    name: "sessionid",
+    name: "connect.sid",
     secret: "secret",
     resave: false,
     saveUninitialized: false,
     cookie: {
+      httpOnly: true,
       secure: false,
+      sameSite: "None",
       maxAge: 1000 * 60 * 60 * 24,
     },
   })
 );
 
 // Routes
-app.use("/api/v1", userRoutes);
+app.use("/", userRoutes);
 
 app.listen(port, () => {
   console.log(`Server Started at URI http://localhost:${port}/`);

@@ -1,68 +1,31 @@
-import { useState, useEffect, ChangeEvent, FormEvent } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-
 function Login() {
-  const [values, setValues] = useState({
-    email_id: "",
-    password: "",
-  });
-
-  const [loading, setLoading] = useState(true);
-
-  axios.defaults.withCredentials = true;
-
   const navigate = useNavigate();
-
-  // Handle form input changes
-  const handleInput = () => {
-    const { name, value } = event.target;
-    setValues((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
+  const [userName, setName] = useState("");
+  const [password, setPassword] = useState("");
+  const [emailId, setEmail] = useState("");
 
   // Handle form submission
-  const handleSubmit = async () => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
+    const userData = {
+      emailId,
+      userName,
+      password,
+    };
+
     try {
-      const res = await axios.post("http://localhost:3663/login", values);
-      if (res.data.Login) {
-        console.log("Login successful:", res.data.Login);
+      const res = await axios.post("http://localhost:3663/login", userData);
+        console.log("Login successful");
         navigate("/"); 
-      } else {
-        alert("You need to Sign up");
-      }
     } catch (err) {
-      console.log(err);
+      console.error("Login failed:", err);
     }
   };
-
-  // Check if user is already logged in when component mounts
-  useEffect(() => {
-    axios
-      .get("http://localhost:3000")
-      .then((res) => {
-        if (res.data.valid) {
-          navigate("/");
-        } else {
-          navigate("/login");
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => {
-        setLoading(false); 
-      });
-  }, [navigate]);
-
-  if (loading) {
-    return <div>Loading...</div>; 
-  }
 
   return (
     <div className="flex flex-row justify-center items-center h-screen bg-green-950">
@@ -70,26 +33,29 @@ function Login() {
         <div className="flex flex-1 flex-col">
           <div className="pl-5 pt-7">
             <form onSubmit={handleSubmit}>
-              <h1 className="text-2xl font-semibold text-center mr-4 mb-7">LOGIN</h1>
+              <h1 className="text-2xl font-semibold text-center mr-4 mb-7">
+                Login
+              </h1>
               <input
-                className="bg-gray-200 pl-3 py-2 mb-3"
-                type="text"
-                name="email_id"
+                className="bg-gray-200 pl-3 py-2 mb-5"
+                type="email" 
+                name="email"
                 placeholder="Email ID"
-                value={values.email_id} // Controlled input
-                onChange={handleInput}
+                value={emailId}
+                onChange={(e) => setEmail(e.target.value)} 
               />
               <input
                 className="bg-gray-200 pl-3 py-2 mb-3"
                 type="password"
                 name="password"
                 placeholder="Password"
-                value={values.password} // Controlled input
-                onChange={handleInput}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)} 
               />
+              
               <button
-                type="submit"
                 className="bg-green-950 text-white px-14 py-2 rounded-sm ml-12 mt-3"
+                type="submit"
               >
                 Login
               </button>
@@ -102,3 +68,4 @@ function Login() {
 }
 
 export default Login;
+
