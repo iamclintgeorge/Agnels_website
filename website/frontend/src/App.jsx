@@ -1,19 +1,18 @@
 import React from "react";
-import Header from "./components/Header.jsx";
-import News from "./components/News.jsx";
-import Welcome from "./components/Welcome.jsx";
-import Widgets from "./components/Widgets.jsx";
-import Footer from "./components/Footer.jsx";
+import Header from "./components/Header";
+import AboutUs from "./components/AboutUs";
+import WhatsNew from "./components/WhatsNew";
+import Footer from "./components/Footer";
+import ScrollWrapper from "./components/ScrollWrapper";
 
 function App() {
   return (
-    <div className="flex flex-col space-y-4">
+    <ScrollWrapper>
       <Header />
-      <News />
-      <Welcome />
-      <Widgets />
+      <AboutUs />
+      <WhatsNew />
       <Footer />
-    </div>
+    </ScrollWrapper>
   );
 }
 

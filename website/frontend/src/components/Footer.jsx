@@ -1,69 +1,128 @@
+// import React from "react";
+// import "../styles/Footer.css";
+
+// function Footer() {
+//   return (
+//     <footer className="footer">
+//       <div className="footer-content">
+//         <div className="footer-left">
+//           <h2>FR. CONCEICAO RODRIGUES INSTITUTE OF TECHNOLOGY</h2>
+//           <p>
+//             Agnel Technical Education Complex,<br />
+//             Sector 9-A, Vashi, Navi Mumbai,<br />
+//             Maharashtra, India PIN - 400703
+//           </p>
+//           <p>
+//             Telephone: (022) 27661924, 27660619, 27660714, 27660715<br />
+//             Fax: (022) 27660619<br />
+//             Email: principal@fcrit.ac.in
+//           </p>
+//         </div>
+//         <div className="footer-links">
+//           <h3>Navigation</h3>
+//           <ul>
+//             <li><a href="/">Home</a></li>
+//             <li><a href="/about-us">About Us</a></li>
+//             <li><a href="/departments">Departments</a></li>
+//             <li><a href="/academics">Academics</a></li>
+//             <li><a href="/admission">Admission</a></li>
+//             <li><a href="/students">Students</a></li>
+//           </ul>
+//         </div>
+//         <div className="footer-right">
+//           <h3>Quick Links</h3>
+//           <ul>
+//             <li><a href="/downloads">Downloads</a></li>
+//             <li><a href="/feedback">Feedback</a></li>
+//             <li><a href="/important-links">Important Links</a></li>
+//             <li><a href="/circulars">Circulars</a></li>
+//             <li><a href="/fee-payment">Fee Payment</a></li>
+//           </ul>
+//         </div>
+//       </div>
+//       <div className="footer-bottom">
+//         <p>
+//           &copy; 2024 Fr. C. Rodrigues Institute of Technology. All Rights Reserved.
+//         </p>
+//         <div className="social-links">
+//           <a href="#"><i className="fab fa-facebook"></i></a>
+//           <a href="#"><i className="fab fa-instagram"></i></a>
+//           <a href="#"><i className="fab fa-twitter"></i></a>
+//         </div>
+//       </div>
+//     </footer>
+//   );
+// }
+
+// export default Footer;
+
+
 import React from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faFacebook,
-  faLinkedin,
-  faInstagram,
-  faYoutube,
-} from "@fortawesome/free-brands-svg-icons";
+import "../styles/Footer.css";
 
 const Footer = () => {
   return (
-    <footer className="bg-gray-800 text-white p-8">
-      <div className="container mx-auto flex flex-col md:flex-row justify-center items-start space-x-8">
-        {" "}
-        {/* Centered and added spacing */}
-        <div className="mb-4 md:mb-0 space-y-4 md:space-y-6">
-          {" "}
-          {/* Adjusted spacing */}
-          <p className="font-bold text-lg">
-            Fr. C. Rodrigues Institute of Technology
-          </p>
-          <p>Agnel Technical Education Complex</p>
-          <p>Sector 9-A, Vashi, Navi Mumbai,</p>
-          <p>Maharashtra - 400703</p>
-          <a href="tel:+912227663012" className="block hover:underline">
-            PH: +91 22 27661924,
-          </a>
-          <a href="tel:+912227660842" className="block hover:underline">
-            +91 22 27660619
-          </a>
-          <a href="mailto:info@fcrit.ac.in" className="block hover:underline">
-            info@fcrit.ac.in
-          </a>
+    <footer className="footer">
+      <div className="footer-container">
+        <div className="footer-section logo-section">
+          <img
+            src="/src/imgs/fcritlogo.png" // Replace with your logo path
+            alt="FCRIT Logo"
+            className="footer-logo"
+          />
+          <h3>Fr. Conceicao Rodrigues Institute of Technology</h3>
+          <p>Vashi</p>
         </div>
-        <div className="flex flex-col items-center">
-          {/* Placeholder for Google Maps iframe */}
-          <iframe
-            title="Google Maps"
-            frameBorder="0"
-            style={{ height: "300px", width: "500px" }}
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3770.731989107177!2d72.9891293743013!3d19.075517751989413!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7c6cae0d8c5ab%3A0xbbf4481d662ca2d8!2sFr.%20Conceicao%20Rodrigues%20Institute%20of%20Technology!5e0!3m2!1sen!2sin!4v1724656497726!5m2!1sen!2sin"
-          ></iframe>
-
-          {/* Social Media Icons */}
-          <div className="flex space-x-4 mt-4">
-            <a href="#" className="text-white hover:text-gray-400">
-              <FontAwesomeIcon icon={faFacebook} size="2x" />
-            </a>
-            <a href="#" className="text-white hover:text-gray-400">
-              <FontAwesomeIcon icon={faLinkedin} size="2x" />
-            </a>
-            <a href="#" className="text-white hover:text-gray-400">
-              <FontAwesomeIcon icon={faInstagram} size="2x" />
-            </a>
-            <a href="#" className="text-white hover:text-gray-400">
-              <FontAwesomeIcon icon={faYoutube} size="2x" />
-            </a>
-          </div>
+        <div className="footer-section navigation">
+          <h4>Navigation</h4>
+          <ul>
+            <li>Home</li>
+            <li>About Us</li>
+            <li>Departments</li>
+            <li>Academics</li>
+            <li>Admission</li>
+            <li>Students</li>
+          </ul>
+        </div>
+        <div className="footer-section quick-links">
+          <h4>Quick Links</h4>
+          <ul>
+            <li>Downloads</li>
+            <li>Feedback</li>
+            <li>Important Links</li>
+            <li>Circulars</li>
+            <li>Fee Payment</li>
+          </ul>
+        </div>
+        <div className="footer-section contact">
+          <h4>Contact Us</h4>
+          <address>
+            Agnel Technical Education Complex,
+            <br />
+            Sector 9-A, Vashi, Navi Mumbai,
+            <br />
+            Maharashtra, India. PIN - 400703
+          </address>
+          <p>
+            Telephone: (022) 27661924, 27660619, 27660714, 27660715
+            <br />
+            Fax: (022) 27660619
+            <br />
+            Email: <a href="mailto:principal@fcrit.ac.in">principal@fcrit.ac.in</a>
+          </p>
+          <a href="https://goo.gl/maps/path-to-location" target="_blank" rel="noopener noreferrer">
+            Google Maps
+          </a>
         </div>
       </div>
-
-      <div className="mt-8 flex flex-col items-center">
-        <p>Visitors Count: 002353811</p>
-        <p className="text-center mt-4">
-          © 2024 Fr. C. Rodrigues Institute of Technology. All rights reserved.
-        </p>
+      <div className="footer-bottom">
+        <div className="social-icons">
+          <i className="fa-brands fa-instagram"></i>
+          <i className="fa-brands fa-facebook"></i>
+          <i className="fa-brands fa-twitter"></i>
+        </div>
+        <p>&copy; 2024 Fr. C. Rodrigues Institute of Technology. All Rights Reserved</p>
+        {/* <p>Developers Team</p> */}
       </div>
     </footer>
   );
