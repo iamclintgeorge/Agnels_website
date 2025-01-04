@@ -1,9 +1,9 @@
 
 const HomePage = () => {
   return (
-    <div>
-      HomePage
-    </div>
+    <>
+    <div className="bg-[#0C2340] h-screen w-64 text-white">Soli Deo Gloria</div>
+    </>
   )
 }
 
