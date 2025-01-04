@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 
 function Login() {
   const navigate = useNavigate();
-  const [userName, setName] = useState("");
   const [password, setPassword] = useState("");
   const [emailId, setEmail] = useState("");
 
@@ -14,7 +13,6 @@ function Login() {
 
     const userData = {
       emailId,
-      userName,
       password,
     };
 
@@ -28,12 +26,12 @@ function Login() {
   };
 
   return (
-    <div className="flex flex-row justify-center items-center h-screen bg-green-950">
-      <div className="bg-white h-96 w-72">
+    <div className="flex flex-row justify-center items-center h-screen bg-[#0C2340]">
+      <div className="bg-white h-96 w-[24vw] rounded-md">
         <div className="flex flex-1 flex-col">
-          <div className="pl-5 pt-7">
+          <div className="pl-7 pt-10">
             <form onSubmit={handleSubmit}>
-              <h1 className="text-2xl font-semibold text-center mr-4 mb-7">
+              <h1 className="text-2xl font-semibold text-center mr-5 mb-14">
                 Login
               </h1>
               <input
@@ -54,7 +52,7 @@ function Login() {
               />
               
               <button
-                className="bg-green-950 text-white px-14 py-2 rounded-sm ml-12 mt-3"
+                className="bg-[#0C2340] text-white px-28 py-2 rounded-[4px] mt-8"
                 type="submit"
               >
                 Login
