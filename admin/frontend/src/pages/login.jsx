@@ -17,7 +17,9 @@ function Login() {
     };
 
     try {
-      const res = await axios.post("http://localhost:3663/login", userData);
+      const res = await axios.post("http://localhost:3663/login", userData, {
+        withCredentials: true,
+      });
         console.log("Login successful");
         navigate("/"); 
     } catch (err) {
