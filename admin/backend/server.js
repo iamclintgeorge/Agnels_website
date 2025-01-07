@@ -21,7 +21,6 @@ app.use(
 app.use(cookieParser());
 app.use(express.json());
 app.use(
-  //Learn
   session({
     name: "connect.sid",
     secret: "secret",
@@ -30,7 +29,7 @@ app.use(
     cookie: {
       httpOnly: true,
       secure: false,
-      sameSite: "None",
+      sameSite: "Lax",
       maxAge: 1000 * 60 * 60 * 24,
     },
   })

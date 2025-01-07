@@ -19,7 +19,9 @@ function Signup() {
     };
 
     try {
-      const res = await axios.post("http://localhost:3663/signup", userData);
+      const res = await axios.post("http://localhost:3663/signup", userData, {
+        withCredentials: true,
+      });
       console.log("Hello Signup Response");
       console.log(res);
       navigate("/");
