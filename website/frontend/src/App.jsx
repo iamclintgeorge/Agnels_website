@@ -3,16 +3,15 @@ import Header from "./components/Header";
 import AboutUs from "./components/AboutUs";
 import WhatsNew from "./components/WhatsNew";
 import Footer from "./components/Footer";
-import ScrollWrapper from "./components/ScrollWrapper";
 
 function App() {
   return (
-    <ScrollWrapper>
-      <Header />
+    <>
+    <Header />
       <AboutUs />
       <WhatsNew />
       <Footer />
-    </ScrollWrapper>
+    </>
   );
 }
 

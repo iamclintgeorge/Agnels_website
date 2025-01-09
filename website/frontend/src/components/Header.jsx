@@ -1,46 +1,49 @@
 import React from "react";
-import "../styles/Header.css";
 import logo from "../imgs/fcritlogo.png";
 
 const Header = () => {
   return (
-    <header className="header">
+    <header className="bg-[#0c2340] text-white p-0 m-0 relative h-48 w-full">
       {/* Yellow Border */}
-      <div className="header-border"></div>
+      <div className="bg-[#AE9142] h-1 w-full"></div>
 
       {/* Logo and Navigation */}
-      <div className="header-content">
-        <img src={logo} alt="FCRIT Logo" className="logo" />
-        <div className="institute-info">
-            <h1>FR. CONCEICAO RODRIGUES</h1>
-            <h2>INSTITUTE OF TECHNOLOGY</h2>
-            <p>VASHI</p>
+      <div className="flex items-center justify-between p-0 px-10">
+        <img src={logo} alt="FCRIT Logo" className="absolute w-16 pt-14 left-20" />
+        <div className="pl-32 pt-14">
+            <p className="font-playfair text-[20px] font-medium leading-8">FR. CONCEICAO RODRIGUES</p>
+            <p className="font-playfair font-thin text-[14px] tracking-[3.7px]">INSTITUTE OF TECHNOLOGY</p>
+            <p className="font-playfair font-thin text-[9px] tracking-[3.7px] leading-5">
+  <span className="tracking-[-3px]"> -------------------------------------------------------------------</span>
+  <span className="mr-2 ml-4">VASHI</span>
+  <span className="tracking-[-3px]"> -------------------------------------------------------------------</span>
+</p>
         </div>
 
-        <nav className="header-nav">
-        <ul>
-            <li><a href="#downloads">Downloads</a></li>
+        <nav className="mt-[-40px]">
+        <ul className="list-none flex gap-3 text-sm p-0 m-0 font-inter font-light">
+            <li className="hover:underline">Downloads</li>
             <li>|</li>
-            <li><a href="#feedback">Feedback</a></li>
+            <li className="hover:underline">Feedback</li>
             <li>|</li>
-            <li><a href="#important-links">Important Links</a></li>
+            <li className="hover:underline">Important Links</li>
             <li>|</li>
-            <li><a href="#circulars">Circulars</a></li>
+            <li className="hover:underline">Circulars</li>
             <li>|</li>
-            <li><a href="#fee-payment">Fee Payment</a></li>
-            <li><button className="login-btn">Login</button></li>
+            <li className="hover:underline">Fee Payment</li>
+            <li className="ml-4 mt-[-3px]"><button className="bg-transparent border-white border-[1px] text-xs px-4 py-[5px]">Login</button></li>
           </ul>
         </nav>
       </div>
 
       {/* Bottom Navigation Links */}
-      <div className="bottom-links">
-        <a href="#home">Home</a>
-        <a href="#about-us">About Us</a>
-        <a href="#departments">Departments</a>
-        <a href="#academics">Academics</a>
-        <a href="#admission">Admission</a>
-        <a href="#students">Students</a>
+      <div className="absolute flex gap-10 text-base p-0 m-0 font-inter z-10 ml-[620px] mt-1 font-light">
+        <p>Home</p>
+        <p>About Us</p>
+        <p>Departments</p>
+        <p>Academics</p>
+        <p>Admission</p>
+        <p>Students</p>
       </div>
     </header>
   );

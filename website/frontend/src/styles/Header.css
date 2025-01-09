@@ -1,6 +1,6 @@
 /* Header */
 .header {
-  background-color: #0C2340;
+  background-color: #0c2340;
   color: white;
   padding: 0;
   margin: 0;
@@ -11,7 +11,7 @@
 
 /* Yellow Border */
 .header-border {
-  background-color: #AE9142;
+  background-color: #ae9142;
   height: 5px;
   width: 100%;
   position: absolute;
@@ -39,40 +39,42 @@
 }
 
 /* Institute Information */
-.institute-info h1, .institute-info h2, .institute-info p {
+.institute-info h1,
+.institute-info h2,
+.institute-info p {
   margin: 0;
 }
 
-.institute-info h1 {
+/* .institute-info h1 {
   position: absolute;
   top: 50px;
   left: 125px;
-  font-family: 'Playfair Display', serif;
+  font-family: "Playfair Display", serif;
   font-weight: 500;
   font-size: 25px;
   color: white;
-}
+} */
 
-.institute-info h2 {
+/* .institute-info h2 {
   position: absolute;
   top: 90px;
   left: 125px;
-  font-family: 'Playfair Display', serif;
+  font-family: "Playfair Display", serif;
   font-weight: 300;
   font-size: 18px;
   letter-spacing: 0.25em;
   color: white;
-}
+} */
 
-.institute-info p {
+/* .institute-info p {
   position: absolute;
   top: 120px;
   left: 125px;
-  font-family: 'Playfair Display', serif;
+  font-family: "Playfair Display", serif;
   font-weight: 300;
   font-size: 10px;
   color: white;
-}
+} */
 
 /* Navigation */
 .header-nav ul {
@@ -86,7 +88,7 @@
 
 .header-nav li {
   display: inline-block;
-  font-family: 'Inter', serif;
+  font-family: "Inter", serif;
   font-weight: 400;
   font-size: 16px;
 }
@@ -104,7 +106,7 @@
   background-color: transparent;
   color: white;
   border: 1px solid white;
-  font-family: 'Inter', serif;
+  font-family: "Inter", serif;
   font-size: 14px;
   width: 80px;
   height: 35px;
@@ -113,7 +115,7 @@
 
 .login-btn:hover {
   background-color: white;
-  color: #0C2340;
+  color: #0c2340;
 }
 
 /* Bottom Links */
@@ -125,7 +127,7 @@
   gap: 50px;
   padding: 10px;
   background-color: #002147;
-  font-family: 'Inter', serif;
+  font-family: "Inter", serif;
   font-size: 18px;
   border-radius: 5px;
   z-index: 10;
@@ -143,19 +145,19 @@
 /* Media Queries for Responsiveness */
 @media (max-width: 768px) {
   .header-content {
-      flex-direction: column;
-      align-items: center;
+    flex-direction: column;
+    align-items: center;
   }
 
   .header-nav ul {
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
   }
 
   .bottom-links {
-      flex-direction: column;
-      align-items: center;
-      gap: 20px;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
   }
 }
