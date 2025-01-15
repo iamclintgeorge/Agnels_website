@@ -1,14 +1,16 @@
 import axios from "axios"
+import useAuthCheck from "../services/useAuthCheck"
 
 const HomePage = () => {
-  const res = async () => await axios.get("http://localhost:3663/", {
-    withCredentials: true,
-  });
-  console.log("HomePage", res);
+const {loading, message, isAuthenticated} = useAuthCheck();
+if (loading)
+{
+  return <div>Loading...</div>;
+}
 
   return (
     <>
-    <div className="bg-[#0C2340] h-screen w-64 text-white">Soli Deo Gloria </div>
+    {isAuthenticated ? (<div className="bg-[#0C2340] h-screen w-64 text-white">Soli Deo Gloria </div> ) : (<p>{message}</p>)}
     </>
   )
 }
