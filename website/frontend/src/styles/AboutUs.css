@@ -1,64 +1,99 @@
+/* General Section Styling */
 .about-section {
   display: flex;
   flex-direction: column;
   gap: 40px;
-  padding-bottom: 30px;
+  padding: 40px 20px;
   background-color: #f9f9f9;
 }
 
-.about-images-row {
+/* Carousel Section */
+.about-carousel {
+  width: 100vw; /* Full viewport width */
+  margin-left: calc(-50vw + 50%); /* Offset to extend beyond the container */
+  margin-right: calc(-50vw + 50%); /* Same for the right */
+  position: relative;
+  overflow: hidden; /* Ensure images don't overflow outside the container */
+}
+
+.carousel-image {
+  width: 100vw; /* Full width of the viewport */
+  height: 400px; /* Fixed height for uniform size */
+  object-fit: cover; /* Ensures the image maintains proportions and fills the container */
+  border-radius: 10px; /* Optional for rounded corners */
+  filter: brightness(85%); /* Slight dimming for better contrast */
+  transition: filter 0.3s ease, transform 0.3s ease;
+}
+
+.carousel-image:hover {
+  filter: brightness(100%);
+  transform: scale(1.02); /* Subtle zoom effect on hover */
+}
+
+
+/* Custom Arrow Styling */
+.custom-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: rgba(255, 255, 255, 0.7);
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  z-index: 10;
+  cursor: pointer;
   display: flex;
-  justify-content: space-between;
-  width: 100%;
+  justify-content: center;
+  align-items: center;
+  font-size: 18px;
+  font-weight: bold;
 }
 
-.image {
-  flex: 1;
-  max-width: 50%;
-  border-radius: 0px;
-  box-shadow: none;
-  filter: brightness(70%);
-}
-.image:first-child {
-  margin-right: 0; 
+.next-arrow {
+  right: 10px;
 }
 
+.prev-arrow {
+  left: 10px;
+}
 
+.custom-arrow:hover {
+  background-color: #ddd;
+}
 
+/* About Content Section */
 .about {
   display: flex;
-
-  justify-content: space-evenly; 
-  gap: 100px;
- 
+  justify-content: space-between;
+  align-items: center;
+  gap: 40px;
+  padding: 0 20px;
 }
 
 .about-content {
   flex: 1.2;
-  
+  max-width: 600px;
 }
 
 .about-title {
   font-size: 2.8rem;
   color: #002060;
   font-weight: bold;
-  padding-left: 70px;
+  margin-bottom: 10px;
 }
 
 .underline {
   width: 150px;
   height: 5px;
   background-color: #ffcc00;
-  margin: 10px 40px 20px;
-  
+  margin: 10px 0 20px;
 }
 
 .about-content p {
   line-height: 1.8;
   font-size: 1.2rem;
   color: #333;
-  padding-top: 30px;
-  padding-left: 150px;
 }
 
 .about-image {
@@ -66,15 +101,53 @@
   display: flex;
   justify-content: center;
   align-items: center;
-
 }
 
 .about-image img {
-  max-width: 100%;
-  height: 100%;
+  width: 100%; /* Ensures full width */
+  height: auto; /* Maintains original aspect ratio */
+  max-width: 400px; /* Optional for max size */
   border: 5px solid #ffcc00;
-  
+  border-radius: 10px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
+/* Responsive Design */
+@media (max-width: 768px) {
+  .about {
+    flex-direction: column;
+    gap: 20px;
+  }
 
+  .about-content {
+    text-align: center;
+    max-width: 100%;
+  }
+
+  .about-title {
+    font-size: 2rem;
+  }
+
+  .about-content p {
+    padding: 0;
+  }
+
+  .about-image img {
+    max-width: 100%; /* Allow the image to scale naturally on smaller screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .about-title {
+    font-size: 1.8rem;
+  }
+
+  .underline {
+    width: 100px;
+    height: 4px;
+  }
+
+  .about-image img {
+    max-width: 100%; /* Further adjust for very small screens */
+  }
+}

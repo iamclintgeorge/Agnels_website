@@ -4,6 +4,7 @@ import AboutUs from "./components/AboutUs";
 import WhatsNew from "./components/WhatsNew";
 import Footer from "./components/Footer";
 
+
 function App() {
   return (
     <>
