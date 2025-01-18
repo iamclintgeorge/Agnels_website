@@ -1,4 +1,3 @@
-/* General Section Styling */
 .about-section {
   display: flex;
   flex-direction: column;
@@ -7,31 +6,28 @@
   background-color: #f9f9f9;
 }
 
-/* Carousel Section */
 .about-carousel {
-  width: 100vw; /* Full viewport width */
-  margin-left: calc(-50vw + 50%); /* Offset to extend beyond the container */
-  margin-right: calc(-50vw + 50%); /* Same for the right */
+  width: 100vw;
+  margin-left: calc(-51.2vw + 50.6%);
+  margin-right: calc(-52vw + 49%);
   position: relative;
-  overflow: hidden; /* Ensure images don't overflow outside the container */
+  overflow: hidden;
 }
 
 .carousel-image {
-  width: 100vw; /* Full width of the viewport */
-  height: 400px; /* Fixed height for uniform size */
-  object-fit: cover; /* Ensures the image maintains proportions and fills the container */
-  border-radius: 10px; /* Optional for rounded corners */
-  filter: brightness(85%); /* Slight dimming for better contrast */
+  width: 100vw;
+  height: 400px;
+  object-fit: cover;
+  border-radius: 10px;
+  filter: brightness(85%);
   transition: filter 0.3s ease, transform 0.3s ease;
 }
 
 .carousel-image:hover {
   filter: brightness(100%);
-  transform: scale(1.02); /* Subtle zoom effect on hover */
+  transform: scale(1.02);
 }
 
-
-/* Custom Arrow Styling */
 .custom-arrow {
   position: absolute;
   top: 50%;
@@ -54,15 +50,20 @@
   right: 10px;
 }
 
+.next-arrow:hover {
+  transform: scale(1.2);
+  background-color: #ffcc00;
+}
+
 .prev-arrow {
-  left: 10px;
+  left: 20px;
 }
 
-.custom-arrow:hover {
-  background-color: #ddd;
+.prev-arrow:hover {
+  transform: scale(1.2);
+  background-color: #ffcc00;
 }
 
-/* About Content Section */
 .about {
   display: flex;
   justify-content: space-between;
@@ -104,15 +105,14 @@
 }
 
 .about-image img {
-  width: 100%; /* Ensures full width */
-  height: auto; /* Maintains original aspect ratio */
-  max-width: 400px; /* Optional for max size */
+  width: 100%;
+  height: auto;
+  max-width: 400px;
   border: 5px solid #ffcc00;
   border-radius: 10px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
   .about {
     flex-direction: column;
@@ -133,7 +133,7 @@
   }
 
   .about-image img {
-    max-width: 100%; /* Allow the image to scale naturally on smaller screens */
+    max-width: 100%;
   }
 }
 
@@ -148,6 +148,6 @@
   }
 
   .about-image img {
-    max-width: 100%; /* Further adjust for very small screens */
+    max-width: 100%;
   }
 }
