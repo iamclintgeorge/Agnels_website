@@ -6,14 +6,18 @@ import HomePage from './pages/homePage';
 import Login from './pages/login';
 import Signup from './pages/signup';
 import Error404 from './pages/error404';
+import AdminLayout from './layout/adminLayout';
 
 const App = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<HomePage />} />
+        {/* <Route path="/" element={<HomePage />} /> */}
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+        <Route path="/" element={<AdminLayout />}>
+        <Route path="/home" element={<HomePage />} />
+        </Route>
         <Route path="*" element={<Error404 />} />
       </Routes>
     </Router>
