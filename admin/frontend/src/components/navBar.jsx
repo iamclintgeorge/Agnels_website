@@ -1,9 +1,9 @@
 import React from 'react'
 
-const SideAndNavBar = () => {
+const NavBar = () => {
   return (
     <>
-    <div className="bg-[#AE9142] h-[3px] w-full fixed top-0">
+        <div className="bg-[#AE9142] h-[3px] w-full fixed top-0">
        </div>
     <div className="bg-[#0C2340] h-16 w-full fixed top-[3px] bottom-0 border-b-[0.5px] border-[#888888]">
       <div className="flex flex-row justify-between">
@@ -17,19 +17,8 @@ const SideAndNavBar = () => {
         </div>
       </div>
     </div>
-    <div className="bg-[#0C2340] mt-16 h-screen w-64 text-white">
-      <div className="font-inter text-sm font-light pl-8 pt-9 flex flex-col space-y-9">
-      <p>Dashboard</p>
-      <p>Home Page</p>
-      <p>Logs</p>
-      <p>Departments Page</p>
-      <p>Admission Page</p>
-      <p>Academics Page</p>
-      <p>Students Corner</p>
-      </div>
-    </div>
     </>
   )
 }
 
-export default SideAndNavBar
+export default NavBar
