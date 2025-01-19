@@ -31,6 +31,7 @@ import WhatsNew from "./components/WhatsNew";
 import Footer from "./components/Footer";
 import Departments from "./components/Departments";
 
+
 function App() {
   return (
     <Router>
