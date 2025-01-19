@@ -10,3 +10,7 @@
 @tailwind utilities;
 
 /* Add any additional custom styles here */
+
+:root{
+    background: #F5F5F5;
+}
