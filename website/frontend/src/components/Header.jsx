@@ -1,5 +1,6 @@
 import React from "react";
 import logo from "../imgs/fcritlogo.png";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   return (
@@ -38,12 +39,12 @@ const Header = () => {
 
       {/* Bottom Navigation Links */}
       <div className="absolute flex gap-10 text-base p-0 m-0 font-inter z-10 ml-[620px] mt-1 font-light">
-        <p>Home</p>
-        <p>About Us</p>
-        <p>Departments</p>
-        <p>Academics</p>
-        <p>Admission</p>
-        <p>Students</p>
+        <Link to="/">Home</Link>
+        <Link to="/about-us">About Us</Link>
+        <Link to="/departments">Departments</Link>
+        <Link to="/academics">Academics</Link>
+        <Link to="/admission">Admission</Link>
+        <Link to="/students">Students</Link>
       </div>
     </header>
   );

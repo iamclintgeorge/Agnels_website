@@ -1,60 +1,4 @@
-// import React from "react";
-// import "../styles/Footer.css";
 
-// function Footer() {
-//   return (
-//     <footer className="footer">
-//       <div className="footer-content">
-//         <div className="footer-left">
-//           <h2>FR. CONCEICAO RODRIGUES INSTITUTE OF TECHNOLOGY</h2>
-//           <p>
-//             Agnel Technical Education Complex,<br />
-//             Sector 9-A, Vashi, Navi Mumbai,<br />
-//             Maharashtra, India PIN - 400703
-//           </p>
-//           <p>
-//             Telephone: (022) 27661924, 27660619, 27660714, 27660715<br />
-//             Fax: (022) 27660619<br />
-//             Email: principal@fcrit.ac.in
-//           </p>
-//         </div>
-//         <div className="footer-links">
-//           <h3>Navigation</h3>
-//           <ul>
-//             <li><a href="/">Home</a></li>
-//             <li><a href="/about-us">About Us</a></li>
-//             <li><a href="/departments">Departments</a></li>
-//             <li><a href="/academics">Academics</a></li>
-//             <li><a href="/admission">Admission</a></li>
-//             <li><a href="/students">Students</a></li>
-//           </ul>
-//         </div>
-//         <div className="footer-right">
-//           <h3>Quick Links</h3>
-//           <ul>
-//             <li><a href="/downloads">Downloads</a></li>
-//             <li><a href="/feedback">Feedback</a></li>
-//             <li><a href="/important-links">Important Links</a></li>
-//             <li><a href="/circulars">Circulars</a></li>
-//             <li><a href="/fee-payment">Fee Payment</a></li>
-//           </ul>
-//         </div>
-//       </div>
-//       <div className="footer-bottom">
-//         <p>
-//           &copy; 2024 Fr. C. Rodrigues Institute of Technology. All Rights Reserved.
-//         </p>
-//         <div className="social-links">
-//           <a href="#"><i className="fab fa-facebook"></i></a>
-//           <a href="#"><i className="fab fa-instagram"></i></a>
-//           <a href="#"><i className="fab fa-twitter"></i></a>
-//         </div>
-//       </div>
-//     </footer>
-//   );
-// }
-
-// export default Footer;
 
 
 import React from "react";
@@ -129,3 +73,6 @@ const Footer = () => {
 };
 
 export default Footer;
+
+
+
