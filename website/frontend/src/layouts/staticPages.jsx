@@ -10,15 +10,15 @@ const StaticPages = (props) => {
 
   return (
     <div className="min-h-screen bg-gray-100">
-      <div className="bg-[#dde5ef] text-black py-8">
-        <h1 className="text-3xl font-extrabold text-left pl-7 uppercase">
+      <div className="bg-gray-100 text-[#0C2340] py-5 border-b-[0.5px] border-gray-400 pl-10 font-inter">
+        <h1 className="text-2xl font-semibold text-left pl-7 py-0">
           {props.pagename}
         </h1>
-        <p className="text-sm text-left pl-7 mt-2">{props.path}</p>
+        <p className="text-sm text-left pl-7 mt-1 font-normal">{props.path}</p>
       </div>
 
       {/* Departments Section */}
-      <main className="flex flex-col items-center py-8">
+      <main className="flex flex-col items-center py-16">
         <div className="flex w-11/12 max-w-7xl">
           {/* Sidebar */}
           <div className="w-1/4 pr-6">
@@ -31,7 +31,7 @@ const StaticPages = (props) => {
                 >
                   <Link
                     href="#"
-                    className="block px-2 py-2 text-gray-700 font-semibold transition duration-300 ease-in-out group-hover:text-[#0c2340] group-hover:bg-gray-50"
+                    className="block px-2 py-3 text-black font-[350] font-inter transition duration-300 ease-in-out group-hover:text-[#0c2340] group-hover:bg-gray-50"
                   >
                     {department}
                   </Link>
@@ -45,12 +45,7 @@ const StaticPages = (props) => {
           <div className="w-[1px] bg-gray-300"></div>
 
           {/* Content Area */}
-          <div className="w-3/4 pl-6">
-            <h2 className="text-2xl font-bold mb-4 text-[#0c2340]">
-              {props.title}
-            </h2>
-            {props.content[activeTab]}
-          </div>
+          <div className="w-3/4 pl-6">{props.content[activeTab]}</div>
         </div>
       </main>
     </div>

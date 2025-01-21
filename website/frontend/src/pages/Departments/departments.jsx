@@ -37,10 +37,9 @@ const Departments = () => {
   return (
     <div>
       <StaticPages
-        pagename={"Department"}
+        pagename={"Departments"}
         path={"Home / Departments"}
         sidebar={sidebar}
-        title={"Departments"}
         content={content}
       />
     </div>

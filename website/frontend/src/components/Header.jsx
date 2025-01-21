@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import logo from "../imgs/fcritlogo.png";
+import logo from "../assets/imgs/fcritlogo.png";
 import { FaBars, FaChevronDown } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
@@ -19,9 +19,11 @@ const Header = () => {
           alt="FCRIT Logo"
           className="w-16 pt-14 absolute left-[25px]" // Moved the logo 20px to the right
         />
-        
+
         {/* Text Content */}
-        <div className="pl-[80px] pt-14"> {/* Text content pushed to the right by 20px to maintain distance */}
+        <div className="pl-[80px] pt-14">
+          {" "}
+          {/* Text content pushed to the right by 20px to maintain distance */}
           <p className="font-playfair text-[20px] font-medium leading-8">
             FR. CONCEICAO RODRIGUES
           </p>
@@ -29,9 +31,15 @@ const Header = () => {
             INSTITUTE OF TECHNOLOGY
           </p>
           <p className="font-playfair font-thin text-[9px] tracking-[3.7px] leading-5">
-            <span className="tracking-[-3px]"> -------------------------------------------------------------------</span>
+            <span className="tracking-[-3px]">
+              {" "}
+              -------------------------------------------------------------------
+            </span>
             <span className="mr-2 ml-4 sm:text-right">VASHI</span>
-            <span className="tracking-[-3px]"> -------------------------------------------------------------------</span>
+            <span className="tracking-[-3px]">
+              {" "}
+              -------------------------------------------------------------------
+            </span>
           </p>
         </div>
 
@@ -64,10 +72,14 @@ const Header = () => {
       </div>
 
       {/* Bottom Navigation Links (Desktop) */}
-      <div className="absolute flex gap-10 text-base p-0 m-0 font-inter z-10 ml-[620px] mt-1 font-light hidden md:flex">
-        <p>Home</p>
+      <div className="absolute gap-10 text-base p-0 m-0 font-inter z-10 ml-[620px] mt-1 font-light hidden md:flex cursor-default">
+        <Link to="/">
+          <p>Home</p>
+        </Link>
         <p>About Us</p>
-        <p>Departments</p>
+        <Link to="/departments">
+          <p>Departments</p>
+        </Link>
         <p>Academics</p>
         <p>Admission</p>
         <p>Students</p>
