@@ -3,23 +3,32 @@ import React from "react";
 const Footer = () => {
   return (
     <footer className="footer bg-[#EEEBE5] px-5 py-[40px] h-[425px]">
-      
       <div className="footer-container   flex justify-between flex-wrap ">
         <div className="footer-section logo-section flex-1 my-[10px] mx-[20px]">
           <img
-            src="/src/imgs/fcritlogo.png" // Replace with your logo path
+            src="/src/assets/imgs/fcritlogo.png" // Replace with your logo path
             alt="FCRIT Logo"
             className="footer-logo w-[75x] h-[75px] mb-[95px] ml-[67px]"
           />
           <div className="absolute left-[190px] top-[2295px]">
-            <p className="font-playfair text-[21.21px] font-medium leading-8">FR. CONCEICAO RODRIGUES</p>
-            <p className="font-playfair font-thin text-[15.27px] tracking-[3.7px]">INSTITUTE OF TECHNOLOGY</p>
+            <p className="font-playfair text-[21.21px] font-medium leading-8">
+              FR. CONCEICAO RODRIGUES
+            </p>
+            <p className="font-playfair font-thin text-[15.27px] tracking-[3.7px]">
+              INSTITUTE OF TECHNOLOGY
+            </p>
             <p className="font-playfair font-thin text-[9px] tracking-[3.7px] leading-5">
-  <span className="tracking-[-3px]"> -------------------------------------------------------------------</span>
-  <span className="mr-2 ml-4">VASHI</span>
-  <span className="tracking-[-3px]"> -------------------------------------------------------------------</span>
-</p>
-        </div>
+              <span className="tracking-[-3px]">
+                {" "}
+                -------------------------------------------------------------------
+              </span>
+              <span className="mr-2 ml-4">VASHI</span>
+              <span className="tracking-[-3px]">
+                {" "}
+                -------------------------------------------------------------------
+              </span>
+            </p>
+          </div>
         </div>
         <div className="footer-section navigation absolute left-[600px] top-[2295px]">
           <h4 class="mb-[10px] font-bold text-[19px]">Navigation</h4>
@@ -56,9 +65,15 @@ const Footer = () => {
             <br />
             Fax: (022) 27660619
             <br />
-            Email: <a href="mailto:principal@fcrit.ac.in">principal@fcrit.ac.in</a>
+            Email:{" "}
+            <a href="mailto:principal@fcrit.ac.in">principal@fcrit.ac.in</a>
           </p>
-          <a href="https://goo.gl/maps/path-to-location" target="_blank" rel="noopener noreferrer" className="text-inherit underline left-[1074px] top-[2625px] text-[18px]">
+          <a
+            href="https://goo.gl/maps/path-to-location"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-inherit underline left-[1074px] top-[2625px] text-[18px]"
+          >
             Google Maps
           </a>
         </div>
@@ -71,41 +86,38 @@ const Footer = () => {
         </div>
         <div className="social-media flex-1">
           <img
-            src="/src/imgs/instagramlogo.webp" // Replace with your logo path
+            src="/src/assets/imgs/instagramlogo.webp" // Replace with your logo path
             alt="Instagram"
             className="footer-logo w-[24px] h-[24px] absolute left-[234px] top-[2515px]"
           />
           <img
-            src="/src/imgs/facebooklogo.png" // Replace with your logo path
+            src="/src/assets/imgs/facebooklogo.png" // Replace with your logo path
             alt="Facebook"
             className="footer-logo w-[28px] h-[28px] relative left-[255px] top-[40px]"
           />
           <img
-          src="/src/imgs/youtubelogo.png" // Replace with your logo path
-          alt="Youtube"
-          className="footer-logo w-[32x] h-[32px] absolute left-[316px] top-[2510px]"
+            src="/src/assets/imgs/youtubelogo.png" // Replace with your logo path
+            alt="Youtube"
+            className="footer-logo w-[32x] h-[32px] absolute left-[316px] top-[2510px]"
           />
           <img
-            src="/src/imgs/linkedinlogo.png" // Replace with your logo path
+            src="/src/assets/imgs/linkedinlogo.png" // Replace with your logo path
             alt="Linkedin"
             className="footer-logo w-[32x] h-[32px] absolute left-[356px] top-[2510px]"
           />
         </div>
         <div>
-        <span className="block w-[1310px] h-[1px] bg-black absolute left-[130px] top-[2560px]"></span>
-        <p className="absolute left-[543px] top-[2590px] text-[15px]">
-          &copy; 2024 Fr. C. Rodrigues Institute of Technology.
-        </p>
-        <p className="absolute text-center left-[643px] top-[2609px] text-[15px]">
-          All Rights Reserved
-        </p>
-        
+          <span className="block w-[1310px] h-[1px] bg-black absolute left-[130px] top-[2560px]"></span>
+          <p className="absolute left-[543px] top-[2590px] text-[15px]">
+            &copy; 2024 Fr. C. Rodrigues Institute of Technology.
+          </p>
+          <p className="absolute text-center left-[643px] top-[2609px] text-[15px]">
+            All Rights Reserved
+          </p>
         </div>
       </div>
-
     </footer>
   );
 };
 
 export default Footer;
-

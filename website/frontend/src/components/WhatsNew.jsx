@@ -17,9 +17,9 @@ function WhatsNew() {
   ];
 
   return (
-    <section className="relative py-10 px-5 bg-[#F7F7F7]" >
+    <section className="relative py-10 px-5 bg-[#F7F7F7]">
       {/* Background Text */}
-      <div className="absolute inset-0 flex items-center justify-center text-[#EDEDED] font-medium text-[146px] leading-none uppercase opacity-70 z-0 w-[1436px] h-[163px] mt-[245px] tracking-widest ml-[50px]">
+      <div className="absolute inset-0 flex text-red-900 [#EDEDED] font-medium text-[9.7vw] leading-none uppercase opacity-70 z-0 mt-[250px] tracking-widest px-0 mx-0">
         Announcements
       </div>
       <h2 className="font-semibold italic text-[30px] text-[#0C2340] pl-16 mb-5 w-[336px] h-[29px] mt-[75px] ">
@@ -46,7 +46,7 @@ function WhatsNew() {
                   className="px-10 py-0 bg-[#E1E1E1] shadow-sm text-center text-[#000000] text-[15px] w-144 h-46"
                   style={{
                     boxShadow: "0 4px 6px rgba(0, 0, 0, 0.3)", // Custom drop shadow
-                    border: "1.21px solid #757575",           // Stroke effect
+                    border: "1.21px solid #757575", // Stroke effect
                   }}
                 >
                   {tab}
