@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import logo from "../imgs/fcritlogo.png";
-import { FaBars } from "react-icons/fa";
+import { FaBars, FaChevronDown } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 const Header = () => {
