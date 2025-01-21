@@ -27,12 +27,12 @@ const calculateSizes = (isSmall, isMobile, isTablet) => {
   if (isSmall) {
     return {
       fontSize: 12,
-      slidesToShow: 2,
+      slidesToShow: 1,
     };
   } else if (isMobile) {
     return {
       fontSize: 14,
-      slidesToShow: 2,
+      slidesToShow: 1,
     };
   } else if (isTablet) {
     return {

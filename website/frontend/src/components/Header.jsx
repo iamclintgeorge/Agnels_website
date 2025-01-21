@@ -4,8 +4,7 @@ import { FaBars, FaChevronDown } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 const Header = () => {
-  const [isTopMenuOpen, setIsTopMenuOpen] = useState(false); // For Downloads, Feedback, etc.
-  const [isBottomMenuOpen, setIsBottomMenuOpen] = useState(false); // For Home, About Us, etc.
+  const [isBottomMenuOpen, setIsBottomMenuOpen] = useState(false); // For mobile menu
 
   return (
     <header className="bg-[#0c2340] text-white p-0 m-0 relative h-48 w-full z-20">
@@ -36,11 +35,8 @@ const Header = () => {
           </p>
         </div>
 
-        {/* Hamburger and Arrow Icons */}
-        <div className="md:hidden absolute top-4 right-4 flex items-center gap-4">
-          <button onClick={() => setIsTopMenuOpen(!isTopMenuOpen)}>
-            <FaChevronDown className="text-white text-2xl" />
-          </button>
+        {/* Hamburger Icon */}
+        <div className="md:hidden absolute top-7 right-4 flex items-center">
           <button onClick={() => setIsBottomMenuOpen(!isBottomMenuOpen)}>
             <FaBars className="text-white text-2xl" />
           </button>
@@ -66,23 +62,6 @@ const Header = () => {
           </ul>
         </nav>
       </div>
-      {/* Mobile Dropdown for Top Navigation */}
-      {isTopMenuOpen && (
-        <div className="md:hidden p-4 bg-[#0c2340] text-white z-10">
-          <ul className="list-none flex flex-col gap-3 font-inter font-light">
-            <li className="hover:underline">Downloads</li>
-            <li className="hover:underline">Feedback</li>
-            <li className="hover:underline">Important Links</li>
-            <li className="hover:underline">Circulars</li>
-            <li className="hover:underline">Fee Payment</li>
-            <li className="ml-4 mt-[-3px]">
-              <button className="bg-transparent border-white border-[1px] text-xs px-4 py-[5px]">
-                Login
-              </button>
-            </li>
-          </ul>
-        </div>
-      )}
 
       {/* Bottom Navigation Links (Desktop) */}
       <div className="absolute flex gap-10 text-base p-0 m-0 font-inter z-10 ml-[620px] mt-1 font-light hidden md:flex">
@@ -97,6 +76,7 @@ const Header = () => {
       {/* Mobile Dropdown for Bottom Navigation */}
       {isBottomMenuOpen && (
         <div className="md:hidden p-4 bg-[#0c2340] text-white z-10">
+          {/* Home, About Us, etc. section */}
           <ul className="list-none flex flex-col gap-3 font-inter font-light">
             <li className="hover:underline">Home</li>
             <li className="hover:underline">About Us</li>
@@ -104,6 +84,23 @@ const Header = () => {
             <li className="hover:underline">Academics</li>
             <li className="hover:underline">Admission</li>
             <li className="hover:underline">Students</li>
+          </ul>
+
+          {/* Thin White Line */}
+          <div className="my-2 border-t border-white"></div>
+
+          {/* Downloads, Feedback, etc. section */}
+          <ul className="list-none flex flex-col gap-3 font-inter font-light">
+            <li className="hover:underline">Downloads</li>
+            <li className="hover:underline">Feedback</li>
+            <li className="hover:underline">Important Links</li>
+            <li className="hover:underline">Circulars</li>
+            <li className="hover:underline">Fee Payment</li>
+            <li className="ml-4 mt-[-3px]">
+              <button className="bg-transparent border-white border-[1px] text-xs px-4 py-[5px]">
+                Login
+              </button>
+            </li>
           </ul>
         </div>
       )}
