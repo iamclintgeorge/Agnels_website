@@ -1,6 +1,3 @@
-
-
-
 import React from "react";
 import "../styles/Footer.css";
 
@@ -10,7 +7,7 @@ const Footer = () => {
       <div className="footer-container">
         <div className="footer-section logo-section">
           <img
-            src="/src/imgs/fcritlogo.png" // Replace with your logo path
+            src="/src/assets/imgs/fcritlogo.png" // Replace with your logo path
             alt="FCRIT Logo"
             className="footer-logo"
           />
@@ -52,9 +49,14 @@ const Footer = () => {
             <br />
             Fax: (022) 27660619
             <br />
-            Email: <a href="mailto:principal@fcrit.ac.in">principal@fcrit.ac.in</a>
+            Email:{" "}
+            <a href="mailto:principal@fcrit.ac.in">principal@fcrit.ac.in</a>
           </p>
-          <a href="https://goo.gl/maps/path-to-location" target="_blank" rel="noopener noreferrer">
+          <a
+            href="https://goo.gl/maps/path-to-location"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             Google Maps
           </a>
         </div>
@@ -65,7 +67,10 @@ const Footer = () => {
           <i className="fa-brands fa-facebook"></i>
           <i className="fa-brands fa-twitter"></i>
         </div>
-        <p>&copy; 2024 Fr. C. Rodrigues Institute of Technology. All Rights Reserved</p>
+        <p>
+          &copy; 2024 Fr. C. Rodrigues Institute of Technology. All Rights
+          Reserved
+        </p>
         {/* <p>Developers Team</p> */}
       </div>
     </footer>
@@ -73,6 +78,3 @@ const Footer = () => {
 };
 
 export default Footer;
-
-
-

@@ -42,28 +42,28 @@ function AboutUs() {
         <Slider {...settings}>
           <div className="px-0">
             <img
-              src="/src/imgs/campus1.png"
+              src="/src/assets/imgs/campus1.png"
               alt="Campus View 1"
               className="w-screen h-96 object-cover  brightness-90 transition hover:brightness-100 hover:scale-105"
             />
           </div>
           <div className="px-0">
             <img
-              src="/src/imgs/campus2.png"
+              src="/src/assets/imgs/campus2.png"
               alt="Campus View 2"
               className="w-full h-96 object-cover  brightness-90 transition hover:brightness-100 hover:scale-105"
             />
           </div>
           <div className="px-0">
             <img
-              src="/src/imgs/campus3.png"
+              src="/src/assets/imgs/campus3.png"
               alt="Campus View 3"
               className="w-full h-96 object-cover brightness-90 transition hover:brightness-100 hover:scale-105"
             />
           </div>
           <div className="px-0">
             <img
-              src="/src/imgs/campus4.png"
+              src="/src/assets/imgs/campus4.png"
               alt="Campus View 4"
               className="w-full h-96 object-cover  brightness-90 transition hover:brightness-100 hover:scale-105"
             />
@@ -77,10 +77,10 @@ function AboutUs() {
           <div className="w-36 h-1 bg-yellow-400 mb-5"></div>
           <p className="text-gray-700 leading-8 text-lg">
             Fr. Conceicao Rodrigues Institute of Technology has, within a short
-            span of time, established itself as a leading engineering college
-            in Mumbai University. Though its reputation rests mainly on the
-            high quality, value-based technical education that it imparts, it
-            has to its credit a verdant, well-maintained Campus and extensive
+            span of time, established itself as a leading engineering college in
+            Mumbai University. Though its reputation rests mainly on the high
+            quality, value-based technical education that it imparts, it has to
+            its credit a verdant, well-maintained Campus and extensive
             facilities. Its location in the vicinity of the holy places of
             various religious denominations underscores its secular credentials
             and its philosophy of <strong>Vasudhaiva Kuttumbakam</strong>.
@@ -88,7 +88,7 @@ function AboutUs() {
         </div>
         <div className="flex-1 flex justify-center items-center">
           <img
-            src="/src/imgs/campus.png"
+            src="/src/assets/imgs/campus.png"
             alt="Campus"
             className="w-full max-w-xs border-0 rounded-lg shadow-lg ml-4"
           />
