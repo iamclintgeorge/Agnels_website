@@ -3,6 +3,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import { useMediaQuery } from "react-responsive";
 
 const CustomNextArrow = ({ onClick }) => (
   <button
@@ -22,12 +23,42 @@ const CustomPrevArrow = ({ onClick }) => (
   </button>
 );
 
+const calculateSizes = (isSmall, isMobile, isTablet) => {
+  if (isSmall) {
+    return {
+      fontSize: 12,
+      slidesToShow: 1,
+    };
+  } else if (isMobile) {
+    return {
+      fontSize: 14,
+      slidesToShow: 1,
+    };
+  } else if (isTablet) {
+    return {
+      fontSize: 16,
+      slidesToShow: 2,
+    };
+  }
+  // Default size for larger screens
+  return {
+    fontSize: 18,
+    slidesToShow: 2,
+  };
+};
+
 function AboutUs() {
+  const isSmall = useMediaQuery({ maxWidth: 440 });
+  const isMobile = useMediaQuery({ maxWidth: 768 });
+  const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1024 });
+
+  const { fontSize, slidesToShow } = calculateSizes(isSmall, isMobile, isTablet);
+
   const settings = {
     dots: true,
     infinite: true,
     speed: 500,
-    slidesToShow: 2,
+    slidesToShow: slidesToShow,
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 3000,
@@ -44,14 +75,14 @@ function AboutUs() {
             <img
               src="/src/assets/imgs/campus1.png"
               alt="Campus View 1"
-              className="w-screen h-96 object-cover  brightness-90 transition hover:brightness-100 hover:scale-105"
+              className="w-screen h-96 object-cover brightness-90 transition hover:brightness-100 hover:scale-105"
             />
           </div>
           <div className="px-0">
             <img
               src="/src/assets/imgs/campus2.png"
               alt="Campus View 2"
-              className="w-full h-96 object-cover  brightness-90 transition hover:brightness-100 hover:scale-105"
+              className="w-full h-96 object-cover brightness-90 transition hover:brightness-100 hover:scale-105"
             />
           </div>
           <div className="px-0">
@@ -65,7 +96,7 @@ function AboutUs() {
             <img
               src="/src/assets/imgs/campus4.png"
               alt="Campus View 4"
-              className="w-full h-96 object-cover  brightness-90 transition hover:brightness-100 hover:scale-105"
+              className="w-full h-96 object-cover brightness-90 transition hover:brightness-100 hover:scale-105"
             />
           </div>
         </Slider>
@@ -73,7 +104,9 @@ function AboutUs() {
 
       <div className="flex flex-col md:flex-row justify-between items-center gap-10 p-10">
         <div className="flex-1.2 max-w-lg">
-          <h2 className="text-4xl text-blue-900 font-bold mb-2">About Us</h2>
+          <h2 className="text-4xl text-blue-900 font-bold mb-2" style={{ fontSize }}>
+            About Us
+          </h2>
           <div className="w-36 h-1 bg-yellow-400 mb-5"></div>
           <p className="text-gray-700 leading-8 text-lg">
             Fr. Conceicao Rodrigues Institute of Technology has, within a short

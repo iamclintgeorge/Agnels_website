@@ -1,21 +1,27 @@
-import React from "react";
-import logo from "../assets/imgs/fcritlogo.png";
+import React, { useState } from "react";
+import logo from "../imgs/fcritlogo.png";
+import { FaBars, FaChevronDown } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 const Header = () => {
+  const [isBottomMenuOpen, setIsBottomMenuOpen] = useState(false); // For mobile menu
+
   return (
-    <header className="bg-[#0c2340] text-white p-0 m-0 relative h-48 w-full">
+    <header className="bg-[#0c2340] text-white p-0 m-0 relative h-48 w-full z-20">
       {/* Yellow Border */}
       <div className="bg-[#AE9142] h-1 w-full"></div>
 
       {/* Logo and Navigation */}
-      <div className="flex items-center justify-between p-0 px-10">
+      <div className="flex items-center justify-between p-0 px-10 relative">
+        {/* Logo */}
         <img
           src={logo}
           alt="FCRIT Logo"
-          className="absolute w-16 pt-14 left-20"
+          className="w-16 pt-14 absolute left-[25px]" // Moved the logo 20px to the right
         />
-        <div className="pl-32 pt-14">
+        
+        {/* Text Content */}
+        <div className="pl-[80px] pt-14"> {/* Text content pushed to the right by 20px to maintain distance */}
           <p className="font-playfair text-[20px] font-medium leading-8">
             FR. CONCEICAO RODRIGUES
           </p>
@@ -23,28 +29,30 @@ const Header = () => {
             INSTITUTE OF TECHNOLOGY
           </p>
           <p className="font-playfair font-thin text-[9px] tracking-[3.7px] leading-5">
-            <span className="tracking-[-3px]">
-              {" "}
-              -------------------------------------------------------------------
-            </span>
-            <span className="mr-2 ml-4">VASHI</span>
-            <span className="tracking-[-3px]">
-              {" "}
-              -------------------------------------------------------------------
-            </span>
+            <span className="tracking-[-3px]"> -------------------------------------------------------------------</span>
+            <span className="mr-2 ml-4 sm:text-right">VASHI</span>
+            <span className="tracking-[-3px]"> -------------------------------------------------------------------</span>
           </p>
         </div>
 
-        <nav className="mt-[-40px]">
+        {/* Hamburger Icon */}
+        <div className="md:hidden absolute top-7 right-4 flex items-center">
+          <button onClick={() => setIsBottomMenuOpen(!isBottomMenuOpen)}>
+            <FaBars className="text-white text-2xl" />
+          </button>
+        </div>
+
+        {/* Top Navigation for Desktop (Downloads, Feedback, etc.) */}
+        <nav className="mt-[-40px] hidden md:flex">
           <ul className="list-none flex gap-3 text-sm p-0 m-0 font-inter font-light">
             <li className="hover:underline">Downloads</li>
-            <li>|</li>
+            <li className="hidden md:inline">|</li>
             <li className="hover:underline">Feedback</li>
-            <li>|</li>
+            <li className="hidden md:inline">|</li>
             <li className="hover:underline">Important Links</li>
-            <li>|</li>
+            <li className="hidden md:inline">|</li>
             <li className="hover:underline">Circulars</li>
-            <li>|</li>
+            <li className="hidden md:inline">|</li>
             <li className="hover:underline">Fee Payment</li>
             <li className="ml-4 mt-[-3px]">
               <button className="bg-transparent border-white border-[1px] text-xs px-4 py-[5px]">
@@ -55,15 +63,47 @@ const Header = () => {
         </nav>
       </div>
 
-      {/* Bottom Navigation Links */}
-      <div className="absolute flex gap-10 text-base p-0 m-0 font-inter z-10 ml-[620px] mt-1 font-light">
-        <Link to="/">Home</Link>
-        <Link to="/about-us">About Us</Link>
-        <Link to="/departments">Departments</Link>
-        <Link to="/academics">Academics</Link>
-        <Link to="/admission">Admission</Link>
-        <Link to="/students">Students</Link>
+      {/* Bottom Navigation Links (Desktop) */}
+      <div className="absolute flex gap-10 text-base p-0 m-0 font-inter z-10 ml-[620px] mt-1 font-light hidden md:flex">
+        <p>Home</p>
+        <p>About Us</p>
+        <p>Departments</p>
+        <p>Academics</p>
+        <p>Admission</p>
+        <p>Students</p>
       </div>
+
+      {/* Mobile Dropdown for Bottom Navigation */}
+      {isBottomMenuOpen && (
+        <div className="md:hidden p-4 bg-[#0c2340] text-white z-10">
+          {/* Home, About Us, etc. section */}
+          <ul className="list-none flex flex-col gap-3 font-inter font-light">
+            <li className="hover:underline">Home</li>
+            <li className="hover:underline">About Us</li>
+            <li className="hover:underline">Departments</li>
+            <li className="hover:underline">Academics</li>
+            <li className="hover:underline">Admission</li>
+            <li className="hover:underline">Students</li>
+          </ul>
+
+          {/* Thin White Line */}
+          <div className="my-2 border-t border-white"></div>
+
+          {/* Downloads, Feedback, etc. section */}
+          <ul className="list-none flex flex-col gap-3 font-inter font-light">
+            <li className="hover:underline">Downloads</li>
+            <li className="hover:underline">Feedback</li>
+            <li className="hover:underline">Important Links</li>
+            <li className="hover:underline">Circulars</li>
+            <li className="hover:underline">Fee Payment</li>
+            <li className="ml-4 mt-[-3px]">
+              <button className="bg-transparent border-white border-[1px] text-xs px-4 py-[5px]">
+                Login
+              </button>
+            </li>
+          </ul>
+        </div>
+      )}
     </header>
   );
 };
