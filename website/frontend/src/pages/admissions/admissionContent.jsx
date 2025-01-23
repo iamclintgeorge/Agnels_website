@@ -1,6 +1,6 @@
 import React from "react";
 
-export const Home = () => {
+export const AdmissionPro = () => {
   return (
     <div>
       <p>Welcome to Home Page, This is home.</p>
