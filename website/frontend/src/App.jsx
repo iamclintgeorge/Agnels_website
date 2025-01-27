@@ -35,6 +35,7 @@ import Extc from "./pages/Departments/branches/extc/extc";
 import Humanities from "./pages/Departments/branches/humanities/humanities";
 import InformationTech from "./pages/Departments/branches/IT/informationTech";
 import Mechanical from "./pages/Departments/branches/mechanical/mechanical";
+import StudentCorner from "./pages/StudentCorner/studentCorner";
 
 function App() {
   return (
@@ -55,6 +56,7 @@ function App() {
           {/* Departments Page */}
           <Route path="/departments" element={<Departments />} />
           <Route path="/admissions" element={<Admissions />} />
+          <Route path="/studentCorner" element={<StudentCorner />} />
           <Route path="/computer_engineering" element={<Computer />} />
           <Route path="/electrical_engineering" element={<Electrical />} />
           <Route path="/extc" element={<Extc />} />
