@@ -53,19 +53,54 @@ const Header = () => {
         {/* Top Navigation for Desktop (Downloads, Feedback, etc.) */}
         <nav className="mt-[-40px] hidden md:flex">
           <ul className="list-none flex gap-3 text-sm p-0 m-0 font-inter font-light">
-            <li className="hover:underline">Downloads</li>
+          <li className="hover:underline">
+  <Link to="/downloads" className="text-white hover:text-blue-700">
+    Downloads
+  </Link>
+</li>
             <li className="hidden md:inline">|</li>
-            <li className="hover:underline">Feedback</li>
+            <li className="hover:underline">
+  <a
+    href="https://fcrit.ac.in/static_pdfs/feedback/SSS_23_24.pdf"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="text-white hover:text-blue-700"
+  >
+    Feedback
+  </a>
+</li>
+
             <li className="hidden md:inline">|</li>
-            <li className="hover:underline">Important Links</li>
+            <li className="hover:underline">
+  <Link to="/Important-Links" className="text-white hover:text-blue-700">
+    Important Links
+  </Link>
+</li>
             <li className="hidden md:inline">|</li>
-            <li className="hover:underline">Circulars</li>
+            <li className="hover:underline">
+  <Link to="/circulars" className="text-white hover:text-blue-700">
+    Circulars
+  </Link>
+</li>
             <li className="hidden md:inline">|</li>
-            <li className="hover:underline">Fee Payment</li>
+
+            <li className="hover:underline">
+  <a
+    href="https://www.eduqfix.com/PayDirect/#/student/pay/XxoRsO6mfiXGAnQY1R64lGgQcWtw4tYKPWYLPO8nzoGBvtL6DIe+F9YjQMK1keFr/254"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="text-white hover:text-blue-700"
+  >
+    Fee Payment
+  </a>
+</li>
+
+
             <li className="ml-4 mt-[-3px]">
-              <button className="bg-transparent border-white border-[1px] text-xs px-4 py-[5px]">
-                Login
-              </button>
+            <button className="bg-transparent border-white border-[1px] text-xs px-4 py-[5px] hover:bg-white hover:text-black hover:border-black transition-all duration-300">
+  Login
+</button>
+
             </li>
           </ul>
         </nav>
