@@ -2,14 +2,14 @@ import db from "../config/db.js";
 import bcrypt from "bcrypt";
 
 // The signupUser function
-export const signupUser = async (emailId, userName, hashedPassword) => {
+export const signupUser = async (emailId, userName, hashedPassword, role) => {
   const query =
-    "INSERT INTO users (emailId, userName, password) VALUES (?, ?, ?)";
-  const values = [emailId, userName, hashedPassword];
+    "INSERT INTO users (emailId, userName, password, role) VALUES (?, ?, ?, ?)";
+  const values = [emailId, userName, hashedPassword, role];
 
   try {
     const [result] = await db.promise().query(query, values);
-    return { id: result.insertId, emailId, userName };
+    return { id: result.insertId, emailId, userName, role };
   } catch (err) {
     console.error("Error inserting user:", err);
     throw new Error("Failed to sign up the user");
