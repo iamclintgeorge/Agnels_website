@@ -66,6 +66,7 @@ export const loginController = async (req, res) => {
       id: user.id,
       emailId: user.emailId,
       userName: user.userName,
+      role: user.role,
     };
 
     res.status(200).json({ message: "User successfully logged in", user });
