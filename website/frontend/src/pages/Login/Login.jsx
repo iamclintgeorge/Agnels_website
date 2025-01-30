@@ -20,10 +20,10 @@ const Login = () => {
         {services.map((service, index) => (
           <div
             key={index}
-            className="bg-white border border-black/20 shadow-md p-8 transition-all duration-300 transform hover:scale-105 hover:shadow-lg h-[250px] flex flex-col items-start justify-between"
+            className="bg-gray-50 border border-black/20 shadow-md p-8 transition-all duration-300 transform hover:scale-105 hover:shadow-lg h-[250px] flex flex-col items-start"
           >
-            <h2 className="text-xl font-bold text-black text-left">{service}</h2>
-            <button className="bg-black text-white py-2 px-12 shadow-md hover:bg-gray-700 transition mt-12 w-full">
+            <h2 className="text-xl font-semibold text-black text-left">{service}</h2>
+            <button className="bg-black text-white py-2 px-12 shadow-md transition w-full hover:bg-white hover:text-black border border-black mt-auto">
               Login
             </button>
           </div>
