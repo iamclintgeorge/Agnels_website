@@ -2,13 +2,12 @@ import React, { useState } from "react";
 import logo from "../assets/imgs/fcritlogo.png";
 import { FaBars, FaChevronDown } from "react-icons/fa";
 import { Link } from "react-router-dom";
-
+import { useNavigate } from "react-router-dom";
 const Header = () => {
   const [isBottomMenuOpen, setIsBottomMenuOpen] = useState(false); // For mobile menu
   const [isAcademicsSubMenuOpen, setAcademicsSubMenuOpen] = useState(false); // For Academics submenu
-  const [isStudentCornerSubMenuOpen, setStudentCornerSubMenuOpen] =
-    useState(false); // For Student Corner submenu
-
+  const [isStudentCornerSubMenuOpen, setStudentCornerSubMenuOpen] = useState(false); // For Student Corner submenu
+  const navigate = useNavigate();
   return (
     <header className="bg-[#0c2340] text-white p-0 m-0 relative h-48 w-full z-20">
       {/* Yellow Border */}
@@ -99,11 +98,14 @@ const Header = () => {
               </a>
             </li>
 
-            <li className="ml-4 mt-[-3px]">
-              <button className="bg-transparent border-white border-[1px] text-xs px-4 py-[5px] hover:bg-white hover:text-black hover:border-black transition-all duration-300">
-                Login
-              </button>
-            </li>
+<li className="ml-4 mt-[-3px]">
+      <button
+        onClick={() => navigate("/Login")}  // ✅ Ensure lowercase "/login"
+        className="bg-transparent border-white border-[1px] text-xs px-4 py-[5px] hover:bg-white hover:text-black hover:border-black transition-all duration-300"
+      >
+        Login
+      </button>
+    </li>
           </ul>
         </nav>
       </div>
