@@ -1,25 +1,3 @@
-// import React from "react";
-// import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-
-// import Header from "./components/Header";
-// import AboutUs from "./components/AboutUs";
-// import WhatsNew from "./components/WhatsNew";
-// import Footer from "./components/Footer";
-// import Departments from "./components/Departments";
-
-// function App() {
-//   return (
-//     <>
-//     <Header />
-//       <AboutUs />
-//       <WhatsNew />
-//       <Footer />
-//     </>
-//   );
-// }
-
-// export default App;
-
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
@@ -36,6 +14,7 @@ import Humanities from "./pages/Departments/branches/humanities/humanities";
 import InformationTech from "./pages/Departments/branches/IT/informationTech";
 import Mechanical from "./pages/Departments/branches/mechanical/mechanical";
 import StudentCorner from "./pages/StudentCorner/studentCorner";
+import Login from "./pages/Login/Login";
 
 function App() {
   return (
@@ -63,6 +42,7 @@ function App() {
           <Route path="/humanities" element={<Humanities />} />
           <Route path="/it" element={<InformationTech />} />
           <Route path="/mechanical_engineering" element={<Mechanical />} />
+          <Route path="/Login" element={<Login />} /> {/* ✅ Add Login Route */}
         </Routes>
       </>
       <Footer />
