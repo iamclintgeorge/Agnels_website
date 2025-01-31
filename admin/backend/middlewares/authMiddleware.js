@@ -24,3 +24,11 @@ export const authMiddleware = (req, res, next) => {
       .json({ message: "You are not authenticated from backend" });
   }
 };
+
+// export const checkRole = (req, res, next) => {
+//   try {
+//     const sessionId = req.cookies["connect.sid"];
+//   } catch (err) {
+//     console.log("Error in Authorization: ", err);
+//   }
+// };

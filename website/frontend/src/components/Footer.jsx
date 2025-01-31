@@ -2,15 +2,15 @@ import React from "react";
 
 const Footer = () => {
   return (
-    <footer className="footer bg-[#EEEBE5] px-5 py-[40px] h-[425px]">
-      <div className="footer-container   flex justify-between flex-wrap ">
-        <div className="footer-section logo-section flex-1 my-[10px] mx-[20px]">
+    <footer className="footer bg-[#EEEBE5] py-[40px] h-[425px]">
+      <div className="flex justify-between flex-wrap ">
+        <div className="footer-section logo-section flex-1 my-[10px]">
           <img
             src="/src/assets/imgs/fcritlogo.png" // Replace with your logo path
             alt="FCRIT Logo"
             className="footer-logo w-[75x] h-[75px] mb-[95px] ml-[67px]"
           />
-          <div className="absolute left-[190px] top-[2295px]">
+          <div className="absolute left-14 top-[2295px]">
             <p className="font-playfair text-[21.21px] font-medium leading-8">
               FR. CONCEICAO RODRIGUES
             </p>
@@ -30,7 +30,7 @@ const Footer = () => {
             </p>
           </div>
         </div>
-        <div className="footer-section navigation absolute left-[600px] top-[2295px]">
+        <div className="footer-section navigation absolute left-[470px] top-[2295px]">
           <h4 class="mb-[10px] font-bold text-[19px]">Navigation</h4>
           <ul className="p-0 mb-[8px] text-[18px] ">
             <li>Home</li>
@@ -41,7 +41,7 @@ const Footer = () => {
             <li>Students</li>
           </ul>
         </div>
-        <div className="footer-section quick-links absolute left-[817px] top-[2295px]">
+        <div className="footer-section quick-links absolute left-[700px] top-[2295px]">
           <h4 class="mb-[10px] font-bold text-[19px]">Quick Links</h4>
           <ul className="p-0 mb-[8px] text-[18px] ">
             <li>Downloads</li>
@@ -51,7 +51,7 @@ const Footer = () => {
             <li>Fee Payment</li>
           </ul>
         </div>
-        <div className="footer-section contact absolute left-[1071px] top-[2295px]">
+        <div className="footer-section contact absolute left-[940px] top-[2295px]">
           <h4 class="mb-[10px] font-bold text-[19px]">Contact Us</h4>
           <address className="p-0 mb-[8px] text-[17px] not-italic ">
             Agnel Technical Education Complex,
@@ -107,7 +107,7 @@ const Footer = () => {
           />
         </div>
         <div>
-          <span className="block w-[1310px] h-[1px] bg-black absolute left-[130px] top-[2560px]"></span>
+          <span className="block w-[1310px] h-[1px] bg-black absolute top-[2560px]"></span>
           <p className="absolute left-[543px] top-[2590px] text-[15px]">
             &copy; 2024 Fr. C. Rodrigues Institute of Technology.
           </p>
