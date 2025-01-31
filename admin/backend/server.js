@@ -1,10 +1,13 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import userRoutes from "./routes/userRoutes.js";
+import userRoutes from "./routes/admin/userRoutes.js";
 import dotenv from "dotenv";
 import session from "express-session";
 dotenv.config();
+import homeRoutes from "./routes/website/homepage/homeRoutes.js";
+import path from "path";
+import { fileURLToPath } from "url";
 
 const port = process.env.port;
 
@@ -35,8 +38,16 @@ app.use(
   })
 );
 
+// Get the current directory path using import.meta.url
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// Serve static files from the 'public' folder
+app.use(express.static(path.join(__dirname, "public")));
+
 // Routes
 app.use("/api", userRoutes);
+app.use("/api/home", homeRoutes);
 
 app.listen(port, () => {
   console.log(`Server Started at URI http://localhost:${port}/`);
