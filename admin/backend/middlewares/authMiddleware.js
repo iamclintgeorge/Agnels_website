@@ -11,12 +11,12 @@ export const authMiddleware = (req, res, next) => {
   }
 
   if (req.session && req.session.user) {
-    return res.status(200).json({
+    res.status(200).json({
       authenticated: true,
       user: req.session.user,
     });
     // req.user = req.session.user;
-    // return next();
+    return next();
   } else {
     console.log("Invalid session or user not found in session.");
     return res
@@ -25,10 +25,16 @@ export const authMiddleware = (req, res, next) => {
   }
 };
 
-// export const checkRole = (req, res, next) => {
-//   try {
-//     const sessionId = req.cookies["connect.sid"];
-//   } catch (err) {
-//     console.log("Error in Authorization: ", err);
-//   }
-// };
+export const checkRole = (allowedRoles) => {
+  return (req, res, next) => {
+    if (!req.user) {
+      return res.status(401).json({ message: "User not authenticated" });
+    }
+
+    if (!allowedRoles.includes(req.user.role)) {
+      return res.status(403).json({ message: "Access forbidden" });
+    }
+
+    next();
+  };
+};
