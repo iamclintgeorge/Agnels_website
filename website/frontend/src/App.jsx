@@ -28,6 +28,9 @@ import AboutUs from "./components/AboutUs";
 import WhatsNew from "./components/WhatsNew";
 import Footer from "./components/Footer";
 import Departments from "./pages/Departments/departments";
+import Aboutus from "./pages/AboutUs/aboutus";
+import Research_Publications from "./pages/Research_Publications/Research_Publications"
+import Admission from "./pages/Admission/Admission.jsx"
 
 function App() {
   return (
@@ -47,6 +50,9 @@ function App() {
           />
           {/* Departments Page */}
           <Route path="/departments" element={<Departments />} />
+          <Route path="/aboutus" element={<Aboutus />} />
+          <Route path ="/Research_Publications" element ={<Research_Publications />} />
+          <Route path="/Admission" element={<Admission />} />
         </Routes>
       </>
       <Footer />

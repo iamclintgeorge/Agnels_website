@@ -74,13 +74,23 @@ const Header = () => {
         <Link to="/">
           <p>Home</p>
         </Link>
+        <Link to ="/aboutus">
         <p>About Us</p>
+        
+        
+        </Link>
+        
         <Link to="/departments">
           <p>Departments</p>
         </Link>
         <p>Academics</p>
+        <Link to= "/Admission">
         <p>Admission</p>
+        </Link>
         <p>Students</p>
+        <Link to ="/Research_Publications">
+        <p>Research and Publications</p>
+        </Link>
       </div>
 
       {/* Mobile Dropdown for Bottom Navigation */}
