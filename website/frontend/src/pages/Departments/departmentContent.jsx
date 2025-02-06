@@ -3,7 +3,7 @@ import React from "react";
 export const Home = () => {
   return (
     <div>
-      <p>Welcome to Home Page</p>
+      <p>Welcome to Home Page, This is home.</p>
     </div>
   );
 };
@@ -11,7 +11,7 @@ export const Home = () => {
 export const Comps = () => {
   return (
     <div>
-      <p>Welcome to Computer Page</p>
+      <p>Welcome to Computer Page. This is ....</p>
     </div>
   );
 };

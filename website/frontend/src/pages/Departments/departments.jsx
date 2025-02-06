@@ -9,7 +9,7 @@ import {
   InfoT,
   Humanities,
 } from "./departmentContent";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Departments = () => {
   const sidebar = [
@@ -22,7 +22,7 @@ const Departments = () => {
     "Basic Science and Humanities",
   ];
 
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const content = {
     Home: <Home />,

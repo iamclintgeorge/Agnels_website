@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { useMediaQuery } from "react-responsive";
+import { useEffect } from "react";
+import axios from "axios";
 
 const CustomNextArrow = ({ onClick }) => (
   <button
@@ -51,6 +53,22 @@ function AboutUs() {
   const isSmall = useMediaQuery({ maxWidth: 440 });
   const isMobile = useMediaQuery({ maxWidth: 768 });
   const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1024 });
+  const [images, setImages] = useState([]);
+
+  useEffect(() => {
+    const fetchImages = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:3663/api/home/images"
+        );
+        setImages(response.data);
+      } catch (err) {
+        console.log("Error loading images: ", err);
+      }
+    };
+
+    fetchImages();
+  }, []);
 
   const { fontSize, slidesToShow } = calculateSizes(
     isSmall,
@@ -69,27 +87,30 @@ function AboutUs() {
     pauseOnHover: false,
     nextArrow: <CustomNextArrow />,
     prevArrow: <CustomPrevArrow />,
+    lazyLoad: "ondemand",
   };
 
   return (
     <section className="flex flex-col gap-10 p-0 bg-gray-100">
       <div className="relative w-full mx-auto m-0">
         <Slider {...settings}>
-          <div className="px-0">
-            <img
-              src="/src/assets/imgs/campus1.png"
-              alt="Campus View 1"
-              className="w-screen h-96 object-cover brightness-90 transition hover:brightness-100 hover:scale-105"
-            />
-          </div>
-          <div className="px-0">
+          {images.map((image, index) => (
+            <div className="px-0" key={index}>
+              <img
+                src={`http://localhost:3663${image.url}`}
+                alt={image.alt}
+                className="w-screen h-96 object-cover brightness-90 transition hover:brightness-100 hover:scale-105"
+              />
+            </div>
+          ))}
+          {/* <div className="px-0">
             <img
               src="/src/assets/imgs/campus2.png"
               alt="Campus View 2"
               className="w-full h-96 object-cover brightness-90 transition hover:brightness-100 hover:scale-105"
             />
-          </div>
-          <div className="px-0">
+          </div> */}
+          {/* <div className="px-0">
             <img
               src="/src/assets/imgs/campus3.png"
               alt="Campus View 3"
@@ -102,7 +123,7 @@ function AboutUs() {
               alt="Campus View 4"
               className="w-full h-96 object-cover brightness-90 transition hover:brightness-100 hover:scale-105"
             />
-          </div>
+          </div> */}
         </Slider>
       </div>
 
