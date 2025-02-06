@@ -157,7 +157,7 @@ const Header = () => {
                   <Link to="/iic">IIC</Link>
                 </li>
                 <li className="hover:bg-[#AE9142] px-2 py-1 rounded">
-                  <Link to="/research">Research and Publications</Link>
+                  <Link to="//Research_Publications">Research and Publications</Link>
                 </li>
                 <li className="hover:bg-[#AE9142] px-2 py-1 rounded">
                   <Link to="/hr">Human Resource</Link>
@@ -176,7 +176,7 @@ const Header = () => {
           )}
         </div>
         <Link
-          to="/admissions"
+          to="/Admissions"
           className="hover:bg-white hover:text-black px-4 py-2 rounded transition-all duration-200 ease-in-out transform hover:scale-105 hover:shadow-lg"
         >
           <p>Admissions</p>
