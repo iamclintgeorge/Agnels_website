@@ -16,7 +16,14 @@ const app = express();
 // Middlewares
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: function (origin, callback) {
+      const allowedOrigins = ["http://localhost:5173", "http://localhost:5174"];
+      if (allowedOrigins.includes(origin) || !origin) {
+        callback(null, true); // Allow the origin
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
     methods: ["POST", "GET"],
     credentials: true,
   })

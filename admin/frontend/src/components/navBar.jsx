@@ -1,6 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 
 const NavBar = () => {
+  const [isUserOpen, setIsUserOpen] = useState(false);
+
+  const handleUserClick = () => {
+    setIsUserOpen((prevstate) => !prevstate);
+  };
+
   return (
     <>
       <div className="z-10 fixed w-full">
@@ -16,7 +22,20 @@ const NavBar = () => {
               </p>
             </div>
             <div className="text-white flex flex-row text-sm pr-10">
-              <p className="mr-7 pt-[22px] font-light font-inter">John Doe</p>
+              <div>
+                <p
+                  className="relative cursor-pointer mr-7 pt-[22px] font-light font-inter"
+                  onClick={handleUserClick}
+                >
+                  John Doe
+                </p>
+                {isUserOpen && (
+                  <div className="absolute py-4 px-5 space-y-4 bg-[#0C2340]">
+                    <p>Edit Profile</p>
+                    <p>Sign Out</p>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
