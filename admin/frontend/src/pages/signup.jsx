@@ -82,6 +82,7 @@ function Signup() {
                 <option value="" disabled>
                   Select a role
                 </option>
+                <option value="superAdmin">Super Admin</option>
                 <option value="hod">HOD</option>
                 <option value="teach_staff">Teaching Staff</option>
                 <option value="non_teach_staff">Non-Teaching Staff</option>
