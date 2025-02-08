@@ -16,7 +16,7 @@ import Mechanical from "./pages/Departments/branches/mechanical/mechanical";
 import StudentCorner from "./pages/StudentCorner/studentCorner";
 import Login from "./pages/Login/Login";
 import TrainingPlacement from "./pages/TrainingPlacement/TrainingPlacement";
-
+import TrainingPlacement from "./pages/TrainingPlacement/TrainingPlacement";
 
 function App() {
   return (
@@ -44,6 +44,8 @@ function App() {
           <Route path="/humanities" element={<Humanities />} />
           <Route path="/it" element={<InformationTech />} />
           <Route path="/mechanical_engineering" element={<Mechanical />} />
+          <Route path="/Login" element={<Login />} />
+          <Route path="/training-placement" element={<TrainingPlacement />} />
           <Route path="/Login" element={<Login />} /> {/* ✅ Add Login Route */}
           <Route path="/training-placement" element={<TrainingPlacement />} />
         </Routes>
