@@ -3,12 +3,11 @@ import { useNavigate } from "react-router-dom";
 
 const StaticPages = (props) => {
   const [activeTab, setActiveTab] = useState(props.sidebar[0]);
-  const navigate = useNavigate(); // ✅ Add navigation hook
+  const navigate = useNavigate();
 
   const handleTabClick = (tab) => {
     setActiveTab(tab);
 
-    // ✅ Redirect to the correct route for Examinations
     if (tab === "Examinations") {
       navigate("/examinations-page");
     }
