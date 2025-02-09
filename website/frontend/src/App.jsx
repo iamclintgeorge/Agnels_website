@@ -7,6 +7,9 @@ import WhatsNew from "./components/WhatsNew";
 import Footer from "./components/Footer";
 import Departments from "./pages/Departments/departments";
 import Admissions from "./pages/admissions/admissions";
+import Academics from "./pages/Academics/academics";
+import ExaminationsPage from "./pages/Academics/ExaminationsPage"; 
+
 import Computer from "./pages/Departments/branches/computer/computer";
 import Electrical from "./pages/Departments/branches/electrical/electrical";
 import Extc from "./pages/Departments/branches/extc/extc";
@@ -17,6 +20,12 @@ import StudentCorner from "./pages/StudentCorner/studentCorner";
 import Login from "./pages/Login/Login";
 
 function App() {
+  // ✅ Fix: Redirect /pdfs/... requests directly to the browser
+  if (window.location.pathname.startsWith("/pdfs/")) {
+    window.location.href = window.location.pathname;
+    return null; // Prevents React from rendering anything
+  }
+
   return (
     <Router>
       <>
@@ -32,7 +41,11 @@ function App() {
               </>
             }
           />
-          {/* Departments Page */}
+          {/* Academics Page */}
+          <Route path="/academics" element={<Academics />} />
+          <Route path="/examinations-page" element={<ExaminationsPage />} />
+          
+          {/* Departments Pages */}
           <Route path="/departments" element={<Departments />} />
           <Route path="/admissions" element={<Admissions />} />
           <Route path="/studentCorner" element={<StudentCorner />} />
@@ -42,7 +55,7 @@ function App() {
           <Route path="/humanities" element={<Humanities />} />
           <Route path="/it" element={<InformationTech />} />
           <Route path="/mechanical_engineering" element={<Mechanical />} />
-          <Route path="/Login" element={<Login />} /> {/* ✅ Add Login Route */}
+          <Route path="/Login" element={<Login />} />
         </Routes>
       </>
       <Footer />
