@@ -1,34 +1,37 @@
-import React, { StrictMode } from 'react';
-import { createRoot } from 'react-dom/client';
-import './index.css';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import HomePage from './pages/homePage';
-import Login from './pages/login';
-import Signup from './pages/signup';
-import Error404 from './pages/error404';
-import AdminLayout from './layout/adminLayout';
+import React from "react";
+import { createRoot } from "react-dom/client";
+import "./index.css";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import HomePage from "./pages/homePage";
+import Login from "./pages/login";
+import Signup from "./pages/signup";
+import Error404 from "./pages/error404";
+import AdminLayout from "./layout/adminLayout";
+import Student from "./pages/student";
+import { AuthProvider } from "./services/useAuthCheck";
 
 const App = () => {
   return (
-    <Router>
-      <Routes>
-        {/* <Route path="/" element={<HomePage />} /> */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/" element={<AdminLayout />}>
-        <Route path="/home" element={<HomePage />} />
-        </Route>
-        <Route path="*" element={<Error404 />} />
-      </Routes>
-    </Router>
+    <Routes>
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Signup />} />
+      <Route path="/" element={<AdminLayout />}>
+        {/* <Route path="/home" element={<HomePage />} /> */}
+        <Route path="/home/carousel" element={<HomePage />} />
+        <Route path="/student" element={<Student />} />
+      </Route>
+      <Route path="*" element={<Error404 />} />
+    </Routes>
   );
 };
 
-const rootElement = document.getElementById('root');
+const rootElement = document.getElementById("root");
 if (rootElement) {
   createRoot(rootElement).render(
-    <StrictMode>
-      <App />
-    </StrictMode>
+    <Router>
+      <AuthProvider>
+        <App />
+      </AuthProvider>
+    </Router>
   );
 }

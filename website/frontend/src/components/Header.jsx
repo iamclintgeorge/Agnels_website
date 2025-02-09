@@ -6,7 +6,8 @@ import { useNavigate } from "react-router-dom";
 const Header = () => {
   const [isBottomMenuOpen, setIsBottomMenuOpen] = useState(false); // For mobile menu
   const [isAcademicsSubMenuOpen, setAcademicsSubMenuOpen] = useState(false); // For Academics submenu
-  const [isStudentCornerSubMenuOpen, setStudentCornerSubMenuOpen] = useState(false); // For Student Corner submenu
+  const [isStudentCornerSubMenuOpen, setStudentCornerSubMenuOpen] =
+    useState(false); // For Student Corner submenu
   const navigate = useNavigate();
   return (
     <header className="bg-[#0c2340] text-white p-0 m-0 relative h-48 w-full z-20">
@@ -53,63 +54,65 @@ const Header = () => {
         {/* Top Navigation for Desktop (Downloads, Feedback, etc.) */}
         <nav className="mt-[-40px] hidden md:flex">
           <ul className="list-none flex gap-3 text-sm p-0 m-0 font-inter font-light">
-          <li className="hover:underline">
-  <Link to="/downloads" className="text-white hover:text-blue-700">
-    Downloads
-  </Link>
-</li>
+            <li className="hover:underline">
+              <Link to="/downloads" className="text-white hover:text-blue-700">
+                Downloads
+              </Link>
+            </li>
             <li className="hidden md:inline">|</li>
             <li className="hover:underline">
-  <a
-    href="https://fcrit.ac.in/static_pdfs/feedback/SSS_23_24.pdf"
-    target="_blank"
-    rel="noopener noreferrer"
-    className="text-white hover:text-blue-700"
-  >
-    Feedback
-  </a>
-</li>
+              <a
+                href="https://fcrit.ac.in/static_pdfs/feedback/SSS_23_24.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white hover:text-blue-700"
+              >
+                Feedback
+              </a>
+            </li>
 
             <li className="hidden md:inline">|</li>
             <li className="hover:underline">
-  <Link to="/Important-Links" className="text-white hover:text-blue-700">
-    Important Links
-  </Link>
-</li>
+              <Link
+                to="/Important-Links"
+                className="text-white hover:text-blue-700"
+              >
+                Important Links
+              </Link>
+            </li>
             <li className="hidden md:inline">|</li>
             <li className="hover:underline">
-  <Link to="/circulars" className="text-white hover:text-blue-700">
-    Circulars
-  </Link>
-</li>
+              <Link to="/circulars" className="text-white hover:text-blue-700">
+                Circulars
+              </Link>
+            </li>
             <li className="hidden md:inline">|</li>
 
             <li className="hover:underline">
-  <a
-    href="https://www.eduqfix.com/PayDirect/#/student/pay/XxoRsO6mfiXGAnQY1R64lGgQcWtw4tYKPWYLPO8nzoGBvtL6DIe+F9YjQMK1keFr/254"
-    target="_blank"
-    rel="noopener noreferrer"
-    className="text-white hover:text-blue-700"
-  >
-    Fee Payment
-  </a>
-</li>
+              <a
+                href="https://www.eduqfix.com/PayDirect/#/student/pay/XxoRsO6mfiXGAnQY1R64lGgQcWtw4tYKPWYLPO8nzoGBvtL6DIe+F9YjQMK1keFr/254"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white hover:text-blue-700"
+              >
+                Fee Payment
+              </a>
+            </li>
 
-
-<li className="ml-4 mt-[-3px]">
-      <button
-        onClick={() => navigate("/Login")}  // ✅ Ensure lowercase "/login"
-        className="bg-transparent border-white border-[1px] text-xs px-4 py-[5px] hover:bg-white hover:text-black hover:border-black transition-all duration-300"
-      >
-        Login
-      </button>
-    </li>
+            <li className="ml-4 mt-[-3px]">
+              <button
+                onClick={() => navigate("/Login")} // ✅ Ensure lowercase "/login"
+                className="bg-transparent border-white border-[1px] text-xs px-4 py-[5px] hover:bg-white hover:text-black hover:border-black transition-all duration-300"
+              >
+                Login
+              </button>
+            </li>
           </ul>
         </nav>
       </div>
 
       {/* Bottom Navigation Links (Desktop) */}
-      <div className="absolute gap-5 text-base p-0 m-0 font-inter z-10 ml-[620px] mt-1 font-light hidden md:flex cursor-default">
+      <div className="absolute gap-3 text-base p-0 m-0 font-inter z-10 ml-[42vw] mr-10 mt-1 text-nowrap font-light hidden md:flex cursor-default">
         <Link
           to="/"
           className="hover:bg-white hover:text-black px-4 py-2 rounded transition-all duration-200 ease-in-out transform hover:scale-105 hover:shadow-lg"
@@ -155,7 +158,9 @@ const Header = () => {
                   <Link to="/iic">IIC</Link>
                 </li>
                 <li className="hover:bg-[#AE9142] px-2 py-1 rounded">
-                  <Link to="/research">Research and Publications</Link>
+                  <Link to="/research_Publications">
+                    Research and Publications
+                  </Link>
                 </li>
                 <li className="hover:bg-[#AE9142] px-2 py-1 rounded">
                   <Link to="/hr">Human Resource</Link>
