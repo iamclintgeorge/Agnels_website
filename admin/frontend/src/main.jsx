@@ -9,6 +9,7 @@ import Error404 from "./pages/error404";
 import AdminLayout from "./layout/adminLayout";
 import Student from "./pages/student";
 import { AuthProvider } from "./services/useAuthCheck";
+import WhatsNew from "./pages/whatsNew";
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
         {/* <Route path="/home" element={<HomePage />} /> */}
         <Route path="/home/carousel" element={<HomePage />} />
         <Route path="/student" element={<Student />} />
+        <Route path="/whatsNew" element={<WhatsNew />} />
       </Route>
       <Route path="*" element={<Error404 />} />
     </Routes>

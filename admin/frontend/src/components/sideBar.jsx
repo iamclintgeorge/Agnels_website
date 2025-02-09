@@ -31,7 +31,8 @@ const SideBar = () => {
             <div className="pl-4 pt-2 pr-5 space-y-4">
               <p>Image Carousel</p>
               <p>Introduction Section</p>
-              <p>Announcements</p>
+              
+              <Link to="/whatsNew"><p>Announcements</p></Link>
             </div>
           )}
         </div>
