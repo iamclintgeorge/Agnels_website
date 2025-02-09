@@ -202,7 +202,7 @@ const Header = () => {
             <div className="absolute left-0 top-full bg-[#0c2340] text-white rounded shadow-lg w-52 p-3 z-20">
               <ul className="flex flex-col gap-2">
                 <li className="hover:bg-[#AE9142] px-2 py-1 rounded">
-                  <Link to="/trainingAndPlacement">Training and Placement</Link>
+                  <Link to="/training-placement">Training and Placement</Link>
                 </li>
                 <li className="hover:bg-[#AE9142] px-2 py-1 rounded">
                   <Link to="/library">Library</Link>

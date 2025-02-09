@@ -7,10 +7,9 @@ import Footer from "./components/Footer";
 import Departments from "./pages/Departments/departments";
 import Aboutus from "./pages/AboutUs/aboutus";
 import Research_Publications from "./pages/Research_Publications/Research_Publications";
-import Admission from "./pages/Admission/Admission.jsx";
 import Admissions from "./pages/admissions/admissions";
 import Academics from "./pages/Academics/academics";
-import ExaminationsPage from "./pages/Academics/ExaminationsPage"; 
+import ExaminationsPage from "./pages/Academics/ExaminationsPage";
 
 import Computer from "./pages/Departments/branches/computer/computer";
 import Electrical from "./pages/Departments/branches/electrical/electrical";
@@ -21,12 +20,13 @@ import Mechanical from "./pages/Departments/branches/mechanical/mechanical";
 import StudentCorner from "./pages/StudentCorner/studentCorner";
 import Login from "./pages/Login/Login";
 import TrainingPlacement from "./pages/TrainingPlacement/TrainingPlacement";
+import ErrorSection from "./components/ErrorSection.jsx";
 
 function App() {
-  // ✅ Fix: Redirect /pdfs/... requests directly to the browser
+  // Fix: Redirect /pdfs/... requests directly to the browser
   if (window.location.pathname.startsWith("/pdfs/")) {
     window.location.href = window.location.pathname;
-    return null; // Prevents React from rendering anything
+    return null;
   }
 
   return (
@@ -47,7 +47,7 @@ function App() {
           {/* Academics Page */}
           <Route path="/academics" element={<Academics />} />
           <Route path="/examinations-page" element={<ExaminationsPage />} />
-          
+
           {/* Departments Pages */}
           <Route path="/departments" element={<Departments />} />
           <Route path="/aboutus" element={<Aboutus />} />
@@ -65,6 +65,7 @@ function App() {
           <Route path="/mechanical_engineering" element={<Mechanical />} />
           <Route path="/Login" element={<Login />} />
           <Route path="/training-placement" element={<TrainingPlacement />} />
+          <Route path="*" element={<ErrorSection />} />
         </Routes>
       </>
       <Footer />
