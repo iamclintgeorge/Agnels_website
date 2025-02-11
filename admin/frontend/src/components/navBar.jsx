@@ -1,9 +1,12 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useAuth } from "../services/useAuthCheck";
 
 const NavBar = () => {
   const [isUserOpen, setIsUserOpen] = useState(false);
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
   const handleUserClick = () => {
     setIsUserOpen((prevstate) => !prevstate);
@@ -11,15 +14,23 @@ const NavBar = () => {
 
   const handleSignout = async () => {
     try {
-      const response = await axios.post("http://localhost:3663/api/signout", {
-        withCredentials: true,
-      });
+      const response = await axios.post(
+        "http://localhost:3663/api/signout",
+        {},
+        {
+          withCredentials: true,
+        }
+      );
       console.log("Successfully Logged Out");
       navigate("/login");
     } catch (error) {
       console.log("Logout Error: ", error);
     }
   };
+
+  if (!user) {
+    return null;
+  }
 
   return (
     <>
@@ -39,15 +50,16 @@ const NavBar = () => {
               </div>
             </Link>
             <div className="text-white flex flex-row text-sm pr-10">
-              <div>
+              <div className="relative inline-block">
                 <p
-                  className="relative cursor-pointer mr-7 pt-[22px] font-light font-inter"
+                  className="cursor-pointer mr-7 pt-[22px] font-light font-inter"
                   onClick={handleUserClick}
                 >
-                  John Doe
+                  {user.userName}
+                  {/* Gautam Tiwari Chowdhary */}
                 </p>
                 {isUserOpen && (
-                  <div className="absolute py-4 px-5 space-y-4 bg-[#0C2340]">
+                  <div className="absolute left-24 transform -translate-x-full py-4 px-5 space-y-4 bg-[#0C2340] text-nowrap">
                     <Link to="/profile">
                       <p>Edit Profile</p>
                     </Link>
