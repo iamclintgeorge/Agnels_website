@@ -79,6 +79,7 @@ export const loginController = async (req, res) => {
 };
 
 export const logoutController = async (req, res) => {
+  console.log("Console msg logoutController");
   try {
     if (!req.session.user) {
       return res.status(400).json({ message: "No user is logged in" });
