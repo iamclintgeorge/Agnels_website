@@ -1,11 +1,24 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 
 const NavBar = () => {
   const [isUserOpen, setIsUserOpen] = useState(false);
 
   const handleUserClick = () => {
     setIsUserOpen((prevstate) => !prevstate);
+  };
+
+  const handleSignout = async () => {
+    try {
+      const response = await axios.post("http://localhost:3663/api/signout", {
+        withCredentials: true,
+      });
+      console.log("Successfully Logged Out");
+      navigate("/login");
+    } catch (error) {
+      console.log("Logout Error: ", error);
+    }
   };
 
   return (
@@ -38,7 +51,7 @@ const NavBar = () => {
                     <Link to="/profile">
                       <p>Edit Profile</p>
                     </Link>
-                    <p>Sign Out</p>
+                    <button onClick={handleSignout}>Sign Out</button>
                   </div>
                 )}
               </div>
