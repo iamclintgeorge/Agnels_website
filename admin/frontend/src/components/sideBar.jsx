@@ -31,7 +31,9 @@ const SideBar = () => {
           </p>
           {isHomeOpen && (
             <div className="pl-4 pt-2 pr-5 leading-10">
-              <p>Image Carousel</p>
+              <Link to="/home/carousel">
+                <p>Image Carousel</p>
+              </Link>
               <p>Introduction Section</p>
 
               <Link to="/whatsNew">
