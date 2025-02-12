@@ -142,7 +142,7 @@ function AboutUs() {
           </h2>
           {/* <div className="underline w-[106px] h-[4px] bg-[#AE9142] mt-[10px] mr-[40px] mb-[20px] ml-[40px] top-[66px] left-[874px]"></div> */}
           <div className="underline w-[120px] h-[4px] bg-[#AE9142] pl-[10px] mt-[25px] ml-[40px]"></div>
-          <p className="text-[19px] leading-8 tracking-wider text-justify text-[#000000] pt-[30px] pl-[90px] w-[848px] h-[206px] mt-[25px] ">
+          <p className="text-base leading-8 tracking-wider text-justify font-librefranklin text-[#000000] pt-[30px] pl-[90px] w-[848px] h-[206px] mt-[25px] ">
             Fr. Conceicao Rodrigues Institute of Technology has, within a short
             span of time, established itself as a leading engineering college in
             Mumbai University. Though its reputation rests mainly on the high
