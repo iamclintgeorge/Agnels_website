@@ -1,14 +1,17 @@
 import React, { useState } from "react";
 import logo from "../assets/imgs/fcritlogo.png";
-import { FaBars, FaChevronDown } from "react-icons/fa";
+import { FaBars } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+
 const Header = () => {
   const [isBottomMenuOpen, setIsBottomMenuOpen] = useState(false); // For mobile menu
   const [isAcademicsSubMenuOpen, setAcademicsSubMenuOpen] = useState(false); // For Academics submenu
   const [isStudentCornerSubMenuOpen, setStudentCornerSubMenuOpen] =
     useState(false); // For Student Corner submenu
+
   const navigate = useNavigate();
+
   return (
     <header className="bg-[#0c2340] text-white p-0 m-0 relative h-48 w-full z-20">
       {/* Yellow Border */}
@@ -20,11 +23,11 @@ const Header = () => {
         <img
           src={logo}
           alt="FCRIT Logo"
-          className="absolute w-16 pt-14 left-20"
+          className="absolute w-16 pt-14 left-23"
         />
 
         {/* Text Content */}
-        <div className="pl-32 pt-14">
+        <div className="pl-20 pt-14">
           <p className="font-playfair text-[20px] font-medium leading-8">
             FR. CONCEICAO RODRIGUES
           </p>
@@ -101,7 +104,7 @@ const Header = () => {
 
             <li className="ml-4 mt-[-3px]">
               <button
-                onClick={() => navigate("/Login")} // ✅ Ensure lowercase "/login"
+                onClick={() => navigate("/login")}
                 className="bg-transparent border-white border-[1px] text-xs px-4 py-[5px] hover:bg-white hover:text-black hover:border-black transition-all duration-300"
               >
                 Login
@@ -132,7 +135,7 @@ const Header = () => {
           <p>Departments</p>
         </Link>
 
-        {/* Academics Submenu */}
+        {/* Academics Submenu (Desktop) */}
         <div
           className="relative group"
           onMouseEnter={() => setAcademicsSubMenuOpen(true)}
@@ -144,7 +147,6 @@ const Header = () => {
           >
             <p>Academics</p>
           </Link>
-          {/* Academics Submenu */}
           {isAcademicsSubMenuOpen && (
             <div className="absolute left-0 top-full bg-[#0c2340] text-white rounded shadow-lg w-52 p-3 z-20">
               <ul className="flex flex-col gap-2">
@@ -185,7 +187,7 @@ const Header = () => {
           <p>Admissions</p>
         </Link>
 
-        {/* Student Corner Submenu */}
+        {/* Student Corner Submenu (Desktop) */}
         <div
           className="relative group"
           onMouseEnter={() => setStudentCornerSubMenuOpen(true)}
@@ -197,7 +199,6 @@ const Header = () => {
           >
             <p>Student Corner</p>
           </Link>
-          {/* Student Corner Submenu */}
           {isStudentCornerSubMenuOpen && (
             <div className="absolute left-0 top-full bg-[#0c2340] text-white rounded shadow-lg w-52 p-3 z-20">
               <ul className="flex flex-col gap-2">
@@ -227,12 +228,136 @@ const Header = () => {
         <div className="md:hidden p-4 bg-[#0c2340] text-white z-10">
           {/* Home, About Us, etc. section */}
           <ul className="list-none flex flex-col gap-3 font-inter font-light">
-            <li className="hover:underline">Home</li>
-            <li className="hover:underline">About Us</li>
-            <li className="hover:underline">Departments</li>
-            <li className="hover:underline">Academics</li>
-            <li className="hover:underline">Admission</li>
-            <li className="hover:underline">Student Corner</li>
+            <li className="hover:underline">
+              <Link to="/" onClick={() => setIsBottomMenuOpen(false)}>
+                Home
+              </Link>
+            </li>
+            <li className="hover:underline">
+              <Link to="/aboutUs" onClick={() => setIsBottomMenuOpen(false)}>
+                About Us
+              </Link>
+            </li>
+            <li className="hover:underline">
+              <Link
+                to="/departments"
+                onClick={() => setIsBottomMenuOpen(false)}
+              >
+                Departments
+              </Link>
+            </li>
+
+            {/* Academics with the same sub-links */}
+            <li className="hover:underline">
+              <Link to="/academics" onClick={() => setIsBottomMenuOpen(false)}>
+                Academics
+              </Link>
+              {/* Sub-items */}
+              <ul className="ml-4 mt-1">
+                <li className="hover:underline">
+                  <Link to="/nirf" onClick={() => setIsBottomMenuOpen(false)}>
+                    NIRF
+                  </Link>
+                </li>
+                <li className="hover:underline">
+                  <Link to="/iqac" onClick={() => setIsBottomMenuOpen(false)}>
+                    IQAC
+                  </Link>
+                </li>
+                <li className="hover:underline">
+                  <Link to="/iic" onClick={() => setIsBottomMenuOpen(false)}>
+                    IIC
+                  </Link>
+                </li>
+                <li className="hover:underline">
+                  <Link
+                    to="/research_Publications"
+                    onClick={() => setIsBottomMenuOpen(false)}
+                  >
+                    Research and Publications
+                  </Link>
+                </li>
+                <li className="hover:underline">
+                  <Link to="/hr" onClick={() => setIsBottomMenuOpen(false)}>
+                    Human Resource
+                  </Link>
+                </li>
+                <li className="hover:underline">
+                  <Link
+                    to="/nba-naac"
+                    onClick={() => setIsBottomMenuOpen(false)}
+                  >
+                    NBA/NAAC
+                  </Link>
+                </li>
+                <li className="hover:underline">
+                  <Link
+                    to="/academic-calendar"
+                    onClick={() => setIsBottomMenuOpen(false)}
+                  >
+                    Academic Calendar
+                  </Link>
+                </li>
+                <li className="hover:underline">
+                  <Link to="/icnte" onClick={() => setIsBottomMenuOpen(false)}>
+                    ICNTE
+                  </Link>
+                </li>
+              </ul>
+            </li>
+
+            <li className="hover:underline">
+              <Link to="/admissions" onClick={() => setIsBottomMenuOpen(false)}>
+                Admission
+              </Link>
+            </li>
+
+            {/* Student Corner with the same sub-links */}
+            <li className="hover:underline">
+              <Link
+                to="/studentCorner"
+                onClick={() => setIsBottomMenuOpen(false)}
+              >
+                Student Corner
+              </Link>
+              {/* Sub-items */}
+              <ul className="ml-4 mt-1">
+                <li className="hover:underline">
+                  <Link
+                    to="/training-placement"
+                    onClick={() => setIsBottomMenuOpen(false)}
+                  >
+                    Training and Placement
+                  </Link>
+                </li>
+                <li className="hover:underline">
+                  <Link to="/library" onClick={() => setIsBottomMenuOpen(false)}>
+                    Library
+                  </Link>
+                </li>
+                <li className="hover:underline">
+                  <Link to="/almuni" onClick={() => setIsBottomMenuOpen(false)}>
+                    Alumni
+                  </Link>
+                </li>
+                <li className="hover:underline">
+                  <Link
+                    to="/transcript"
+                    onClick={() => setIsBottomMenuOpen(false)}
+                  >
+                    Transcript
+                  </Link>
+                </li>
+                <li className="hover:underline">
+                  <Link
+                    to="/manthanMagzine"
+                    onClick={() => setIsBottomMenuOpen(false)}
+                  >
+                    Manthan Magazine
+                  </Link>
+                </li>
+              </ul>
+            </li>
           </ul>
 
           {/* Thin White Line */}
@@ -240,13 +365,52 @@ const Header = () => {
 
           {/* Downloads, Feedback, etc. section */}
           <ul className="list-none flex flex-col gap-3 font-inter font-light">
-            <li className="hover:underline">Downloads</li>
-            <li className="hover:underline">Feedback</li>
-            <li className="hover:underline">Important Links</li>
-            <li className="hover:underline">Circulars</li>
-            <li className="hover:underline">Fee Payment</li>
+            <li className="hover:underline">
+              <Link to="/downloads" onClick={() => setIsBottomMenuOpen(false)}>
+                Downloads
+              </Link>
+            </li>
+            <li className="hover:underline">
+              <a
+                href="https://fcrit.ac.in/static_pdfs/feedback/SSS_23_24.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setIsBottomMenuOpen(false)}
+              >
+                Feedback
+              </a>
+            </li>
+            <li className="hover:underline">
+              <Link
+                to="/Important-Links"
+                onClick={() => setIsBottomMenuOpen(false)}
+              >
+                Important Links
+              </Link>
+            </li>
+            <li className="hover:underline">
+              <Link to="/circulars" onClick={() => setIsBottomMenuOpen(false)}>
+                Circulars
+              </Link>
+            </li>
+            <li className="hover:underline">
+              <a
+                href="https://www.eduqfix.com/PayDirect/#/student/pay/XxoRsO6mfiXGAnQY1R64lGgQcWtw4tYKPWYLPO8nzoGBvtL6DIe+F9YjQMK1keFr/254"
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setIsBottomMenuOpen(false)}
+              >
+                Fee Payment
+              </a>
+            </li>
             <li className="ml-4 mt-[-3px]">
-              <button className="bg-transparent border-white border-[1px] text-xs px-4 py-[5px]">
+              <button
+                className="bg-transparent border-white border-[1px] text-xs px-4 py-[5px]"
+                onClick={() => {
+                  setIsBottomMenuOpen(false);
+                  navigate("/login");
+                }}
+              >
                 Login
               </button>
             </li>
