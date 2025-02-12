@@ -56,18 +56,18 @@ import rushikeshImage from "./images/rushikesh_shete.jpg";
 const AutoplaySlider = withAutoplay(AwesomeSlider);
 
 // Image data with captions
-const images = [
-  { src: img1, caption: "Innovative Learning Environment" },
-  { src: img2, caption: "State-of-the-Art Computer Labs" },
-  { src: img3, caption: "Interactive Teaching Sessions" },
-  { src: img4, caption: "Collaboration with Industry Experts" },
-  { src: img5, caption: "Our Alumni Making a Difference" },
-  { src: img6, caption: "Advanced Research Facilities" },
-  { src: img7, caption: "Hands-on Project-Based Learning" },
-  { src: img8, caption: "National and International Recognition" },
-  { src: img9, caption: "A Vibrant Student Community" },
-  { src: img10, caption: "Join Us and Build the Future" },
-];
+// const images = [
+//   { src: img1, caption: "Innovative Learning Environment" },
+//   { src: img2, caption: "State-of-the-Art Computer Labs" },
+//   { src: img3, caption: "Interactive Teaching Sessions" },
+//   { src: img4, caption: "Collaboration with Industry Experts" },
+//   { src: img5, caption: "Our Alumni Making a Difference" },
+//   { src: img6, caption: "Advanced Research Facilities" },
+//   { src: img7, caption: "Hands-on Project-Based Learning" },
+//   { src: img8, caption: "National and International Recognition" },
+//   { src: img9, caption: "A Vibrant Student Community" },
+//   { src: img10, caption: "Join Us and Build the Future" },
+// ];
 
 export const About = () => {
   return (
@@ -410,71 +410,71 @@ export const Committees_BoardOfStudy = () => {
   );
 };
 
-const infrastructureData = [
-  {
-    id: 1,
-    name: "Computer Lab",
-    image: ComputerLab,
-    description:
-      "State-of-the-art computer lab with high-speed internet and modern equipment.",
-  },
-  {
-    id: 2,
-    name: "Classroom",
-    image: Classroom,
-    description:
-      "Fully equipped classroom with smart board and audio-visual learning setup.",
-  },
-  {
-    id: 3,
-    name: "System Lab",
-    image: SystemLab,
-    description:
-      "Advanced system lab for hardware experiments and OS simulations.",
-  },
-  {
-    id: 4,
-    name: "Computing Lab",
-    image: ComputingLab,
-    description:
-      "Dedicated computing lab for AI, ML, and software development projects.",
-  },
-  {
-    id: 5,
-    name: "Database Lab",
-    image: DatabaseLab,
-    description:
-      "Fully equipped database lab for SQL, NoSQL, and big data learning.",
-  },
-  {
-    id: 6,
-    name: "Network Lab",
-    image: NetworkLab,
-    description:
-      "State-of-the-art networking lab with real-world router and switch simulations.",
-  },
-  {
-    id: 7,
-    name: "Open Source Lab",
-    image: OpenSourceLab,
-    description:
-      "Lab dedicated to open-source software development and Linux training.",
-  },
-  {
-    id: 8,
-    name: "Open Source Lab 2",
-    image: OpenSourceLab2,
-    description:
-      "Additional open-source lab for collaborative projects and research.",
-  },
-  {
-    id: 9,
-    name: "Research and Development Lab",
-    image: RDLab,
-    description:
-      "R&D lab for innovation and project development in emerging technologies.",
-  },
-];
+// const infrastructureData = [
+//   {
+//     id: 1,
+//     name: "Computer Lab",
+//     image: ComputerLab,
+//     description:
+//       "State-of-the-art computer lab with high-speed internet and modern equipment.",
+//   },
+//   {
+//     id: 2,
+//     name: "Classroom",
+//     image: Classroom,
+//     description:
+//       "Fully equipped classroom with smart board and audio-visual learning setup.",
+//   },
+//   {
+//     id: 3,
+//     name: "System Lab",
+//     image: SystemLab,
+//     description:
+//       "Advanced system lab for hardware experiments and OS simulations.",
+//   },
+//   {
+//     id: 4,
+//     name: "Computing Lab",
+//     image: ComputingLab,
+//     description:
+//       "Dedicated computing lab for AI, ML, and software development projects.",
+//   },
+//   {
+//     id: 5,
+//     name: "Database Lab",
+//     image: DatabaseLab,
+//     description:
+//       "Fully equipped database lab for SQL, NoSQL, and big data learning.",
+//   },
+//   {
+//     id: 6,
+//     name: "Network Lab",
+//     image: NetworkLab,
+//     description:
+//       "State-of-the-art networking lab with real-world router and switch simulations.",
+//   },
+//   {
+//     id: 7,
+//     name: "Open Source Lab",
+//     image: OpenSourceLab,
+//     description:
+//       "Lab dedicated to open-source software development and Linux training.",
+//   },
+//   {
+//     id: 8,
+//     name: "Open Source Lab 2",
+//     image: OpenSourceLab2,
+//     description:
+//       "Additional open-source lab for collaborative projects and research.",
+//   },
+//   {
+//     id: 9,
+//     name: "Research and Development Lab",
+//     image: RDLab,
+//     description:
+//       "R&D lab for innovation and project development in emerging technologies.",
+//   },
+// ];
 
 export const Infrastructure = () => {
   const [selectedInfra, setSelectedInfra] = useState(null);
