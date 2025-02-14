@@ -44,7 +44,13 @@ const ImgCarousel = () => {
   return (
     <div>
       <p>Upload Image</p>
-      <form className="flex" onSubmit={handleSubmit}>
+      <form
+        className="flex"
+        onSubmit={handleSubmit}
+        encType="multipart/form-data"
+        method="post"
+        action="http://localhost:3663/api/home/carousel"
+      >
         <div>
           <p>Alt Text:</p>
           <input
