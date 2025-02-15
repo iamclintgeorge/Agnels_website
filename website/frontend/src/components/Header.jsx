@@ -13,9 +13,12 @@ const Header = () => {
   const navigate = useNavigate();
 
   return (
-    <header className="bg-[#0c2340] text-white p-0 m-0 relative h-48 w-full z-20">
+    <header className="bg-[#0c2340] text-white p-0 m-0  relative h-52 w-full z-20">
       {/* Yellow Border */}
-      <div className="bg-[#AE9142] h-1 w-full"></div>
+      <div className="flex top-0 left-0 w-full bg-[#AE9142] h-[34px] flex items-center justify-center text-black text-sm font-medium">
+        An Autonomous Institute & Permanently Affiliated to University of Mumbai
+      </div>
+
 
       {/* Logo and Navigation */}
       <div className="flex items-center justify-between p-0 px-10 relative">
@@ -23,29 +26,41 @@ const Header = () => {
         <img
           src={logo}
           alt="FCRIT Logo"
-          className="absolute w-16 pt-14 left-23"
+          className="absolute w-20 h-36 pt-16 left-14"
         />
 
         {/* Text Content */}
-        <div className="pl-20 pt-14">
-          <p className="font-playfair text-[20px] font-medium leading-8">
-            FR. CONCEICAO RODRIGUES
-          </p>
-          <p className="font-playfair font-thin text-[14px] tracking-[3.7px]">
-            INSTITUTE OF TECHNOLOGY
-          </p>
-          <p className="font-playfair font-thin text-[9px] tracking-[3.7px] leading-5">
-            <span className="tracking-[-3px]">
-              {" "}
-              -------------------------------------------------------------------
-            </span>
-            <span className="mr-2 ml-4">VASHI</span>
-            <span className="tracking-[-3px]">
-              {" "}
-              -------------------------------------------------------------------
-            </span>
-          </p>
-        </div>
+<div className="pl-20 pt-0">
+
+  {/* Agnel Charities */}
+  <div className="relative top-8 left-10">
+    <p className="font-inter text-[10px] font-light leading-8 tracking-[1.0px]">
+      Agnel Charities
+    </p>
+  </div>
+
+  {/* Main Title */}
+  <div className="relative top-5 left-10">
+    <p className="font-playfair text-[20px] font-medium leading-8">
+      FR. CONCEICAO RODRIGUES
+    </p>
+  </div>
+
+  {/* Subtitle */}
+  <div className="relative top-5 left-10">
+    <p className="font-playfair font-thin text-[14px] tracking-[3.7px]">
+      INSTITUTE OF TECHNOLOGY
+    </p>
+  </div>
+
+  {/* VASHI Section with Borders */}
+  <div className="flex items-center justify-center mt-1 relative top-5 left-10">
+    <span className="border-t border-white w-24"></span>
+    <p className="text-[9px] tracking-[3.7px] mx-4 leading-5">VASHI</p>
+    <span className="border-t border-white w-24"></span>
+  </div>
+
+</div>
 
         {/* Hamburger Icon */}
         <div className="md:hidden absolute top-7 right-4 flex items-center">
