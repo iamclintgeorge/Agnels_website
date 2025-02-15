@@ -15,10 +15,9 @@ const Header = () => {
   return (
     <header className="bg-[#0c2340] text-white p-0 m-0  relative h-52 w-full z-20">
       {/* Yellow Border */}
-      <div className="flex top-0 left-0 w-full bg-[#AE9142] h-[34px] flex items-center justify-center text-black text-sm font-medium">
+      <div className="flex top-0 left-0 w-full bg-[#AE9142] h-6 items-center justify-center text-black text-xs font-normal">
         An Autonomous Institute & Permanently Affiliated to University of Mumbai
       </div>
-
 
       {/* Logo and Navigation */}
       <div className="flex items-center justify-between p-0 px-10 relative">
@@ -26,41 +25,36 @@ const Header = () => {
         <img
           src={logo}
           alt="FCRIT Logo"
-          className="absolute w-20 h-36 pt-16 left-14"
+          className="absolute w-16 h-32 pt-16 left-16"
         />
+        <div className="pl-20 pt-0">
+          <div className="relative top-8 left-10">
+            <p className="font-inter text-[10px] font-light leading-9 tracking-[1.0px] italic">
+              Agnel Charities
+            </p>
+          </div>
+          <div className="relative top-5 left-10">
+            <p className="font-playfair text-[19px] font-medium tracking-wide">
+              FR. CONCEICAO RODRIGUES
+            </p>
+          </div>
 
-        {/* Text Content */}
-<div className="pl-20 pt-0">
+          {/* Subtitle */}
+          <div className="relative top-5 left-10">
+            <p className="font-playfair font-thin text-[13.7px] tracking-[3.7px]">
+              INSTITUTE OF TECHNOLOGY
+            </p>
+          </div>
 
-  {/* Agnel Charities */}
-  <div className="relative top-8 left-10">
-    <p className="font-inter text-[10px] font-light leading-8 tracking-[1.0px]">
-      Agnel Charities
-    </p>
-  </div>
-
-  {/* Main Title */}
-  <div className="relative top-5 left-10">
-    <p className="font-playfair text-[20px] font-medium leading-8">
-      FR. CONCEICAO RODRIGUES
-    </p>
-  </div>
-
-  {/* Subtitle */}
-  <div className="relative top-5 left-10">
-    <p className="font-playfair font-thin text-[14px] tracking-[3.7px]">
-      INSTITUTE OF TECHNOLOGY
-    </p>
-  </div>
-
-  {/* VASHI Section with Borders */}
-  <div className="flex items-center justify-center mt-1 relative top-5 left-10">
-    <span className="border-t border-white w-24"></span>
-    <p className="text-[9px] tracking-[3.7px] mx-4 leading-5">VASHI</p>
-    <span className="border-t border-white w-24"></span>
-  </div>
-
-</div>
+          {/* VASHI Section with Borders */}
+          <div className="flex items-center justify-center mt-1 relative top-4 left-10">
+            <span className="border-t border-[#999999] w-[7.65vw]"></span>
+            <p className="font-playfair text-[7.5px] tracking-[2.5px] mx-4 leading-5">
+              VASHI
+            </p>
+            <span className="border-t border-[#999999] w-[7.65vw]"></span>
+          </div>
+        </div>
 
         {/* Hamburger Icon */}
         <div className="md:hidden absolute top-7 right-4 flex items-center">
@@ -346,7 +340,10 @@ const Header = () => {
                   </Link>
                 </li>
                 <li className="hover:underline">
-                  <Link to="/library" onClick={() => setIsBottomMenuOpen(false)}>
+                  <Link
+                    to="/library"
+                    onClick={() => setIsBottomMenuOpen(false)}
+                  >
                     Library
                   </Link>
                 </li>
