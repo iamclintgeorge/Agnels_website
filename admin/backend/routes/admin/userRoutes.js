@@ -2,6 +2,7 @@ import express from "express";
 import {
   signupController,
   loginController,
+  logoutController,
 } from "../../controllers/admin/userController.js";
 import { authMiddleware, checkRole } from "../../middlewares/authMiddleware.js";
 
@@ -9,6 +10,7 @@ const router = express.Router();
 
 router.post("/signup", signupController);
 router.post("/login", loginController);
+router.post("/signout", logoutController);
 router.get("/check-auth", authMiddleware);
 
 router.get(

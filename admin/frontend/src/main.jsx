@@ -11,6 +11,7 @@ import Student from "./pages/student";
 import { AuthProvider } from "./services/useAuthCheck";
 import WhatsNew from "./pages/HomePage/whatsNew";
 import Profile from "./pages/profile";
+import ImgCarousel from "./pages/HomePage/imgCarousel";
 
 const App = () => {
   return (
@@ -19,7 +20,7 @@ const App = () => {
       <Route path="/signup" element={<Signup />} />
       <Route path="/" element={<AdminLayout />}>
         {/* <Route path="/home" element={<HomePage />} /> */}
-        <Route path="/home/carousel" element={<HomePage />} />
+        <Route path="/home/carousel" element={<ImgCarousel />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/student" element={<Student />} />
         <Route path="/whatsNew" element={<WhatsNew />} />

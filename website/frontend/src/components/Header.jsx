@@ -62,7 +62,6 @@ const Header = () => {
 
 </div>
 
-
         {/* Hamburger Icon */}
         <div className="md:hidden absolute top-7 right-4 flex items-center">
           <button onClick={() => setIsBottomMenuOpen(!isBottomMenuOpen)}>

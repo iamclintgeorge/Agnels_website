@@ -22,6 +22,13 @@ import Login from "./pages/Login/Login";
 import TrainingPlacement from "./pages/TrainingPlacement/TrainingPlacement";
 import ErrorSection from "./components/ErrorSection.jsx";
 
+
+
+
+
+
+
+
 function App() {
   // Fix: Redirect /pdfs/... requests directly to the browser
   if (window.location.pathname.startsWith("/pdfs/")) {
@@ -49,7 +56,7 @@ function App() {
           <Route path="/examinations-page" element={<ExaminationsPage />} />
 
           {/* Departments Pages */}
-          <Route path="/departments" element={<Departments />} />
+          {/* <Route path="/departments" element={<Departments />} /> */}
           <Route path="/aboutus" element={<Aboutus />} />
           <Route
             path="/research_Publications"
@@ -57,12 +64,20 @@ function App() {
           />
           <Route path="/admissions" element={<Admissions />} />
           <Route path="/studentCorner" element={<StudentCorner />} />
-          <Route path="/computer_engineering" element={<Computer />} />
+          {/* <Route path="/computer_engineering" element={<Computer />} />
           <Route path="/electrical_engineering" element={<Electrical />} />
           <Route path="/extc" element={<Extc />} />
           <Route path="/humanities" element={<Humanities />} />
           <Route path="/it" element={<InformationTech />} />
-          <Route path="/mechanical_engineering" element={<Mechanical />} />
+          <Route path="/mechanical_engineering" element={<Mechanical />} /> */}
+
+        <Route path="/departments" element={<Departments />} />
+        <Route path="/computer_engineering" element={<Computer />} />
+        <Route path="/mechanical_engineering" element={<Mechanical />} />
+        <Route path="/extc" element={<Extc />} />
+        <Route path="/electrical_engineering" element={<Electrical />} />
+        <Route path="/it" element={<InformationTech />} />
+        <Route path="/humanities" element={<Humanities />} />
           <Route path="/Login" element={<Login />} />
           <Route path="/training-placement" element={<TrainingPlacement />} />
           <Route path="*" element={<ErrorSection />} />
