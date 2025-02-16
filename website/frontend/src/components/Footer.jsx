@@ -9,7 +9,7 @@ import {
 
 const Footer = () => {
   return (
-    <footer className="bg-[#EEEBE5] px-5 py-10">
+    <footer className="bg-[#EEEBE5] px-10 py-10">
       <div className="footer-container max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-5">
         {/* Logo & Institute Info */}
         <div className="footer-section text-center md:text-left">
@@ -38,7 +38,7 @@ const Footer = () => {
             </div>
 
             {/* VASHI Section with Borders */}
-            <div className="flex items-center justify-center mt-1 relative top-0 -left-1">
+            <div className="flex items-center justify-center mt-1 relative top-0 -left-3">
               <span className="border-t border-[#999999] w-[7.65vw]"></span>
               <p className="font-playfair text-[7.5px] tracking-[2.5px] mx-4 leading-5">
                 VASHI
@@ -49,7 +49,7 @@ const Footer = () => {
         </div>
 
         {/* Navigation */}
-        <div className="footer-section pl-14">
+        <div className="footer-section md:pl-14">
           <h4 className="text-lg font-bold mb-3">Navigation</h4>
           <ul className="space-y-2 text-gray-700">
             <li>Home</li>
