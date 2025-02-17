@@ -19,7 +19,7 @@ function WhatsNew() {
   return (
     <section className="relative py-10 px-5 bg-[#F7F7F7]">
       {/* Background Text */}
-      <div className="absolute inset-0 flex text-[#EDEDED] font-medium text-[9.7vw] leading-none uppercase opacity-70 z-0 mt-[250px] tracking-widest px-0 mx-0">
+      <div className="absolute inset-0 flex text-[#EDEDED] font-medium text-[9.7vw] leading-none uppercase opacity-70 z-0 mt-[250px] tracking-widest p-0 m-0">
         Announcements
       </div>
       <h2 className="font-medium italic text-2xl text-[#0C2340] pl-16 mb-5 w-[336px] h-[29px] mt-20 ">
