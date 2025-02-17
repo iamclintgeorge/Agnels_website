@@ -17,9 +17,9 @@ function WhatsNew() {
   ];
 
   return (
-    <section className="relative py-10 px-5 bg-[#F7F7F7]">
+    <section className="relative py-10 pb-28 px-5 bg-[#F7F7F7]">
       {/* Background Text */}
-      <div className="absolute inset-0 flex text-[#EDEDED] font-medium text-[9.7vw] leading-none uppercase opacity-70 z-0 mt-[250px] tracking-widest p-0 m-0">
+      <div className="absolute inset-0 flex text-[#EDEDED] font-medium text-[9.6vw] leading-none uppercase opacity-70 z-0 mt-[250px] tracking-widest p-0 m-0">
         Announcements
       </div>
       <h2 className="font-medium italic text-2xl text-[#0C2340] pl-16 mb-5 w-[336px] h-[29px] mt-20 ">
@@ -32,7 +32,7 @@ function WhatsNew() {
             key={index}
             className="bg-[#E1E1E1] border rounded-lg w-96 h-auto min-h-96 z-10"
             style={{
-              boxShadow: "0 4px 6px rgba(0, 0, 0, 0.3)", // Custom drop shadow
+              boxShadow: "0 4px 6px rgba(0, 0, 0, 0.3)",
             }}
           >
             <h3 className="bg-[#0E1D3F] text-white w-96 h-10 text-[17px] font-semibold text-center py-2 rounded-t-lg">
