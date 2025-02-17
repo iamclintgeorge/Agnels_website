@@ -103,32 +103,11 @@ function AboutUs() {
               />
             </div>
           ))}
-          {/* <div className="px-0">
-            <img
-              src="/src/assets/imgs/campus2.png"
-              alt="Campus View 2"
-              className="w-full h-96 object-cover brightness-90 transition hover:brightness-100 hover:scale-105"
-            />
-          </div> */}
-          {/* <div className="px-0">
-            <img
-              src="/src/assets/imgs/campus3.png"
-              alt="Campus View 3"
-              className="w-full h-96 object-cover brightness-90 transition hover:brightness-100 hover:scale-105"
-            />
-          </div>
-          <div className="px-0">
-            <img
-              src="/src/assets/imgs/campus4.png"
-              alt="Campus View 4"
-              className="w-full h-96 object-cover brightness-90 transition hover:brightness-100 hover:scale-105"
-            />
-          </div> */}
         </Slider>
       </div>
 
       <div
-        className="about flex gap-[100px] justify-evenly w-full h-[658px] mt-[0px] pt-[20px] bg-cover bg-center bg-no-repeat"
+        className="flex gap-[100px] justify-evenly w-full h-[658px] mt-0 pt-16 bg-cover bg-center bg-no-repeat"
         style={{
           background:
             'linear-gradient(rgba(241, 241, 241, 0.9), rgba(241, 241, 241, 2)), url("/src/assets/imgs/campus2.png")',
@@ -137,12 +116,11 @@ function AboutUs() {
         }}
       >
         <div className="about-content flex-1.2 ">
-          <h2 className="about-title font-semibold italic text-[30px] pl-[90px] text-[#0C2340] w-[316px] h-[29px] mt-[75px]">
+          <h2 className="font-medium italic text-2xl pl-[90px] text-[#0C2340] w-[316px] h-[29px] mt-[75px]">
             ABOUT US
           </h2>
-          {/* <div className="underline w-[106px] h-[4px] bg-[#AE9142] mt-[10px] mr-[40px] mb-[20px] ml-[40px] top-[66px] left-[874px]"></div> */}
-          <div className="underline w-[120px] h-[4px] bg-[#AE9142] pl-[10px] mt-[25px] ml-[40px]"></div>
-          <p className="text-base leading-8 tracking-wider text-justify font-librefranklin text-[#000000] pt-[30px] pl-[90px] w-[848px] h-[206px] mt-[25px] ">
+          <div className="w-32 h-[4px] bg-[#AE9142] mt-[10px] mb-[20px] ml-10 top-[66px] left-[874px]"></div>
+          <p className="text-base leading-8 tracking-wider text-justify font-librefranklin text-[#000000] pt-[30px] pl-[90px] w-[755px] mt-[25px] ">
             Fr. Conceicao Rodrigues Institute of Technology has, within a short
             span of time, established itself as a leading engineering college in
             Mumbai University. Though its reputation rests mainly on the high
@@ -157,8 +135,9 @@ function AboutUs() {
           <img
             src="/src/assets/imgs/campus.png"
             alt="Campus"
-            className="max-w-full h-full mt-[0px] ml-[30px] border-[3px] border-[#AE9142] shadow-[inset_0_0_0_5px #AE9142]"
+            className=" relative max-w-[300px] h-[460px] mt-[0px] ml-0 border-[3px] shadow-[inset_0_0_0_5px #AE9142]"
           />
+          <div className="absolute border-[#AE9142] border-2 w-[270px] h-[430px] bg-transparent"></div>
         </div>
       </div>
     </section>
