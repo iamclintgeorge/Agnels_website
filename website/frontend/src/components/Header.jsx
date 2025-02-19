@@ -1,108 +1,101 @@
 import React, { useState } from "react";
 import logo from "../assets/imgs/fcritlogo.png";
 import { FaBars, FaInstagram, FaFacebookF } from "react-icons/fa";
-// In Font Awesome 6 (via react-icons/fa6):
-import { FaXTwitter } from "react-icons/fa6"; 
-import { Link, useNavigate } from "react-router-dom";
+import { FaXTwitter } from "react-icons/fa6";
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const [isBottomMenuOpen, setIsBottomMenuOpen] = useState(false); // For mobile menu
   const [isAcademicsSubMenuOpen, setAcademicsSubMenuOpen] = useState(false); // For Academics submenu
-  const [isStudentCornerSubMenuOpen, setStudentCornerSubMenuOpen] = useState(false); // For Student Corner submenu
+  const [isStudentCornerSubMenuOpen, setStudentCornerSubMenuOpen] =
+    useState(false); // For Student Corner submenu
 
   const navigate = useNavigate();
 
   return (
-    <header className="bg-[#0c2340] text-white p-0 m-0 relative h-56 w-full z-20">
+    <header className="bg-[#0c2340] text-white p-0 m-0  relative h-52 w-full z-20">
       {/* Yellow Border */}
-      <div className="flex top-0 left-0 w-full bg-[#AE9142] h-[34px] items-center justify-center text-black text-sm font-medium">
+      <div className="flex top-0 left-0 w-full bg-[#AE9142] h-6 items-center justify-center text-black text-xs font-normal">
         An Autonomous Institute & Permanently Affiliated to University of Mumbai
       </div>
 
       {/* Logo and Navigation */}
       <div className="flex items-center justify-between p-0 px-10 relative">
-        
         {/* VERTICALLY STACKED SOCIAL ICONS + WHITE DIVIDER (Hidden on small screens) */}
-        <div className="hidden md:flex absolute top-12 left-2 items-center gap-3 z-30 p-7 bottom-0">
+        <div className="hidden md:flex absolute top-7 left-0 items-center gap-4 z-30 pl-6 bottom-0">
           {/* Social Icons (stacked vertically) */}
-          <div className="flex flex-col items-center gap-4">
+          <div className="flex flex-col items-center gap-5">
             {/* Instagram */}
             <a
               href="https://instagram.com"
               target="_blank"
               rel="noopener noreferrer"
             >
-              <FaInstagram className="text-white text-xl hover:text-blue-600 transition-colors" />
+              <FaInstagram className="text-[#CACACA] text-xl hover:text-blue-600 transition-colors" />
             </a>
-
             {/* Facebook in a small white circle */}
             <a
               href="https://facebook.com"
               target="_blank"
               rel="noopener noreferrer"
             >
-              <div className="w-5 h-5 bg-white rounded-full flex items-center justify-center">
-                <FaFacebookF className="text-[#0c2340] text-sm text-base hover:text-blue-600" />
+              <div className="w-4 h-4 bg-[#CACACA] rounded-full flex items-center justify-center">
+                <FaFacebookF className="text-[#0c2340] text-xs hover:text-blue-600 text-center" />
               </div>
             </a>
-
             {/* X (Twitter) */}
             <a
               href="https://twitter.com"
               target="_blank"
               rel="noopener noreferrer"
             >
-              <FaXTwitter className="text-white text-l hover:text-blue-600 transition-colors" />
+              <FaXTwitter className="text-[#CACACA] hover:text-blue-600 transition-colors text-sm" />
             </a>
           </div>
-
           {/* Vertical Divider */}
-          <div className="border-l border-white h-24" />
+          <div className="border-l border-[#727272] h-24" />
         </div>
-
-        {/* FCRIT Logo - Pushed left on small screens */}
+        {/* Logo */}
         <img
           src={logo}
           alt="FCRIT Logo"
-          className="absolute w-20 h-36 pt-16 left-4 md:left-36"
+          className="absolute w-16 h-32 pt-16 left-32"
         />
-
-        {/* Hamburger Icon (Mobile) */}
-        <div className="md:hidden absolute top-7 right-4 flex items-center">
-          <button onClick={() => setIsBottomMenuOpen(!isBottomMenuOpen)}>
-            <FaBars className="text-white text-2xl" />
-          </button>
-        </div>
-
-        {/* Letterhead Text - Shifted 10px to the right */}
-        <div className="pl-4 pt-0 text-left ml-[70px] md:pl-20 md:ml-[10px]">
-          {/* Agnel Charities */}
-          <div className="relative top-8 md:left-32">
-            <p className="font-inter text-[10px] font-light leading-8 tracking-[1.0px]">
+        <div className="pl-32 pt-0">
+          <div className="relative top-8 left-10">
+            <p className="font-inter text-[10px] font-light leading-9 tracking-[1.0px] italic">
               Agnel Charities
             </p>
           </div>
-
-          {/* Main Title */}
-          <div className="relative top-5 md:left-32">
-            <p className="font-playfair text-[20px] font-medium leading-8">
+          <div className="relative top-5 left-10">
+            <p className="font-playfair text-[19px] font-medium tracking-wide">
               FR. CONCEICAO RODRIGUES
             </p>
           </div>
 
           {/* Subtitle */}
-          <div className="relative top-5 md:left-32">
-            <p className="font-playfair font-thin text-[14px] tracking-[3.7px]">
+          <div className="relative top-5 left-10">
+            <p className="font-playfair font-thin text-[13.7px] tracking-[3.7px]">
               INSTITUTE OF TECHNOLOGY
             </p>
           </div>
 
           {/* VASHI Section with Borders */}
-          <div className="flex items-center justify-center mt-1 relative top-5 md:left-32">
-            <span className="border-t border-white w-24"></span>
-            <p className="text-[9px] tracking-[3.7px] mx-4 leading-5">VASHI</p>
-            <span className="border-t border-white w-24"></span>
+          <div className="flex items-center justify-center mt-1 relative top-4 left-10">
+            <span className="border-t border-[#999999] w-[7.65vw]"></span>
+            <p className="font-playfair text-[7.5px] tracking-[2.5px] mx-4 leading-5">
+              VASHI
+            </p>
+            <span className="border-t border-[#999999] w-[7.65vw]"></span>
           </div>
+        </div>
+
+        {/* Hamburger Icon */}
+        <div className="md:hidden absolute top-7 right-4 flex items-center">
+          <button onClick={() => setIsBottomMenuOpen(!isBottomMenuOpen)}>
+            <FaBars className="text-white text-2xl" />
+          </button>
         </div>
 
         {/* Top Navigation for Desktop (Downloads, Feedback, etc.) */}
@@ -124,6 +117,7 @@ const Header = () => {
                 Feedback
               </a>
             </li>
+
             <li className="hidden md:inline">|</li>
             <li className="hover:underline">
               <Link
@@ -140,6 +134,7 @@ const Header = () => {
               </Link>
             </li>
             <li className="hidden md:inline">|</li>
+
             <li className="hover:underline">
               <a
                 href="https://www.eduqfix.com/PayDirect/#/student/pay/XxoRsO6mfiXGAnQY1R64lGgQcWtw4tYKPWYLPO8nzoGBvtL6DIe+F9YjQMK1keFr/254"
@@ -150,6 +145,7 @@ const Header = () => {
                 Fee Payment
               </a>
             </li>
+
             <li className="ml-4 mt-[-3px]">
               <button
                 onClick={() => navigate("/login")}
@@ -163,7 +159,7 @@ const Header = () => {
       </div>
 
       {/* Bottom Navigation Links (Desktop) */}
-      <div className="absolute gap-4 text-base p-0 m-0 font-inter z-10 ml-[44vw] mr-10 mt-1 text-nowrap font-light hidden md:flex cursor-default">
+      <div className="absolute gap-3 text-base p-0 m-0 font-inter z-10 ml-[42vw] mr-10 mt-1 text-nowrap font-light hidden md:flex cursor-default">
         <Link
           to="/"
           className="hover:bg-white hover:text-black px-4 py-2 rounded transition-all duration-200 ease-in-out transform hover:scale-105 hover:shadow-lg"
@@ -274,6 +270,7 @@ const Header = () => {
       {/* Mobile Dropdown for Bottom Navigation */}
       {isBottomMenuOpen && (
         <div className="md:hidden p-4 bg-[#0c2340] text-white z-10">
+          {/* Home, About Us, etc. section */}
           <ul className="list-none flex flex-col gap-3 font-inter font-light">
             <li className="hover:underline">
               <Link to="/" onClick={() => setIsBottomMenuOpen(false)}>
@@ -299,6 +296,7 @@ const Header = () => {
               <Link to="/academics" onClick={() => setIsBottomMenuOpen(false)}>
                 Academics
               </Link>
+              {/* Sub-items */}
               <ul className="ml-4 mt-1">
                 <li className="hover:underline">
                   <Link to="/nirf" onClick={() => setIsBottomMenuOpen(false)}>
@@ -366,6 +364,7 @@ const Header = () => {
               >
                 Student Corner
               </Link>
+              {/* Sub-items */}
               <ul className="ml-4 mt-1">
                 <li className="hover:underline">
                   <Link
@@ -376,7 +375,10 @@ const Header = () => {
                   </Link>
                 </li>
                 <li className="hover:underline">
-                  <Link to="/library" onClick={() => setIsBottomMenuOpen(false)}>
+                  <Link
+                    to="/library"
+                    onClick={() => setIsBottomMenuOpen(false)}
+                  >
                     Library
                   </Link>
                 </li>
@@ -404,7 +406,11 @@ const Header = () => {
               </ul>
             </li>
           </ul>
+
+          {/* Thin White Line */}
           <div className="my-2 border-t border-white"></div>
+
+          {/* Downloads, Feedback, etc. section */}
           <ul className="list-none flex flex-col gap-3 font-inter font-light">
             <li className="hover:underline">
               <Link to="/downloads" onClick={() => setIsBottomMenuOpen(false)}>
