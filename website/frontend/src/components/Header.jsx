@@ -14,9 +14,9 @@ const Header = () => {
   const navigate = useNavigate();
 
   return (
-    <header className="bg-[#0c2340] text-white p-0 m-0  relative h-52 w-full z-20">
+    <header className="bg-[#0c2340] text-white p-0 m-0  relative h-48 sm:h-52 w-full z-20">
       {/* Yellow Border */}
-      <div className="flex top-0 left-0 w-full bg-[#AE9142] h-6 items-center justify-center text-black text-xs font-normal">
+      <div className="flex top-0 left-0 w-full bg-[#AE9142] h-6 items-center justify-center text-black text-[10px] sm:text-xs font-normal">
         An Autonomous Institute & Permanently Affiliated to University of Mumbai
       </div>
 
@@ -60,39 +60,39 @@ const Header = () => {
         <img
           src={logo}
           alt="FCRIT Logo"
-          className="absolute w-16 h-32 pt-16 left-32"
+          className="absolute w-16 h-32 pt-16 left-7 sm:left-32"
         />
-        <div className="pl-32 pt-0">
-          <div className="relative top-8 left-10">
-            <p className="font-inter text-[10px] font-light leading-9 tracking-[1.0px] italic">
+        <div className="pl-20 sm:pl-32 pt-2 sm:pt-0">
+          <div className="relative top-8 sm:left-10">
+            <p className="font-inter text-[8px] sm:text-[10px] font-light leading-9 tracking-[1.0px] italic">
               Agnel Charities
             </p>
           </div>
-          <div className="relative top-5 left-10">
-            <p className="font-playfair text-[19px] font-medium tracking-wide">
+          <div className="relative top-5 sm:left-10 text-nowrap">
+            <p className="font-playfair text-[15px] sm:text-[19px] font-medium tracking-wide">
               FR. CONCEICAO RODRIGUES
             </p>
           </div>
 
           {/* Subtitle */}
-          <div className="relative top-5 left-10">
-            <p className="font-playfair font-thin text-[13.7px] tracking-[3.7px]">
+          <div className="relative top-5 text-nowrap sm:left-10">
+            <p className="font-playfair font-thin text-[9.7px] sm:text-[13.7px] tracking-[3.7px]">
               INSTITUTE OF TECHNOLOGY
             </p>
           </div>
 
           {/* VASHI Section with Borders */}
-          <div className="flex items-center justify-center mt-1 relative top-4 left-10">
-            <span className="border-t border-[#999999] w-[7.65vw]"></span>
+          <div className="flex items-center justify-center mt-1 relative top-4 sm:left-10">
+            <span className="border-t border-[#999999] w-[18vw] sm:w-[7.65vw]"></span>
             <p className="font-playfair text-[7.5px] tracking-[2.5px] mx-4 leading-5">
               VASHI
             </p>
-            <span className="border-t border-[#999999] w-[7.65vw]"></span>
+            <span className="border-t border-[#999999] w-[17vw] sm:w-[7.65vw]"></span>
           </div>
         </div>
 
         {/* Hamburger Icon */}
-        <div className="md:hidden absolute top-7 right-4 flex items-center">
+        <div className="md:hidden absolute mt-12 right-4 flex items-center">
           <button onClick={() => setIsBottomMenuOpen(!isBottomMenuOpen)}>
             <FaBars className="text-white text-2xl" />
           </button>
