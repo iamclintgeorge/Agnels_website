@@ -59,7 +59,7 @@ function AboutUs() {
     const fetchImages = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:3663/api/home/images"
+          `http://localhost:${process.env.REACT_APP_PORT}/api/home/images`
         );
         setImages(response.data);
       } catch (err) {

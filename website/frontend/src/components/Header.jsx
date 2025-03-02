@@ -60,9 +60,13 @@ const Header = () => {
         <img
           src={logo}
           alt="FCRIT Logo"
-          className="absolute w-16 h-32 pt-16 left-7 sm:left-32"
+          className="absolute w-16 h-16 mt-12 left-7 sm:left-32 cursor-pointer"
+          onClick={() => navigate("/")}
         />
-        <div className="pl-20 sm:pl-32 pt-2 sm:pt-0">
+        <div
+          className="ml-20 sm:ml-32 mt-2 sm:mt-0 cursor-pointer"
+          onClick={() => navigate("/")}
+        >
           <div className="relative top-8 sm:left-10">
             <p className="font-inter text-[8px] sm:text-[10px] font-light leading-9 tracking-[1.0px] italic">
               Agnel Charities
