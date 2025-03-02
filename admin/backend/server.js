@@ -6,7 +6,7 @@ import dotenv from "dotenv";
 import session from "express-session";
 dotenv.config();
 
-const port = process.env.port;
+const port = process.env.port || 3663;
 
 const app = express();
 
