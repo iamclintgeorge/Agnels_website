@@ -5,7 +5,12 @@ module.exports = {
     "./src/**/*.{js,ts,jsx,tsx}", // Add this line to include all your React component files
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        inter: ["Inter"],
+        playfair: ["Playfair Display"],
+      },
+    },
   },
   plugins: [],
 };

@@ -31,7 +31,7 @@ const Welcome = () => {
   );
 };
 
-const Announcements = () => {
+export const Announcements = () => {
   return (
     <div>
       <h2 className="text-xl font-bold mb-4 bg-gray-200 p-4 rounded-md shadow-md">
