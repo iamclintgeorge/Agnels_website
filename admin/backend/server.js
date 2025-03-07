@@ -4,11 +4,12 @@ import cookieParser from "cookie-parser";
 import userRoutes from "./routes/admin/userRoutes.js";
 import dotenv from "dotenv";
 import session from "express-session";
-dotenv.config();
 import homeRoutes from "./routes/website/homepage/homeRoutes.js";
 import path from "path";
 import { fileURLToPath } from "url";
 import trainingPlacementRoutes from "./routes/trainingPlacement.js";
+
+dotenv.config();
 
 const port = process.env.port;
 const app = express();
@@ -19,7 +20,7 @@ app.use(
     origin: function (origin, callback) {
       const allowedOrigins = ["http://localhost:5173", "http://localhost:5174"];
       if (allowedOrigins.includes(origin) || !origin) {
-        callback(null, true); // Allow the origin
+        callback(null, true);
       } else {
         callback(new Error("Not allowed by CORS"));
       }
@@ -46,12 +47,12 @@ app.use(
   })
 );
 
-// Get the current directory path using import.meta.url
+// Get the current directory path
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Serve static files from the 'public' folder
-app.use(express.static(path.join(__dirname, "public")));
+app.use("/uploads", express.static(path.join(__dirname, "public", "uploads")));
 
 // Routes
 app.use("/api", userRoutes);
