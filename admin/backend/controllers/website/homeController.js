@@ -1,21 +1,44 @@
-// export const carouselController = (req, res) => {
-//   const { altText, image } = req.body;
-//   console.log(altText, image);
+import {
+  carouselUpload,
+  carouselDisplay,
+} from "../../models/website/homeModel.js";
 
-//   const images = [
-//     { url: "/images/campus1.png", alt: "Campus View 1" },
-//     { url: "/images/campus2.png", alt: "Campus View 2" },
-//     { url: "/images/campus3.png", alt: "Campus View 3" },
-//     { url: "/images/campus4.png", alt: "Campus View 4" },
-//   ];
-//   return res.json(images);
-// };
+export const carouselUploadController = (req, res) => {
+  try {
+    const { altText } = req.body;
+    const image = req.file;
 
-export const carouselController = (req, res) => {
-  const { altText } = req.body;
-  const image = req.file;
-  console.log(altText, image);
+    if (!image) {
+      return res.status(400).json({ message: "No image uploaded" });
+    }
 
-  // Handle the upload...
-  res.json({ message: "Upload successful" });
+    const imageUrl = `/uploads/${image.filename}`;
+    const db_upload = carouselUpload(altText, imageUrl); // This now saves both altText and filename
+
+    console.log({
+      altText,
+      imageUrl,
+      originalName: image.originalname,
+      size: image.size,
+    });
+
+    res.json({
+      message: "Upload successful",
+      imageUrl: imageUrl,
+      altText: altText,
+    });
+  } catch (error) {
+    console.error("Upload error:", error);
+    res.status(500).json({ message: "Error uploading image" });
+  }
+};
+
+export const carouselDisplayController = async (req, res) => {
+  try {
+    const images = await carouselDisplay();
+    res.json(images);
+  } catch (error) {
+    console.error("Display error:", error);
+    res.status(500).json({ message: "Error fetching images" });
+  }
 };

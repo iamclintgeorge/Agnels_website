@@ -59,11 +59,12 @@ function AboutUs() {
     const fetchImages = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:${process.env.REACT_APP_PORT}/api/home/images`
+          "http://localhost:3663/api/home/carousel"
         );
+        console.log("Fetched images:", response.data); // Debug the response
         setImages(response.data);
       } catch (err) {
-        console.log("Error loading images: ", err);
+        console.error("Error loading images:", err);
       }
     };
 
@@ -97,8 +98,8 @@ function AboutUs() {
           {images.map((image, index) => (
             <div className="px-0" key={index}>
               <img
-                src={`http://localhost:3663${image.url}`}
-                alt={image.alt}
+                src={`http://localhost:3663${image.imageUrl}`}
+                alt={image.altText}
                 className="w-screen h-96 object-cover brightness-90 transition hover:brightness-100 hover:scale-105"
               />
             </div>
