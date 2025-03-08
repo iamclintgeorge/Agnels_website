@@ -2,6 +2,7 @@ import express from "express";
 import {
   carouselUploadController,
   carouselDisplayController,
+  carouselDeleteController,
 } from "../../../controllers/website/homeController.js";
 import multer from "multer";
 import path from "path";
@@ -34,7 +35,7 @@ const upload = multer({
 const router = express.Router();
 
 router.post("/carousel", upload.single("image"), carouselUploadController);
-
 router.get("/carousel", carouselDisplayController);
+router.delete("/carousel/:id", carouselDeleteController);
 
 export default router;
