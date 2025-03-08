@@ -1,9 +1,12 @@
 import {
   carouselUpload,
   carouselDisplay,
+  carouselDelete,
 } from "../../models/website/homeModel.js";
+import fs from "fs/promises";
+import path from "path";
 
-export const carouselUploadController = (req, res) => {
+export const carouselUploadController = async (req, res) => {
   try {
     const { altText } = req.body;
     const image = req.file;
@@ -13,14 +16,7 @@ export const carouselUploadController = (req, res) => {
     }
 
     const imageUrl = `/uploads/${image.filename}`;
-    const db_upload = carouselUpload(altText, imageUrl); // This now saves both altText and filename
-
-    console.log({
-      altText,
-      imageUrl,
-      originalName: image.originalname,
-      size: image.size,
-    });
+    await carouselUpload(altText, imageUrl);
 
     res.json({
       message: "Upload successful",
@@ -40,5 +36,25 @@ export const carouselDisplayController = async (req, res) => {
   } catch (error) {
     console.error("Display error:", error);
     res.status(500).json({ message: "Error fetching images" });
+  }
+};
+
+export const carouselDeleteController = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const image = await carouselDelete(id);
+
+    if (!image) {
+      return res.status(404).json({ message: "Image not found" });
+    }
+
+    // Delete the file from the server
+    const filePath = path.join(process.cwd(), "public", image.imageUrl);
+    await fs.unlink(filePath);
+
+    res.json({ message: "Image deleted successfully" });
+  } catch (error) {
+    console.error("Delete error:", error);
+    res.status(500).json({ message: "Error deleting image" });
   }
 };

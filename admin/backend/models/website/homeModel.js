@@ -18,8 +18,8 @@ export const carouselUpload = async (altText, imageUrl) => {
 
 export const carouselDisplay = async () => {
   const query = `
-      SELECT Alt_text as altText, filename as imageUrl 
-      FROM carousel
+      SELECT Id, Alt_text AS altText, filename AS imageUrl 
+    FROM carousel
     `;
 
   try {
@@ -27,6 +27,29 @@ export const carouselDisplay = async () => {
     return rows;
   } catch (error) {
     console.error("Database fetch error:", error);
+    throw error;
+  }
+};
+
+export const carouselDelete = async (id) => {
+  const query = `
+    DELETE FROM carousel 
+    WHERE Id = ?
+  `;
+  const selectQuery = `
+    SELECT filename as imageUrl 
+    FROM carousel 
+    WHERE Id = ?
+  `;
+
+  try {
+    const [[image]] = await db.promise().query(selectQuery, [id]);
+    if (!image) return null;
+
+    const [result] = await db.promise().query(query, [id]);
+    return result.affectedRows > 0 ? image : null;
+  } catch (error) {
+    console.error("Database deletion error:", error);
     throw error;
   }
 };

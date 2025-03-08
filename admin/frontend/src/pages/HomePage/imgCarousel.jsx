@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"; // Add useEffect import
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 const ImgCarousel = () => {
@@ -8,20 +8,20 @@ const ImgCarousel = () => {
   const [displayImg, setDisplayImg] = useState([]);
 
   useEffect(() => {
-    const fetchImages = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:3663/api/home/carousel"
-        );
-        console.log("Fetched images:", response.data); // Debug the response
-        setDisplayImg(response.data);
-      } catch (err) {
-        console.error("Error loading images:", err);
-      }
-    };
-
     fetchImages();
   }, []);
+
+  const fetchImages = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:3663/api/home/carousel"
+      );
+      console.log("Fetched images:", response.data); // Debug the response
+      setDisplayImg(response.data);
+    } catch (err) {
+      console.error("Error loading images:", err);
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -35,32 +35,38 @@ const ImgCarousel = () => {
     formData.append("image", image);
 
     try {
-      const response = await axios.post(
-        "http://localhost:3663/api/home/carousel",
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-          maxContentLength: Infinity,
-          maxBodyLength: Infinity,
-        }
-      );
+      await axios.post("http://localhost:3663/api/home/carousel", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+        maxContentLength: Infinity,
+        maxBodyLength: Infinity,
+      });
 
       console.log("POST Request for Carousel SUCCESS");
       setMessage("Image uploaded successfully!");
       setAltText("");
       setImage(null);
       e.target.reset();
-
-      // Refresh images after upload
-      const updatedImages = await axios.get(
-        "http://localhost:3663/api/home/carousel"
-      );
-      setDisplayImg(updatedImages.data);
+      fetchImages(); // Refresh images
     } catch (error) {
       console.log("Error Message: ", error);
       setMessage("Error uploading image.");
+    }
+  };
+
+  const handleDelete = async (id) => {
+    if (!id) {
+      console.error("No valid Id provided for deletion");
+      setMessage("Cannot delete: No valid ID found.");
+      return;
+    }
+    try {
+      console.log(`Attempting to delete image with Id: ${id}`);
+      await axios.delete(`http://localhost:3663/api/home/carousel/${id}`);
+      setMessage("Image deleted successfully!");
+      fetchImages(); // Refresh images
+    } catch (error) {
+      console.error("Delete error:", error);
+      setMessage("Error deleting image.");
     }
   };
 
@@ -107,7 +113,10 @@ const ImgCarousel = () => {
         {displayImg.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
             {displayImg.map((img, index) => (
-              <div key={index} className="flex flex-col items-center">
+              <div
+                key={img.Id || index} // Fallback to index if Id is missing
+                className="flex flex-col items-center"
+              >
                 <img
                   src={`http://localhost:3663${img.imageUrl}`}
                   alt={img.altText}
@@ -117,6 +126,12 @@ const ImgCarousel = () => {
                   }
                 />
                 <p className="mt-2 text-sm">{img.altText}</p>
+                <button
+                  className="mt-2 bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600"
+                  onClick={() => handleDelete(img.Id)}
+                >
+                  Delete
+                </button>
               </div>
             ))}
           </div>
