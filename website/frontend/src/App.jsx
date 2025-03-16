@@ -21,10 +21,10 @@ import StudentCorner from "./pages/StudentCorner/studentCorner";
 import Login from "./pages/Login/Login";
 import TrainingPlacement from "./pages/TrainingPlacement/TrainingPlacement";
 import ErrorSection from "./components/ErrorSection.jsx";
-
-
-
-
+import IQAC from "./pages/IQAC/IQAC";
+import IIC from "./pages/IIC/IIC";
+import NIRF from "./pages/NIRF/NIRF";
+import HumanResource from "./pages/HumanResource/HumanResource";
 
 
 
@@ -80,6 +80,10 @@ function App() {
         <Route path="/humanities" element={<Humanities />} />
           <Route path="/Login" element={<Login />} />
           <Route path="/training-placement" element={<TrainingPlacement />} />
+          <Route path="/iqac" element={<IQAC />} />
+          <Route path="/iic" element={<IIC />} />
+          <Route path="/nirf" element={<NIRF />} />
+          <Route path="/hr" element={<HumanResource />} />
           <Route path="*" element={<ErrorSection />} />
         </Routes>
       </>
