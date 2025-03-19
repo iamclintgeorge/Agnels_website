@@ -2,6 +2,7 @@ import {
   carouselUpload,
   carouselDisplay,
   carouselDelete,
+  fetchText,
 } from "../../models/website/homeModel.js";
 import fs from "fs/promises";
 import path from "path";
@@ -56,5 +57,15 @@ export const carouselDeleteController = async (req, res) => {
   } catch (error) {
     console.error("Delete error:", error);
     res.status(500).json({ message: "Error deleting image" });
+  }
+};
+
+export const introTextController = async (req, res) => {
+  try {
+    const text = await fetchText();
+    res.json(text);
+  } catch (error) {
+    console.error("Fetch error:", error);
+    res.status(500).json({ message: "Error fetching IntroText" });
   }
 };

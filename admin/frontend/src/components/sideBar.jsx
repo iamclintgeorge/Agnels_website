@@ -34,9 +34,12 @@ const SideBar = () => {
               <Link to="/home/carousel">
                 <p>Image Carousel</p>
               </Link>
-              <p>Introduction Section</p>
 
-              <Link to="/whatsNew">
+              <Link to="/home/introtext">
+                <p>Introduction Section</p>
+              </Link>
+
+              <Link to="/home/whatsNew">
                 <p>Announcements</p>
               </Link>
             </div>
@@ -67,11 +70,8 @@ const SideBar = () => {
         <p>Departments</p>
         <p>Admission</p>
         <p>Academics</p>
-        
-          <Link to="/training-placement">
-            Training and Placement
-          </Link>
-        
+
+        <Link to="/training-placement">Training and Placement</Link>
 
         <p>Research and Publication</p>
         <p>Human Resource</p>

@@ -12,9 +12,10 @@ import { AuthProvider } from "./services/useAuthCheck";
 import WhatsNew from "./pages/HomePage/whatsNew";
 import Profile from "./pages/profile";
 import ImgCarousel from "./pages/HomePage/imgCarousel";
+import IntroText from "./pages/HomePage/introText";
 import TrainingPlacement from "./pages/Training-Placement/training-placement";
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const App = () => {
   return (
@@ -25,9 +26,10 @@ const App = () => {
         <Route path="/" element={<AdminLayout />}>
           {/* <Route path="/home" element={<HomePage />} /> */}
           <Route path="/home/carousel" element={<ImgCarousel />} />
+          <Route path="/home/whatsNew" element={<WhatsNew />} />
+          <Route path="/home/introtext" element={<IntroText />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/student" element={<Student />} />
-          <Route path="/whatsNew" element={<WhatsNew />} />
           <Route path="/training-placement" element={<TrainingPlacement />} />
         </Route>
         <Route path="*" element={<Error404 />} />
