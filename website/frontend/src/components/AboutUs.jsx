@@ -54,22 +54,36 @@ function AboutUs() {
   const isMobile = useMediaQuery({ maxWidth: 768 });
   const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1024 });
   const [images, setImages] = useState([]);
+  const [introtext, setIntroText] = useState([]);
 
   useEffect(() => {
-    const fetchImages = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:3663/api/home/carousel"
-        );
-        console.log("Fetched images:", response.data); // Debug the response
-        setImages(response.data);
-      } catch (err) {
-        console.error("Error loading images:", err);
-      }
-    };
-
     fetchImages();
+    fetchText();
   }, []);
+
+  const fetchImages = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:3663/api/home/carousel"
+      );
+      // console.log("Fetched images:", response.data);
+      setImages(response.data);
+    } catch (err) {
+      console.error("Error loading images:", err);
+    }
+  };
+
+  const fetchText = async () => {
+    try {
+      const response = await axios.get(
+        "http://localhost:3663/api/home/introtext"
+      );
+      console.log("Fetched Text:", response.data);
+      setIntroText(response.data);
+    } catch (err) {
+      console.error("Error loading images:", err);
+    }
+  };
 
   const { fontSize, slidesToShow } = calculateSizes(
     isSmall,
@@ -122,14 +136,7 @@ function AboutUs() {
           </h2>
           <div className="w-32 h-[4px] bg-[#AE9142] mt-[10px] mb-[20px] ml-10 top-[66px] left-[874px]"></div>
           <p className="text-base leading-8 tracking-wider text-justify font-librefranklin text-[#000000] pt-[30px] pl-[90px] w-[755px] mt-[25px] ">
-            Fr. Conceicao Rodrigues Institute of Technology has, within a short
-            span of time, established itself as a leading engineering college in
-            Mumbai University. Though its reputation rests mainly on the high
-            quality, value-based technical education that it imparts, it has to
-            its credit a verdant, well-maintained Campus and extensive
-            facilities. Its location in the vicinity of the holy places of
-            various religious denominations underscores its secular credentials
-            and its philosophy of <strong>Vasudhaiva Kuttumbakam</strong>.
+            {introtext.length > 0 && introtext[0].Content}
           </p>
         </div>
         <div className="flex justify-center items-center flex-1 w-[320px] h-[494px]">

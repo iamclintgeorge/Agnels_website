@@ -53,3 +53,17 @@ export const carouselDelete = async (id) => {
     throw error;
   }
 };
+
+export const fetchText = async () => {
+  const query = `
+      SELECT * FROM introText WHERE Section = 'aboutUsText';
+    `;
+
+  try {
+    const [rows] = await db.promise().query(query);
+    return rows;
+  } catch (error) {
+    console.error("Database fetch error:", error);
+    throw error;
+  }
+};
