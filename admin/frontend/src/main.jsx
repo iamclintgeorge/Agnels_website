@@ -2,7 +2,7 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import HomePage from "./pages/homePage";
+// import HomePage from "./pages/homePage";
 import Login from "./pages/login";
 import Signup from "./pages/signup";
 import Error404 from "./pages/error404";
@@ -16,6 +16,8 @@ import IntroText from "./pages/HomePage/introText";
 import TrainingPlacement from "./pages/Training-Placement/training-placement";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import HodDesk from "./pages/rolebasedPages/hodDesk";
+import PrincipalDesk from "./pages/rolebasedPages/principalDesk";
 
 const App = () => {
   return (
@@ -31,6 +33,8 @@ const App = () => {
           <Route path="/profile" element={<Profile />} />
           <Route path="/student" element={<Student />} />
           <Route path="/training-placement" element={<TrainingPlacement />} />
+          <Route path="/hoddesk" element={<HodDesk />} />
+          <Route path="/principaldesk" element={<PrincipalDesk />} />
         </Route>
         <Route path="*" element={<Error404 />} />
       </Routes>

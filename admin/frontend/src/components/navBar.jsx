@@ -63,6 +63,12 @@ const NavBar = () => {
                     <Link to="/profile">
                       <p>Edit Profile</p>
                     </Link>
+                    <Link to="/hoddesk">
+                      <p className="mt-5">HOD's Desk</p>
+                    </Link>
+                    <Link to="/principaldesk">
+                      <p className="mt-5">Principal's Desk</p>
+                    </Link>
                     <button onClick={handleSignout}>Sign Out</button>
                   </div>
                 )}
