@@ -2,7 +2,8 @@ import {
   carouselUpload,
   carouselDisplay,
   carouselDelete,
-  fetchText,
+  introTextDisplay,
+  introTextUpdate,
 } from "../../models/website/homeModel.js";
 import fs from "fs/promises";
 import path from "path";
@@ -62,10 +63,31 @@ export const carouselDeleteController = async (req, res) => {
 
 export const introTextController = async (req, res) => {
   try {
-    const text = await fetchText();
+    const text = await introTextDisplay();
     res.json(text);
   } catch (error) {
     console.error("Fetch error:", error);
     res.status(500).json({ message: "Error fetching IntroText" });
+  }
+};
+
+export const introTextUpdateController = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { content } = req.body;
+
+    if (!content) {
+      return res.status(400).json({ message: "Content is required" });
+    }
+
+    const updatedText = await introTextUpdate(id, content);
+    if (!updatedText) {
+      return res.status(404).json({ message: "Text not found" });
+    }
+
+    res.json({ message: "Text updated successfully", content: updatedText });
+  } catch (error) {
+    console.error("Update error:", error);
+    res.status(500).json({ message: "Error updating text" });
   }
 };

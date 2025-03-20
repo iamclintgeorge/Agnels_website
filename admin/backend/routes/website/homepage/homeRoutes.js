@@ -4,6 +4,7 @@ import {
   carouselDisplayController,
   carouselDeleteController,
   introTextController,
+  introTextUpdateController,
 } from "../../../controllers/website/homeController.js";
 import multer from "multer";
 import path from "path";
@@ -39,5 +40,6 @@ router.post("/carousel", upload.single("image"), carouselUploadController);
 router.get("/carousel", carouselDisplayController);
 router.delete("/carousel/:id", carouselDeleteController);
 router.get("/introtext", introTextController);
+router.put("/introtext/:id", introTextUpdateController);
 
 export default router;

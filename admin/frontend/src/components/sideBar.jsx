@@ -6,6 +6,7 @@ const SideBar = () => {
   const { user } = useAuth();
   const [isHomeOpen, setIsHomeOpen] = useState(false);
   const [isAboutOpen, setIsAboutOpen] = useState(false);
+  const [isUserOpen, setIsUserOpen] = useState(false);
 
   const handleHomeClick = () => {
     setIsHomeOpen((prevstate) => !prevstate);
@@ -13,6 +14,10 @@ const SideBar = () => {
 
   const handleAboutClick = () => {
     setIsAboutOpen((prevstate) => !prevstate);
+  };
+
+  const handleUserClick = () => {
+    setIsUserOpen((prevstate) => !prevstate);
   };
 
   if (!user) {
@@ -80,9 +85,22 @@ const SideBar = () => {
         {(user.role === "teach_staff" || user.role === "superAdmin") && (
           <Link to="/student">Students Corner</Link>
         )}
+
         {(user.role === "hod" || user.role === "superAdmin") && (
-          <Link to="/signup">Create User</Link>
+          <p className="cursor-pointer mb-0 pb-0" onClick={handleUserClick}>
+            Manage Users
+          </p>
         )}
+
+        {isUserOpen && (
+          <div className="pr-5 pl-4 space-y-4 leading-6">
+            <p className="-mt-5">
+              <Link to="/signup">Create User</Link>
+            </p>
+            <p>Delete User</p>
+          </div>
+        )}
+
         <p>Logs</p>
       </div>
     </div>

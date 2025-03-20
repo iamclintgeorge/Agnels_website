@@ -54,7 +54,7 @@ function AboutUs() {
   const isMobile = useMediaQuery({ maxWidth: 768 });
   const isTablet = useMediaQuery({ minWidth: 768, maxWidth: 1024 });
   const [images, setImages] = useState([]);
-  const [introtext, setIntroText] = useState([]);
+  const [introText, setIntroText] = useState([]);
 
   useEffect(() => {
     fetchImages();
@@ -81,7 +81,7 @@ function AboutUs() {
       console.log("Fetched Text:", response.data);
       setIntroText(response.data);
     } catch (err) {
-      console.error("Error loading images:", err);
+      console.error("Error loading text:", err);
     }
   };
 
@@ -135,9 +135,12 @@ function AboutUs() {
             ABOUT US
           </h2>
           <div className="w-32 h-[4px] bg-[#AE9142] mt-[10px] mb-[20px] ml-10 top-[66px] left-[874px]"></div>
-          <p className="text-base leading-8 tracking-wider text-justify font-librefranklin text-[#000000] pt-[30px] pl-[90px] w-[755px] mt-[25px] ">
-            {introtext.length > 0 && introtext[0].Content}
-          </p>
+          <p
+            className="text-base leading-8 tracking-wider text-justify font-librefranklin text-[#000000] pt-[30px] pl-[90px] w-[755px] mt-[25px]"
+            dangerouslySetInnerHTML={{
+              __html: introText.length > 0 ? introText[0].Content : "",
+            }}
+          />
         </div>
         <div className="flex justify-center items-center flex-1 w-[320px] h-[494px]">
           <img
