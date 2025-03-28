@@ -84,6 +84,12 @@ function Signup() {
                 </option>
                 <option value="superAdmin">Super Admin</option>
                 <option value="hod">HOD</option>
+                <option value="compHod">HOD (Computer)</option>
+                <option value="mechHod">HOD (Mechanical)</option>
+                <option value="extcHod">HOD (EXTC)</option>
+                <option value="electricalHod">HOD (Electrical)</option>
+                <option value="itHod">HOD (IT)</option>
+                <option value="bshHod">HOD (BSH)</option>
                 <option value="teach_staff">Teaching Staff</option>
                 <option value="non_teach_staff">Non-Teaching Staff</option>
                 <option value="principal">Principal</option>

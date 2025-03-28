@@ -54,22 +54,29 @@ const NavBar = () => {
               <SearchBar />
             </div>
             <div className="text-white flex flex-row text-sm pr-10">
+              <p className="cursor-pointer mr-5 pt-[22px] font-light font-inter">
+                {user.userName}
+                {/* Gautam Tiwari Chowdhary */}
+              </p>
               <div className="relative inline-block">
-                <p
-                  className="cursor-pointer mr-7 pt-[22px] font-light font-inter"
+                <button
+                  className="text-xs pt-6 pb-5 pr-6"
                   onClick={handleUserClick}
                 >
-                  {user.userName}
-                  {/* Gautam Tiwari Chowdhary */}
-                </p>
+                  &#9660;
+                </button>
+
                 {isUserOpen && (
-                  <div className="absolute left-24 transform -translate-x-full py-4 px-5 space-y-4 bg-[#0C2340] text-nowrap">
+                  <div className="absolute left-16 transform -translate-x-full py-4 px-5 space-y-4 bg-[#0C2340] text-nowrap">
                     <Link to="/profile">
                       <p>Edit Profile</p>
                     </Link>
-                    <Link to="/hoddesk">
-                      <p className="mt-5">HOD's Desk</p>
-                    </Link>
+
+                    {(user.role === "hod" || user.role === "superAdmin") && (
+                      <Link to="/hoddesk">
+                        <p className="mt-5">HOD's Desk</p>
+                      </Link>
+                    )}
 
                     {(user.role === "principal" ||
                       user.role === "superAdmin") && (
