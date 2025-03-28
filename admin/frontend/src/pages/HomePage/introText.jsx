@@ -41,7 +41,7 @@ const IntroText = () => {
       return;
     }
 
-    const id = introText[0].id; // Changed from Id to id
+    const id = introText[0].id;
     console.log("Updating with id:", id);
     try {
       await axios.put(`http://localhost:3663/api/home/introtext/${id}`, {

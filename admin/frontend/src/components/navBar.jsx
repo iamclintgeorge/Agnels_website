@@ -66,9 +66,18 @@ const NavBar = () => {
                     <Link to="/hoddesk">
                       <p className="mt-5">HOD's Desk</p>
                     </Link>
-                    <Link to="/principaldesk">
-                      <p className="mt-5">Principal's Desk</p>
+
+                    {(user.role === "principal" ||
+                      user.role === "superAdmin") && (
+                      <Link to="/principaldesk">
+                        <p className="mt-5">Principal's Desk</p>
+                      </Link>
+                    )}
+
+                    <Link to="/login">
+                      <p className="mt-5">Switch User</p>
                     </Link>
+
                     <button onClick={handleSignout}>Sign Out</button>
                   </div>
                 )}
