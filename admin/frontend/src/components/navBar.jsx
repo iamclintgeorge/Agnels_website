@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../services/useAuthCheck";
+import SearchBar from "./searchBar";
 
 const NavBar = () => {
   const [isUserOpen, setIsUserOpen] = useState(false);
@@ -49,6 +50,9 @@ const NavBar = () => {
                 </p>
               </div>
             </Link>
+            <div>
+              <SearchBar />
+            </div>
             <div className="text-white flex flex-row text-sm pr-10">
               <div className="relative inline-block">
                 <p
