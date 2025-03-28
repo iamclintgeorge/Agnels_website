@@ -5,6 +5,7 @@ import userRoutes from "./routes/admin/userRoutes.js";
 import dotenv from "dotenv";
 import session from "express-session";
 import homeRoutes from "./routes/website/homepage/homeRoutes.js";
+import aboutusRoutes from "./routes/website/homepage/aboutusRoutes.js";
 import path from "path";
 import { fileURLToPath } from "url";
 import trainingPlacementRoutes from "./routes/trainingPlacement.js";
@@ -58,6 +59,7 @@ app.use("/uploads", express.static(path.join(__dirname, "public", "uploads")));
 app.use("/api", userRoutes);
 app.use("/api/home", homeRoutes);
 app.use("/api/training-placement", trainingPlacementRoutes);
+app.use("/api/aboutus", aboutusRoutes);
 
 app.listen(port, () => {
   console.log(`Server Started at URI http://localhost:${port}/`);

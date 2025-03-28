@@ -56,7 +56,7 @@ export const carouselDelete = async (id) => {
 
 export const introTextDisplay = async () => {
   const query = `
-      SELECT * FROM introText WHERE Section = 'aboutUsText';
+      SELECT * FROM infoText WHERE Section = 'aboutUsText';
     `;
 
   try {
@@ -74,7 +74,7 @@ export const introTextUpdate = async (id, content) => {
   }
 
   const query = `
-    UPDATE introText 
+    UPDATE infoText 
     SET Content = ?, Updated_At = CURRENT_TIMESTAMP 
     WHERE id = ?
   `;
