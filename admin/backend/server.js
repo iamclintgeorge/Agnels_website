@@ -1,14 +1,15 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import userRoutes from "./routes/admin/userRoutes.js";
 import dotenv from "dotenv";
 import session from "express-session";
-import homeRoutes from "./routes/website/homepage/homeRoutes.js";
-import aboutusRoutes from "./routes/website/homepage/aboutusRoutes.js";
+// import userRoutes from "./routes/admin/userRoutes.js";
+// import homeRoutes from "./routes/website/homepage/homeRoutes.js";
+// import aboutusRoutes from "./routes/website/homepage/aboutusRoutes.js";
+// import trainingPlacementRoutes from "./routes/trainingPlacement.js";
 import path from "path";
 import { fileURLToPath } from "url";
-import trainingPlacementRoutes from "./routes/trainingPlacement.js";
+import routes from "./routes/routes.js";
 
 dotenv.config();
 
@@ -56,10 +57,12 @@ const __dirname = path.dirname(__filename);
 app.use("/uploads", express.static(path.join(__dirname, "public", "uploads")));
 
 // Routes
-app.use("/api", userRoutes);
-app.use("/api/home", homeRoutes);
-app.use("/api/training-placement", trainingPlacementRoutes);
-app.use("/api/aboutus", aboutusRoutes);
+app.use("/", routes);
+
+// app.use("/api", userRoutes);
+// app.use("/api/home", homeRoutes);
+// app.use("/api/training-placement", trainingPlacementRoutes);
+// app.use("/api/aboutus", aboutusRoutes);
 
 app.listen(port, () => {
   console.log(`Server Started at URI http://localhost:${port}/`);
