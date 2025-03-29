@@ -41,6 +41,8 @@
 ## Backend Folder Structure
 
 ```
+
+
                         admin -------------------------------------
                           |                                       |
 server.js -> routes -> routes.js  -> website ---------------> controllers ---------> models

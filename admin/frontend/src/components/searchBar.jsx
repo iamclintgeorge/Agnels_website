@@ -65,7 +65,7 @@ const SearchBar = () => {
           </button>
         )}
         {!isActive && !query && (
-          <div className="absolute text-sm right-3 font-thin text-[#3e3d3d] cursor-pointer border-2 border-[#959595] rounded-md px-3 py-1">
+          <div className="absolute text-sm right-3 font-thin text-[#3e3d3d] cursor-pointer border-2 border-[#cbcbcb] rounded-md px-3 py-1">
             /
           </div>
         )}
