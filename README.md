@@ -38,7 +38,7 @@
 <br>
 <br>
 
-## Backend Folder Structure
+## Backend Folder Structure (For API Endpoints)
 
 ```
 
