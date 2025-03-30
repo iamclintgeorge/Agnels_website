@@ -28,14 +28,24 @@ const SideBar = () => {
     <div className="bg-[#0C2340] mt-16 min-h-screen max-h-auto w-64 text-white pb-10 sticky top-0 z-0">
       <div className="flex flex-col pt-9 pl-8 space-y-9 text-base font-light font-inter">
         <Link to="/">
-          <p>Dashboard</p>
+          <p className="flex justify-between">Dashboard</p>
         </Link>
         <div>
-          <p className="cursor-pointer" onClick={handleHomeClick}>
-            Home Page
+          <p
+            className="cursor-pointer flex justify-between items-center pr-8"
+            onClick={handleHomeClick}
+          >
+            Home Page{" "}
+            <span
+              className={`transform transition-transform ${
+                isHomeOpen ? "rotate-90" : ""
+              }`}
+            >
+              &gt;
+            </span>
           </p>
           {isHomeOpen && (
-            <div className="pt-2 pr-5 pl-4 leading-10">
+            <div className="pt-2 pr-8 pl-4 leading-10">
               <Link to="/home/carousel">
                 <p>Image Carousel</p>
               </Link>
@@ -51,11 +61,21 @@ const SideBar = () => {
           )}
         </div>
         <div>
-          <p className="cursor-pointer" onClick={handleAboutClick}>
-            About Us
+          <p
+            className="cursor-pointer flex justify-between items-center pr-8"
+            onClick={handleAboutClick}
+          >
+            About Us{" "}
+            <span
+              className={`transform transition-transform ${
+                isAboutOpen ? "rotate-90" : ""
+              }`}
+            >
+              &gt;
+            </span>
           </p>
           {isAboutOpen && (
-            <div className="pt-2 pr-5 pl-4 space-y-4 leading-6">
+            <div className="pt-2 pr-8 pl-4 space-y-4 leading-6">
               <p>History</p>
               <p>Vision and Mission</p>
               <p>Trustees</p>
@@ -72,28 +92,56 @@ const SideBar = () => {
             </div>
           )}
         </div>
-        <p>Departments</p>
-        <p>Admission</p>
-        <p>Academics</p>
+        <p className="flex justify-between pr-8">
+          Departments <span>&gt;</span>
+        </p>
+        <p className="flex justify-between pr-8">
+          Admission <span>&gt;</span>
+        </p>
+        <p className="flex justify-between pr-8">
+          Academics <span>&gt;</span>
+        </p>
 
-        <Link to="/training-placement">Training and Placement</Link>
+        <Link to="/training-placement" className="flex justify-between pr-8">
+          Training and Placement <span>&gt;</span>
+        </Link>
 
-        <p>Research and Publication</p>
-        <p>Human Resource</p>
-        <p>Alumni Page</p>
-        <p>Downloads Page</p>
+        <p className="flex justify-between pr-8">
+          Research and Publication <span>&gt;</span>
+        </p>
+        <p className="flex justify-between pr-8">
+          Human Resource <span>&gt;</span>
+        </p>
+        <p className="flex justify-between pr-8">
+          Alumni Page <span>&gt;</span>
+        </p>
+        <p className="flex justify-between pr-8">
+          Downloads Page <span>&gt;</span>
+        </p>
         {(user.role === "teach_staff" || user.role === "superAdmin") && (
-          <Link to="/student">Students Corner</Link>
+          <Link to="/student" className="flex justify-between pr-8">
+            Students Corner <span>&gt;</span>
+          </Link>
         )}
 
         {(user.role === "hod" || user.role === "superAdmin") && (
-          <p className="cursor-pointer mb-0 pb-0" onClick={handleUserClick}>
-            Manage Users
+          <p
+            className="cursor-pointer mb-0 pb-0 flex justify-between items-center pr-8"
+            onClick={handleUserClick}
+          >
+            Manage Users{" "}
+            <span
+              className={`transform transition-transform ${
+                isUserOpen ? "rotate-90" : ""
+              }`}
+            >
+              &gt;
+            </span>
           </p>
         )}
 
         {isUserOpen && (
-          <div className="pr-5 pl-4 space-y-4 leading-6">
+          <div className="pr-8 pl-4 space-y-4 leading-6">
             <p className="-mt-5">
               <Link to="/signup">Create User</Link>
             </p>
@@ -101,7 +149,7 @@ const SideBar = () => {
           </div>
         )}
 
-        <p>Logs</p>
+        <p className="flex justify-between pr-8">Logs</p>
       </div>
     </div>
   );
