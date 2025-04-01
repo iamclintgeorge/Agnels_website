@@ -38,7 +38,7 @@ function Signup() {
 
   return (
     <div className="flex flex-row justify-center items-center h-screen bg-[#0C2340]">
-      <div className="bg-white h-auto w-[24.25vw] rounded-md">
+      <div className="bg-white h-auto w-80 rounded-md">
         <div className="flex flex-1 flex-col">
           <div className="pl-7 pt-10">
             <form onSubmit={handleSubmit}>
@@ -74,7 +74,7 @@ function Signup() {
                 onChange={(e) => setEmail(e.target.value)}
               />
               <select
-                className="bg-gray-200 pl-3 pr-[7vw] py-2 mb-5"
+                className="bg-gray-200 pl-3 pr-[5.7rem] py-2 mb-5"
                 name="role"
                 value={role}
                 onChange={(e) => setRole(e.target.value)}
