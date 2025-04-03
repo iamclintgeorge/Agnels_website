@@ -7,6 +7,7 @@ import {
 } from "../../models/website/homeModel.js";
 import fs from "fs/promises";
 import path from "path";
+import db from "../../config/db.js";
 
 export const carouselUploadController = async (req, res) => {
   try {
@@ -89,5 +90,66 @@ export const introTextUpdateController = async (req, res) => {
   } catch (error) {
     console.error("Update error:", error);
     res.status(500).json({ message: "Error updating text" });
+  }
+};
+
+export const announcementsCreateController = async (req, res) => {
+  // console.log("hi");
+  const sql = "INSERT INTO announcements (subject, description, attachment, created_by) VALUES (?, ?, ?, ?)";
+  const { subject, description, attachment, created_by } = req.body;
+  try{
+  const values = [subject, description, attachment, created_by];
+  const [result] = await db.promise().query(sql, values);
+  res.json({message: "Inserted Successfully"});
+  }
+  catch (error){
+    console.error("Database Insertion Error: ", error);
+    throw error;
+  }
+};
+
+export const announcementsFetchController = async (req, res) => {
+  // console.log("hi");
+  const sql = `SELECT * FROM announcements WHERE deleted = '0'`;
+  try{
+  // const values = [subject, description, attachment, created_by];
+  const [result] = await db.promise().query(sql);
+  res.json({result:result});
+  }
+  catch (error){
+    console.error("Database Fetch Error: ", error);
+    throw error;
+  }
+};
+
+export const announcementsEditController = async (req, res) => {
+  // console.log("hi");
+  const sql = "UPDATE announcements SET subject = ?, description = ?, attachment = ?, created_by = ? WHERE id = ?";
+  const { subject, description, attachment, created_by } = req.body;
+  const {id} = req.params;
+  try{
+  const values = [subject, description, attachment, created_by, id];
+  const [result] = await db.promise().query(sql, values);
+  res.json({message: "Edited Successfully"});
+  }
+  catch (error){
+    console.error("Database Edit Error: ", error);
+    throw error;
+  }
+};
+
+export const announcementsDeleteController = async (req, res) => {
+  console.log("hi");
+  const sql = `UPDATE announcements SET deleted = '1' WHERE id = ?`;
+  const { id } = req.params;
+  console.log(id);
+  try{
+  const values = [id];
+  const [result] = await db.promise().query(sql, values);
+  res.json({message: "Deleted Successfully"});
+  }
+  catch (error){
+    console.error("Database Delete Error: ", error);
+    throw error;
   }
 };
