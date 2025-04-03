@@ -10,5 +10,6 @@ router.use("/api", userRoutes);
 router.use("/api/home", homeRoutes);
 router.use("/api/training-placement", trainingPlacementRoutes);
 router.use("/api/aboutus", aboutusRoutes);
+// router.use("/api/announcements", announcementRoutes);
 
 export default router;

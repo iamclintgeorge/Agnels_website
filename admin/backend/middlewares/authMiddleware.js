@@ -1,9 +1,9 @@
 export const authMiddleware = (req, res, next) => {
-  console.log("Cookies:", req.cookies);
+  // console.log("Cookies:", req.cookies);
   const sessionId = req.cookies["connect.sid"];
-  console.log("Session ID in cookie:", sessionId);
-  console.log("req.session", req.session);
-  console.log("req.session.user", req.session.user);
+  // console.log("Session ID in cookie:", sessionId);
+  // console.log("req.session", req.session);
+  // console.log("req.session.user", req.session.user);
 
   if (!sessionId || !req.session || !req.session.user) {
     console.log("sessionId not found in authMiddleware");
