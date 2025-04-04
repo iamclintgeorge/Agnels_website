@@ -5,6 +5,10 @@ import {
   carouselDeleteController,
   introTextController,
   introTextUpdateController,
+  announcementsCreateController,
+  announcementsFetchController,
+  announcementsEditController,
+  announcementsDeleteController,
 } from "../../../controllers/website/homeController.js";
 import multer from "multer";
 import path from "path";
@@ -41,5 +45,10 @@ router.get("/carousel", carouselDisplayController);
 router.delete("/carousel/:id", carouselDeleteController);
 router.get("/introtext", introTextController);
 router.put("/introtext/:id", introTextUpdateController);
+router.post("/announcements", announcementsCreateController);
+router.get("/announcements", announcementsFetchController);
+router.put("/announcements/:id", announcementsEditController);
+router.put('/delete-announcements/:id', announcementsDeleteController);
+// router.put("/announcements/multiple", announcementsMdeleteController);
 
 export default router;
