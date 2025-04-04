@@ -1,9 +1,15 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../services/useAuthCheck";
+
+// Create a custom context for section selection
+export const SectionContext = React.createContext({
+  setSelectedSection: () => {},
+});
 
 const SideBar = () => {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [isHomeOpen, setIsHomeOpen] = useState(false);
   const [isAboutOpen, setIsAboutOpen] = useState(false);
   const [isUserOpen, setIsUserOpen] = useState(false);
@@ -18,6 +24,22 @@ const SideBar = () => {
 
   const handleUserClick = () => {
     setIsUserOpen((prevstate) => !prevstate);
+  };
+
+  // Function to handle section selection directly
+  const handleSectionSelect = (section) => {
+    // Store the section in localStorage for backup
+    localStorage.setItem('aboutUsSection', section);
+    
+    // Navigate to about-us page and then dispatch a custom event
+    navigate("/about-us");
+    
+    // Dispatch a custom event that AboutUsAdmin can listen for
+    setTimeout(() => {
+      window.dispatchEvent(new CustomEvent('section-selected', { 
+        detail: { section } 
+      }));
+    }, 50);
   };
 
   if (!user) {
@@ -75,20 +97,46 @@ const SideBar = () => {
             </span>
           </p>
           {isAboutOpen && (
-            <div className="pt-2 pr-8 pl-4 space-y-4 leading-6">
-              <p>History</p>
-              <p>Vision and Mission</p>
-              <p>Trustees</p>
-              <p>Managing Director’s Desk</p>
-              <p>Principal’s Desk</p>
-              <p>Governance</p>
-              <p>Audit Report and Affiliations</p>
-              <p>Administrations and Committees</p>
-              <p>Institute Roadmap</p>
-              <p>Service Regulation</p>
-              <p>Qualification and Eligibility norms for Recruitment</p>
-              <p>Best Practices</p>
-              <p>Mandatory Disclosures</p>
+            <div className="pt-2 pr-8 pl-4 leading-10">
+              <p className="cursor-pointer" onClick={() => handleSectionSelect('History')}>
+                History
+              </p>
+              <p className="cursor-pointer" onClick={() => handleSectionSelect('Vision and Mission')}>
+                Vision and Mission
+              </p>
+              <p className="cursor-pointer" onClick={() => handleSectionSelect('Trustees')}>
+                Trustees
+              </p>
+              <p className="cursor-pointer" onClick={() => handleSectionSelect('Managing Director\'s Desk')}>
+                Managing Director's Desk
+              </p>
+              <p className="cursor-pointer" onClick={() => handleSectionSelect('Principal\'s Desk')}>
+                Principal's Desk
+              </p>
+              <p className="cursor-pointer" onClick={() => handleSectionSelect('Governance')}>
+                Governance
+              </p>
+              <p className="cursor-pointer" onClick={() => handleSectionSelect('Audit Report and Affiliations')}>
+                Audit Report and Affiliations
+              </p>
+              <p className="cursor-pointer" onClick={() => handleSectionSelect('Administrations and Committees')}>
+                Administrations and Committees
+              </p>
+              <p className="cursor-pointer" onClick={() => handleSectionSelect('Institute Roadmap')}>
+                Institute Roadmap
+              </p>
+              <p className="cursor-pointer" onClick={() => handleSectionSelect('Service Regulation')}>
+                Service Regulation
+              </p>
+              <p className="cursor-pointer" onClick={() => handleSectionSelect('Qualification and Eligibility norms for Recruitment')}>
+                Qualification and Eligibility norms for Recruitment
+              </p>
+              <p className="cursor-pointer" onClick={() => handleSectionSelect('Best Practices')}>
+                Best Practices
+              </p>
+              <p className="cursor-pointer" onClick={() => handleSectionSelect('Mandatory Disclosures')}>
+                Mandatory Disclosures
+              </p>
             </div>
           )}
         </div>

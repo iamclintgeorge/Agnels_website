@@ -2,6 +2,10 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+// Configure axios defaults
+axios.defaults.withCredentials = true;
+axios.defaults.baseURL = 'http://localhost:3663';
+
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -14,24 +18,28 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const checkAuth = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:3663/api/check-auth",
-          {
-            withCredentials: true,
-          }
-        );
-        if (response.data.authenticated) {
-          setIsAuthenticated(true);
+        console.log("Checking authentication...");
+        
+        const response = await axios.get("/api/check-auth");
+        
+        console.log("Auth response:", response.data);
+        
+        if (response.data.user) {
           setUser(response.data.user);
-          console.log("setUser", user);
+          setIsAuthenticated(true);
+          console.log("User authenticated:", response.data.user);
         } else {
           // Only navigate if we're not already on the login page
           if (window.location.pathname !== "/login") {
+            console.log("No user in response, redirecting to login");
             navigate("/login");
           }
+          setIsAuthenticated(false);
         }
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Auth check error:", error);
+        setIsAuthenticated(false);
+        
         if (error.response) {
           setMessage(
             error.response.data.message || "You are not authenticated."
@@ -41,16 +49,17 @@ export const AuthProvider = ({ children }) => {
             error.response.status === 401 &&
             window.location.pathname !== "/login"
           ) {
+            console.log("Unauthorized, redirecting to login");
             navigate("/login");
           }
         } else {
-          setMessage("Failed to load message due to network issue.");
+          setMessage("Failed to check authentication due to network issue.");
         }
-        setIsAuthenticated(false);
       } finally {
         setLoading(false);
       }
     };
+    
     checkAuth();
   }, [navigate]);
 

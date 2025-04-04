@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us API Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .section {
+            margin-bottom: 20px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .response {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f5f5f5;
+            border-radius: 3px;
+            white-space: pre-wrap;
+        }
+        button {
+            margin: 5px;
+            padding: 8px 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        textarea {
+            width: 100%;
+            min-height: 100px;
+            margin: 10px 0;
+            font-family: monospace;
+        }
+    </style>
+</head>
+<body>
+    <h1>About Us API Test</h1>
+
+    <div class="section">
+        <h2>GET All Sections</h2>
+        <button onclick="getAllSections()">Get All Sections</button>
+        <div id="getAllResponse" class="response"></div>
+    </div>
+
+    <div class="section">
+        <h2>GET Section Content</h2>
+        <input type="text" id="getSectionKey" placeholder="Section Key (e.g., History)">
+        <button onclick="getSection()">Get Section</button>
+        <div id="getResponse" class="response"></div>
+    </div>
+
+    <div class="section">
+        <h2>PUT Section Content</h2>
+        <input type="text" id="putSectionKey" placeholder="Section Key (e.g., History)">
+        <textarea id="putContent" placeholder='Enter JSON content'>{
+  "title": "Test Section",
+  "content": "This is a test content."
+}</textarea>
+        <button onclick="updateSection()">Update Section</button>
+        <div id="putResponse" class="response"></div>
+    </div>
+
+    <script>
+        const API_BASE = '/api/aboutus';
+
+        async function displayResponse(elementId, response) {
+            const element = document.getElementById(elementId);
+            try {
+                const formatted = JSON.stringify(response, null, 2);
+                element.textContent = formatted;
+            } catch (error) {
+                element.textContent = response;
+            }
+        }
+
+        async function getAllSections() {
+            try {
+                const response = await fetch(API_BASE);
+                const data = await response.json();
+                displayResponse('getAllResponse', data);
+            } catch (error) {
+                displayResponse('getAllResponse', `Error: ${error.message}`);
+            }
+        }
+
+        async function getSection() {
+            const sectionKey = document.getElementById('getSectionKey').value;
+            if (!sectionKey) {
+                displayResponse('getResponse', 'Error: Please enter a section key');
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/${sectionKey}`);
+                const data = await response.json();
+                displayResponse('getResponse', data);
+            } catch (error) {
+                displayResponse('getResponse', `Error: ${error.message}`);
+            }
+        }
+
+        async function updateSection() {
+            const sectionKey = document.getElementById('putSectionKey').value;
+            if (!sectionKey) {
+                displayResponse('putResponse', 'Error: Please enter a section key');
+                return;
+            }
+
+            const contentText = document.getElementById('putContent').value.trim();
+            let contentObj;
+            try {
+                contentObj = JSON.parse(contentText);
+            } catch (error) {
+                displayResponse('putResponse', `Error: Invalid JSON content - ${error.message}`);
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE}/${sectionKey}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(contentObj)
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                displayResponse('putResponse', data);
+            } catch (error) {
+                displayResponse('putResponse', `Error: ${error.message}`);
+            }
+        }
+    </script>
+</body>
+</html> 

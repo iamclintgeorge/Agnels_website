@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Test</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background-color: #f5f5f5;
+      margin: 0;
+    }
+    .container {
+      background-color: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      width: 400px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    input {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #0C2340;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover {
+      background-color: #0a1c33;
+    }
+    .result {
+      margin-top: 20px;
+      padding: 10px;
+      border-radius: 4px;
+      word-break: break-all;
+      white-space: pre-wrap;
+      max-height: 200px;
+      overflow-y: auto;
+    }
+    .success {
+      background-color: #e6fff5;
+      border: 1px solid #00cc66;
+      color: #00802b;
+    }
+    .error {
+      background-color: #ffe6e6;
+      border: 1px solid #ff6666;
+      color: #cc0000;
+    }
+    .debug {
+      margin-top: 15px;
+      font-size: 14px;
+    }
+    .tabs {
+      display: flex;
+      margin-bottom: 15px;
+      border-bottom: 1px solid #ddd;
+    }
+    .tab {
+      padding: 10px 15px;
+      cursor: pointer;
+      margin-right: 5px;
+    }
+    .tab.active {
+      border-bottom: 2px solid #0C2340;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>API Login Test</h1>
+    
+    <div class="tabs">
+      <div class="tab active" data-tab="login">Login</div>
+      <div class="tab" data-tab="check-auth">Check Auth</div>
+      <div class="tab" data-tab="logout">Logout</div>
+      <div class="tab" data-tab="status">API Status</div>
+    </div>
+    
+    <div id="login-tab" class="tab-content">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="Enter your email" value="dfg@dfg.com">
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" id="password" placeholder="Enter your password" value="dfg">
+      </div>
+      <button onclick="login()">Login</button>
+      <div id="login-result" class="result"></div>
+    </div>
+    
+    <div id="check-auth-tab" class="tab-content" style="display: none;">
+      <button onclick="checkAuth()">Check Authentication</button>
+      <div id="auth-result" class="result"></div>
+    </div>
+    
+    <div id="logout-tab" class="tab-content" style="display: none;">
+      <button onclick="logout()">Logout</button>
+      <div id="logout-result" class="result"></div>
+    </div>
+    
+    <div id="status-tab" class="tab-content" style="display: none;">
+      <button onclick="checkStatus()">Check API Status</button>
+      <div id="status-result" class="result"></div>
+    </div>
+    
+    <div class="debug">
+      <h3>Session Debug</h3>
+      <div id="session-debug"></div>
+    </div>
+  </div>
+
+  <script>
+    const API_URL = 'http://localhost:3663/api';
+
+    function showResult(id, data, isError = false) {
+      const resultElement = document.getElementById(id);
+      resultElement.textContent = typeof data === 'object' ? JSON.stringify(data, null, 2) : data;
+      resultElement.className = `result ${isError ? 'error' : 'success'}`;
+    }
+
+    function updateSessionDebug() {
+      // Get cookies
+      const cookies = document.cookie.split(';').reduce((acc, cookie) => {
+        const [key, value] = cookie.trim().split('=');
+        if (key) acc[key] = value;
+        return acc;
+      }, {});
+      
+      document.getElementById('session-debug').innerHTML = `
+        <strong>Cookies:</strong> ${document.cookie || 'No cookies found'}<br>
+        <strong>connect.sid:</strong> ${cookies['connect.sid'] || 'Not found'}<br>
+      `;
+    }
+
+    async function login() {
+      try {
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        
+        const response = await fetch(`${API_URL}/login`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ emailId: email, password }),
+          credentials: 'include'
+        });
+        
+        const data = await response.json();
+        showResult('login-result', data, !response.ok);
+        updateSessionDebug();
+      } catch (error) {
+        showResult('login-result', error.message, true);
+      }
+    }
+
+    async function checkAuth() {
+      try {
+        const response = await fetch(`${API_URL}/check-auth`, {
+          credentials: 'include'
+        });
+        
+        const data = await response.json();
+        showResult('auth-result', data, !response.ok);
+        updateSessionDebug();
+      } catch (error) {
+        showResult('auth-result', error.message, true);
+      }
+    }
+
+    async function logout() {
+      try {
+        const response = await fetch(`${API_URL}/logout`, {
+          method: 'POST',
+          credentials: 'include'
+        });
+        
+        const data = await response.json();
+        showResult('logout-result', data, !response.ok);
+        updateSessionDebug();
+      } catch (error) {
+        showResult('logout-result', error.message, true);
+      }
+    }
+
+    async function checkStatus() {
+      try {
+        const response = await fetch(`${API_URL}/status`);
+        const data = await response.json();
+        showResult('status-result', data, !response.ok);
+      } catch (error) {
+        showResult('status-result', error.message, true);
+      }
+    }
+
+    // Tab switching
+    document.querySelectorAll('.tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        // Update active tab
+        document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        
+        // Hide all tab contents
+        document.querySelectorAll('.tab-content').forEach(content => {
+          content.style.display = 'none';
+        });
+        
+        // Show selected tab content
+        const tabId = tab.getAttribute('data-tab');
+        document.getElementById(`${tabId}-tab`).style.display = 'block';
+      });
+    });
+
+    // Initialize
+    updateSessionDebug();
+  </script>
+</body>
+</html> 
