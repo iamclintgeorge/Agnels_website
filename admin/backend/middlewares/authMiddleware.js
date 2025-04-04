@@ -1,15 +1,17 @@
 export const authMiddleware = (req, res, next) => {
+  console.log("Session:", req.session);
+  console.log("Session user:", req.session?.user);
+  
   // console.log("Cookies:", req.cookies);
   const sessionId = req.cookies["connect.sid"];
   // console.log("Session ID in cookie:", sessionId);
-  // console.log("req.session", req.session);
-  // console.log("req.session.user", req.session.user);
 
   if (!sessionId || !req.session || !req.session.user) {
-    console.log("sessionId not found in authMiddleware");
+    console.log("No session or user found");
     return res.status(401).json({ message: "You are not authenticated" });
   }
 
+  // Set req.user for use in other middlewares
   req.user = req.session.user;
   next();
 };

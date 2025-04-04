@@ -14,6 +14,7 @@ import {
   Best_Practices,
   Mandatory_Disclosure
 } from "./aboutusContent";
+// import DynamicManagingDirectorDesk from "./DynamicManagingDirectorDesk";
 // import { useNavigate } from "react-router-dom";
 
 const Aboutus = () => {
