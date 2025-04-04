@@ -1,18 +1,27 @@
+// import express from "express";
+// import { principalDisplayController } from "../../../controllers/website/aboutusController.js";
+
+// const router = express.Router();
+
+// router.get("/principaldesk", principalDisplayController);
+
+// export default router;
+
 import express from "express";
 import multer from "multer";
 import path from "path";
 import fs from "fs";
-import { 
+import {
   principalDisplayController,
   getSectionContent,
   updateSectionContent,
-  getAllSections
+  getAllSections,
 } from "../../../controllers/website/aboutusController.js";
 
 const router = express.Router();
 
 // Configure multer for file uploads
-const uploadsDir = path.join(process.cwd(), 'uploads', 'documents');
+const uploadsDir = path.join(process.cwd(), "uploads", "documents");
 
 // Ensure uploads directory exists
 if (!fs.existsSync(uploadsDir)) {
@@ -25,29 +34,31 @@ const storage = multer.diskStorage({
   },
   filename: (req, file, cb) => {
     // Generate a unique filename with section prefix
-    const section = req.body.section ? req.body.section.replace(/\s+/g, '_').toLowerCase() : '';
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    const section = req.body.section
+      ? req.body.section.replace(/\s+/g, "_").toLowerCase()
+      : "";
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
     cb(null, `${section}-${uniqueSuffix}${path.extname(file.originalname)}`);
-  }
+  },
 });
 
-const upload = multer({ 
+const upload = multer({
   storage,
   limits: { fileSize: 10 * 1024 * 1024 }, // 10MB limit
   fileFilter: (req, file, cb) => {
     // Accept only PDF files
-    if (file.mimetype === 'application/pdf') {
+    if (file.mimetype === "application/pdf") {
       cb(null, true);
     } else {
-      cb(new Error('Only PDF files are allowed'), false);
+      cb(new Error("Only PDF files are allowed"), false);
     }
-  }
+  },
 });
 
 // Configure multer for image uploads
 const imageStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const uploadDir = path.join(process.cwd(), 'uploads', 'images');
+    const uploadDir = path.join(process.cwd(), "uploads", "images");
     if (!fs.existsSync(uploadDir)) {
       fs.mkdirSync(uploadDir, { recursive: true });
     }
@@ -55,25 +66,29 @@ const imageStorage = multer.diskStorage({
   },
   filename: (req, file, cb) => {
     // Generate a unique filename with section prefix
-    const section = req.body.section ? req.body.section.replace(/\s+/g, '_').toLowerCase() : '';
-    const field = req.body.field ? req.body.field.replace(/\./g, '-').replace(/\[|\]/g, '-') : '';
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    const section = req.body.section
+      ? req.body.section.replace(/\s+/g, "_").toLowerCase()
+      : "";
+    const field = req.body.field
+      ? req.body.field.replace(/\./g, "-").replace(/\[|\]/g, "-")
+      : "";
+    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
     const ext = path.extname(file.originalname);
-    cb(null, `${section}-${field ? field + '-' : ''}${uniqueSuffix}${ext}`);
-  }
+    cb(null, `${section}-${field ? field + "-" : ""}${uniqueSuffix}${ext}`);
+  },
 });
 
-const imageUpload = multer({ 
+const imageUpload = multer({
   storage: imageStorage,
   limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit
   fileFilter: (req, file, cb) => {
     // Accept only image files
-    if (file.mimetype.startsWith('image/')) {
+    if (file.mimetype.startsWith("image/")) {
       cb(null, true);
     } else {
-      cb(new Error('Only image files are allowed'), false);
+      cb(new Error("Only image files are allowed"), false);
     }
-  }
+  },
 });
 
 // Principal's desk route
@@ -92,9 +107,9 @@ router.get("/section/:encodedSectionKey", (req, res) => {
     const { encodedSectionKey } = req.params;
     // Decode the section key from URL
     const sectionKey = decodeURIComponent(encodedSectionKey);
-    
+
     console.log(`Fetching section with decoded key: ${sectionKey}`);
-    
+
     // Set up params for existing controller
     req.params = { sectionKey };
     getSectionContent(req, res);
@@ -102,7 +117,7 @@ router.get("/section/:encodedSectionKey", (req, res) => {
     console.error("Error in section GET route:", error);
     res.status(500).json({
       success: false,
-      message: `Server error: ${error.message}`
+      message: `Server error: ${error.message}`,
     });
   }
 });
@@ -112,33 +127,33 @@ router.post("/update", (req, res) => {
   try {
     // Extract section and content from request body
     const { section, content } = req.body;
-    
+
     console.log("Received update request for section:", section);
     console.log("Content:", JSON.stringify(content, null, 2));
-    
+
     if (!section) {
-      return res.status(400).json({ 
-        success: false, 
-        message: "Section name is required" 
-      });
-    }
-    
-    // Make sure content is an object
-    if (!content || typeof content !== 'object') {
       return res.status(400).json({
         success: false,
-        message: "Content must be a valid object"
+        message: "Section name is required",
       });
     }
-    
+
+    // Make sure content is an object
+    if (!content || typeof content !== "object") {
+      return res.status(400).json({
+        success: false,
+        message: "Content must be a valid object",
+      });
+    }
+
     // Modify the response handler to ensure we get proper response format
     const customRes = {
       json: (data) => {
         // Ensure response has success flag
-        if (!data.hasOwnProperty('success')) {
+        if (!data.hasOwnProperty("success")) {
           data.success = true;
         }
-        
+
         // Send the response
         console.log("Sending response:", data);
         res.json(data);
@@ -146,36 +161,36 @@ router.post("/update", (req, res) => {
       status: (code) => {
         res.status(code);
         return customRes;
-      }
+      },
     };
-    
+
     // Set up the request for the controller
     req.params = { sectionKey: section };
     req.body = content;
-    
+
     // Call the controller with the custom response handler
     updateSectionContent(req, customRes);
   } catch (error) {
     console.error("Error in /update route:", error);
     res.status(500).json({
       success: false,
-      message: `Server error: ${error.message}`
+      message: `Server error: ${error.message}`,
     });
   }
 });
 
 // Route for uploading PDF documents
-router.post("/upload-document", upload.single('file'), (req, res) => {
+router.post("/upload-document", upload.single("file"), (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).json({
         success: false,
-        message: "No file uploaded"
+        message: "No file uploaded",
       });
     }
 
     // Construct the file URL
-    const baseUrl = `${req.protocol}://${req.get('host')}`;
+    const baseUrl = `${req.protocol}://${req.get("host")}`;
     const relativePath = `/uploads/documents/${req.file.filename}`;
     const fileUrl = `${baseUrl}${relativePath}`;
 
@@ -186,29 +201,29 @@ router.post("/upload-document", upload.single('file'), (req, res) => {
       message: "File uploaded successfully",
       fileUrl,
       fileName: req.file.originalname,
-      section: req.body.section
+      section: req.body.section,
     });
   } catch (error) {
     console.error("Error uploading file:", error);
     res.status(500).json({
       success: false,
-      message: `Error uploading file: ${error.message}`
+      message: `Error uploading file: ${error.message}`,
     });
   }
 });
 
 // Route for uploading images
-router.post("/upload-image", imageUpload.single('image'), (req, res) => {
+router.post("/upload-image", imageUpload.single("image"), (req, res) => {
   try {
     if (!req.file) {
       return res.status(400).json({
         success: false,
-        message: "No image uploaded"
+        message: "No image uploaded",
       });
     }
 
     // Construct the file URL
-    const baseUrl = `${req.protocol}://${req.get('host')}`;
+    const baseUrl = `${req.protocol}://${req.get("host")}`;
     const relativePath = `/uploads/images/${req.file.filename}`;
     const imageUrl = `${baseUrl}${relativePath}`;
 
@@ -220,13 +235,13 @@ router.post("/upload-image", imageUpload.single('image'), (req, res) => {
       imageUrl,
       fileName: req.file.originalname,
       section: req.body.section,
-      field: req.body.field
+      field: req.body.field,
     });
   } catch (error) {
     console.error("Error uploading image:", error);
     res.status(500).json({
       success: false,
-      message: `Error uploading image: ${error.message}`
+      message: `Error uploading image: ${error.message}`,
     });
   }
 });
@@ -235,16 +250,16 @@ router.post("/upload-image", imageUpload.single('image'), (req, res) => {
 router.post("/get-section", (req, res) => {
   try {
     const { sectionKey } = req.body;
-    
+
     if (!sectionKey) {
       return res.status(400).json({
         success: false,
-        message: "Section key is required"
+        message: "Section key is required",
       });
     }
-    
+
     console.log(`Fetching section via POST: ${sectionKey}`);
-    
+
     // Reuse the existing controller logic
     req.params = { sectionKey };
     getSectionContent(req, res);
@@ -252,7 +267,7 @@ router.post("/get-section", (req, res) => {
     console.error("Error in get-section route:", error);
     res.status(500).json({
       success: false,
-      message: `Server error: ${error.message}`
+      message: `Server error: ${error.message}`,
     });
   }
 });

@@ -1,8 +1,20 @@
-import { 
+// import { principalTextDisplay } from "../../models/website/aboutusModel.js";
+
+// export const principalDisplayController = async (req, res) => {
+//   try {
+//     const text = await principalTextDisplay();
+//     res.json(text);
+//   } catch (error) {
+//     console.error("Fetch error:", error);
+//     res.status(500).json({ message: "Error fetching Principal's Desk Text" });
+//   }
+// };
+
+import {
   principalTextDisplay,
   getAboutUsSection,
   upsertAboutUsSection,
-  getAllAboutUsSections
+  getAllAboutUsSections,
 } from "../../models/website/aboutusModel.js";
 
 export const principalDisplayController = async (req, res) => {
@@ -46,11 +58,16 @@ export const updateSectionContent = async (req, res) => {
       return res.status(400).json({ error: "Section key is required" });
     }
 
-    if (!contentObject || typeof contentObject !== 'object') {
-      return res.status(400).json({ error: "Content must be a valid JSON object" });
+    if (!contentObject || typeof contentObject !== "object") {
+      return res
+        .status(400)
+        .json({ error: "Content must be a valid JSON object" });
     }
 
-    const updatedSection = await upsertAboutUsSection(sectionKey, contentObject);
+    const updatedSection = await upsertAboutUsSection(
+      sectionKey,
+      contentObject
+    );
     res.json(updatedSection);
   } catch (error) {
     console.error("Error in updateSectionContent:", error);

@@ -66,6 +66,12 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/uploads/documents", express.static(path.join(__dirname, "uploads", "documents")));
 app.use("/uploads/images", express.static(path.join(__dirname, "uploads", "images")));
 
+//Excerpt from Leonardo's Code
+// app.use(express.static(path.join(__dirname, "public")));
+// app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+// app.use("/uploads/documents", express.static(path.join(__dirname, "uploads", "documents")));
+// app.use("/uploads/images", express.static(path.join(__dirname, "uploads", "images")));
+
 // Routes
 app.use("/", routes);
 
