@@ -13,7 +13,7 @@ api.interceptors.request.use(
     (config) => {
         // You can add any request modifications here
         return config;
-    },
+    }, 
     (error) => {
         return Promise.reject(error);
     }
