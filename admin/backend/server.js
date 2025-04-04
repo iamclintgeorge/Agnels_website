@@ -56,6 +56,12 @@ const __dirname = path.dirname(__filename);
 // Serve static files from the 'public' folder
 app.use("/uploads", express.static(path.join(__dirname, "public", "uploads")));
 
+//Excerpt from Leonardo's Code
+// app.use(express.static(path.join(__dirname, "public")));
+// app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+// app.use("/uploads/documents", express.static(path.join(__dirname, "uploads", "documents")));
+// app.use("/uploads/images", express.static(path.join(__dirname, "uploads", "images")));
+
 // Routes
 app.use("/", routes);
 
