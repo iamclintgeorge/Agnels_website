@@ -5,8 +5,7 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon server.js",
-    "sql": "nodemon sqlserver.js"
+    "dev": "nodemon server.js"
   },
   "author": "",
   "license": "ISC",

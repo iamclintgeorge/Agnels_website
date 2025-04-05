@@ -7,7 +7,6 @@ function Login() {
   const [password, setPassword] = useState("");
   const [emailId, setEmail] = useState("");
 
-  // Handle form submission
   const handleSubmit = async (event) => {
     event.preventDefault();
 

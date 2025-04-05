@@ -33,8 +33,6 @@ export const signupController = async (req, res) => {
 
     console.log("req.session.user", req.session.user);
 
-    // res.cookie("uid", req.session.user.id, { httpOnly: true });
-
     res.status(201).json({ message: "User created successfully", user });
   } catch (err) {
     console.error(err);
