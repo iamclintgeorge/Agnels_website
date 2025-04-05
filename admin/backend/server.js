@@ -86,4 +86,5 @@ app.use((err, req, res, next) => {
 app.listen(port, () => {
   console.log(`Server Started at URI http://localhost:${port}/`);
   console.log(`Login test page available at: http://localhost:${port}/login-test.html`);
+  console.log(`API test page available at: http://localhost:${port}/test.html`);
 });

@@ -10,6 +10,7 @@ import Research_Publications from "./pages/Research_Publications/Research_Public
 import Admissions from "./pages/admissions/admissions";
 import Academics from "./pages/Academics/academics";
 import ExaminationsPage from "./pages/Academics/ExaminationsPage";
+import Developers from "./pages/DevelopersPage/developersPage";
 
 import Computer from "./pages/Departments/branches/computer/computer";
 import Electrical from "./pages/Departments/branches/electrical/electrical";
@@ -84,6 +85,7 @@ function App() {
           <Route path="/iic" element={<IIC />} />
           <Route path="/nirf" element={<NIRF />} />
           <Route path="/hr" element={<HumanResource />} />
+          <Route path="/developers" element={<Developers />} />
           <Route path="*" element={<ErrorSection />} />
         </Routes>
       </>

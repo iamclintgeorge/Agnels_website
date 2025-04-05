@@ -50,9 +50,9 @@ const AboutUsAdmin = () => {
       headerImage: "src/assets/imgs/history_image.jpg",
       vision: "To evolve and flourish as a progressive centre for modern technical education, stirring creativity in every student leading to self-sustainable professionals, through holistic development; nurtured by strength and legitimate pride of Indian values and ethics.",
       mission: [
-        "To provide industry oriented quality education.", 
-        "To provide holistic environment for overall personal development.", 
-        "To foster relationship with other institutes of repute, alumni, and industry."
+        "To provide industry oriented quality education",
+        "To provide holistic environment for overall personal development",
+        "To foster relationship with other institutes of repute, alumni, and industry"
       ],
       message: {
         author: "Rev. Dr. Ivon Almeida",
@@ -258,11 +258,17 @@ const AboutUsAdmin = () => {
           });
         }
       } else if (sectionKey === "Vision and Mission") {
-        // Special handling for Vision and Mission with array
+        // Special handling for Vision and Mission with mission array
+        const processedMission = receivedContent.mission ? 
+          (typeof receivedContent.mission === 'string' ? 
+            receivedContent.mission.split('.').filter(item => item.trim() !== '') : 
+            receivedContent.mission) : 
+          defaultStructure.mission;
+
         mergedContent = {
           ...defaultStructure,
           vision: receivedContent.vision || defaultStructure.vision,
-          mission: receivedContent.mission || defaultStructure.mission,
+          mission: processedMission,
           message: {
             ...defaultStructure.message,
             ...(receivedContent.message || {})
@@ -557,7 +563,7 @@ const AboutUsAdmin = () => {
     switch (selectedSection) {
       case "History":
         return (
-          <div className="bg-white p-6 rounded-lg shadow-md">
+          <div>
             <div className="mb-8 border-b pb-6">
               <h2 className="text-2xl font-bold mb-4">{editContent.title}</h2>
               <h3 className="text-lg font-semibold mb-6">{editContent.subtitle}</h3>
@@ -567,7 +573,7 @@ const AboutUsAdmin = () => {
                 <h4 className="text-md font-semibold mb-2">Header Image</h4>
                 <div className="flex items-start gap-6">
                   {editContent.headerImage ? (
-                    <div className="relative w-1/3">
+                    <div className="relative w-1/2">
                       <img 
                         src={editContent.headerImage} 
                         alt="Header" 
@@ -584,12 +590,12 @@ const AboutUsAdmin = () => {
                       </button>
                     </div>
                   ) : (
-                    <div className="w-1/3 flex">
+                    <div className="w-1/2 flex">
                       <div className="w-full h-48 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center">
                         <div className="text-center">
                           <input
                             type="file"
-                            id="header-image-upload"
+                            id="history-header-image-upload"
                             accept="image/*"
                             className="hidden"
                             onChange={(e) => {
@@ -607,7 +613,7 @@ const AboutUsAdmin = () => {
                           ) : (
                             <>
                               <label
-                                htmlFor="header-image-upload"
+                                htmlFor="history-header-image-upload"
                                 className="cursor-pointer bg-[#0C2340] text-white px-4 py-2 rounded-md inline-block hover:bg-opacity-90"
                               >
                                 Upload Image
@@ -773,7 +779,7 @@ const AboutUsAdmin = () => {
       
       case "Vision and Mission":
         return (
-          <div className="bg-white p-6 rounded-lg shadow-md">
+          <div>
             <h2 className="text-2xl font-bold mb-6">{editContent.title}</h2>
             <h3 className="text-lg font-semibold mb-4">{editContent.subtitle}</h3>
             
@@ -789,42 +795,25 @@ const AboutUsAdmin = () => {
             
             <div className="mb-6">
               <h4 className="text-md font-semibold mb-2">Mission</h4>
-              {(editContent.mission || []).map((item, index) => (
-                <div key={index} className="mb-3 flex items-center">
-                  <textarea
-                    value={item || ""}
-                    onChange={(e) => {
-                      const updatedMission = [...(editContent.mission || [])];
-                      updatedMission[index] = e.target.value;
-                      handleContentChange('mission', null, updatedMission);
-                    }}
-                    className="w-full p-3 border rounded min-h-[80px]"
-                    placeholder={`Mission point ${index + 1}...`}
-                  />
-                  {index === editContent.mission.length - 1 ? (
-                    <button
-                      onClick={() => {
-                        const updatedMission = [...(editContent.mission || []), ""];
-                        handleContentChange('mission', null, updatedMission);
-                      }}
-                      className="ml-2 bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
-                    >
-                      +
-                    </button>
-                  ) : (
-                    <button
-                      onClick={() => {
-                        const updatedMission = [...(editContent.mission || [])];
-                        updatedMission.splice(index, 1);
-                        handleContentChange('mission', null, updatedMission);
-                      }}
-                      className="ml-2 bg-red-500 text-white p-2 rounded hover:bg-red-600"
-                    >
-                      -
-                    </button>
-                  )}
-                </div>
-              ))}
+              <textarea
+                value={Array.isArray(editContent.mission) 
+                  ? editContent.mission.join('\n') 
+                  : editContent.mission || ""}
+                onChange={(e) => {
+                  // Split text by new lines and convert to array of mission points
+                  const missionPoints = e.target.value
+                    .split('\n')
+                    .map(line => line.trim())
+                    .filter(line => line !== '');
+                  
+                  handleContentChange('mission', null, missionPoints);
+                }}
+                className="w-full p-3 border rounded min-h-[150px]"
+                placeholder="Enter mission points, one per line..."
+              />
+              <p className="text-sm text-gray-500 mt-1">
+                Enter each mission point on a new line. Each line will appear as a bullet point on the website.
+              </p>
             </div>
             
             <div className="mb-6">
@@ -863,7 +852,7 @@ const AboutUsAdmin = () => {
       
       case "Trustees":
         return (
-          <div className="bg-white p-6 rounded-lg shadow-md">
+          <div>
             <div className="mb-8 border-b pb-6">
               <h2 className="text-2xl font-bold mb-4">{editContent.title}</h2>
               <h3 className="text-lg font-semibold mb-6">{editContent.subtitle}</h3>
@@ -873,7 +862,7 @@ const AboutUsAdmin = () => {
                 <h4 className="text-md font-semibold mb-2">Header Image</h4>
                 <div className="flex items-start gap-6">
                   {editContent.headerImage ? (
-                    <div className="relative w-1/3">
+                    <div className="relative w-1/2">
                       <img 
                         src={editContent.headerImage} 
                         alt="Header" 
@@ -890,7 +879,7 @@ const AboutUsAdmin = () => {
                       </button>
                     </div>
                   ) : (
-                    <div className="w-1/3 flex">
+                    <div className="w-1/2 flex">
                       <div className="w-full h-48 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center">
                         <div className="text-center">
                           <input
@@ -1097,44 +1086,44 @@ const AboutUsAdmin = () => {
       
       case "Managing Director's Desk":
         return (
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <div className="mb-8 border-b pb-6">
-              <h2 className="text-2xl font-bold mb-4">{editContent.title || "Managing Director's Desk"}</h2>
-              <h3 className="text-lg font-semibold mb-6">{editContent.subtitle || "Hear from our esteemed Managing Director"}</h3>
+          <div>
+            <div className="mb-6">
+              <h2 className="text-2xl font-bold mb-6">{editContent.title}</h2>
+              <h3 className="text-lg font-semibold mb-4">{editContent.subtitle}</h3>
             </div>
             
-            <div className="mb-8">
+            <div className="p-4 border rounded-lg bg-gray-50 mb-6">
               <h4 className="text-xl font-semibold mb-4">Director Information</h4>
-              <div className="grid grid-cols-12 gap-6">
-                <div className="col-span-12 md:col-span-4">
-                  <div className="mb-4">
-                    <label className="block text-sm font-medium mb-2">Director's Photo</label>
-                    {(editContent.director && editContent.director.image) ? (
-                      <div className="relative">
-                        <img 
-                          src={editContent.director.image} 
-                          alt={editContent.director.name || "Managing Director"}
-                          className="w-full h-auto rounded-md border shadow-sm"
-                        />
-                        <button
-                          onClick={() => {
-                            const updatedDirector = {
-                              ...(editContent.director || {}),
-                              image: ""
-                            };
-                            handleContentChange('director', null, updatedDirector);
-                          }}
-                          className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full"
-                          title="Remove image"
-                        >
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                            <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
-                          </svg>
-                        </button>
-                      </div>
-                    ) : (
-                      <div className="border-2 border-dashed border-gray-300 rounded-lg p-4">
-                        <div className="text-center">
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-6">
+                <div className="col-span-12 md:col-span-4 flex justify-center">
+                  {/* Director's photo */}
+                  {(editContent.director && editContent.director.image && editContent.director.image !== "uploading") ? (
+                    <div className="relative bg-white p-2 border rounded mb-3">
+                      <img 
+                        src={editContent.director.image} 
+                        alt={editContent.director.name || "Managing Director"} 
+                        className="w-full h-auto object-contain rounded"
+                      />
+                      <button
+                        onClick={() => {
+                          const updatedDirector = {
+                            ...(editContent.director || {}),
+                            image: ""
+                          };
+                          handleContentChange('director', null, updatedDirector);
+                        }}
+                        className="absolute top-4 right-4 bg-red-500 text-white p-1 rounded-full"
+                        title="Remove image"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                          <path fillRule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clipRule="evenodd" />
+                        </svg>
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="bg-white p-2 border rounded mb-3 max-w-xs w-full">
+                      <div className="aspect-[3/4] border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center">
+                        <div className="text-center p-4">
                           <input
                             type="file"
                             id="director-image-upload"
@@ -1142,11 +1131,7 @@ const AboutUsAdmin = () => {
                             className="hidden"
                             onChange={(e) => {
                               if (e.target.files && e.target.files[0]) {
-                                handleImageUpload(
-                                  "Managing Director's Desk", 
-                                  "director.image", 
-                                  e.target.files[0]
-                                );
+                                handleImageUpload("Managing Director's Desk", "director.image", e.target.files[0]);
                                 
                                 // Manual update for UI feedback
                                 const updatedDirector = {
@@ -1159,9 +1144,9 @@ const AboutUsAdmin = () => {
                           />
                           
                           {imageUploading["Managing Director's Desk_director.image"] ? (
-                            <div className="flex flex-col items-center py-4">
+                            <div className="flex flex-col items-center">
                               <div className="w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-                              <p className="mt-2 text-sm text-gray-600">Uploading...</p>
+                              <p className="mt-2 text-gray-600">Uploading...</p>
                             </div>
                           ) : (
                             <>
@@ -1180,7 +1165,7 @@ const AboutUsAdmin = () => {
                         
                         {/* Alternative URL input */}
                         <div className="mt-3">
-                          <label className="block text-sm text-gray-600 mb-1">
+                          <label className="block text-sm text-gray-600 mb-1 text-center">
                             Or enter image URL:
                           </label>
                           <input
@@ -1200,8 +1185,8 @@ const AboutUsAdmin = () => {
                           />
                         </div>
                       </div>
-                    )}
-                  </div>
+                    </div>
+                  )}
                 </div>
                 
                 <div className="col-span-12 md:col-span-8">
@@ -1273,7 +1258,7 @@ const AboutUsAdmin = () => {
             </div>
             
             <div className="mb-6">
-              <h4 className="text-xl font-semibold mb-4">Director's Message</h4>
+              <h4 className="text-xl font-semibold mb-4 text-center">Director's Message</h4>
               <textarea
                 value={(editContent.director && editContent.director.message) || ""}
                 onChange={(e) => {
@@ -1291,13 +1276,13 @@ const AboutUsAdmin = () => {
                 className="w-full p-3 border rounded min-h-[300px]"
                 placeholder="Enter director's message..."
               />
-              <p className="text-sm text-gray-500 mt-1">
+              <p className="text-sm text-gray-500 mt-1 text-center">
                 Use a blank line to create a new paragraph. The message will be displayed with proper formatting.
               </p>
             </div>
             
             <div className="mb-6 border-t pt-6">
-              <h4 className="text-xl font-semibold mb-4">Quote</h4>
+              <h4 className="text-xl font-semibold mb-4 text-center">Quote</h4>
               <div className="mb-4">
                 <label className="block text-sm font-medium mb-1">Quote Text</label>
                 <textarea
@@ -1345,13 +1330,15 @@ const AboutUsAdmin = () => {
 
       case "Principal's Desk":
         return (
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-2xl font-bold mb-6">{editContent.title}</h2>
-            <h3 className="text-lg font-semibold mb-4">{editContent.subtitle}</h3>
+          <div>
+            <div className="mb-6">
+              <h2 className="text-2xl font-bold mb-6">{editContent.title}</h2>
+              <h3 className="text-lg font-semibold mb-4">{editContent.subtitle}</h3>
+            </div>
             
             <div className="mb-6">
               <h4 className="text-md font-semibold mb-2">Principal Information</h4>
-              <div className="grid grid-cols-2 gap-4 mb-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                 <div>
                   <label className="block text-sm font-medium mb-1">Name</label>
                   <input
@@ -1408,7 +1395,7 @@ const AboutUsAdmin = () => {
       case "Best Practices":
       case "Mandatory Disclosures":
         return (
-          <div className="bg-white p-6 rounded-lg shadow-md">
+          <div>
             <h2 className="text-2xl font-bold mb-6">{editContent.title}</h2>
             <h3 className="text-lg font-semibold mb-4">{editContent.subtitle}</h3>
             
@@ -1502,7 +1489,7 @@ const AboutUsAdmin = () => {
       // Default case for sections that haven't been specifically handled
       default:
         return (
-          <div className="bg-white p-6 rounded-lg shadow-md">
+          <div>
             <h2 className="text-2xl font-bold mb-6">{editContent.title || selectedSection}</h2>
             <h3 className="text-lg font-semibold mb-4">{editContent.subtitle || ""}</h3>
             
@@ -1573,7 +1560,7 @@ const AboutUsAdmin = () => {
           )}
           
           {selectedSection ? (
-            <div className="max-w-4xl mx-auto">
+            <div className="max-w-5xl mx-auto">
               <div className="mb-6">
                 <h1 className="text-3xl font-bold text-[#0C2340]">Edit {selectedSection}</h1>
                 <p className="text-gray-600 mt-2">
@@ -1581,7 +1568,9 @@ const AboutUsAdmin = () => {
                 </p>
               </div>
               
-              {renderEditForm()}
+              <div className="bg-white p-8 rounded-lg shadow-md">
+                {renderEditForm()}
+              </div>
               
               <div className="flex justify-end gap-4 mt-8 pt-4 border-t">
                 <button

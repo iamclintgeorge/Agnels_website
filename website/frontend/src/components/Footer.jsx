@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import {
   FaFacebook,
   FaInstagram,
@@ -119,7 +120,9 @@ const Footer = () => {
               &copy; 2025 Fr. C. Rodrigues Institute of Technology. All Rights
               Reserved.
             </p>
-            <p className="text-end mt-1 underline">Developers Team</p>
+            <Link to="/developers" className="block text-end mt-1 underline hover:text-[#0C2340] transition-colors">
+              Developers Team
+            </Link>
           </div>
         </div>
       </footer>
