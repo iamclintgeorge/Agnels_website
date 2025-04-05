@@ -17,6 +17,7 @@ router.post("/login", loginController);
 router.post("/signout", logoutController);
 router.get("/check-auth", authMiddleware, checkAuth);
 
+//Sample test route
 router.get(
   "/student",
   authMiddleware,
