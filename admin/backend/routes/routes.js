@@ -2,7 +2,7 @@ import express from "express";
 import userRoutes from "./admin/userRoutes.js";
 import homeRoutes from "./website/homepage/homeRoutes.js";
 import aboutusRoutes from "./website/homepage/aboutusRoutes.js";
-import trainingPlacementRoutes from "./trainingPlacement.js";
+import trainingPlacementRoutes from "./website/train_place/placementRoutes.js";
 
 const router = express.Router();
 
