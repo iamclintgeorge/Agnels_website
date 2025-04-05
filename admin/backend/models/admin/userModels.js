@@ -8,7 +8,7 @@ export const signupUser = async (emailId, userName, hashedPassword, role) => {
   const values = [emailId, userName, hashedPassword, role];
 
   try {
-    const [result] = await db.promise().query(query, values);
+    const [result] = await db.execute(query, values);
     return { id: result.insertId, emailId, userName, role };
   } catch (err) {
     console.error("Error inserting user:", err);
@@ -17,24 +17,16 @@ export const signupUser = async (emailId, userName, hashedPassword, role) => {
 };
 
 // The loginUser function
-export const loginUser = async (emailId, password) => {
+export const loginUser = async (emailId) => {
   const query = "SELECT * FROM users WHERE emailId = ?";
   const values = [emailId];
 
   try {
-    const [rows] = await db.promise().query(query, values);
-    const user = rows[0];
-
-    if (!user) {
+    const [rows] = await db.execute(query, values);
+    if (!rows || rows.length === 0) {
       return null;
     }
-
-    const match = await bcrypt.compare(password, user.password);
-    if (!match) {
-      return null;
-    }
-
-    return user;
+    return rows[0];
   } catch (error) {
     console.error("Error fetching user:", error);
     throw new Error("Failed to log in the user");

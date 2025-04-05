@@ -13,48 +13,64 @@ import routes from "./routes/routes.js";
 
 dotenv.config();
 
-const port = process.env.port;
+const port = process.env.port || 3663;
 const app = express();
-
-// Middlewares
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      const allowedOrigins = ["http://localhost:5173", "http://localhost:5174"];
-      if (allowedOrigins.includes(origin) || !origin) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-    methods: ["POST", "GET", "PUT", "DELETE"],
-    credentials: true,
-  })
-);
-app.use(cookieParser());
-app.use(express.json({ limit: "50mb" }));
-app.use(express.urlencoded({ extended: true, limit: "50mb" }));
-app.use(
-  session({
-    name: "connect.sid",
-    secret: "secret",
-    resave: false,
-    saveUninitialized: false,
-    cookie: {
-      httpOnly: true,
-      secure: false,
-      sameSite: "Lax",
-      maxAge: 1000 * 60 * 60 * 24,
-    },
-  })
-);
 
 // Get the current directory path
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Basic middlewares
+app.use(cookieParser());
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ extended: true, limit: "50mb" }));
+
+// Session configuration - MUST come before CORS
+const ONE_DAY = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+app.use(
+  session({
+    name: "connect.sid",
+    secret: "your-secret-key",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      httpOnly: true,
+      secure: false, // Set to true in production with HTTPS
+      sameSite: 'lax',
+      maxAge: ONE_DAY
+    }
+  })
+);
+
+// CORS configuration
+app.use(cors({
+  origin: ['http://localhost:5173', 'http://localhost:5174'],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
+// Debug middleware
+app.use((req, res, next) => {
+  console.log('Request URL:', req.url);
+  console.log('Request method:', req.method);
+  console.log('Session ID:', req.sessionID);
+  console.log('Session data:', req.session);
+  console.log('Cookies:', req.cookies);
+  next();
+});
+
 // Serve static files from the 'public' folder
-app.use("/uploads", express.static(path.join(__dirname, "public", "uploads")));
+app.use(express.static(path.join(__dirname, "public")));
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use("/uploads/documents", express.static(path.join(__dirname, "uploads", "documents")));
+app.use("/uploads/images", express.static(path.join(__dirname, "uploads", "images")));
+
+//Excerpt from Leonardo's Code
+// app.use(express.static(path.join(__dirname, "public")));
+// app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+// app.use("/uploads/documents", express.static(path.join(__dirname, "uploads", "documents")));
+// app.use("/uploads/images", express.static(path.join(__dirname, "uploads", "images")));
 
 // Routes
 app.use("/", routes);
@@ -64,6 +80,16 @@ app.use("/", routes);
 // app.use("/api/training-placement", trainingPlacementRoutes);
 // app.use("/api/aboutus", aboutusRoutes);
 
+// Catch-all error handler
+app.use((err, req, res, next) => {
+  console.error('Server error:', err);
+  res.status(500).json({
+    message: 'Something went wrong!',
+    error: process.env.NODE_ENV === 'production' ? null : err.message
+  });
+});
+
 app.listen(port, () => {
   console.log(`Server Started at URI http://localhost:${port}/`);
+  console.log(`Login test page available at: http://localhost:${port}/login-test.html`);
 });
