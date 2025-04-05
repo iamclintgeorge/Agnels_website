@@ -4,6 +4,7 @@ export const authMiddleware = (req, res, next) => {
   // console.log("Session ID in cookie:", sessionId);
   // console.log("req.session", req.session);
   // console.log("req.session.user", req.session.user);
+  //Sample text to check if the Detached Head is pushed to the main codebase
 
   if (!sessionId || !req.session || !req.session.user) {
     console.log("sessionId not found in authMiddleware");
