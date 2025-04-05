@@ -59,11 +59,6 @@ app.use("/uploads", express.static(path.join(__dirname, "public", "uploads")));
 // Routes
 app.use("/", routes);
 
-// app.use("/api", userRoutes);
-// app.use("/api/home", homeRoutes);
-// app.use("/api/training-placement", trainingPlacementRoutes);
-// app.use("/api/aboutus", aboutusRoutes);
-
 app.listen(port, () => {
   console.log(`Server Started at URI http://localhost:${port}/`);
 });
