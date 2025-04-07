@@ -16,7 +16,8 @@ const router = express.Router();
 // Public routes
 router.post("/signup", signupController);
 router.post("/login", loginController);
-router.post("/signout", logoutController);
+router.post("/student/login", loginController);
+router.post("/logout", logoutController);
 router.get("/check-auth", authMiddleware, checkAuthController);
 
 // Simple status check endpoint (no auth required)

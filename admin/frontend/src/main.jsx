@@ -8,6 +8,7 @@ import Signup from "./pages/signup";
 import Error404 from "./pages/error404";
 import AdminLayout from "./layout/adminLayout";
 import Student from "./pages/student";
+import StudentCornerAdmin from "./pages/studentCorner/studentCorner";
 import { AuthProvider } from "./services/useAuthCheck";
 import WhatsNew from "./pages/HomePage/whatsNew";
 import Profile from "./pages/profile";
@@ -19,6 +20,8 @@ import "react-toastify/dist/ReactToastify.css";
 import HodDesk from "./pages/rolebasedPages/hodDesk";
 import PrincipalDesk from "./pages/rolebasedPages/principalDesk";
 import AboutUsAdmin from "./pages/AboutUs/AboutUsAdmin";
+import StudentLogin from "./pages/StudentLogin";
+import AcademicsAdmin from "./pages/academics/academicsAdmin";
 
 const App = () => {
   return (
@@ -32,7 +35,15 @@ const App = () => {
           <Route path="/home/whatsNew" element={<WhatsNew />} />
           <Route path="/home/introtext" element={<IntroText />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/student" element={<Student />} />
+          <Route path="/student" element={<StudentLogin />} />
+          <Route path="/student-corner" element={<StudentCornerAdmin />} />
+          <Route path="/academics" element={<AcademicsAdmin />} />
+          <Route path="/academics/handbook" element={<AcademicsAdmin />} />
+          <Route path="/academics/calendar" element={<AcademicsAdmin />} />
+          <Route path="/academics/examinations" element={<AcademicsAdmin />} />
+          <Route path="/academics/apms" element={<AcademicsAdmin />} />
+          <Route path="/academics/lms" element={<AcademicsAdmin />} />
+          <Route path="/academics/feedback" element={<AcademicsAdmin />} />
           <Route path="/training-placement" element={<TrainingPlacement />} />
           <Route path="/hoddesk" element={<HodDesk />} />
           <Route path="/principaldesk" element={<PrincipalDesk />} />

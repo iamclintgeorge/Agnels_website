@@ -13,6 +13,8 @@ const SideBar = () => {
   const [isHomeOpen, setIsHomeOpen] = useState(false);
   const [isAboutOpen, setIsAboutOpen] = useState(false);
   const [isUserOpen, setIsUserOpen] = useState(false);
+  const [isStudentCornerOpen, setIsStudentCornerOpen] = useState(false);
+  const [isAcademicsOpen, setIsAcademicsOpen] = useState(false);
 
   const handleHomeClick = () => {
     setIsHomeOpen((prevstate) => !prevstate);
@@ -26,6 +28,14 @@ const SideBar = () => {
     setIsUserOpen((prevstate) => !prevstate);
   };
 
+  const handleStudentCornerClick = () => {
+    setIsStudentCornerOpen((prevstate) => !prevstate);
+  };
+
+  const handleAcademicsClick = () => {
+    setIsAcademicsOpen(!isAcademicsOpen);
+  };
+
   // Function to handle section selection directly
   const handleSectionSelect = (section) => {
     // Store the section in localStorage for backup
@@ -37,6 +47,22 @@ const SideBar = () => {
     // Dispatch a custom event that AboutUsAdmin can listen for
     setTimeout(() => {
       window.dispatchEvent(new CustomEvent('section-selected', { 
+        detail: { section } 
+      }));
+    }, 50);
+  };
+
+  // Similar to the handleSectionSelect function for About Us, create one for Student Corner
+  const handleStudentCornerSectionSelect = (section) => {
+    // Store the section in localStorage for backup
+    localStorage.setItem('studentCornerSection', section);
+    
+    // Navigate to student-corner page and then dispatch a custom event
+    navigate("/student-corner");
+    
+    // Dispatch a custom event that StudentCornerAdmin can listen for
+    setTimeout(() => {
+      window.dispatchEvent(new CustomEvent('studentcorner-section-selected', { 
         detail: { section } 
       }));
     }, 50);
@@ -146,9 +172,46 @@ const SideBar = () => {
         <p className="flex justify-between pr-8">
           Admission <span>&gt;</span>
         </p>
-        <p className="flex justify-between pr-8">
-          Academics <span>&gt;</span>
-        </p>
+        <div>
+          <p
+            className="cursor-pointer flex justify-between items-center pr-8"
+            onClick={handleAcademicsClick}
+          >
+            Academics{" "}
+            <span
+              className={`transform transition-transform ${
+                isAcademicsOpen ? "rotate-90" : ""
+              }`}
+            >
+              &gt;
+            </span>
+          </p>
+          {isAcademicsOpen && (
+            <div className="pt-2 pr-8 pl-4 leading-10">
+              <Link to="/academics">
+                <p>Home</p>
+              </Link>
+              <Link to="/academics/handbook">
+                <p>Academic Handbook</p>
+              </Link>
+              <Link to="/academics/calendar">
+                <p>Academic Calendar</p>
+              </Link>
+              <Link to="/academics/examinations">
+                <p>Examinations</p>
+              </Link>
+              <Link to="/academics/apms">
+                <p>APMS</p>
+              </Link>
+              <Link to="/academics/lms">
+                <p>LMS</p>
+              </Link>
+              <Link to="/academics/feedback">
+                <p>Stakeholder Feedback</p>
+              </Link>
+            </div>
+          )}
+        </div>
 
         <Link to="/training-placement" className="flex justify-between pr-8">
           Training and Placement <span>&gt;</span>
@@ -167,9 +230,57 @@ const SideBar = () => {
           Downloads Page <span>&gt;</span>
         </p>
         {(user.role === "teach_staff" || user.role === "superAdmin") && (
-          <Link to="/student" className="flex justify-between pr-8">
-            Students Corner <span>&gt;</span>
-          </Link>
+          <>
+            <div>
+              <p
+                className="cursor-pointer flex justify-between items-center pr-8"
+                onClick={handleStudentCornerClick}
+              >
+                Students Corner{" "}
+                <span
+                  className={`transform transition-transform ${
+                    isStudentCornerOpen ? "rotate-90" : ""
+                  }`}
+                >
+                  &gt;
+                </span>
+              </p>
+              {isStudentCornerOpen && (
+                <div className="pt-2 pr-8 pl-4 leading-10">
+                  <p className="cursor-pointer" onClick={() => handleStudentCornerSectionSelect('SC_Home')}>
+                    Home
+                  </p>
+                  <p className="cursor-pointer" onClick={() => handleStudentCornerSectionSelect('Code of Conduct')}>
+                    Code of Conduct
+                  </p>
+                  <p className="cursor-pointer" onClick={() => handleStudentCornerSectionSelect('Student Council')}>
+                    Student Council
+                  </p>
+                  <p className="cursor-pointer" onClick={() => handleStudentCornerSectionSelect('Professional Bodies')}>
+                    Professional Bodies
+                  </p>
+                  <p className="cursor-pointer" onClick={() => handleStudentCornerSectionSelect('National Service Scheme')}>
+                    NSS
+                  </p>
+                  <p className="cursor-pointer" onClick={() => handleStudentCornerSectionSelect('Student Clubs')}>
+                    Student Clubs
+                  </p>
+                  <p className="cursor-pointer" onClick={() => handleStudentCornerSectionSelect('Infrastructure')}>
+                    Infrastructure
+                  </p>
+                  <p className="cursor-pointer" onClick={() => handleStudentCornerSectionSelect('Cultural Activities')}>
+                    Cultural Activities
+                  </p>
+                  <p className="cursor-pointer" onClick={() => handleStudentCornerSectionSelect('Anti Ragging')}>
+                    Anti Ragging
+                  </p>
+                  <p className="cursor-pointer" onClick={() => handleStudentCornerSectionSelect('Student Satisfaction Survey')}>
+                    Student Satisfaction Survey
+                  </p>
+                </div>
+              )}
+            </div>
+          </>
         )}
 
         {(user.role === "hod" || user.role === "superAdmin") && (
