@@ -19,7 +19,7 @@ import "react-toastify/dist/ReactToastify.css";
 import HodDesk from "./pages/rolebasedPages/hodDesk";
 import PrincipalDesk from "./pages/rolebasedPages/principalDesk";
 import AboutUsAdmin from "./pages/AboutUs/AboutUsAdmin";
-import ResearchAdmin from "./pages/research/researchAdmin";
+import ResearchAdmin from "./pages/research/ResearchAdmin";
 
 const App = () => {
   return (

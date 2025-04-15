@@ -18,7 +18,9 @@ const ResearchAdmin = () => {
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
-      <h1 className="text-3xl font-bold mb-6">Research and Publication Admin</h1>
+      <h1 className="text-3xl font-bold mb-6">
+        Research and Publication Admin
+      </h1>
 
       {/* Buttons for navigation */}
       <div className="flex flex-wrap gap-4 mb-6">
@@ -40,7 +42,10 @@ const ResearchAdmin = () => {
       {/* Render the appropriate component based on the active section */}
       {activeSection === "home" && <ResearchHome />}
       {activeSection !== "home" && (
-        <ResearchPdfManager section={activeSection} topic={sections.find(s => s.key === activeSection).name} />
+        <ResearchPdfManager
+          section={activeSection}
+          topic={sections.find((s) => s.key === activeSection).name}
+        />
       )}
     </div>
   );
