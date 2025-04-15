@@ -19,6 +19,7 @@ import "react-toastify/dist/ReactToastify.css";
 import HodDesk from "./pages/rolebasedPages/hodDesk";
 import PrincipalDesk from "./pages/rolebasedPages/principalDesk";
 import AboutUsAdmin from "./pages/AboutUs/AboutUsAdmin";
+import ResearchAdmin from "./pages/research/researchAdmin";
 
 const App = () => {
   return (
@@ -37,6 +38,8 @@ const App = () => {
           <Route path="/hoddesk" element={<HodDesk />} />
           <Route path="/principaldesk" element={<PrincipalDesk />} />
           <Route path="/about-us" element={<AboutUsAdmin />} />
+          <Route path="/research/:section" element={<ResearchAdmin />} />
+          <Route path="/research" element={<ResearchAdmin />} />{" "}
         </Route>
         <Route path="*" element={<Error404 />} />
       </Routes>

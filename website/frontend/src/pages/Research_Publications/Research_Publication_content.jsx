@@ -1,82 +1,91 @@
-import React from "react";
+
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+
+
 
 export const Home = () => {
-    return (
-      <div style={{ fontFamily: "Arial, sans-serif", lineHeight: "1.6", padding: "20px" }}>
-        <h2 style={{ fontSize: "2em", marginBottom: "10px" }}>Research and Publications</h2>
-  
-        <hr style={{ border: "1px solid #ccc", marginBottom: "20px" }} />
-  
-        <p>
-          Right from beginning, Fr. CRIT Management strongly believed in creating research ambience in the institute by providing the state of the art laboratory facilities. Inter-departmental collaboration and inter-institutional partnerships at national and international levels emerged with advent of new technologies demanding cross domain expertise.
-        </p>
-  
-        <p>
-          With continuously enriching research facilities supported with disciplined academic excellence, Fr. CRIT excelled significantly in R&D activities with increased industrial collaborations. It is for sure that with continuous encouragement promoting cutting-edge research and product development based on the demonstrated capabilities and expertise of our faculty and students, Fr. CRIT will be soon at par with the leading research institutes in India.
-        </p>
-  
-        <h3>In the last 5 years various Research and Consultancy Projects handled are as follows:</h3>
-  
-        <ul style={{ listStyleType: "none", paddingLeft: "0" }}>
-          <li>1. Consultancy projects 04</li>
-          <li>2. Major projects 08</li>
-          <li>3. Minor projects 54</li>
-          <li>4. Travel Grant 01</li>
-        </ul>
-  
-        <p>
-          Good quality research also led to the great increase in the research publications by faculty and students in many reputed journals, transactions and conference proceedings with high impact factor. Institute is motivating faculties by providing support in terms of financial assistance towards registration and travel. Institute started an <span style={{ backgroundColor: "yellow" }}>Incentive Policy</span> to encourage and motivate faculties for good quality research and publication.
-        </p>
-      </div>
-    );
-  };
+  const [researchText, setResearchText] = useState([]);
+
+  useEffect(() => {
+    const fetchResearchText = async () => {
+      try {
+        const response = await axios.get("http://localhost:3663/api/research/home");
+        setResearchText(response.data);
+      } catch (error) {
+        console.error("Error fetching research text:", error);
+      }
+    };
+    fetchResearchText();
+  }, []);
 
 
-  
-export const Research_Projects = () => {
   return (
-    <div>
-      <p>Welcome to Computer Page</p>
+    <div style={{ fontFamily: "Arial, sans-serif", lineHeight: "1.6", padding: "20px" }}>
+      <h2 style={{ fontSize: "2em", marginBottom: "10px" }}>Research and Publications</h2>
+      <hr style={{ border: "1px solid #ccc", marginBottom: "20px" }} />
+      {researchText.length > 0 ? (
+        researchText.map((text) => (
+          <div
+            key={text.id}
+            dangerouslySetInnerHTML={{ __html: text.content }}
+          />
+        ))
+      ) : (
+        <p>No content available.</p>
+      )}
     </div>
   );
 };
 
-export const Publications = () => {
-  return (
-    <div>
-      <p>Welcome to Mechanical Page</p>
-    </div>
-  );
-};
+const PdfSection = ({ section }) => {
+  const [pdfs, setPdfs] = useState([]);
 
-export const  Books_Published = () => {
-  return (
-    <div>
-      <p>Welcome to EXTC Page</p>
-    </div>
-  );
-};
+  useEffect(() => {
+    const fetchPdfs = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:3663/api/research/pdf?section=${section}`
+        );
+        setPdfs(response.data); // Set all PDFs for the section
+      } catch (error) {
+        console.error(`Error fetching PDFs for ${section}:`, error);
+      }
+    };
+    fetchPdfs();
+  }, [section]);
 
-export const Consultancy_Projects = () => {
   return (
-    <div>
-      <p>Welcome to Electrical Page</p>
+    <div style={{ fontFamily: "Arial, sans-serif", lineHeight: "1.6", padding: "20px" }}>
+      <h2 style={{ fontSize: "2em", marginBottom: "10px" }}>{section.replace(/-/g, " ")}</h2>
+      <hr style={{ border: "1px solid #ccc", marginBottom: "20px" }} />
+      {pdfs.length > 0 ? (
+        <div>
+          <p>Available PDFs for {section.replace(/-/g, " ")}:</p>
+          <ul>
+            {pdfs.map((pdf) => (
+              <li key={pdf.id}>
+                <a
+                  href={`http://localhost:3663${pdf.content}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ color: "blue", textDecoration: "underline" }}
+                >
+                  {pdf.filename || "Unnamed PDF"}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ) : (
+        <p>No PDFs available for this section.</p>
+      )}
     </div>
   );
 };
-
-export const Patents = () => {
-  return (
-    <div>
-      <p>Welcome to IT Page</p>
-    </div>
-  );
-};
-
-export const  Code_of_Conduct = () => {
-  return (
-    <div>
-      <p>Welcome to Humanities Page</p>
-    </div>
-  );
-};
+export const Research_Projects = () => <PdfSection section="research-projects" />;
+export const Publications = () => <PdfSection section="publications" />;
+export const Books_Published = () => <PdfSection section="books-published" />;
+export const Consultancy_Projects = () => <PdfSection section="consultancy-projects" />;
+export const Patents = () => <PdfSection section="patents" />;
+export const Code_of_Conduct = () => <PdfSection section="code-of-conduct" />;
