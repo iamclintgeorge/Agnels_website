@@ -12,9 +12,8 @@ import {
   Service_Regulation,
   Qualification_and_Eligiblity_Norms_for_Recruitment,
   Best_Practices,
-  Mandatory_Disclosure
+  Mandatory_Disclosure,
 } from "./aboutusContent";
-// import { useNavigate } from "react-router-dom";
 
 const Aboutus = () => {
   const sidebar = [
@@ -29,7 +28,7 @@ const Aboutus = () => {
     "Service Regulation",
     "Qualification and Eligiblity Norms for Recruitment",
     "Best Practices",
-    "Mandatory Disclosure"
+    "Mandatory Disclosure",
   ];
 
   // const navigate = useNavigate();
@@ -37,16 +36,18 @@ const Aboutus = () => {
   const content = {
     History: <History />,
     "Vision and Mission": <Vision_and_Mission />,
-    "Trustees": < Trustees />,
+    Trustees: <Trustees />,
     "Managing Director's Desk": <Managing_Director_Desk />,
     "Principal's Desk": <Principal_Desk />,
-    "Governance": <Governance />,
+    Governance: <Governance />,
     "Audit Report and Affiliations": <Audit_Report_and_Affiliations />,
-    "Institute Roadmap" : <Institute_Roadmap />,
-    "Service Regulation" :< Service_Regulation />,
-    "Qualification and Eligiblity Norms for Recruitment" : <Qualification_and_Eligiblity_Norms_for_Recruitment />,
-    "Best Practices" : <Best_Practices />,
-    "Mandatory Disclosure" : <Mandatory_Disclosure />,
+    "Institute Roadmap": <Institute_Roadmap />,
+    "Service Regulation": <Service_Regulation />,
+    "Qualification and Eligiblity Norms for Recruitment": (
+      <Qualification_and_Eligiblity_Norms_for_Recruitment />
+    ),
+    "Best Practices": <Best_Practices />,
+    "Mandatory Disclosure": <Mandatory_Disclosure />,
   };
 
   return (

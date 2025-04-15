@@ -1,7 +1,7 @@
 import db from "../../config/db.js";
 import bcrypt from "bcrypt";
 
-// The signupUser function
+// signupUser function
 export const signupUser = async (emailId, userName, hashedPassword, role) => {
   const query =
     "INSERT INTO users (emailId, userName, password, role) VALUES (?, ?, ?, ?)";
@@ -16,7 +16,7 @@ export const signupUser = async (emailId, userName, hashedPassword, role) => {
   }
 };
 
-// The loginUser function
+// loginUser function
 export const loginUser = async (emailId, password) => {
   const query = "SELECT * FROM users WHERE emailId = ?";
   const values = [emailId];

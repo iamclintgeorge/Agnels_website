@@ -34,3 +34,22 @@
      ```bash
      npm run dev
      ```
+
+<br>
+<br>
+
+## Backend Folder Structure (For API Endpoints)
+
+```
+
+
+                        admin -------------------------------------
+                          |                                       |
+server.js -> routes -> routes.js  -> website ---------------> controllers ---------> models
+                                        |                         |                     |
+                                        |____ homepage            |____ website         |____ website
+                                        |____ department          |____ admin           |____ admin
+                                        |____ aboutus
+
+
+```
