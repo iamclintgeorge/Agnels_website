@@ -222,7 +222,13 @@ const Header = () => {
                   <Link to="/academic-calendar">Academic Calendar</Link>
                 </li>
                 <li className="hover:bg-[#AE9142] px-2 py-1 rounded">
-                  <Link to="/icnte">ICNTE</Link>
+                  <a
+                    href="https://icnte.fcrit.ac.in/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    ICNTE
+                  </a>
                 </li>
               </ul>
             </div>
@@ -254,13 +260,17 @@ const Header = () => {
                   <Link to="/training-placement">Training and Placement</Link>
                 </li>
                 <li className="hover:bg-[#AE9142] px-2 py-1 rounded">
-                  <Link to="/library">Library</Link>
+                  <a
+                    href="https://library.fcrit.ac.in/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Library
+                  </a>
                 </li>
+
                 <li className="hover:bg-[#AE9142] px-2 py-1 rounded">
                   <Link to="/almuni">Alumni</Link>
-                </li>
-                <li className="hover:bg-[#AE9142] px-2 py-1 rounded">
-                  <Link to="/transcript">Transcript</Link>
                 </li>
                 <li className="hover:bg-[#AE9142] px-2 py-1 rounded">
                   <Link to="/manthanMagzine">Manthan Magazine</Link>
