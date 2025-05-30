@@ -3,17 +3,14 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import session from "express-session";
-// import userRoutes from "./routes/admin/userRoutes.js";
-// import homeRoutes from "./routes/website/homepage/homeRoutes.js";
-// import aboutusRoutes from "./routes/website/homepage/aboutusRoutes.js";
-// import trainingPlacementRoutes from "./routes/trainingPlacement.js";
 import path from "path";
 import { fileURLToPath } from "url";
 import routes from "./routes/routes.js";
+import iicRoutes from "./routes/website/iicRoutes.js"; // Import IIC routes
 
 dotenv.config();
 
-const port = process.env.port;
+const port = process.env.port || 3663; // Default port if not defined in .env
 const app = express();
 
 // Middlewares
@@ -42,7 +39,7 @@ app.use(
     saveUninitialized: false,
     cookie: {
       httpOnly: true,
-      secure: false,
+      secure: false, // Use true if you're working with HTTPS in production
       sameSite: "Lax",
       maxAge: 1000 * 60 * 60 * 24,
     },
@@ -55,6 +52,9 @@ const __dirname = path.dirname(__filename);
 
 // Serve static files from the 'public' folder
 app.use("/uploads", express.static(path.join(__dirname, "public", "uploads")));
+
+// Integrate IIC routes
+app.use("/api/iic", iicRoutes);  // Add the IIC routes here
 
 // Routes
 app.use("/", routes);
