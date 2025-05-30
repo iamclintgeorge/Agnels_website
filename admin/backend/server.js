@@ -6,11 +6,11 @@ import session from "express-session";
 import path from "path";
 import { fileURLToPath } from "url";
 import routes from "./routes/routes.js";
-import iicRoutes from "./routes/website/iicRoutes.js"; // Import IIC routes
+// import iicRoutes from "./routes/website/iicRoutes.js";
 
 dotenv.config();
 
-const port = process.env.port || 3663; // Default port if not defined in .env
+const port = process.env.port;
 const app = express();
 
 // Middlewares
@@ -39,7 +39,7 @@ app.use(
     saveUninitialized: false,
     cookie: {
       httpOnly: true,
-      secure: false, // Use true if you're working with HTTPS in production
+      secure: false,
       sameSite: "Lax",
       maxAge: 1000 * 60 * 60 * 24,
     },
@@ -54,7 +54,7 @@ const __dirname = path.dirname(__filename);
 app.use("/uploads", express.static(path.join(__dirname, "public", "uploads")));
 
 // Integrate IIC routes
-app.use("/api/iic", iicRoutes);  // Add the IIC routes here
+// app.use("/api/iic", iicRoutes);
 
 // Routes
 app.use("/", routes);

@@ -57,9 +57,7 @@ const SideBar = () => {
     <div className="bg-[#0C2340] mt-16 min-h-screen max-h-auto w-64 text-white pb-10 sticky top-0 z-0">
       <div className="flex flex-col pt-9 pl-8 space-y-9 text-base font-light font-inter">
         <Link to="/">
-          <p className="flex justify-between pr-8">
-            Dashboard <span>&gt;</span>
-          </p>
+          <p className="flex justify-between pr-8">Dashboard</p>
         </Link>
         <div>
           <p
