@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import logo from "../assets/imgs/fcritlogo.png";
 import { FaBars, FaInstagram, FaFacebookF } from "react-icons/fa";
-import { FaXTwitter } from "react-icons/fa6";
+import { FaLinkedinIn } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 
@@ -28,7 +28,7 @@ const Header = () => {
           <div className="flex flex-col items-center gap-5">
             {/* Instagram */}
             <a
-              href="https://instagram.com"
+              href="https://www.instagram.com/fcrit_officialvashi/#"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -36,7 +36,7 @@ const Header = () => {
             </a>
             {/* Facebook in a small white circle */}
             <a
-              href="https://facebook.com"
+              href="https://www.facebook.com/FCRITofficial?mibextid=qi2Omg&rdid=IoJKkP2z1tHGVtlt&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F3C2PBraUmM9pih85%2F%3Fmibextid%3Dqi2Omg#"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -44,13 +44,13 @@ const Header = () => {
                 <FaFacebookF className="text-[#0c2340] text-xs hover:text-blue-600 text-center" />
               </div>
             </a>
-            {/* X (Twitter) */}
+            {/* LinkedIn */}
             <a
-              href="https://twitter.com"
+              href="https://www.linkedin.com/in/fr-c-rodrigues-institute-of-technology-vashi-26a1b5195/"
               target="_blank"
               rel="noopener noreferrer"
             >
-              <FaXTwitter className="text-[#CACACA] hover:text-blue-600 transition-colors text-sm" />
+              <FaLinkedinIn className="text-[#CACACA] hover:text-blue-600 transition-colors text-sm" />
             </a>
           </div>
           {/* Vertical Divider */}
