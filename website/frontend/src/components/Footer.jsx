@@ -15,11 +15,13 @@ const Footer = () => {
         <div className="footer-container max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-5">
           {/* Logo & Institute Info */}
           <div className="footer-section text-center md:text-left">
-            <img
-              src="/src/assets/imgs/fcritlogo.png"
-              alt="FCRIT Logo"
-              className="w-20 h-20 mx-auto md:mx-0 mb-1"
-            />
+            <div className="ml-24 mb-2">
+              <img
+                src="/src/assets/imgs/fcritlogo.png"
+                alt="FCRIT Logo"
+                className="w-20 h-20 mx-auto md:mx-0 mb-1"
+              />
+            </div>
             <div className="pl-0 pt-0">
               <div className="relative top-3 left-1">
                 <p className="font-inter text-[10px] font-light leading-9 tracking-[1.0px] italic">
@@ -109,11 +111,34 @@ const Footer = () => {
         {/* Social Media Icons */}
         <div className="mt-10 border-t border-gray-400 pt-5 flex flex-col md:flex-row items-center justify-between text-sm text-gray-600">
           <div className="flex space-x-4">
-            <FaInstagram className="w-6 h-6 cursor-pointer hover:text-pink-600" />
-            <FaFacebook className="w-6 h-6 cursor-pointer hover:text-blue-600" />
-            <FaTwitter className="w-6 h-6 cursor-pointer hover:text-blue-400" />
-            <FaYoutube className="w-6 h-6 cursor-pointer hover:text-red-600" />
-            <FaLinkedin className="w-6 h-6 cursor-pointer hover:text-blue-800" />
+            <a
+              href="https://www.instagram.com/fcrit_officialvashi/#"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <FaInstagram className="w-6 h-6 cursor-pointer hover:text-pink-600" />
+            </a>
+            <a
+              href="https://www.facebook.com/FCRITofficial?mibextid=qi2Omg&rdid=IoJKkP2z1tHGVtlt&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F3C2PBraUmM9pih85%2F%3Fmibextid%3Dqi2Omg#"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <FaFacebook className="w-6 h-6 cursor-pointer hover:text-blue-600" />
+            </a>
+            <a
+              href="https://www.youtube.com/watch?v=yWJB6dRMQ6o"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <FaYoutube className="w-6 h-6 cursor-pointer hover:text-red-600" />
+            </a>
+            <a
+              href="https://www.linkedin.com/in/fr-c-rodrigues-institute-of-technology-vashi-26a1b5195/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <FaLinkedin className="w-6 h-6 cursor-pointer hover:text-blue-800" />
+            </a>
           </div>
           <div>
             <p className="mt-3 md:mt-0">
