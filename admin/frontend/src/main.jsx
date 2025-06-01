@@ -2,7 +2,6 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-// import HomePage from "./pages/homePage";
 import Login from "./pages/login";
 import Signup from "./pages/signup";
 import Error404 from "./pages/error404";
@@ -13,6 +12,7 @@ import WhatsNew from "./pages/HomePage/whatsNew";
 import Profile from "./pages/profile";
 import ImgCarousel from "./pages/HomePage/imgCarousel";
 import IntroText from "./pages/HomePage/introText";
+import DeptHome from "./pages/Department/dept_home";
 import TrainingPlacement from "./pages/Training-Placement/training-placement";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -28,10 +28,10 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/" element={<AdminLayout />}>
-          {/* <Route path="/home" element={<HomePage />} /> */}
           <Route path="/home/carousel" element={<ImgCarousel />} />
           <Route path="/home/whatsNew" element={<WhatsNew />} />
           <Route path="/home/introtext" element={<IntroText />} />
+          <Route path="/department/home" element={<DeptHome />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/student" element={<Student />} />
           <Route path="/training-placement" element={<TrainingPlacement />} />
@@ -39,7 +39,7 @@ const App = () => {
           <Route path="/principaldesk" element={<PrincipalDesk />} />
           <Route path="/about-us" element={<AboutUsAdmin />} />
           <Route path="/research/:section" element={<ResearchAdmin />} />
-          <Route path="/research" element={<ResearchAdmin />} />{" "}
+          <Route path="/research" element={<ResearchAdmin />} />
         </Route>
         <Route path="*" element={<Error404 />} />
       </Routes>
