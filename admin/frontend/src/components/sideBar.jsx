@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../services/useAuthCheck";
 
@@ -14,32 +14,45 @@ const SideBar = () => {
   const [isAboutOpen, setIsAboutOpen] = useState(false);
   const [isUserOpen, setIsUserOpen] = useState(false);
   const [isResearchOpen, setIsResearchOpen] = useState(false);
+  const [isDepartmentOpen, setIsDepartmentOpen] = useState(false);
+  const [isComputerEngOpen, setIsComputerEngOpen] = useState(false);
+  const [isMechanicalEngOpen, setIsMechanicalEngOpen] = useState(false);
+  const [isEXTCOpen, setIsEXTCOpen] = useState(false);
+  const [isElectricalEngOpen, setIsElectricalEngOpen] = useState(false);
+  const [isCSEOpen, setIsCSEOpen] = useState(false);
+  const [isBasicSciHumOpen, setIsBasicSciHumOpen] = useState(false);
 
-  const handleHomeClick = () => {
-    setIsHomeOpen((prevstate) => !prevstate);
+  const handleHomeClick = () => setIsHomeOpen((prev) => !prev);
+  const handleAboutClick = () => setIsAboutOpen((prev) => !prev);
+  const handleUserClick = () => setIsUserOpen((prev) => !prev);
+  const handleResearchClick = () => setIsResearchOpen((prev) => !prev);
+  const handleDepartmentClick = () => setIsDepartmentOpen((prev) => !prev);
+  const handleComputerEngClick = () => setIsComputerEngOpen((prev) => !prev);
+  const handleMechanicalEngClick = () =>
+    setIsMechanicalEngOpen((prev) => !prev);
+  const handleEXTCClick = () => setIsEXTCOpen((prev) => !prev);
+  const handleElectricalEngClick = () =>
+    setIsElectricalEngOpen((prev) => !prev);
+  const handleCSEClick = () => setIsCSEOpen((prev) => !prev);
+  const handleBasicSciHumClick = () => setIsBasicSciHumOpen((prev) => !prev);
+
+  const handleDepartmentSectionSelect = (deptName, section) => {
+    localStorage.setItem("departmentSection", `${deptName}/${section}`);
+    navigate(
+      `/department/${deptName}/${section.toLowerCase().replace(/ /g, "-")}`
+    );
+    setTimeout(() => {
+      window.dispatchEvent(
+        new CustomEvent("department-section-selected", {
+          detail: { deptName, section },
+        })
+      );
+    }, 50);
   };
 
-  const handleAboutClick = () => {
-    setIsAboutOpen((prevstate) => !prevstate);
-  };
-
-  const handleUserClick = () => {
-    setIsUserOpen((prevstate) => !prevstate);
-  };
-
-  const handleResearchClick = () => {
-    setIsResearchOpen((prevstate) => !prevstate);
-  };
-
-  // Function to handle section selection directly
   const handleSectionSelect = (section) => {
-    // Store the section in localStorage for backup
     localStorage.setItem("aboutUsSection", section);
-
-    // Navigate to about-us page and then dispatch a custom event
     navigate("/about-us");
-
-    // Dispatch a custom event that AboutUsAdmin can listen for
     setTimeout(() => {
       window.dispatchEvent(
         new CustomEvent("section-selected", {
@@ -49,9 +62,25 @@ const SideBar = () => {
     }, 50);
   };
 
-  if (!user) {
-    return null;
-  }
+  const departmentSections = [
+    "About",
+    "Committees and Board of Studies",
+    "Infrastructure",
+    "Activities",
+    "Student Association",
+    "Magazine",
+    "Syllabus",
+    "Result Analysis",
+    "Time Table",
+    "Achievements",
+    "Academic Calendar",
+    "Innovative Teaching and Learning Methods",
+    "Alumni Testimonials",
+    "Publications",
+    "Projects",
+  ];
+
+  if (!user) return null;
 
   return (
     <div className="bg-[#0C2340] mt-16 min-h-screen max-h-auto w-64 text-white pb-10 sticky top-0 z-0">
@@ -103,98 +132,249 @@ const SideBar = () => {
           </p>
           {isAboutOpen && (
             <div className="pt-2 pr-8 pl-4 leading-10">
-              <p
-                className="cursor-pointer"
-                onClick={() => handleSectionSelect("History")}
-              >
-                History
-              </p>
-              <p
-                className="cursor-pointer"
-                onClick={() => handleSectionSelect("Vision and Mission")}
-              >
-                Vision and Mission
-              </p>
-              <p
-                className="cursor-pointer"
-                onClick={() => handleSectionSelect("Trustees")}
-              >
-                Trustees
-              </p>
-              <p
-                className="cursor-pointer"
-                onClick={() => handleSectionSelect("Managing Director's Desk")}
-              >
-                Managing Director's Desk
-              </p>
-              <p
-                className="cursor-pointer"
-                onClick={() => handleSectionSelect("Principal's Desk")}
-              >
-                Principal's Desk
-              </p>
-              <p
-                className="cursor-pointer"
-                onClick={() => handleSectionSelect("Governance")}
-              >
-                Governance
-              </p>
-              <p
-                className="cursor-pointer"
-                onClick={() =>
-                  handleSectionSelect("Audit Report and Affiliations")
-                }
-              >
-                Audit Report and Affiliations
-              </p>
-              <p
-                className="cursor-pointer"
-                onClick={() =>
-                  handleSectionSelect("Administrations and Committees")
-                }
-              >
-                Administrations and Committees
-              </p>
-              <p
-                className="cursor-pointer"
-                onClick={() => handleSectionSelect("Institute Roadmap")}
-              >
-                Institute Roadmap
-              </p>
-              <p
-                className="cursor-pointer"
-                onClick={() => handleSectionSelect("Service Regulation")}
-              >
-                Service Regulation
-              </p>
-              <p
-                className="cursor-pointer"
-                onClick={() =>
-                  handleSectionSelect(
-                    "Qualification and Eligibility norms for Recruitment"
-                  )
-                }
-              >
-                Qualification and Eligibility norms for Recruitment
-              </p>
-              <p
-                className="cursor-pointer"
-                onClick={() => handleSectionSelect("Best Practices")}
-              >
-                Best Practices
-              </p>
-              <p
-                className="cursor-pointer"
-                onClick={() => handleSectionSelect("Mandatory Disclosures")}
-              >
-                Mandatory Disclosures
-              </p>
+              {[
+                "History",
+                "Vision and Mission",
+                "Trustees",
+                "Managing Director's Desk",
+                "Principal's Desk",
+                "Governance",
+                "Audit Report and Affiliations",
+                "Administrations and Committees",
+                "Institute Roadmap",
+                "Service Regulation",
+                "Qualification and Eligibility norms for Recruitment",
+                "Best Practices",
+                "Mandatory Disclosures",
+              ].map((section) => (
+                <p
+                  key={section}
+                  className="cursor-pointer"
+                  onClick={() => handleSectionSelect(section)}
+                >
+                  {section}
+                </p>
+              ))}
             </div>
           )}
         </div>
-        <p className="flex justify-between pr-8">
-          Departments <span>&gt;</span>
-        </p>
+        <div>
+          <p
+            className="cursor-pointer flex justify-between items-center pr-8"
+            onClick={handleDepartmentClick}
+          >
+            Departments{" "}
+            <span
+              className={`transform transition-transform ${
+                isDepartmentOpen ? "rotate-90" : ""
+              }`}
+            >
+              &gt;
+            </span>
+          </p>
+          {isDepartmentOpen && (
+            <div className="pt-2 pr-8 pl-4 leading-10">
+              <Link to="/department/home">
+                <p>Home</p>
+              </Link>
+              <div>
+                <p
+                  className="cursor-pointer flex justify-between items-center pr-4"
+                  onClick={handleComputerEngClick}
+                >
+                  Computer Engineering{" "}
+                  <span
+                    className={`transform transition-transform ${
+                      isComputerEngOpen ? "rotate-90" : ""
+                    }`}
+                  >
+                    &gt;
+                  </span>
+                </p>
+                {isComputerEngOpen && (
+                  <div className="pt-2 pr-4 pl-8 leading-10">
+                    {departmentSections.map((section) => (
+                      <p
+                        key={section}
+                        className="cursor-pointer"
+                        onClick={() =>
+                          handleDepartmentSectionSelect(
+                            "computer-engineering",
+                            section
+                          )
+                        }
+                      >
+                        {section}
+                      </p>
+                    ))}
+                  </div>
+                )}
+              </div>
+              <div>
+                <p
+                  className="cursor-pointer flex justify-between items-center pr-4"
+                  onClick={handleMechanicalEngClick}
+                >
+                  Mechanical Engineering{" "}
+                  <span
+                    className={`transform transition-transform ${
+                      isMechanicalEngOpen ? "rotate-90" : ""
+                    }`}
+                  >
+                    &gt;
+                  </span>
+                </p>
+                {isMechanicalEngOpen && (
+                  <div className="pt-2 pr-4 pl-8 leading-10">
+                    {departmentSections.map((section) => (
+                      <p
+                        key={section}
+                        className="cursor-pointer"
+                        onClick={() =>
+                          handleDepartmentSectionSelect(
+                            "mechanical-engineering",
+                            section
+                          )
+                        }
+                      >
+                        {section}
+                      </p>
+                    ))}
+                  </div>
+                )}
+              </div>
+              <div>
+                <p
+                  className="cursor-pointer flex justify-between items-center pr-4"
+                  onClick={handleEXTCClick}
+                >
+                  EXTC{" "}
+                  <span
+                    className={`transform transition-transform ${
+                      isEXTCOpen ? "rotate-90" : ""
+                    }`}
+                  >
+                    &gt;
+                  </span>
+                </p>
+                {isEXTCOpen && (
+                  <div className="pt-2 pr-4 pl-8 leading-10">
+                    {departmentSections.map((section) => (
+                      <p
+                        key={section}
+                        className="cursor-pointer"
+                        onClick={() =>
+                          handleDepartmentSectionSelect("extc", section)
+                        }
+                      >
+                        {section}
+                      </p>
+                    ))}
+                  </div>
+                )}
+              </div>
+              <div>
+                <p
+                  className="cursor-pointer flex justify-between items-center pr-4"
+                  onClick={handleElectricalEngClick}
+                >
+                  Electrical Engineering{" "}
+                  <span
+                    className={`transform transition-transform ${
+                      isElectricalEngOpen ? "rotate-90" : ""
+                    }`}
+                  >
+                    &gt;
+                  </span>
+                </p>
+                {isElectricalEngOpen && (
+                  <div className="pt-2 pr-4 pl-8 leading-10">
+                    {departmentSections.map((section) => (
+                      <p
+                        key={section}
+                        className="cursor-pointer"
+                        onClick={() =>
+                          handleDepartmentSectionSelect(
+                            "electrical-engineering",
+                            section
+                          )
+                        }
+                      >
+                        {section}
+                      </p>
+                    ))}
+                  </div>
+                )}
+              </div>
+              <div>
+                <p
+                  className="cursor-pointer flex justify-between items-center pr-4"
+                  onClick={handleCSEClick}
+                >
+                  Computer Science and Engineering{" "}
+                  <span
+                    className={`transform transition-transform ${
+                      isCSEOpen ? "rotate-90" : ""
+                    }`}
+                  >
+                    &gt;
+                  </span>
+                </p>
+                {isCSEOpen && (
+                  <div className="pt-2 pr-4 pl-8 leading-10">
+                    {departmentSections.map((section) => (
+                      <p
+                        key={section}
+                        className="cursor-pointer"
+                        onClick={() =>
+                          handleDepartmentSectionSelect(
+                            "computer-science-and-engineering",
+                            section
+                          )
+                        }
+                      >
+                        {section}
+                      </p>
+                    ))}
+                  </div>
+                )}
+              </div>
+              <div>
+                <p
+                  className="cursor-pointer flex justify-between items-center pr-4"
+                  onClick={handleBasicSciHumClick}
+                >
+                  Basic Science and Humanities{" "}
+                  <span
+                    className={`transform transition-transform ${
+                      isBasicSciHumOpen ? "rotate-90" : ""
+                    }`}
+                  >
+                    &gt;
+                  </span>
+                </p>
+                {isBasicSciHumOpen && (
+                  <div className="pt-2 pr-4 pl-8 leading-10">
+                    {departmentSections.map((section) => (
+                      <p
+                        key={section}
+                        className="cursor-pointer"
+                        onClick={() =>
+                          handleDepartmentSectionSelect(
+                            "basic-science-and-humanities",
+                            section
+                          )
+                        }
+                      >
+                        {section}
+                      </p>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+        </div>
         <p className="flex justify-between pr-8">
           Admission <span>&gt;</span>
         </p>
@@ -230,59 +410,37 @@ const SideBar = () => {
                 <p>Publications</p>
               </Link>
               <Link to="/research/books">
-                <p>Books Published</p>
-              </Link>
-              <Link to="/research/consultancy">
-                <p>Consultancy Projects</p>
+                <p>Books and Chapters</p>
               </Link>
               <Link to="/research/patents">
                 <p>Patents</p>
               </Link>
-              <Link to="/research/code-of-conduct">
-                <p>Code of Conduct</p>
+              <Link to="/research/awards">
+                <p>Awards</p>
+              </Link>
+              <Link to="/research/conferences">
+                <p>Conferences</p>
+              </Link>
+              <Link to="/research/research-collaborations">
+                <p>Research Collaborations</p>
+              </Link>
+              <Link to="/research/research-centers">
+                <p>Research Centers</p>
+              </Link>
+              <Link to="/research/phd">
+                <p>PhD Program</p>
+              </Link>
+              <Link to="/research/faculty">
+                <p>Faculty Publications</p>
+              </Link>
+              <Link to="/research/student">
+                <p>Student Publications</p>
               </Link>
             </div>
           )}
         </div>
         <p className="flex justify-between pr-8">
-          Human Resource <span>&gt;</span>
-        </p>
-        <p className="flex justify-between pr-8">
-          Alumni Page <span>&gt;</span>
-        </p>
-        <p className="flex justify-between pr-8">
-          Downloads Page <span>&gt;</span>
-        </p>
-        {(user.role === "teach_staff" || user.role === "superAdmin") && (
-          <Link to="/student" className="flex justify-between pr-8">
-            Students Corner <span>&gt;</span>
-          </Link>
-        )}
-        {(user.role === "hod" || user.role === "superAdmin") && (
-          <p
-            className="cursor-pointer mb-0 pb-0 flex justify-between items-center pr-8"
-            onClick={handleUserClick}
-          >
-            Manage Users{" "}
-            <span
-              className={`transform transition-transform ${
-                isUserOpen ? "rotate-90" : ""
-              }`}
-            >
-              &gt;
-            </span>
-          </p>
-        )}
-        {isUserOpen && (
-          <div className="pr-8 pl-4 space-y-4 leading-6">
-            <p className="-mt-5">
-              <Link to="/signup">Create User</Link>
-            </p>
-            <p>Delete User</p>
-          </div>
-        )}
-        <p className="flex justify-between pr-8">
-          Logs <span>&gt;</span>
+          Contact Us <span>&gt;</span>
         </p>
       </div>
     </div>
