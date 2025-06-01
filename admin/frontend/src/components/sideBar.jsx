@@ -410,37 +410,59 @@ const SideBar = () => {
                 <p>Publications</p>
               </Link>
               <Link to="/research/books">
-                <p>Books and Chapters</p>
+                <p>Books Published</p>
+              </Link>
+              <Link to="/research/consultancy">
+                <p>Consultancy Projects</p>
               </Link>
               <Link to="/research/patents">
                 <p>Patents</p>
               </Link>
-              <Link to="/research/awards">
-                <p>Awards</p>
-              </Link>
-              <Link to="/research/conferences">
-                <p>Conferences</p>
-              </Link>
-              <Link to="/research/research-collaborations">
-                <p>Research Collaborations</p>
-              </Link>
-              <Link to="/research/research-centers">
-                <p>Research Centers</p>
-              </Link>
-              <Link to="/research/phd">
-                <p>PhD Program</p>
-              </Link>
-              <Link to="/research/faculty">
-                <p>Faculty Publications</p>
-              </Link>
-              <Link to="/research/student">
-                <p>Student Publications</p>
+              <Link to="/research/code-of-conduct">
+                <p>Code of Conduct</p>
               </Link>
             </div>
           )}
         </div>
         <p className="flex justify-between pr-8">
-          Contact Us <span>&gt;</span>
+          Human Resource <span>&gt;</span>
+        </p>
+        <p className="flex justify-between pr-8">
+          Alumni Page <span>&gt;</span>
+        </p>
+        <p className="flex justify-between pr-8">
+          Downloads Page <span>&gt;</span>
+        </p>
+        {(user.role === "teach_staff" || user.role === "superAdmin") && (
+          <Link to="/student" className="flex justify-between pr-8">
+            Students Corner <span>&gt;</span>
+          </Link>
+        )}
+        {(user.role === "hod" || user.role === "superAdmin") && (
+          <p
+            className="cursor-pointer mb-0 pb-0 flex justify-between items-center pr-8"
+            onClick={handleUserClick}
+          >
+            Manage Users{" "}
+            <span
+              className={`transform transition-transform ${
+                isUserOpen ? "rotate-90" : ""
+              }`}
+            >
+              &gt;
+            </span>
+          </p>
+        )}
+        {isUserOpen && (
+          <div className="pr-8 pl-4 space-y-4 leading-6">
+            <p className="-mt-5">
+              <Link to="/signup">Create User</Link>
+            </p>
+            <p>Delete User</p>
+          </div>
+        )}
+        <p className="flex justify-between pr-8">
+          Logs <span>&gt;</span>
         </p>
       </div>
     </div>
