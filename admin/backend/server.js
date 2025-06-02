@@ -7,6 +7,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import routes from "./routes/routes.js";
 import deptHomeRoutes from "./routes/website/department/deptHomeRoutes.js";
+import compActivityRoutes from "./routes/website/homepage/compActivityRoutes.js";
 // import iicRoutes from "./routes/website/iicRoutes.js";
 
 dotenv.config();
@@ -60,6 +61,7 @@ app.use("/uploads", express.static(path.join(__dirname, "public", "uploads")));
 // Routes
 app.use("/", routes);
 app.use("/api/department", deptHomeRoutes);
+app.use("/api/department", compActivityRoutes);
 
 app.listen(port, () => {
   console.log(`Server Started at URI http://localhost:${port}/`);
