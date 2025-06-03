@@ -2,6 +2,9 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import userRoutes from "./routes/admin/userRoutes.js";
+
+
+import academicRoutes from "./routes/website/academics.js";
 import dotenv from "dotenv";
 import session from "express-session";
 dotenv.config();
@@ -55,6 +58,7 @@ app.use(express.static(path.join(__dirname, "public")));
 // Routes
 app.use("/api", userRoutes);
 app.use("/api/home", homeRoutes);
+app.use("api/academic",academicRoutes)
 
 app.listen(port, () => {
   console.log(`Server Started at URI http://localhost:${port}/`);
