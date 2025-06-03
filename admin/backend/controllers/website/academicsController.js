@@ -97,8 +97,9 @@ export const academicHandbookDeleteController = async (req, res) => {
 
 // Academic Calendar Controllers
 export const academicCalendarCreateController = async (req, res) => {
-  const { year, semester, issue_date, pdf_url, description, created_by } = req.body;
-  
+  const { year, semester, issue_date,  description, created_by } = req.body;
+  console.log(req.body)
+    const pdf_url = req.file ? `/uploads/${req.file.filename}` : null;
   try {
     const result = await academicCalendarCreate(year, semester, issue_date, pdf_url, description, created_by);
     res.json({ message: "Academic Calendar created successfully", id: result.insertId });

@@ -20,9 +20,9 @@ const AcademicCalendar = () => {
 
   const fetchCalendars = async () => {
     try {
-      const response = await fetch('/api/academics/calendar');
+      const response = await fetch('http://localhost:3663/api/academic/calendar');
       const data = await response.json();
-      setCalendars(data);
+      setCalendars(data.result);
     } catch (error) {
       console.error('Error fetching calendars:', error);
     }
@@ -52,13 +52,14 @@ const AcademicCalendar = () => {
     try {
       const formDataToSend = new FormData();
       formDataToSend.append('year', formData.year);
-      formDataToSend.append('issueDate', formData.issueDate);
-      formDataToSend.append('description', formData.description);
+      formDataToSend.append('issue_date', formData.issueDate);
+      formDataToSend.append('created_by', "Admin");
       if (formData.pdfFile) {
-        formDataToSend.append('pdf', formData.pdfFile);
-      }
+     formDataToSend.append('pdf', formData.pdfFile); // ✅ matches multer.single("pdf")
 
-      const url = editingId ? `/api/academics/calendar/${editingId}` : '/api/academics/calendar';
+      }
+ formDataToSend.append('description', formData.description);
+      const url = editingId ? `http://localhost:3663/api/academic/calendar-create/${editingId}` : 'http://localhost:3663/api/academic/calendar-create';
       const method = editingId ? 'PUT' : 'POST';
 
       const response = await fetch(url, {
@@ -78,7 +79,7 @@ const AcademicCalendar = () => {
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this calendar?')) {
       try {
-        const response = await fetch(`/api/academics/delete-calendar/${id}`, {
+        const response = await fetch(`http://localhost:3663/api/academic/delete-calendar/${id}`, {
           method: 'PUT'
         });
         if (response.ok) {
@@ -212,15 +213,15 @@ const AcademicCalendar = () => {
                     {calendar.year}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {calendar.issueDate && formatDate(calendar.issueDate)}
+                    {calendar.issue_date && formatDate(calendar.issue_date)}
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-500">
                     {calendar.description}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {calendar.pdfUrl && (
+                    {calendar.pdf_url && (
                       <a
-                        href={calendar.pdfUrl}
+                        href={`http://localhost:3663${calendar.pdf_url.trim()}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-blue-600 hover:text-blue-900 flex items-center"

@@ -81,7 +81,7 @@ router.put("/handbooks/:id", optionalFileUpload, academicHandbookEditController)
 router.put("/delete-handbooks/:id", academicHandbookDeleteController);
 
 // Academic Calendar Routes - Single endpoint with optional file upload
-router.post("/calendar", optionalFileUpload, academicCalendarCreateController);
+router.post("/calendar-create", optionalFileUpload, academicCalendarCreateController);
 router.get("/calendar", academicCalendarFetchController);
 router.put("/calendar/:id", optionalFileUpload, academicCalendarEditController);
 router.put("/delete-calendar/:id", academicCalendarDeleteController);
