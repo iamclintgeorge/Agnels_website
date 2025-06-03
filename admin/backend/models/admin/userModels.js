@@ -33,7 +33,7 @@ export const loginUser = async (emailId, password) => {
     if (!match) {
       return null;
     }
-g
+
     return user;
   } catch (error) {
     console.error("Error fetching user:", error);
