@@ -1,0 +1,49 @@
+--TRAINING PLACEMENT
+-- Overview Table
+CREATE TABLE placement_overview (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    description TEXT,
+    vision TEXT,
+    mission TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- Statistics Table
+CREATE TABLE placement_statistics (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    academic_year VARCHAR(255) NOT NULL,
+    total_placements INT,
+    average_package DECIMAL(10,2),
+    highest_package DECIMAL(10,2),
+    companies_visited INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+-- Recruiters Table
+CREATE TABLE placement_recruiters (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    company_name VARCHAR(255) NOT NULL,
+    description TEXT,
+    logo_path VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+--ANNOUNCEMENTS
+CREATE TABLE `announcements` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `subject` varchar(120) NOT NULL,
+  `description` text NOT NULL,
+  `attachment` varchar(1000) DEFAULT NULL,
+  `created_by` int(1) NOT NULL,
+  `created_timestamp` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `deleted` int(1) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`)
+)
+
+INSERT INTO `announcements` (`id`, `subject`, `description`, `attachment`, `created_by`, `created_timestamp`, `deleted`) VALUES
+(1, 'Campus Hiring 2019 , Shell India - SBO IT Bangalore  ', 'https://www.shell.in/\r\n\r\nPlacement drive at our college scheduled on 12th and 13th July, 2018 at 10:00 AM.\r\n\r\n \r\n\r\nEligibility Criteria :\r\n\r\nBtech graduates (Computer Science & Information Technology) â€“ 2019\r\n70% aggregate pass percentage through-out\r\nNo backlogs and only freshers without prior experience\r\n \r\n\r\nJob role :\r\n\r\nIT Software Engineer\r\n \r\n\r\nCTC Offered :\r\n\r\nRs 10,00,000 ( inclusive of performance bonus & retrials)\r\nJoining Bonus : Rs 1,50,000', '', 2, '2025-04-03 08:52:28', 0),
+(2, 'TCS Digital Recruitment', 'Placement drive at our college scheduled on  20th July, 2018.\r\nEligibility Criteria : B.E graduates (Computer Science & Information Technology, Mechanical, Electronics and Telecommunications, Electrical) â€“ 2019 70% aggregate pass percentage through-out \r\nConsistent 60 percent and above throughout the academics.\r\nNo backlogs and only freshers without prior experience  CTC Offered : Rs 7,00,000 \r\n\r\n', NULL, 1, '2018-07-04 03:28:02', 0);
+

@@ -1,16 +1,16 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
-import userRoutes from "./routes/admin/userRoutes.js";
-
-
-import academicRoutes from "./routes/website/academics.js";
 import dotenv from "dotenv";
 import session from "express-session";
-dotenv.config();
-import homeRoutes from "./routes/website/homepage/homeRoutes.js";
 import path from "path";
 import { fileURLToPath } from "url";
+import routes from "./routes/routes.js";
+import deptHomeRoutes from "./routes/website/department/deptHomeRoutes.js";
+import compActivityRoutes from "./routes/website/homepage/compActivityRoutes.js";
+// import iicRoutes from "./routes/website/iicRoutes.js";
+
+dotenv.config();
 
 const port = process.env.port;
 const app = express();
@@ -21,12 +21,12 @@ app.use(
     origin: function (origin, callback) {
       const allowedOrigins = ["http://localhost:5173", "http://localhost:5174"];
       if (allowedOrigins.includes(origin) || !origin) {
-        callback(null, true); // Allow the origin
+        callback(null, true);
       } else {
         callback(new Error("Not allowed by CORS"));
       }
     },
-    methods: ["POST", "GET"],
+    methods: ["POST", "GET", "PUT", "DELETE"],
     credentials: true,
   })
 );
@@ -48,17 +48,20 @@ app.use(
   })
 );
 
-// Get the current directory path using import.meta.url
+// Get the current directory path
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Serve static files from the 'public' folder
-app.use(express.static(path.join(__dirname, "public")));
+app.use("/uploads", express.static(path.join(__dirname, "public", "uploads")));
+
+// Integrate IIC routes
+// app.use("/api/iic", iicRoutes);
 
 // Routes
-app.use("/api", userRoutes);
-app.use("/api/home", homeRoutes);
-app.use("api/academic",academicRoutes)
+app.use("/", routes);
+app.use("/api/department", deptHomeRoutes);
+app.use("/api/department", compActivityRoutes);
 
 app.listen(port, () => {
   console.log(`Server Started at URI http://localhost:${port}/`);

@@ -55,7 +55,7 @@ export const AuthProvider = ({ children }) => {
   }, [navigate]);
 
   if (loading) {
-    return <div>Loading...</div>; // Add a loading indicator
+    return <div>Loading...</div>;
   }
 
   return (
