@@ -10,7 +10,7 @@ const AcademicHandbookHonours = () => {
     description: '',
     pdfFile: null,
     pdfUrl: '',
-    type: 'honours' // honours or minors
+    type: 'Honours' // honours or minors
   });
 
   useEffect(() => {
@@ -20,16 +20,16 @@ const AcademicHandbookHonours = () => {
   const fetchHandbooks = async () => {
     try {
       // Filter for honours and minors handbooks
-      const response = await fetch('/api/academics/handbooks?type=honours_minors');
+      const response = await fetch('http://localhost:3663/api/academic/handbooks');
       const data = await response.json();
-      setHandbooks(data);
+      setHandbooks(data.result );
     } catch (error) {
       console.error('Error fetching handbooks:', error);
     }
   };
 
   const handleAdd = () => {
-    setFormData({ title: '', description: '', pdfFile: null, pdfUrl: '', type: 'honours' });
+    setFormData({ title: '', description: '', pdfFile: null, pdfUrl: '', type: 'Honours' });
     setIsAdding(true);
   };
 
@@ -44,12 +44,12 @@ const AcademicHandbookHonours = () => {
       const formDataToSend = new FormData();
       formDataToSend.append('title', formData.title);
       formDataToSend.append('description', formData.description);
-      formDataToSend.append('type', formData.type);
+      formDataToSend.append('handbook_type', "Honours");
       if (formData.pdfFile) {
         formDataToSend.append('pdf', formData.pdfFile);
       }
 
-      const url = editingId ? `/api/academics/handbooks/${editingId}` : '/api/academics/handbooks';
+      const url = editingId ? `http://localhost:3663/api/academic/handbooks-create/${editingId}` : 'http://localhost:3663/api/academic/handbooks-create';
       const method = editingId ? 'PUT' : 'POST';
 
       const response = await fetch(url, {
@@ -69,7 +69,7 @@ const AcademicHandbookHonours = () => {
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this handbook?')) {
       try {
-        const response = await fetch(`/api/academics/delete-handbooks/${id}`, {
+        const response = await fetch(`http://localhost:3663/api/academic/delete-handbooks/${id}`, {
           method: 'PUT'
         });
         if (response.ok) {
@@ -84,7 +84,7 @@ const AcademicHandbookHonours = () => {
   const handleCancel = () => {
     setIsAdding(false);
     setEditingId(null);
-    setFormData({ title: '', description: '', pdfFile: null, pdfUrl: '', type: 'honours' });
+    setFormData({ title: '', description: '', pdfFile: null, pdfUrl: '', type: 'Honours' });
   };
 
   const handleFileChange = (e) => {
@@ -125,7 +125,7 @@ const AcademicHandbookHonours = () => {
                 onChange={(e) => setFormData({ ...formData, type: e.target.value })}
                 className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
               >
-                <option value="honours">Honours</option>
+                <option value="Honours">Honours</option>
                 <option value="minors">Minors</option>
               </select>
             </div>
@@ -182,39 +182,47 @@ const AcademicHandbookHonours = () => {
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   PDF
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                {/* <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Actions
-                </th>
+                </th> */}
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {handbooks.map((handbook) => (
+              {handbooks.filter((handbook) => handbook.handbook_type 
+              !== 'Honours').map((handbook) => (
                 <tr key={handbook.id}>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                     {handbook.title}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                  {/* <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     <span className={`px-2 py-1 rounded-full text-xs font-medium ${
                       handbook.type === 'honours' ? 'bg-blue-100 text-blue-800' : 'bg-green-100 text-green-800'
                     }`}>
                       {handbook.type}
                     </span>
-                  </td>
+                  </td> */}
                   <td className="px-6 py-4 text-sm text-gray-500">
                     {handbook.description}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {handbook.pdfUrl && (
-                      <a
-                        href={handbook.pdfUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-blue-600 hover:text-blue-900 flex items-center"
-                      >
-                        <FaFilePdf className="mr-1" /> View PDF
-                      </a>
-                    )}
-                  </td>
+                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+           {handbook.pdf_url ? (
+          <>
+       <a
+        href={`http://localhost:3663${handbook.pdf_url.trim()}`}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-blue-600 hover:text-blue-900 flex items-center"
+      >
+        View PDF
+      </a>
+      <br />
+      
+    </>
+  ) : (
+    'No PDF available'
+  )}
+</td>
+
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
                     <div className="flex space-x-2">
                       <button

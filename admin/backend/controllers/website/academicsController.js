@@ -40,6 +40,12 @@ export const academicHandbookCreateController = async (req, res) => {
   const pdf_url = req.file ? `/uploads/${req.file.filename}` : null;
 console.log("PDF URL:", pdf_url); // Debugging line to check the PDF URL
   // Optional: If pdf is mandatory, validate
+  console.log('Received Handbook Data:', {
+    title,
+    description,
+    handbook_type,
+    
+  });
   if (!pdf_url) {
     return res.status(400).json({ message: "PDF file is required" });
   }
@@ -67,7 +73,7 @@ export const academicHandbookFetchController = async (req, res) => {
 export const academicHandbookEditController = async (req, res) => {
   const { title, description, pdf_url, handbook_type, created_by } = req.body;
   const { id } = req.params;
-  
+    console.log('handbook_type:', handbook_type); 
   try {
     const result = await academicHandbookEdit(id, title, description, pdf_url, handbook_type, created_by);
     res.json({ message: "Academic Handbook updated successfully" });

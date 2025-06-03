@@ -42,6 +42,7 @@ const AcademicHandbook = () => {
       const formDataToSend = new FormData();
       formDataToSend.append('title', formData.title);
       formDataToSend.append('description', formData.description);
+      formDataToSend.append('handbook_type', "general");
       if (formData.pdfFile) {
         formDataToSend.append('pdf', formData.pdfFile);
       }
@@ -90,7 +91,7 @@ const AcademicHandbook = () => {
   };
 
   return (
-    <div className="p-6">
+    <div className="p-6 ">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-3xl font-bold text-gray-800">Academic Handbook Management</h1>
         <button
@@ -172,7 +173,7 @@ const AcademicHandbook = () => {
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
-              {handbooks.map((handbook) => (
+              {handbooks.filter((handbook) => handbook.handbook_type === 'general').map((handbook) => (
                 <tr key={handbook.id}>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                     {handbook.title}
@@ -181,9 +182,9 @@ const AcademicHandbook = () => {
                     {handbook.description}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    {handbook.pdfUrl && (
+                    {handbook.pdf_url && (
                       <a
-                        href={handbook.pdfUrl}
+                        href={`http://localhost:3663${handbook.pdf_url.trim()}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-blue-600 hover:text-blue-900 flex items-center"
