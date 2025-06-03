@@ -54,7 +54,10 @@ const NavBar = () => {
               <SearchBar />
             </div>
             <div className="text-white flex flex-row text-sm pr-10">
-              <p className="cursor-pointer mr-5 pt-[22px] font-light font-inter">
+              <p
+                className="cursor-pointer mr-5 pt-[22px] font-light font-inter"
+                onClick={handleUserClick}
+              >
                 {user.userName}
                 {/* Gautam Tiwari Chowdhary */}
               </p>
