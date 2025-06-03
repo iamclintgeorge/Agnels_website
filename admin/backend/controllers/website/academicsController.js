@@ -145,9 +145,44 @@ export const academicCalendarDeleteController = async (req, res) => {
 };
 
 // Examination Controllers
+// export const examinationCreateController = async (req, res) => {
+//   const { exam_type, semester, year,   notification, created_by } = req.body;
+//   const timetable_url = req.files?.pdf?.[0]?.filename
+//   ? `/uploads/${req.files.pdf[0].filename}`
+//   : null;
+// const result_url = req.files?.result_pdf?.[0]?.filename
+//   ? `/uploads/${req.files.result_pdf[0].filename}`
+//   : null
+//   try {
+//     const result = await examinationCreate(exam_type, semester, year, timetable_url, result_url, notification, created_by);
+//     res.json({ message: "Examination created successfully", id: result.insertId });
+//   } catch (error) {
+//     console.error("Examination Creation Error: ", error);
+//     res.status(500).json({ message: "Error creating examination" });
+//   }
+// };
 export const examinationCreateController = async (req, res) => {
-  const { exam_type, semester, year, timetable_url, result_url, notification, created_by } = req.body;
+  console.log('Request body:', req.body); // Debug log
+  console.log('Request files:', req.files); // Debug log
   
+  const { exam_type, semester, year, notification, created_by } = req.body;
+  console.log('Exam Type:', exam_type); // Debug log
+  // Fix the file path extraction - check for timetable_pdf instead of pdf
+  const timetable_url = req.files?.timetable_pdf?.[0]?.filename
+    ? `/uploads/${req.files.timetable_pdf[0].filename}`
+    : null;
+    
+  const result_url = req.files?.result_pdf?.[0]?.filename
+    ? `/uploads/${req.files.result_pdf[0].filename}`
+    : null;
+
+  // Add validation to ensure required fields are present
+  if (!exam_type || !semester || !year || !created_by) {
+    return res.status(400).json({ 
+      message: "Missing required fields: exam_type, semester, year, created_by" 
+    });
+  }
+
   try {
     const result = await examinationCreate(exam_type, semester, year, timetable_url, result_url, notification, created_by);
     res.json({ message: "Examination created successfully", id: result.insertId });

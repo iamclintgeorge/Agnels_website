@@ -134,6 +134,7 @@ export const academicCalendarDelete = async (id) => {
 
 // Examination Models
 export const examinationCreate = async (exam_type, semester, year, timetable_url, result_url, notification, created_by) => {
+  console.log(exam_type)
   const query = `
     INSERT INTO examinations (exam_type, semester, year, timetable_url, result_url, notification, created_by)
     VALUES (?, ?, ?, ?, ?, ?, ?)

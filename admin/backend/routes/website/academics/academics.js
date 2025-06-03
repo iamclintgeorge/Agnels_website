@@ -71,7 +71,53 @@ const optionalFileUpload = (req, res, next) => {
     next();
   }
 };
+const examinationFileUpload = (req, res, next) => {
+  const contentType = req.get('Content-Type');
+  
+  if (contentType && contentType.includes('multipart/form-data')) {
+    upload.fields([
+      { name: 'timetable_pdf', maxCount: 1 },
+      { name: 'result_pdf', maxCount: 1 }
+    ])(req, res, (err) => {
+      if (err) {
+        console.error('Examination upload error:', err);
+        return res.status(400).json({
+          success: false,
+          message: err.message
+        });
+      }
+      console.log('Examination upload successful - Body:', req.body);
+      console.log('Examination upload successful - Files:', req.files);
+      next();
+    });
+  } else {
+    next();
+  }
+};
+// const optionalFileUpload = (req, res, next) => {
+//   const contentType = req.get('Content-Type');
 
+//   if (contentType && contentType.includes('multipart/form-data')) {
+//     // Support multiple optional fields with correct names
+//     const uploadMiddleware = upload.fields([
+//       { name: 'pdf', maxCount: 1 },               // For calendar-create and others
+//       { name: 'timetable_pdf', maxCount: 1 },     // For examinations
+//       { name: 'result_pdf', maxCount: 1 }         // For examinations
+//     ]);
+
+//     uploadMiddleware(req, res, (err) => {
+//       if (err) {
+//         return res.status(400).json({
+//           success: false,
+//           message: err.message
+//         });
+//       }
+//       next();
+//     });
+//   } else {
+//     next();
+//   }
+// };
 const router = express.Router();
 
 // Academic Handbook Routes - Single endpoint with optional file upload
@@ -87,9 +133,9 @@ router.put("/calendar/:id", optionalFileUpload, academicCalendarEditController);
 router.put("/delete-calendar/:id", academicCalendarDeleteController);
 
 // Examination Routes
-router.post("/examinations", examinationCreateController);
+router.post("/examinations-create",examinationFileUpload, examinationCreateController);
 router.get("/examinations", examinationFetchController);
-router.put("/examinations/:id", examinationEditController);
+router.put("/examinations/:id", examinationFileUpload,examinationEditController);
 router.put("/delete-examinations/:id", examinationDeleteController);
 
 // Academic Links Routes
