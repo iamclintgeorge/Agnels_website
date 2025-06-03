@@ -58,8 +58,9 @@ const NavBar = () => {
                 className="cursor-pointer mr-5 pt-[22px] font-light font-inter"
                 onClick={handleUserClick}
               >
-                {user.userName}
+                {/* {user.userName} */}
                 {/* Gautam Tiwari Chowdhary */}
+                Undefined
               </p>
               <div className="relative inline-block">
                 <button
