@@ -13,6 +13,19 @@ const services = [
   "Information Management System (IMS)",
 ];
 
+const links = [
+  "https://sp.fcrit.ac.in/studentportal/index.php",
+  "https://fcs.fcrit.ac.in/",
+  "https://copo.fcrit.ac.in/",
+  "https://apms.fcrit.ac.in/apms/index.php",
+  "http://lms.fcrit.ac.in/moodle/",
+  "https://placement.fcrit.ac.in/",
+  "https://www.office.com/",
+  "https://library.fcrit.ac.in/",
+  "http://122.200.18.89:8080/login",
+  "https://ims.fcrit.ac.in/",
+];
+
 const Login = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-white p-20">
@@ -25,9 +38,13 @@ const Login = () => {
             <h2 className="text-lg font-medium text-black text-left font-inter">
               {service}
             </h2>
-            <button className="bg-black text-white py-2 px-12 shadow-md transition w-full hover:bg-white hover:text-black border border-black mt-auto">
+            <a
+              href={links[index]}
+              rel="noopener noreferrer"
+              className="bg-black text-white py-2 px-12 shadow-md transition w-full hover:bg-white hover:text-black border border-black mt-auto text-center"
+            >
               Login
-            </button>
+            </a>
           </div>
         ))}
       </div>

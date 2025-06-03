@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../services/useAuthCheck";
+import SearchBar from "./searchBar";
 
 const NavBar = () => {
   const [isUserOpen, setIsUserOpen] = useState(false);
@@ -49,20 +50,45 @@ const NavBar = () => {
                 </p>
               </div>
             </Link>
+            <div>
+              <SearchBar />
+            </div>
             <div className="text-white flex flex-row text-sm pr-10">
+              <p className="cursor-pointer mr-5 pt-[22px] font-light font-inter">
+                {user.userName}
+                {/* Gautam Tiwari Chowdhary */}
+              </p>
               <div className="relative inline-block">
-                <p
-                  className="cursor-pointer mr-7 pt-[22px] font-light font-inter"
+                <button
+                  className="text-xs pt-6 pb-5 pr-6"
                   onClick={handleUserClick}
                 >
-                  {user.userName}
-                  {/* Gautam Tiwari Chowdhary */}
-                </p>
+                  &#9660;
+                </button>
+
                 {isUserOpen && (
-                  <div className="absolute left-24 transform -translate-x-full py-4 px-5 space-y-4 bg-[#0C2340] text-nowrap">
+                  <div className="absolute left-16 transform -translate-x-full py-4 px-5 space-y-4 bg-[#0C2340] text-nowrap">
                     <Link to="/profile">
                       <p>Edit Profile</p>
                     </Link>
+
+                    {(user.role === "hod" || user.role === "superAdmin") && (
+                      <Link to="/hoddesk">
+                        <p className="mt-5">HOD's Desk</p>
+                      </Link>
+                    )}
+
+                    {(user.role === "principal" ||
+                      user.role === "superAdmin") && (
+                      <Link to="/principaldesk">
+                        <p className="mt-5">Principal's Desk</p>
+                      </Link>
+                    )}
+
+                    <Link to="/login">
+                      <p className="mt-5">Switch User</p>
+                    </Link>
+
                     <button onClick={handleSignout}>Sign Out</button>
                   </div>
                 )}
