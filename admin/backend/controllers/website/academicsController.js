@@ -7,6 +7,7 @@ import {
   academicCalendarFetch,
   academicCalendarEdit,
   academicCalendarDelete,
+  getCalendarById,
   examinationCreate,
   examinationFetch,
   examinationEdit,
@@ -33,6 +34,9 @@ import {
 //     res.status(500).json({ message: "Error creating academic handbook" });
 //   }
 // };
+
+
+
 export const academicHandbookCreateController = async (req, res) => {
   const { title, description, handbook_type, created_by } = req.body;
   console.log("Uploaded File:", req.file);
@@ -119,19 +123,38 @@ export const academicCalendarFetchController = async (req, res) => {
   }
 };
 
+// export const academicCalendarEditController = async (req, res) => {
+//   const { year, semester, issue_date, pdf_url, description, created_by } = req.body;
+//   const { id } = req.params;
+  
+//   try {
+//     const result = await academicCalendarEdit(id, year, semester, issue_date, pdf_url, description, created_by);
+//     res.json({ message: "Academic Calendar updated successfully" });
+//   } catch (error) {
+//     console.error("Academic Calendar Edit Error: ", error);
+//     res.status(500).json({ message: "Error updating academic calendar" });
+//   }
+// };
 export const academicCalendarEditController = async (req, res) => {
-  const { year, semester, issue_date, pdf_url, description, created_by } = req.body;
+  const { year, semester,issue_date, description, created_by } = req.body;
   const { id } = req.params;
   
   try {
-    const result = await academicCalendarEdit(id, year, semester, issue_date, pdf_url, description, created_by);
+    // Get existing calendar data first
+    const existingCalendar = await getCalendarById(id); // You'll need this function
+    
+    let pdf_url = existingCalendar.pdf_url; // Keep existing PDF by default
+    
+    // Only update PDF if a new file was uploaded
+    
+    
+    const result = await academicCalendarEdit(id, year,semester, issue_date, pdf_url, description, created_by);
     res.json({ message: "Academic Calendar updated successfully" });
   } catch (error) {
     console.error("Academic Calendar Edit Error: ", error);
     res.status(500).json({ message: "Error updating academic calendar" });
   }
 };
-
 export const academicCalendarDeleteController = async (req, res) => {
   const { id } = req.params;
   
@@ -322,3 +345,7 @@ export const stakeholderFeedbackDeleteController = async (req, res) => {
     res.status(500).json({ message: "Error deleting stakeholder feedback" });
   }
 };
+
+
+
+

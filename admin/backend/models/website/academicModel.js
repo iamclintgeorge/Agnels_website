@@ -98,6 +98,17 @@ export const academicCalendarFetch = async () => {
     throw error;
   }
 };
+export const getCalendarById = async (id) => {
+  const query = `SELECT * FROM academic_calendar WHERE id = ?`;
+  
+  try {
+    const [result] = await db.promise().query(query, [id]);
+    return result[0];
+  } catch (error) {
+    console.error("Database select error:", error);
+    throw error;
+  }
+};
 
 export const academicCalendarEdit = async (id, year, semester, issue_date, pdf_url, description, created_by) => {
   const query = `

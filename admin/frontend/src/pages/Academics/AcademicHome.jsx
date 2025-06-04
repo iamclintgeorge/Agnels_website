@@ -19,9 +19,9 @@ const AcademicHome = () => {
   const fetchHomeContent = async () => {
     try {
       // API call to fetch home content
-      // const response = await fetch('/api/academics/home');
-      // const data = await response.json();
-      // setHomeContent(data);
+      const response = await fetch('/api/academics/home');
+      const data = await response.json();
+      setHomeContent(data);
     } catch (error) {
       console.error('Error fetching home content:', error);
     }
@@ -35,11 +35,11 @@ const AcademicHome = () => {
   const handleSave = async () => {
     try {
       // API call to update home content
-      // const response = await fetch('/api/academics/home', {
-      //   method: 'PUT',
-      //   headers: { 'Content-Type': 'application/json' },
-      //   body: JSON.stringify(editForm)
-      // });
+      const response = await fetch('/api/academics/home', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(editForm)
+      });
       setHomeContent(editForm);
       setIsEditing(false);
     } catch (error) {
