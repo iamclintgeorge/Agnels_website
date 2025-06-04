@@ -23,9 +23,156 @@ import {
   getFeedbackById,
   stakeholderFeedbackFetch,
   stakeholderFeedbackEdit,
-  stakeholderFeedbackDelete
+  stakeholderFeedbackDelete,
+   academicHomeCreate,
+  academicHomeFetch,
+  academicHomeEdit,
+  academicHomeDelete,
+  getAcademicHomeById,
+  academicHomeSectionCreate,
+  academicHomeSectionEdit,
+  academicHomeSectionDelete,
+  academicHomeAdminCardCreate,
+  academicHomeAdminCardEdit,
+  academicHomeAdminCardDelete
 } from "../../models/website/academicModel.js"; // Adjust path as needed
 
+
+
+// Academic Home Controllers
+export const academicHomeCreateController = async (req, res) => {
+  const { title, description, created_by } = req.body;
+  const hero_image_url = req.file ? `/uploads/${req.file.filename}` : null;
+  
+  try {
+    const result = await academicHomeCreate(title, description, hero_image_url, created_by);
+    res.json({ message: "Academic Home created successfully", id: result.insertId });
+  } catch (error) {
+    console.error("Academic Home Creation Error: ", error);
+    res.status(500).json({ message: "Error creating academic home" });
+  }
+};
+
+export const academicHomeFetchController = async (req, res) => {
+  try {
+    const result = await academicHomeFetch();
+    res.json({ result: result });
+  } catch (error) {
+    console.error("Academic Home Fetch Error: ", error);
+    res.status(500).json({ message: "Error fetching academic home" });
+  }
+};
+
+export const academicHomeEditController = async (req, res) => {
+  const { title, description, created_by } = req.body;
+  const { id } = req.params;
+  
+  try {
+    // Get existing home data first
+    const existingHome = await getAcademicHomeById(id);
+    
+    let hero_image_url = existingHome.hero_image_url; // Keep existing image by default
+    
+    // Only update image if a new file was uploaded
+    if (req.file) {
+      hero_image_url = `/uploads/${req.file.filename}`;
+    }
+    
+    const result = await academicHomeEdit(id, title, description, hero_image_url, created_by);
+    res.json({ message: "Academic Home updated successfully" });
+  } catch (error) {
+    console.error("Academic Home Edit Error: ", error);
+    res.status(500).json({ message: "Error updating academic home" });
+  }
+};
+
+export const academicHomeDeleteController = async (req, res) => {
+  const { id } = req.params;
+  
+  try {
+    const result = await academicHomeDelete(id);
+    res.json({ message: "Academic Home deleted successfully" });
+  } catch (error) {
+    console.error("Academic Home Delete Error: ", error);
+    res.status(500).json({ message: "Error deleting academic home" });
+  }
+};
+
+// Academic Home Section Controllers
+export const academicHomeSectionCreateController = async (req, res) => {
+  const { home_id, section_type, title, description, icon, order_index } = req.body;
+  
+  try {
+    const result = await academicHomeSectionCreate(home_id, section_type, title, description, icon, order_index);
+    res.json({ message: "Academic Home Section created successfully", id: result.insertId });
+  } catch (error) {
+    console.error("Academic Home Section Creation Error: ", error);
+    res.status(500).json({ message: "Error creating academic home section" });
+  }
+};
+
+export const academicHomeSectionEditController = async (req, res) => {
+  const { section_type, title, description, icon, order_index, is_active } = req.body;
+  const { id } = req.params;
+  
+  try {
+    const result = await academicHomeSectionEdit(id, section_type, title, description, icon, order_index, is_active);
+    res.json({ message: "Academic Home Section updated successfully" });
+  } catch (error) {
+    console.error("Academic Home Section Edit Error: ", error);
+    res.status(500).json({ message: "Error updating academic home section" });
+  }
+};
+
+export const academicHomeSectionDeleteController = async (req, res) => {
+  const { id } = req.params;
+  
+  try {
+    const result = await academicHomeSectionDelete(id);
+    res.json({ message: "Academic Home Section deleted successfully" });
+  } catch (error) {
+    console.error("Academic Home Section Delete Error: ", error);
+    res.status(500).json({ message: "Error deleting academic home section" });
+  }
+};
+
+// Academic Admin Card Controllers
+export const academicHomeAdminCardCreateController = async (req, res) => {
+  const { section_id, title, description, icon, order_index } = req.body;
+  
+  try {
+    const result = await academicHomeAdminCardCreate(section_id, title, description, icon, order_index);
+    res.json({ message: "Admin Card created successfully", id: result.insertId });
+  } catch (error) {
+    console.error("Admin Card Creation Error: ", error);
+    res.status(500).json({ message: "Error creating admin card" });
+  }
+};
+
+export const academicHomeAdminCardEditController = async (req, res) => {
+  const { title, description, icon, order_index, is_active } = req.body;
+  const { id } = req.params;
+  
+  try {
+    const result = await academicHomeAdminCardEdit(id, title, description, icon, order_index, is_active);
+    res.json({ message: "Admin Card updated successfully" });
+  } catch (error) {
+    console.error("Admin Card Edit Error: ", error);
+    res.status(500).json({ message: "Error updating admin card" });
+  }
+};
+
+export const academicHomeAdminCardDeleteController = async (req, res) => {
+  const { id } = req.params;
+  
+  try {
+    const result = await academicHomeAdminCardDelete(id);
+    res.json({ message: "Admin Card deleted successfully" });
+  } catch (error) {
+    console.error("Admin Card Delete Error: ", error);
+    res.status(500).json({ message: "Error deleting admin card" });
+  }
+};
 // Academic Handbook Controllers
 // export const academicHandbookCreateController = async (req, res) => {
 //   const { title, description, pdf_url, handbook_type, created_by } = req.body;

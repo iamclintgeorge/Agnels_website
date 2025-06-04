@@ -20,6 +20,16 @@ import {
   stakeholderFeedbackFetchController,
   stakeholderFeedbackEditController,
   stakeholderFeedbackDeleteController,
+    academicHomeCreateController,
+  academicHomeFetchController,
+  academicHomeEditController,
+  academicHomeDeleteController,
+  academicHomeSectionCreateController,
+  academicHomeSectionEditController,
+  academicHomeSectionDeleteController,
+  academicHomeAdminCardCreateController,
+  academicHomeAdminCardEditController,
+  academicHomeAdminCardDeleteController
 } from "../../../controllers/website/academicsController.js";
 
 import multer from "multer";
@@ -37,12 +47,20 @@ const storage = multer.diskStorage({
 });
 
 const fileFilter = (req, file, cb) => {
-  if (file.mimetype === "application/pdf") {
+  const allowedMimeTypes = [
+    "application/pdf",
+    "image/jpeg",
+    "image/png",
+    "image/jpg"
+  ];
+
+  if (allowedMimeTypes.includes(file.mimetype)) {
     cb(null, true);
   } else {
-    cb(new Error("Only PDF files are allowed"), false);
+    cb(new Error("Only PDF, JPG, and PNG files are allowed"), false);
   }
 };
+
 
 const upload = multer({
   storage: storage,
@@ -119,6 +137,24 @@ const examinationFileUpload = (req, res, next) => {
 //   }
 // };
 const router = express.Router();
+
+
+// Academic Home Routes
+router.post("/home-create", optionalFileUpload, academicHomeCreateController);
+router.get("/home", academicHomeFetchController);
+router.put("/home/:id", optionalFileUpload, academicHomeEditController);
+router.put("/delete-home/:id", academicHomeDeleteController);
+
+// Academic Home Sections Routes
+router.post("/home-section-create", academicHomeSectionCreateController);
+router.put("/home-section/:id", academicHomeSectionEditController);
+router.put("/delete-home-section/:id", academicHomeSectionDeleteController);
+
+// Academic Admin Cards Routes
+router.post("/admin-card-create", academicHomeAdminCardCreateController);
+router.put("/admin-card/:id", academicHomeAdminCardEditController);
+router.put("/delete-admin-card/:id", academicHomeAdminCardDeleteController);
+
 
 // Academic Handbook Routes - Single endpoint with optional file upload
 router.post("/handbooks-create", optionalFileUpload, academicHandbookCreateController);
