@@ -19,6 +19,7 @@ import {
   academicLinksEdit,
   academicLinksDelete,
   stakeholderFeedbackCreate,
+  getFeedbackById,
   stakeholderFeedbackFetch,
   stakeholderFeedbackEdit,
   stakeholderFeedbackDelete
@@ -330,10 +331,13 @@ export const stakeholderFeedbackFetchController = async (req, res) => {
 };
 
 export const stakeholderFeedbackEditController = async (req, res) => {
-  const { title, description, pdf_url, feedback_type, created_by } = req.body;
+  const { title, description,  feedback_type, created_by } = req.body;
   const { id } = req.params;
   
   try {
+    const existingCalendar = await getFeedbackById(id); // You'll need this function
+    
+    let pdf_url = existingCalendar.pdf_url;
     const result = await stakeholderFeedbackEdit(id, title, description, pdf_url, feedback_type, created_by);
     res.json({ message: "Stakeholder Feedback updated successfully" });
   } catch (error) {

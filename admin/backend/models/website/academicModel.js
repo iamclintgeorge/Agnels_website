@@ -330,6 +330,17 @@ export const stakeholderFeedbackFetch = async () => {
     throw error;
   }
 };
+export const getFeedbackById = async (id) => {
+  const query = `SELECT * FROM stakeholder_feedback WHERE id = ?`;
+  
+  try {
+    const [result] = await db.promise().query(query, [id]);
+    return result[0];
+  } catch (error) {
+    console.error("Database select error:", error);
+    throw error;
+  }
+};
 
 export const stakeholderFeedbackEdit = async (id, title, description, pdf_url, feedback_type, created_by) => {
   const query = `
