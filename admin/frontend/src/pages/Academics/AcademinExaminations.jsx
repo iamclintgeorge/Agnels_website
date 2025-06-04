@@ -382,7 +382,7 @@ const AcademicExaminations = () => {
       }
 
       const url = editingId 
-        ? `http://localhost:3663/api/academic/examinations-create/${editingId}` 
+        ? `http://localhost:3663/api/academic/examinations/${editingId}` 
         : 'http://localhost:3663/api/academic/examinations-create';
       const method = editingId ? 'PUT' : 'POST';
 
@@ -539,15 +539,21 @@ const AcademicExaminations = () => {
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">Timetable PDF</label>
+                    {editingId ? (
+    <div className="p-3 border border-gray-200 rounded-lg bg-gray-50 text-gray-500">
+      PDF cannot be changed during edit. Current PDF will be preserved.
+    </div>
+  ) :(
               <input
                 type="file"
                 accept=".pdf"
                 onChange={handleTimetableFileChange}
                 className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-              />
+              />)}
             </div>
             <div className="md:col-span-2 lg:col-span-3">
               <label className="block text-sm font-medium text-gray-700 mb-2">Result PDF</label>
+              
               <input
                 type="file"
                 accept=".pdf"
@@ -668,7 +674,7 @@ const AcademicExaminations = () => {
                           </a>
                         )}
                         {!examination.timetable_pdf_url && !examination.result_pdf_url && (
-                          <span className="text-gray-400 text-xs">No PDFs available</span>
+                          <span className="text-gray-400 text-xs">No result PDFs available</span>
                         )}
                       </div>
                     </td>

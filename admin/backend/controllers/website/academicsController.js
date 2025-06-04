@@ -11,6 +11,7 @@ import {
   getCalendarById,
   examinationCreate,
   examinationFetch,
+  getExaminationById,
   examinationEdit,
   examinationDelete,
   academicLinksCreate,
@@ -232,10 +233,13 @@ export const examinationFetchController = async (req, res) => {
 };
 
 export const examinationEditController = async (req, res) => {
-  const { exam_type, semester, year, timetable_url, result_url, notification, created_by } = req.body;
+  const { exam_type, semester, year,  result_url, notification, created_by } = req.body;
   const { id } = req.params;
   
   try {
+    const existingCalendar = await getExaminationById(id); // You'll need this function
+    
+    let timetable_url = existingCalendar.timetable_url;
     const result = await examinationEdit(id, exam_type, semester, year, timetable_url, result_url, notification, created_by);
     res.json({ message: "Examination updated successfully" });
   } catch (error) {
@@ -286,7 +290,7 @@ export const academicLinksEditController = async (req, res) => {
   try {
     const existingCalendar = await getAcademicLinkById(id); // You'll need this function
     
-    let pdf_url = existingCalendar.pdf_url;
+    let url = existingCalendar.url;
     const result = await academicLinksEdit(id, title, description, url, link_type, created_by);
     res.json({ message: "Academic Link updated successfully" });
   } catch (error) {

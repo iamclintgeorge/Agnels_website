@@ -187,6 +187,18 @@ export const examinationFetch = async () => {
     throw error;
   }
 };
+export const getExaminationById = async (id) => {
+  const query = `SELECT * FROM examinations WHERE id = ?`;
+  
+  try {
+    const [result] = await db.promise().query(query, [id]);
+    return result[0];
+  } catch (error) {
+    console.error("Database select error:", error);
+    throw error;
+  }
+};
+
 
 export const examinationEdit = async (id, exam_type, semester, year, timetable_url, result_url, notification, created_by) => {
   const query = `
