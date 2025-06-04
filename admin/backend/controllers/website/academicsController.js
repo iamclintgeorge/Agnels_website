@@ -229,8 +229,8 @@ export const examinationDeleteController = async (req, res) => {
 
 // Academic Links Controllers
 export const academicLinksCreateController = async (req, res) => {
-  const { title, description, url, link_type, created_by } = req.body;
-  
+  const { title, description,  link_type, created_by } = req.body;
+  const url = req.file ? `/uploads/${req.file.filename}` : null;
   try {
     const result = await academicLinksCreate(title, description, url, link_type, created_by);
     res.json({ message: "Academic Link created successfully", id: result.insertId });
@@ -277,8 +277,8 @@ export const academicLinksDeleteController = async (req, res) => {
 
 // Stakeholder Feedback Controllers
 export const stakeholderFeedbackCreateController = async (req, res) => {
-  const { title, description, pdf_url, feedback_type, created_by } = req.body;
-  
+  const { title, description,  feedback_type, created_by } = req.body;
+  const pdf_url = req.file ? `/uploads/${req.file.filename}` : null;
   try {
     const result = await stakeholderFeedbackCreate(title, description, pdf_url, feedback_type, created_by);
     res.json({ message: "Stakeholder Feedback created successfully", id: result.insertId });

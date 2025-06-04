@@ -19,7 +19,7 @@ const StakeholderFeedback = () => {
 
   const fetchFeedbacks = async () => {
     try {
-      const response = await fetch('/api/academics/feedback');
+      const response = await fetch('http://localhost:3663/api/academic/feedback');
       const data = await response.json();
       setFeedbacks(data.result || []);
     } catch (error) {
@@ -56,7 +56,7 @@ const StakeholderFeedback = () => {
         formDataToSend.append('pdf', formData.pdfFile);
       }
 
-      const url = editingId ? `/api/academics/feedback/${editingId}` : '/api/academics/feedback';
+      const url = editingId ? `http://localhost:3663/api/academic/feedback/${editingId}` : 'http://localhost:3663/api/academic/feedback-create';
       const method = editingId ? 'PUT' : 'POST';
 
       const response = await fetch(url, {
@@ -76,7 +76,7 @@ const StakeholderFeedback = () => {
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this feedback?')) {
       try {
-        const response = await fetch(`/api/academics/delete-feedback/${id}`, {
+        const response = await fetch(`http://localhost:3663/api/academic/delete-feedback/${id}`, {
           method: 'PUT'
         });
         if (response.ok) {

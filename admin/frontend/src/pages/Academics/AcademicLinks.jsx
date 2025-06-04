@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FaEdit, FaTrash, FaPlus, FaSave, FaTimes, FaLink } from "react-icons/fa";
+import { FaEdit, FaTrash, FaPlus, FaSave, FaTimes, FaFilePdf } from "react-icons/fa";
 
 const AcademicLinks = () => {
   const [links, setLinks] = useState([]);
@@ -8,7 +8,8 @@ const AcademicLinks = () => {
   const [formData, setFormData] = useState({
     title: '',
     description: '',
-    url: '',
+    pdfFile: null,
+    pdfUrl: '',
     link_type: ''
   });
 
@@ -18,7 +19,7 @@ const AcademicLinks = () => {
 
   const fetchLinks = async () => {
     try {
-      const response = await fetch('/api/academics/links');
+      const response = await fetch('http://localhost:3663/api/academic/links');
       const data = await response.json();
       setLinks(data.result || []);
     } catch (error) {
@@ -30,32 +31,40 @@ const AcademicLinks = () => {
     setFormData({
       title: '',
       description: '',
-      url: '',
+      pdfFile: null,
+      pdfUrl: '',
       link_type: ''
     });
     setIsAdding(true);
   };
 
   const handleEdit = (link) => {
-    setFormData(link);
+    setFormData({
+      ...link,
+      pdfFile: null // Reset file input for editing
+    });
     setEditingId(link.id);
     setIsAdding(true);
   };
 
   const handleSave = async () => {
     try {
-      const url = editingId ? `/api/academics/links/${editingId}` : '/api/academics/links';
+      const formDataToSend = new FormData();
+      formDataToSend.append('title', formData.title);
+      formDataToSend.append('description', formData.description);
+      formDataToSend.append('link_type', formData.link_type);
+      formDataToSend.append('created_by', 1); // Replace with actual admin ID
+      
+      if (formData.pdfFile) {
+        formDataToSend.append('pdf', formData.pdfFile); // matches multer.single("pdf")
+      }
+
+      const url = editingId ? `http://localhost:3663/api/academic/links/${editingId}` : 'http://localhost:3663/api/academic/links-create';
       const method = editingId ? 'PUT' : 'POST';
 
       const response = await fetch(url, {
         method,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          ...formData,
-          created_by: 1 // Replace with actual admin ID
-        })
+        body: formDataToSend
       });
 
       if (response.ok) {
@@ -70,7 +79,7 @@ const AcademicLinks = () => {
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this link?')) {
       try {
-        const response = await fetch(`/api/academics/delete-links/${id}`, {
+        const response = await fetch(`http://localhost:3663/api/academic/delete-links/${id}`, {
           method: 'PUT'
         });
         if (response.ok) {
@@ -88,17 +97,24 @@ const AcademicLinks = () => {
     setFormData({
       title: '',
       description: '',
-      url: '',
+      pdfFile: null,
+      pdfUrl: '',
       link_type: ''
     });
   };
 
+  const handleFileChange = (e) => {
+    setFormData({ ...formData, pdfFile: e.target.files[0] });
+  };
+
   const getLinkTypeColor = (type) => {
     const colors = {
-      'portal': 'bg-blue-100 text-blue-800',
-      'resource': 'bg-green-100 text-green-800',
-      'library': 'bg-purple-100 text-purple-800',
-      'course': 'bg-orange-100 text-orange-800',
+      'APMC': 'bg-blue-100 text-blue-800',
+      'LMS': 'bg-green-100 text-green-800',
+      'portal': 'bg-purple-100 text-purple-800',
+      'resource': 'bg-orange-100 text-orange-800',
+      'library': 'bg-indigo-100 text-indigo-800',
+      'course': 'bg-pink-100 text-pink-800',
       'external': 'bg-gray-100 text-gray-800'
     };
     return colors[type] || 'bg-gray-100 text-gray-800';
@@ -140,22 +156,23 @@ const AcademicLinks = () => {
                 className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
               >
                 <option value="">Select Link Type</option>
-                <option value="portal">Student Portal</option>
-                <option value="resource">Academic Resource</option>
-                <option value="library">Library</option>
-                <option value="course">Course Material</option>
-                <option value="external">External Link</option>
+                <option value="APMC">APMC</option>
+                <option value="LMS">LMS</option>
               </select>
             </div>
-            <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-2">URL</label>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">PDF File</label>
               <input
-                type="url"
-                value={formData.url}
-                onChange={(e) => setFormData({ ...formData, url: e.target.value })}
-                placeholder="https://..."
+                type="file"
+                accept=".pdf"
+                onChange={handleFileChange}
                 className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
               />
+              {editingId && formData.pdfUrl && !formData.pdfFile && (
+                <p className="text-sm text-gray-500 mt-1">
+                  Current file: {formData.pdfUrl.split('/').pop()}
+                </p>
+              )}
             </div>
             <div className="md:col-span-2">
               <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
@@ -200,7 +217,7 @@ const AcademicLinks = () => {
                   Description
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  URL
+                  PDF
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Actions
@@ -211,7 +228,7 @@ const AcademicLinks = () => {
               {links.length === 0 ? (
                 <tr>
                   <td colSpan="5" className="px-6 py-4 text-center text-gray-500">
-                    No links found
+                    No links found. Click "Add Link" to create one.
                   </td>
                 </tr>
               ) : (
@@ -231,12 +248,12 @@ const AcademicLinks = () => {
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       {link.url && (
                         <a
-                          href={link.url}
+                          href={`http://localhost:3663${link.url.trim()}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="text-blue-600 hover:text-blue-900 flex items-center"
                         >
-                          <FaLink className="mr-1" /> Visit
+                          <FaFilePdf className="mr-1" /> View PDF
                         </a>
                       )}
                     </td>

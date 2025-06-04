@@ -47,7 +47,7 @@ const AcademicHandbook = () => {
         formDataToSend.append('pdf', formData.pdfFile);
       }
 
-      const url = editingId ? `http://localhost:3663/api/academic/handbooks-create/${editingId}` : 'http://localhost:3663/api/academic/handbooks-create';
+      const url = editingId ? `http://localhost:3663/api/academic/handbooks/${editingId}` : 'http://localhost:3663/api/academic/handbooks-create';
       const method = editingId ? 'PUT' : 'POST';
 
       const response = await fetch(url, {

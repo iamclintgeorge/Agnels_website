@@ -139,13 +139,13 @@ router.put("/examinations/:id", examinationFileUpload,examinationEditController)
 router.put("/delete-examinations/:id", examinationDeleteController);
 
 // Academic Links Routes
-router.post("/links", academicLinksCreateController);
+router.post("/links-create",optionalFileUpload, academicLinksCreateController);
 router.get("/links", academicLinksFetchController);
-router.put("/links/:id", academicLinksEditController);
+router.put("/links/:id",optionalFileUpload, academicLinksEditController);
 router.put("/delete-links/:id", academicLinksDeleteController);
 
 // Stakeholder Feedback Routes - Single endpoint with optional file upload
-router.post("/feedback", optionalFileUpload, stakeholderFeedbackCreateController);
+router.post("/feedback-create", optionalFileUpload, stakeholderFeedbackCreateController);
 router.get("/feedback", stakeholderFeedbackFetchController);
 router.put("/feedback/:id", optionalFileUpload, stakeholderFeedbackEditController);
 router.put("/delete-feedback/:id", stakeholderFeedbackDeleteController);

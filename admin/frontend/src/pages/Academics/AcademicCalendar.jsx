@@ -59,7 +59,7 @@ const AcademicCalendar = () => {
 
       }
  formDataToSend.append('description', formData.description);
-      const url = editingId ? `http://localhost:3663/api/academic/calendar-create/${editingId}` : 'http://localhost:3663/api/academic/calendar-create';
+      const url = editingId ? `http://localhost:3663/api/academic/calendar/${editingId}` : 'http://localhost:3663/api/academic/calendar-create';
       const method = editingId ? 'PUT' : 'POST';
 
       const response = await fetch(url, {
