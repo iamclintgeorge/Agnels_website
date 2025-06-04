@@ -44,7 +44,7 @@ const AcademicHandbookHonours = () => {
       const formDataToSend = new FormData();
       formDataToSend.append('title', formData.title);
       formDataToSend.append('description', formData.description);
-      formDataToSend.append('handbook_type', "Honours");
+      formDataToSend.append('handbook_type', "honours_minors");
       if (formData.pdfFile) {
         formDataToSend.append('pdf', formData.pdfFile);
       }
@@ -125,8 +125,8 @@ const AcademicHandbookHonours = () => {
                 onChange={(e) => setFormData({ ...formData, type: e.target.value })}
                 className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
               >
-                <option value="Honours">Honours</option>
-                <option value="minors">Minors</option>
+                <option value="honours_minors">Honours_minors</option>
+                
               </select>
             </div>
             <div>
@@ -189,7 +189,7 @@ const AcademicHandbookHonours = () => {
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {handbooks.filter((handbook) => handbook.handbook_type 
-              !== 'Honours').map((handbook) => (
+              === 'honours_minors').map((handbook) => (
                 <tr key={handbook.id}>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                     {handbook.title}

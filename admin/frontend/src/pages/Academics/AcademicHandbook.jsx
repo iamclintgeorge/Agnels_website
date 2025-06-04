@@ -119,12 +119,17 @@ const AcademicHandbook = () => {
             </div>
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">PDF File</label>
+               {editingId ? (
+    <div className="p-3 border border-gray-200 rounded-lg bg-gray-50 text-gray-500">
+      PDF cannot be changed during edit. Current PDF will be preserved.
+    </div>
+  ) :(
               <input
                 type="file"
                 accept=".pdf"
                 onChange={handleFileChange}
                 className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500"
-              />
+              />)}
             </div>
             <div className="md:col-span-2">
               <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>

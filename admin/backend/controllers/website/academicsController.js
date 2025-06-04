@@ -1,6 +1,7 @@
 import {
   academicHandbookCreate,
   academicHandbookFetch,
+  getHandbookById,
   academicHandbookEdit,
   academicHandbookDelete,
   academicCalendarCreate,
@@ -75,10 +76,13 @@ export const academicHandbookFetchController = async (req, res) => {
 };
 
 export const academicHandbookEditController = async (req, res) => {
-  const { title, description, pdf_url, handbook_type, created_by } = req.body;
+  const { title, description,  handbook_type, created_by } = req.body;
   const { id } = req.params;
     console.log('handbook_type:', handbook_type); 
   try {
+     const existingCalendar = await getHandbookById(id); // You'll need this function
+    
+    let pdf_url = existingCalendar.pdf_url;
     const result = await academicHandbookEdit(id, title, description, pdf_url, handbook_type, created_by);
     res.json({ message: "Academic Handbook updated successfully" });
   } catch (error) {

@@ -32,6 +32,17 @@ export const academicHandbookFetch = async () => {
     throw error;
   }
 };
+export const getHandbookById = async (id) => {
+  const query = `SELECT * FROM academic_handbooks WHERE id = ?`;
+  
+  try {
+    const [result] = await db.promise().query(query, [id]);
+    return result[0];
+  } catch (error) {
+    console.error("Database select error:", error);
+    throw error;
+  }
+};
 
 export const academicHandbookEdit = async (id, title, description, pdf_url, handbook_type, created_by) => {
   const query = `
