@@ -14,6 +14,7 @@ import {
   examinationEdit,
   examinationDelete,
   academicLinksCreate,
+  getAcademicLinkById,
   academicLinksFetch,
   academicLinksEdit,
   academicLinksDelete,
@@ -282,6 +283,9 @@ export const academicLinksEditController = async (req, res) => {
   const { id } = req.params;
   
   try {
+    const existingCalendar = await getAcademicLinkById(id); // You'll need this function
+    
+    let pdf_url = existingCalendar.pdf_url;
     const result = await academicLinksEdit(id, title, description, url, link_type, created_by);
     res.json({ message: "Academic Link updated successfully" });
   } catch (error) {

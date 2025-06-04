@@ -222,6 +222,17 @@ export const examinationDelete = async (id) => {
 };
 
 // Academic Links Models
+export const getAcademicLinkById = async (id) => {
+  const query = `SELECT * FROM academic_links WHERE id = ?`;
+  
+  try {
+    const [result] = await db.promise().query(query, [id]);
+    return result[0];
+  } catch (error) {
+    console.error("Database select error:", error);
+    throw error;
+  }
+};
 export const academicLinksCreate = async (title, description, url, link_type, created_by) => {
   const query = `
     INSERT INTO academic_links (title, description, url, link_type, created_by)
