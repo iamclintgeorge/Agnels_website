@@ -8,6 +8,7 @@ import { fileURLToPath } from "url";
 import routes from "./routes/routes.js";
 import deptHomeRoutes from "./routes/website/department/deptHomeRoutes.js";
 import compActivityRoutes from "./routes/website/homepage/compActivityRoutes.js";
+
 // import iicRoutes from "./routes/website/iicRoutes.js";
 
 dotenv.config();
