@@ -1,25 +1,38 @@
 import React, { useState, useEffect } from "react";
-import "../styles/Header.css";
+import "../styles/Header.css"; // Custom styles if needed
 
 const News = () => {
-  const [text, setText] = useState("");
+  const [newsItems, setNewsItems] = useState([]);
 
   useEffect(() => {
-    setText(
-      "Institute Level Provisional Merit List for Admission to the First Year Engineering for the A.Y.2024-25&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Fee Approval Proposal for Academic Year 2024-25&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NBA Accreditation to Computer Engineering, Mechanical Engineering, Electronics and Telecommunication Engg., Electrical Engineering for three years up to June 2025&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;NIRF 2020 Rank Band : 201-250"
-    );
+    // Simulating news items fetched from an API
+    setNewsItems([
+      "Institute Level Provisional Merit List for Admission to the First Year Engineering for the A.Y.2024-25",
+      "Fee Approval Proposal for Academic Year 2024-25",
+      "NBA Accreditation to Computer Engineering, Mechanical Engineering, Electronics and Telecommunication Engg., Electrical Engineering for three years up to June 2025",
+      "NIRF 2020 Rank Band : 201-250",
+      "New Sports Infrastructure Opened",
+      "Placement Drive for Batch 2024",
+    ]);
   }, []);
 
   return (
-    <div className="flex items-center">
-      <div className="latest-news bg-yellow-400 w-48 h-16 rounded-lg p-4">
-        <h1 className="text-black font-bold">Latest News</h1>
-      </div>
-      <div className="headline-container bg-blue-500 w-full h-16 rounded-lg p-4 text-white font-bold overflow-hidden">
-        <div id="headline" className="marquee">
-          {/* used "dangerouslySetInnerHTML to enable &nbsp;" */}
-          <span dangerouslySetInnerHTML={{ __html: text }}></span>
-          <span dangerouslySetInnerHTML={{ __html: text }}></span>
+    <div className="flex items-center space-x-4 w-full">
+      <div className="w-full h-10 bg-[#102239] text-white overflow-hidden font-librefranklin text-sm md:text-sm lg:text-sm">
+        <div className="marquee flex animate-marquee whitespace-nowrap">
+          {/* Render the news items with dots separating them */}
+          {newsItems.map((item, index) => (
+            <span key={index} className="mr-4 flex items-center">
+              {/* News text */}
+              <span dangerouslySetInnerHTML={{ __html: item }}></span>
+              {/* Dot between news items */}
+              {index < newsItems.length - 1 && (
+                <span className="ml-5 text-[#AE9142] text-xl md:text-3xl lg:text-4xl">
+                  •
+                </span>
+              )}
+            </span>
+          ))}
         </div>
       </div>
     </div>
