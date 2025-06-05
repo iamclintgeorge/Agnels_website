@@ -1,20 +1,43 @@
-import React from "react";
+import React, { useState } from "react";
 
 function WhatsNew() {
   const tablesData = [
     {
-      title: "Admissions",
+      title: "Notice Board",
+      tabs: [],
+      content: "Content for Notice Board",
+    },
+    {
+      title: "Achievements",
       tabs: ["B.tech", "DSE (B.tech)", "M.tech/ Ph.D"],
+      content: {
+        "B.tech": "B.Tech Achievements Content",
+        "DSE (B.tech)": "DSE (B.Tech) Achievements Content",
+        "M.tech/ Ph.D": "M.Tech/Ph.D Achievements Content",
+      },
     },
     {
       title: "Admissions",
       tabs: ["B.tech", "DSE (B.tech)", "M.tech/ Ph.D"],
-    },
-    {
-      title: "Admissions",
-      tabs: ["B.tech", "DSE (B.tech)", "M.tech/ Ph.D"],
+      content: {
+        "B.tech": "B.Tech Admissions Content",
+        "DSE (B.tech)": "DSE (B.Tech) Admissions Content",
+        "M.tech/ Ph.D": "M.Tech/Ph.D Admissions Content",
+      },
     },
   ];
+
+  // State to track active tab for each table
+  const [activeTabs, setActiveTabs] = useState(
+    tablesData.map(() => 0) // Default to the first tab in each table
+  );
+
+  const handleTabClick = (tableIndex, tabIndex) => {
+    // Set active tab for the clicked table
+    const newActiveTabs = [...activeTabs];
+    newActiveTabs[tableIndex] = tabIndex;
+    setActiveTabs(newActiveTabs);
+  };
 
   return (
     <section className="relative py-10 pb-28 px-5 bg-[#F7F7F7]">
@@ -27,9 +50,9 @@ function WhatsNew() {
       </h2>
       <div className="w-40 h-[5px] bg-[#AE9142] mt-1 ml-10 mb-40"></div>
       <div className="flex justify-center gap-5">
-        {tablesData.map((table, index) => (
+        {tablesData.map((table, tableIndex) => (
           <div
-            key={index}
+            key={tableIndex}
             className="bg-[#E1E1E1] border rounded-lg w-96 h-auto min-h-96 z-10"
             style={{
               boxShadow: "0 4px 6px rgba(0, 0, 0, 0.3)",
@@ -43,15 +66,25 @@ function WhatsNew() {
               {table.tabs.map((tab, tabIndex) => (
                 <span
                   key={tabIndex}
-                  className="pt-3 py-0 bg-[#E1E1E1] shadow-sm text-center text-nowrap text-[#000000] text-[15px] w-44 h-12"
+                  className={`pt-3 py-0 text-center text-nowrap text-[15px] w-44 h-12 cursor-pointer ${
+                    activeTabs[tableIndex] === tabIndex
+                      ? "text-[#AE9142] font-bold" // Change text color for active tab
+                      : "text-[#000000]" // Default text color for inactive tab
+                  }`}
+                  onClick={() => handleTabClick(tableIndex, tabIndex)}
                   style={{
-                    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.3)", // Custom drop shadow
-                    border: "1.21px solid #757575", // Stroke effect
+                    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.3)",
+                    border: "0.5px solid #757575",
                   }}
                 >
                   {tab}
                 </span>
               ))}
+            </div>
+
+            {/* Content for the selected tab */}
+            <div className="p-4 mt-4">
+              <p>{table.content[table.tabs[activeTabs[tableIndex]]]}</p>
             </div>
           </div>
         ))}
