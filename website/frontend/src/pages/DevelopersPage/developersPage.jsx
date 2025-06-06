@@ -273,16 +273,16 @@ const Developers = () => {
               <div className="flex justify-center gap-16 md:gap-20 mb-12 md:mb-26"> {/* Increased bottom margin */}
                 {developers.leadDevelopers.map((dev, index) => (
                   <div key={`lead-container-${index}`} className="flex flex-col items-center"> {/* Wrap with flex container */}
-                    <DeveloperCard
-                      key={`lead-${index}`}
-                      name={dev.name}
-                      department={dev.department}
-                      position={dev.position}
-                      image={dev.image}
-                      size="medium"
+                  <DeveloperCard
+                    key={`lead-${index}`}
+                    name={dev.name}
+                    department={dev.department}
+                    position={dev.position}
+                    image={dev.image}
+                    size="medium"
                       linkedin={dev.linkedin}
                       github={dev.github}
-                    />
+                  />
                   </div>
                 ))}
               </div>
@@ -295,7 +295,7 @@ const Developers = () => {
                     // Determine imageFit for specific developers
                     const developerImageFit = "cover"; // Revert to default cover for all
 
-                    return (
+                      return (
                       <div key={`team-container-${devIndex}`} className="flex flex-col items-center">
                         <DeveloperCard
                           key={`team-${devIndex}`}
@@ -307,9 +307,9 @@ const Developers = () => {
                           imageFit={developerImageFit}
                         />
                       </div>
-                    );
-                  })}
-                </div>
+                      );
+                    })}
+                  </div>
               </div>
             </div>
           </div>
