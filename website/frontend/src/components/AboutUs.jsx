@@ -106,7 +106,7 @@ function AboutUs() {
   };
 
   return (
-    <section className="flex flex-col gap-10 p-0 bg-gray-100">
+    <section className="flex flex-col p-0 bg-gray-100">
       <div className="relative w-full mx-auto m-0">
         <Slider {...settings}>
           {images.map((image, index) => (

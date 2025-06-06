@@ -21,7 +21,9 @@ import HodDesk from "./pages/rolebasedPages/hodDesk";
 import PrincipalDesk from "./pages/rolebasedPages/principalDesk";
 import AboutUsAdmin from "./pages/AboutUs/AboutUsAdmin";
 import ResearchAdmin from "./pages/research/ResearchAdmin";
-
+import AcademicAdmin from "./pages/Academics/AcademicAdmin";
+import AcademicHandbook from "./pages/Academics/AcademicHandbook";
+import AcademicHandbookHonours from "./pages/Academics/AcademicHandbookHonours";
 const App = () => {
   return (
     <>
@@ -33,10 +35,13 @@ const App = () => {
           <Route path="/home/whatsNew" element={<WhatsNew />} />
           <Route path="/home/introtext" element={<IntroText />} />
           <Route path="/department/home" element={<DeptHome />} />
+          <Route path="/academic/handbook" element={<AcademicHandbook />} />
           <Route
             path="/department/computer-engineering/activities"
             element={<CompActivity />}
           />
+          <Route path="/academics" element={<AcademicAdmin />} />
+
           <Route path="/profile" element={<Profile />} />
           <Route path="/student" element={<Student />} />
           <Route path="/training-placement" element={<TrainingPlacement />} />
@@ -45,6 +50,7 @@ const App = () => {
           <Route path="/about-us" element={<AboutUsAdmin />} />
           <Route path="/research/:section" element={<ResearchAdmin />} />
           <Route path="/research" element={<ResearchAdmin />} />
+           
         </Route>
         <Route path="*" element={<Error404 />} />
       </Routes>

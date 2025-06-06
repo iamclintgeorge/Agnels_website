@@ -166,19 +166,19 @@ const Header = () => {
       <div className="absolute gap-3 text-base p-0 m-0 font-inter z-10 ml-[42vw] mr-10 mt-1 text-nowrap font-light hidden md:flex cursor-default">
         <Link
           to="/"
-          className="hover:bg-white hover:text-black px-4 py-2 rounded transition-all duration-200 ease-in-out transform hover:scale-105 hover:shadow-lg"
+          className="hover:bg-white hover:text-black px-4 py-2 transition-all duration-200 ease-in-out transform hover:scale-105 hover:shadow-lg"
         >
           <p>Home</p>
         </Link>
         <Link
           to="/aboutUs"
-          className="hover:bg-white hover:text-black px-4 py-2 rounded transition-all duration-200 ease-in-out transform hover:scale-105 hover:shadow-lg"
+          className="hover:bg-white hover:text-black px-4 py-2 transition-all duration-200 ease-in-out transform hover:scale-105 hover:shadow-lg"
         >
           <p>About Us</p>
         </Link>
         <Link
           to="/departments"
-          className="hover:bg-white hover:text-black px-4 py-2 rounded transition-all duration-200 ease-in-out transform hover:scale-105 hover:shadow-lg"
+          className="hover:bg-white hover:text-black px-4 py-2 transition-all duration-200 ease-in-out transform hover:scale-105 hover:shadow-lg"
         >
           <p>Departments</p>
         </Link>
@@ -191,7 +191,7 @@ const Header = () => {
         >
           <Link
             to="/academics"
-            className="hover:bg-white hover:text-black px-4 py-2 rounded transition-all duration-200 ease-in-out transform hover:scale-105 hover:shadow-lg flex items-center gap-2"
+            className="hover:bg-white hover:text-black px-4 py-2 transition-all duration-200 ease-in-out transform hover:scale-105 hover:shadow-lg flex items-center gap-2"
           >
             <p>Academics</p>
           </Link>
@@ -236,7 +236,7 @@ const Header = () => {
         </div>
         <Link
           to="/admissions"
-          className="hover:bg-white hover:text-black px-4 py-2 rounded transition-all duration-200 ease-in-out transform hover:scale-105 hover:shadow-lg"
+          className="hover:bg-white hover:text-black px-4 py-2 transition-all duration-200 ease-in-out transform hover:scale-105 hover:shadow-lg"
         >
           <p>Admissions</p>
         </Link>
@@ -249,7 +249,7 @@ const Header = () => {
         >
           <Link
             to="/studentCorner"
-            className="hover:bg-white hover:text-black px-4 py-2 rounded transition-all duration-200 ease-in-out transform hover:scale-105 hover:shadow-lg flex items-center gap-2"
+            className="hover:bg-white hover:text-black px-4 py-2 transition-all duration-200 ease-in-out transform hover:scale-105 hover:shadow-lg flex items-center gap-2"
           >
             <p>Student Corner</p>
           </Link>
