@@ -71,7 +71,8 @@ const Developers = () => {
         name: "Leonardo Dsouza",
         position: "Student Contributor",
         image: "/src/assets/imgs/developers page/Leonardo.jpg",
-        linkedin: "https://www.linkedin.com/in/leonardo-d-souza-035709241?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
+        linkedin:
+          "https://www.linkedin.com/in/leonardo-d-souza-035709241?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
         github: "https://github.com/leothedev0705/dvL",
         department: "Department of Computer Engineering",
       },
@@ -168,15 +169,27 @@ const Developers = () => {
         <div
           className={`${sizeClasses[size]} rounded-full overflow-hidden border-2 ${borderColor} shadow-md`}
         >
-          <img src={image} alt={name} className={`w-full h-full object-${imageFit}`} />
+          <img
+            src={image}
+            alt={name}
+            className={`w-full h-full object-${imageFit}`}
+          />
         </div>
         {/* Display name and department inline for small cards, block for medium/large */}
-        <h4 className={`text-center font-medium ${size === 'small' ? textClasses.small : textClasses.medium}`}> {/* Simplified text size class logic */}
+        <h4
+          className={`text-center font-medium ${
+            size === "small" ? textClasses.small : textClasses.medium
+          }`}
+        >
+          {" "}
+          {/* Simplified text size class logic */}
           {name}
         </h4>
         {department && (
           // Display department on a new line below the name
-          <p className="text-xs text-gray-600 text-center font-normal mt-0"> {/* Removed mt-1 for closer spacing, added font-normal */}
+          <p className="text-xs text-gray-600 text-center font-normal mt-0">
+            {" "}
+            {/* Removed mt-1 for closer spacing, added font-normal */}
             {department}
           </p>
         )}
@@ -194,7 +207,9 @@ const Developers = () => {
 
         {/* Social media icons for non-principal members with links */}
         {(linkedin || github) && !isPrincipal && (
-          <div className="flex gap-2 mt-2 items-center justify-center"> {/* Use mt-2 for spacing and center */}
+          <div className="flex gap-2 mt-2 items-center justify-center">
+            {" "}
+            {/* Use mt-2 for spacing and center */}
             {linkedin && (
               <a href={linkedin} target="_blank" rel="noopener noreferrer">
                 <FaLinkedin className="text-gray-600 cursor-pointer" />
@@ -262,27 +277,37 @@ const Developers = () => {
           {/* 2025-2026 Section */}
           <div className="relative mb-16 md:mb-24">
             <div className="flex items-center mb-10 md:mb-16">
-              <div className="w-6 h-6 bg-[#0C2340] rounded-full absolute left-10 md:left-[215px] -translate-x-1/2 z-10"></div>
+              <div className="w-6 h-6 bg-[#0C2340] rounded-full absolute left-10 md:left-[205px] -translate-x-1/2 z-10"></div>
               {/* Responsive heading alignment for timeline */}
-              <h2 className="text-xl font-bold absolute left-[60px] md:static md:ml-[240px]">2025-2026</h2> {/* Position heading relative to dot */}
+              <h2 className="text-xl font-bold absolute left-[60px] md:static md:ml-[240px]">
+                2025-2026
+              </h2>{" "}
+              {/* Position heading relative to dot */}
             </div>
 
             {/* Content container - shifted right of timeline */}
             <div className="md:ml-[240px] pl-10 flex flex-col items-center">
               {/* Lead Developers - Medium Circles (Row of 2) */}
-              <div className="flex justify-center gap-16 md:gap-20 mb-12 md:mb-26"> {/* Increased bottom margin */}
+              <div className="flex justify-center gap-16 md:gap-20 mb-12 md:mb-26">
+                {" "}
+                {/* Increased bottom margin */}
                 {developers.leadDevelopers.map((dev, index) => (
-                  <div key={`lead-container-${index}`} className="flex flex-col items-center"> {/* Wrap with flex container */}
-                  <DeveloperCard
-                    key={`lead-${index}`}
-                    name={dev.name}
-                    department={dev.department}
-                    position={dev.position}
-                    image={dev.image}
-                    size="medium"
+                  <div
+                    key={`lead-container-${index}`}
+                    className="flex flex-col items-center"
+                  >
+                    {" "}
+                    {/* Wrap with flex container */}
+                    <DeveloperCard
+                      key={`lead-${index}`}
+                      name={dev.name}
+                      department={dev.department}
+                      position={dev.position}
+                      image={dev.image}
+                      size="medium"
                       linkedin={dev.linkedin}
                       github={dev.github}
-                  />
+                    />
                   </div>
                 ))}
               </div>
@@ -295,8 +320,11 @@ const Developers = () => {
                     // Determine imageFit for specific developers
                     const developerImageFit = "cover"; // Revert to default cover for all
 
-                      return (
-                      <div key={`team-container-${devIndex}`} className="flex flex-col items-center">
+                    return (
+                      <div
+                        key={`team-container-${devIndex}`}
+                        className="flex flex-col items-center"
+                      >
                         <DeveloperCard
                           key={`team-${devIndex}`}
                           name={dev.name}
@@ -307,9 +335,9 @@ const Developers = () => {
                           imageFit={developerImageFit}
                         />
                       </div>
-                      );
-                    })}
-                  </div>
+                    );
+                  })}
+                </div>
               </div>
             </div>
           </div>
@@ -317,39 +345,63 @@ const Developers = () => {
           {/* 2019-2020 Section */}
           <div className="relative mb-16">
             <div className="flex items-center mb-10 md:mb-16">
-              <div className="w-6 h-6 bg-[#0C2340] rounded-full absolute left-10 md:left-[215px] -translate-x-1/2 z-10"></div>
+              <div className="w-6 h-6 bg-[#0C2340] rounded-full absolute left-10 md:left-[205px] -translate-x-1/2 z-10"></div>
               {/* Responsive heading alignment for timeline */}
-              <h2 className="text-xl font-bold absolute left-[60px] md:static md:ml-[240px]">2019-2020</h2> {/* Position heading relative to dot */}
+              <h2 className="text-xl font-bold absolute left-[60px] md:static md:ml-[240px]">
+                2019-2020
+              </h2>{" "}
+              {/* Position heading relative to dot */}
             </div>
 
             {/* Content container - shifted right of timeline */}
             {/* Added padding-left for small screens to align with timeline */}
             <div className="md:ml-[240px] pl-10 flex flex-col items-center">
               {/* 2019-2020 Mentors */}
-              <h3 className="text-lg font-semibold mb-4 text-[#0C2340]">Mentors</h3> {/* Title for mentors */}
+              <h3 className="text-lg font-semibold mb-4 text-[#0C2340]">
+                Mentors
+              </h3>{" "}
+              {/* Title for mentors */}
               {/* Display mentor names */}
-              <div className="flex justify-center gap-8 mb-8"> {/* Centered container with gap below names */}
+              <div className="flex justify-center gap-8 mb-8">
+                {" "}
+                {/* Centered container with gap below names */}
                 {mentors2019.map((dev, index) => (
-                  <div key={`mentor-info-${index}`} className="text-center flex flex-col items-center"> {/* Container for name, department, position - flex col for stacking */}
-                    <p className="text-base font-medium">{dev.name}</p> {/* Display only the name */}
+                  <div
+                    key={`mentor-info-${index}`}
+                    className="text-center flex flex-col items-center"
+                  >
+                    {" "}
+                    {/* Container for name, department, position - flex col for stacking */}
+                    <p className="text-base font-medium">{dev.name}</p>{" "}
+                    {/* Display only the name */}
                     {dev.department && (
-                      <p className="text-sm text-gray-600 mt-0.5">{dev.department}</p> // Display department
+                      <p className="text-sm text-gray-600 mt-0.5">
+                        {dev.department}
+                      </p> // Display department
                     )}
                     {dev.position && (
-                      <p className="text-sm text-gray-600 mt-0.5">{dev.position}</p> // Display position
+                      <p className="text-sm text-gray-600 mt-0.5">
+                        {dev.position}
+                      </p> // Display position
                     )}
                   </div>
                 ))}
               </div>
-
               {/* 2019-2020 Student Contributors (Names only) */}
-              <h3 className="text-lg font-semibold mb-4 text-[#0C2340]">Student Contributors</h3> {/* Title for students */}
+              <h3 className="text-lg font-semibold mb-4 text-[#0C2340]">
+                Student Contributors
+              </h3>{" "}
+              {/* Title for students */}
               {/* Responsive grid layout for 2019-2020 students (names only) - 2 columns on small screens, centered */}
               {/* Reduced gap between columns on large screens */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-1 lg:gap-x-1 gap-y-2 w-full max-w-2xl mx-auto justify-items-center justify-center">
                 {teamMembers2019.map((dev, index) => (
-                  <div key={`student2019-${index}`} className="text-center"> {/* Container for name */} {/* Added text-center for name */}
-                    <p className="text-sm font-medium">{dev.name}</p> {/* Display only the name */}
+                  <div key={`student2019-${index}`} className="text-center">
+                    {" "}
+                    {/* Container for name */}{" "}
+                    {/* Added text-center for name */}
+                    <p className="text-sm font-medium">{dev.name}</p>{" "}
+                    {/* Display only the name */}
                   </div>
                 ))}
               </div>
