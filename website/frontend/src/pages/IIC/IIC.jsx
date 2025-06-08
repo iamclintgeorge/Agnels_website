@@ -6,7 +6,7 @@ const IIC = () => {
   const [iicContent, setIicContent] = useState(""); // For iic_council
   const [innovationPolicyText, setInnovationPolicyText] = useState(""); // Rich text HTML
   const [innovationPolicyPdfs, setInnovationPolicyPdfs] = useState([]); // PDF list
-
+  
   const sidebar = [
     "Institution's Innovation Council",
     "Innovation and Startup Policy",

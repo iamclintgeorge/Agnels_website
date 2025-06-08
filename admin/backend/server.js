@@ -58,6 +58,11 @@ app.use("/uploads", express.static(path.join(__dirname, "public", "uploads")));
 
 // Integrate IIC routes
 // app.use("/api/iic", iicRoutes);
+// Root test route
+app.get("/", (req, res) => {
+  res.send("API Server is running");
+});
+
 
 // Routes
 app.use("/", routes);
