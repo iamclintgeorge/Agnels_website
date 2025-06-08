@@ -4,6 +4,7 @@ import { FaBars, FaInstagram, FaFacebookF } from "react-icons/fa";
 import { FaLinkedinIn } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import SearchBar from "./searchBar";
 
 const Header = () => {
   const [isBottomMenuOpen, setIsBottomMenuOpen] = useState(false); // For mobile menu
@@ -161,6 +162,9 @@ const Header = () => {
           </ul>
         </nav>
       </div>
+
+      {/* <div className="ml-[90vw] -mt-5 mb-5">Hi</div> */}
+      <SearchBar />
 
       {/* Bottom Navigation Links (Desktop) */}
       <div className="absolute gap-3 text-base p-0 m-0 font-inter z-10 ml-[42vw] mr-10 mt-1 text-nowrap font-light hidden md:flex cursor-default">
