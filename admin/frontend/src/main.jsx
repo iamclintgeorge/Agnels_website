@@ -24,6 +24,9 @@ import ResearchAdmin from "./pages/research/ResearchAdmin";
 import AcademicAdmin from "./pages/Academics/AcademicAdmin";
 import AcademicHandbook from "./pages/Academics/AcademicHandbook";
 import AcademicHandbookHonours from "./pages/Academics/AcademicHandbookHonours";
+import Teaching_staff from "./pages/HumanResources/teachingstaff";
+import Nonteaching_staff from "./pages/HumanResources/nonteachingstaff";
+
 const App = () => {
   return (
     <>
@@ -50,7 +53,9 @@ const App = () => {
           <Route path="/about-us" element={<AboutUsAdmin />} />
           <Route path="/research/:section" element={<ResearchAdmin />} />
           <Route path="/research" element={<ResearchAdmin />} />
-           
+           <Route path="/teachingstaff" element={<Teaching_staff />} />
+          <Route path="/nonteachingstaff" element={<Nonteaching_staff />} />
+
         </Route>
         <Route path="*" element={<Error404 />} />
       </Routes>

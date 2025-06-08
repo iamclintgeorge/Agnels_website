@@ -87,6 +87,7 @@ function App() {
           <Route path="/nirf" element={<NIRF />} />
           <Route path="/hr" element={<HumanResource />} />
           <Route path="/developers" element={<Developers />} />
+          <Route path="/human-resource" element={<HumanResource />} />
           <Route path="*" element={<ErrorSection />} />
         </Routes>
       </>
