@@ -17,7 +17,7 @@ const ErrorSection = () => {
               href="/"
               className="rounded-sm bg-[#0C2340] px-3.5 py-2.5 text-sm font-semibold text-white shadow-xs hover:bg-[#F5F5F5] hover:text-[#0C2340] focus-visible:outline-2 focus-visible:outline-offset-2"
             >
-              Go back home
+              Go back to the Home Page
             </a>
           </div>
         </div>
