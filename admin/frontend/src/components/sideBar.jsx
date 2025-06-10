@@ -21,6 +21,7 @@ const SideBar = () => {
   const [isElectricalEngOpen, setIsElectricalEngOpen] = useState(false);
   const [isCSEOpen, setIsCSEOpen] = useState(false);
   const [isBasicSciHumOpen, setIsBasicSciHumOpen] = useState(false);
+    const [isHumanROpen, setIsHumanROpen] = useState(false);
 
   const handleHomeClick = () => setIsHomeOpen((prev) => !prev);
   const handleAboutClick = () => setIsAboutOpen((prev) => !prev);
@@ -36,6 +37,7 @@ const SideBar = () => {
     setIsElectricalEngOpen((prev) => !prev);
   const handleCSEClick = () => setIsCSEOpen((prev) => !prev);
   const handleBasicSciHumClick = () => setIsBasicSciHumOpen((prev) => !prev);
+  const handleHumanRClick = () => setIsHumanROpen((prev) => !prev);
 
   const handleDepartmentSectionSelect = (deptName, section) => {
     localStorage.setItem("departmentSection", `${deptName}/${section}`);
@@ -486,10 +488,35 @@ const SideBar = () => {
             </div>
           )}
         </div>
-
-        <p className="flex justify-between pr-8">
+        
+        <div>
+          <p
+            className="cursor-pointer flex justify-between items-center pr-8"
+            onClick={handleHumanRClick}
+          >
+          Human Resource{" "}
+          <span
+            className={`transform transition-transform ${
+            isHumanROpen ? "rotate-90" : ""
+          }`}
+          >
+            &gt;
+          </span>
+          </p>
+          {isHumanROpen && (
+            <div className="pt-2 pr-5 pl-4 leading-10">
+              <Link to="/teachingstaff">
+              <p>Teaching Staff</p>
+              </Link>
+              <Link to="/nonteachingstaff">
+              <p>Non Teaching Staff</p>
+              </Link>
+            </div>
+           )}
+        </div>
+        {/* <p className="flex justify-between pr-8">
           Human Resource <span>&gt;</span>
-        </p>
+        </p> */}
         <p className="flex justify-between pr-8">
           Alumni Page <span>&gt;</span>
         </p>
