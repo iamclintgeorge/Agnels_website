@@ -11,7 +11,7 @@ const SideBar = () => {
   const navigate = useNavigate();
   const [isHomeOpen, setIsHomeOpen] = useState(false);
   const [isAboutOpen, setIsAboutOpen] = useState(false);
-  const [isAcademicOpen, setIsAcademicOpen] = useState(false); // New academic state
+  const [isAcademicOpen, setIsAcademicOpen] = useState(false);
   const [isUserOpen, setIsUserOpen] = useState(false);
   const [isResearchOpen, setIsResearchOpen] = useState(false);
   const [isDepartmentOpen, setIsDepartmentOpen] = useState(false);
@@ -21,11 +21,11 @@ const SideBar = () => {
   const [isElectricalEngOpen, setIsElectricalEngOpen] = useState(false);
   const [isCSEOpen, setIsCSEOpen] = useState(false);
   const [isBasicSciHumOpen, setIsBasicSciHumOpen] = useState(false);
-    const [isHumanROpen, setIsHumanROpen] = useState(false);
+  const [isHumanROpen, setIsHumanROpen] = useState(false);
 
   const handleHomeClick = () => setIsHomeOpen((prev) => !prev);
   const handleAboutClick = () => setIsAboutOpen((prev) => !prev);
-  const handleAcademicClick = () => setIsAcademicOpen((prev) => !prev); // New academic handler
+  const handleAcademicClick = () => setIsAcademicOpen((prev) => !prev);
   const handleUserClick = () => setIsUserOpen((prev) => !prev);
   const handleResearchClick = () => setIsResearchOpen((prev) => !prev);
   const handleDepartmentClick = () => setIsDepartmentOpen((prev) => !prev);
@@ -125,9 +125,11 @@ const SideBar = () => {
           >
             Home Page{" "}
             <span
-              className={`transform transition-transform ${isHomeOpen ? "rotate-90" : ""}`}
+              className={`transform transition-transform ${
+                isHomeOpen ? "rotate-90" : ""
+              }`}
             >
-              ▶
+              &gt;
             </span>
           </p>
           {isHomeOpen && (
@@ -153,75 +155,41 @@ const SideBar = () => {
           >
             About Us{" "}
             <span
-              className={`transform transition-transform ${isAboutOpen ? "rotate-90" : ""}`}
+              className={`transform transition-transform ${
+                isAboutOpen ? "rotate-90" : ""
+              }`}
             >
-              ▶
+              &gt;
             </span>
           </p>
           {isAboutOpen && (
             <div className="pt-2 pr-8 pl-4 leading-10">
-              <p className="cursor-pointer" onClick={() => handleSectionSelect("History")}>
-                History
-              </p>
-              <p className="cursor-pointer" onClick={() => handleSectionSelect("Vision and Mission")}>
-                Vision and Mission
-              </p>
-              <p className="cursor-pointer" onClick={() => handleSectionSelect("Trustees")}>
-                Trustees
-              </p>
-              <p
-                className="cursor-pointer"
-                onClick={() => handleSectionSelect("Managing Director's Desk")}
-              >
-                Managing Director's Desk
-              </p>
-              <p className="cursor-pointer" onClick={() => handleSectionSelect("Principal's Desk")}>
-                Principal's Desk
-              </p>
-              <p className="cursor-pointer" onClick={() => handleSectionSelect("Governance")}>
-                Governance
-              </p>
-              <p
-                className="cursor-pointer"
-                onClick={() => handleSectionSelect("Audit Report and Affiliations")}
-              >
-                Audit Report and Affiliations
-              </p>
-              <p
-                className="cursor-pointer"
-                onClick={() => handleSectionSelect("Administrations and Committees")}
-              >
-                Administrations and Committees
-              </p>
-              <p className="cursor-pointer" onClick={() => handleSectionSelect("Institute Roadmap")}>
-                Institute Roadmap
-              </p>
-              <p className="cursor-pointer" onClick={() => handleSectionSelect("Service Regulation")}>
-                Service Regulation
-              </p>
-              <p
-                className="cursor-pointer"
-                onClick={() =>
-                  handleSectionSelect("Qualification and Eligibility norms for Recruitment")
-                }
-              >
-                Qualification and Eligibility norms for Recruitment
-              </p>
-              <p className="cursor-pointer" onClick={() => handleSectionSelect("Best Practices")}>
-                Best Practices
-              </p>
-              <p
-                className="cursor-pointer"
-                onClick={() => handleSectionSelect("Mandatory Disclosures")}
-              >
-                Mandatory Disclosures
-              </p>
+              {[
+                "History",
+                "Vision and Mission",
+                "Trustees",
+                "Managing Director's Desk",
+                "Principal's Desk",
+                "Governance",
+                "Audit Report and Affiliations",
+                "Administrations and Committees",
+                "Institute Roadmap",
+                "Service Regulation",
+                "Qualification and Eligibility norms for Recruitment",
+                "Best Practices",
+                "Mandatory Disclosures",
+              ].map((section) => (
+                <p
+                  key={section}
+                  className="cursor-pointer"
+                  onClick={() => handleSectionSelect(section)}
+                >
+                  {section}
+                </p>
+              ))}
             </div>
           )}
         </div>
-        <p className="flex justify-between pr-8">
-          Departments <span></span>
-        </p>
 
         {/* Departments Section */}
         <div>
@@ -443,10 +411,9 @@ const SideBar = () => {
         </div>
 
         <p className="flex justify-between pr-8">
-          Admission <span></span>
+          Admission <span>&gt;</span>
         </p>
 
-        {/* NEW ACADEMICS SECTION */}
         <div>
           <p
             className="cursor-pointer flex justify-between items-center pr-8"
@@ -477,7 +444,7 @@ const SideBar = () => {
         </div>
 
         <Link to="/training-placement" className="flex justify-between pr-8">
-          Training and Placement <span></span>
+          Training and Placement <span>&gt;</span>
         </Link>
 
         <div>
@@ -487,9 +454,11 @@ const SideBar = () => {
           >
             Research and Publication{" "}
             <span
-              className={`transform transition-transform ${isResearchOpen ? "rotate-90" : ""}`}
+              className={`transform transition-transform ${
+                isResearchOpen ? "rotate-90" : ""
+              }`}
             >
-              ▶
+              &gt;
             </span>
           </p>
           {isResearchOpen && (
@@ -518,45 +487,42 @@ const SideBar = () => {
             </div>
           )}
         </div>
-        
+
         <div>
           <p
             className="cursor-pointer flex justify-between items-center pr-8"
             onClick={handleHumanRClick}
           >
-          Human Resource{" "}
-          <span
-            className={`transform transition-transform ${
-            isHumanROpen ? "rotate-90" : ""
-          }`}
-          >
-            &gt;
-          </span>
+            Human Resource{" "}
+            <span
+              className={`transform transition-transform ${
+                isHumanROpen ? "rotate-90" : ""
+              }`}
+            >
+              &gt;
+            </span>
           </p>
           {isHumanROpen && (
             <div className="pt-2 pr-5 pl-4 leading-10">
               <Link to="/teachingstaff">
-              <p>Teaching Staff</p>
+                <p>Teaching Staff</p>
               </Link>
               <Link to="/nonteachingstaff">
-              <p>Non Teaching Staff</p>
+                <p>Non Teaching Staff</p>
               </Link>
             </div>
-           )}
+          )}
         </div>
-        {/* <p className="flex justify-between pr-8">
-          Human Resource <span>&gt;</span>
-        </p> */}
         <p className="flex justify-between pr-8">
-          Alumni Page <span></span>
+          Alumni Page <span>&gt;</span>
         </p>
         <p className="flex justify-between pr-8">
-          Downloads Page <span></span>
+          Downloads Page <span>&gt;</span>
         </p>
 
         {(user.role === "teach_staff" || user.role === "superAdmin") && (
           <Link to="/student" className="flex justify-between pr-8">
-            Students Corner <span></span>
+            Students Corner <span>&gt;</span>
           </Link>
         )}
 
@@ -567,9 +533,11 @@ const SideBar = () => {
           >
             Manage Users{" "}
             <span
-              className={`transform transition-transform ${isUserOpen ? "rotate-90" : ""}`}
+              className={`transform transition-transform ${
+                isUserOpen ? "rotate-90" : ""
+              }`}
             >
-              ▶
+              &gt;
             </span>
           </p>
         )}
@@ -592,7 +560,7 @@ const SideBar = () => {
           </Link>
         )}
         <p className="flex justify-between pr-8">
-          Logs <span></span>
+          Logs <span>&gt;</span>
         </p>
       </div>
     </div>
