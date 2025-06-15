@@ -6,6 +6,8 @@ import session from "express-session";
 import path from "path";
 import { fileURLToPath } from "url";
 import routes from "./routes/routes.js";
+import nirfRoutes from "./routes/website/nirf/nirfRoutes.js";
+import nbaNaacRoutes from "./routes/website/nbaNaacRoutes.js";
 // import iicRoutes from "./routes/website/iicRoutes.js";
 
 dotenv.config();
@@ -58,6 +60,8 @@ app.use("/uploads", express.static(path.join(__dirname, "public", "uploads")));
 
 // Routes
 app.use("/", routes);
+ app.use("/api/nirf", nirfRoutes);
+ app.use("/api/nba-naac", nbaNaacRoutes);
 
 app.listen(port, () => {
   console.log(`Server Started at URI http://localhost:${port}/`);
