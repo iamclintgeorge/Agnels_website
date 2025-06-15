@@ -6,6 +6,8 @@ import session from "express-session";
 import path from "path";
 import { fileURLToPath } from "url";
 import routes from "./routes/routes.js";
+import nirfRoutes from "./routes/website/nirf/nirfRoutes.js";
+import nbaNaacRoutes from "./routes/website/nbaNaacRoutes.js";
 import deptHomeRoutes from "./routes/website/department/deptHomeRoutes.js";
 import compActivityRoutes from "./routes/website/homepage/compActivityRoutes.js";
 import profileRoutes from "./routes/website/profileRoutes.js";
@@ -66,6 +68,8 @@ app.get("/", (req, res) => {
 
 // Routes
 app.use("/", routes);
+ app.use("/api/nirf", nirfRoutes);
+ app.use("/api/nba-naac", nbaNaacRoutes);
 app.use("/api/department", deptHomeRoutes);
 app.use("/api/department", compActivityRoutes);
 app.use("/api/profile", profileRoutes);

@@ -26,6 +26,7 @@ import IQAC from "./pages/IQAC/IQAC";
 import IIC from "./pages/IIC/IIC";
 import NIRF from "./pages/NIRF/NIRF";
 import HumanResource from "./pages/HumanResource/HumanResource";
+import NbaNaaC from "./pages/NBA/Nba";
 import Widgets from "./components/Widgets.jsx";
 import News from "./components/News.jsx";
 
@@ -85,6 +86,7 @@ function App() {
           <Route path="/iqac" element={<IQAC />} />
           <Route path="/iic" element={<IIC />} />
           <Route path="/nirf" element={<NIRF />} />
+          <Route path ="/nba-naac" element={<NbaNaaC />} />  
           <Route path="/hr" element={<HumanResource />} />
           <Route path="/developers" element={<Developers />} />
           <Route path="/human-resource" element={<HumanResource />} />

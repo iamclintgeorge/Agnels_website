@@ -125,11 +125,9 @@ const SideBar = () => {
           >
             Home Page{" "}
             <span
-              className={`transform transition-transform ${
-                isHomeOpen ? "rotate-90" : ""
-              }`}
+              className={`transform transition-transform ${isHomeOpen ? "rotate-90" : ""}`}
             >
-              &gt;
+              ▶
             </span>
           </p>
           {isHomeOpen && (
@@ -155,41 +153,75 @@ const SideBar = () => {
           >
             About Us{" "}
             <span
-              className={`transform transition-transform ${
-                isAboutOpen ? "rotate-90" : ""
-              }`}
+              className={`transform transition-transform ${isAboutOpen ? "rotate-90" : ""}`}
             >
-              &gt;
+              ▶
             </span>
           </p>
           {isAboutOpen && (
             <div className="pt-2 pr-8 pl-4 leading-10">
-              {[
-                "History",
-                "Vision and Mission",
-                "Trustees",
-                "Managing Director's Desk",
-                "Principal's Desk",
-                "Governance",
-                "Audit Report and Affiliations",
-                "Administrations and Committees",
-                "Institute Roadmap",
-                "Service Regulation",
-                "Qualification and Eligibility norms for Recruitment",
-                "Best Practices",
-                "Mandatory Disclosures",
-              ].map((section) => (
-                <p
-                  key={section}
-                  className="cursor-pointer"
-                  onClick={() => handleSectionSelect(section)}
-                >
-                  {section}
-                </p>
-              ))}
+              <p className="cursor-pointer" onClick={() => handleSectionSelect("History")}>
+                History
+              </p>
+              <p className="cursor-pointer" onClick={() => handleSectionSelect("Vision and Mission")}>
+                Vision and Mission
+              </p>
+              <p className="cursor-pointer" onClick={() => handleSectionSelect("Trustees")}>
+                Trustees
+              </p>
+              <p
+                className="cursor-pointer"
+                onClick={() => handleSectionSelect("Managing Director's Desk")}
+              >
+                Managing Director's Desk
+              </p>
+              <p className="cursor-pointer" onClick={() => handleSectionSelect("Principal's Desk")}>
+                Principal's Desk
+              </p>
+              <p className="cursor-pointer" onClick={() => handleSectionSelect("Governance")}>
+                Governance
+              </p>
+              <p
+                className="cursor-pointer"
+                onClick={() => handleSectionSelect("Audit Report and Affiliations")}
+              >
+                Audit Report and Affiliations
+              </p>
+              <p
+                className="cursor-pointer"
+                onClick={() => handleSectionSelect("Administrations and Committees")}
+              >
+                Administrations and Committees
+              </p>
+              <p className="cursor-pointer" onClick={() => handleSectionSelect("Institute Roadmap")}>
+                Institute Roadmap
+              </p>
+              <p className="cursor-pointer" onClick={() => handleSectionSelect("Service Regulation")}>
+                Service Regulation
+              </p>
+              <p
+                className="cursor-pointer"
+                onClick={() =>
+                  handleSectionSelect("Qualification and Eligibility norms for Recruitment")
+                }
+              >
+                Qualification and Eligibility norms for Recruitment
+              </p>
+              <p className="cursor-pointer" onClick={() => handleSectionSelect("Best Practices")}>
+                Best Practices
+              </p>
+              <p
+                className="cursor-pointer"
+                onClick={() => handleSectionSelect("Mandatory Disclosures")}
+              >
+                Mandatory Disclosures
+              </p>
             </div>
           )}
         </div>
+        <p className="flex justify-between pr-8">
+          Departments <span></span>
+        </p>
 
         {/* Departments Section */}
         <div>
@@ -411,7 +443,7 @@ const SideBar = () => {
         </div>
 
         <p className="flex justify-between pr-8">
-          Admission <span>&gt;</span>
+          Admission <span></span>
         </p>
 
         {/* NEW ACADEMICS SECTION */}
@@ -445,7 +477,7 @@ const SideBar = () => {
         </div>
 
         <Link to="/training-placement" className="flex justify-between pr-8">
-          Training and Placement <span>&gt;</span>
+          Training and Placement <span></span>
         </Link>
 
         <div>
@@ -455,11 +487,9 @@ const SideBar = () => {
           >
             Research and Publication{" "}
             <span
-              className={`transform transition-transform ${
-                isResearchOpen ? "rotate-90" : ""
-              }`}
+              className={`transform transition-transform ${isResearchOpen ? "rotate-90" : ""}`}
             >
-              &gt;
+              ▶
             </span>
           </p>
           {isResearchOpen && (
@@ -518,15 +548,15 @@ const SideBar = () => {
           Human Resource <span>&gt;</span>
         </p> */}
         <p className="flex justify-between pr-8">
-          Alumni Page <span>&gt;</span>
+          Alumni Page <span></span>
         </p>
         <p className="flex justify-between pr-8">
-          Downloads Page <span>&gt;</span>
+          Downloads Page <span></span>
         </p>
 
         {(user.role === "teach_staff" || user.role === "superAdmin") && (
           <Link to="/student" className="flex justify-between pr-8">
-            Students Corner <span>&gt;</span>
+            Students Corner <span></span>
           </Link>
         )}
 
@@ -537,11 +567,9 @@ const SideBar = () => {
           >
             Manage Users{" "}
             <span
-              className={`transform transition-transform ${
-                isUserOpen ? "rotate-90" : ""
-              }`}
+              className={`transform transition-transform ${isUserOpen ? "rotate-90" : ""}`}
             >
-              &gt;
+              ▶
             </span>
           </p>
         )}
@@ -553,8 +581,18 @@ const SideBar = () => {
             <p>Delete User</p>
           </div>
         )}
+        {(user.role === "admin" || user.role === "superAdmin") && (
+          <Link to="/admin/nirf" className="flex justify-between pr-8">
+            NIRF Admin <span></span>
+          </Link>
+        )}
+        {(user.role === "admin" || user.role === "superAdmin") && (
+          <Link to="/admin/nba-naac" className="flex justify-between pr-8">
+            NBA/NAAC Admin <span></span>
+          </Link>
+        )}
         <p className="flex justify-between pr-8">
-          Logs <span>&gt;</span>
+          Logs <span></span>
         </p>
       </div>
     </div>
