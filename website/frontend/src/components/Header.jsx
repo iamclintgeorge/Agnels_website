@@ -201,7 +201,7 @@ const Header = () => {
           </Link>
           {isAcademicsSubMenuOpen && (
             <div className="absolute left-0 top-full bg-[#0c2340] text-white rounded shadow-lg w-52 p-3 z-20">
-              <ul className="flex flex-col gap-2">
+              <ul className="flex flex-col gap-2 text-wrap">
                 <li className="hover:bg-[#AE9142] px-2 py-1 rounded">
                   <Link to="/nirf">NIRF</Link>
                 </li>
@@ -258,8 +258,8 @@ const Header = () => {
             <p>Student Corner</p>
           </Link>
           {isStudentCornerSubMenuOpen && (
-            <div className="absolute left-0 top-full bg-[#0c2340] text-white rounded shadow-lg w-52 p-3 z-20">
-              <ul className="flex flex-col gap-2">
+            <div className="absolute left-0 top-full bg-[#0c2340] text-white rounded shadow-lg w-full p-3 z-20">
+              <ul className="flex flex-col gap-2 text-wrap">
                 <li className="hover:bg-[#AE9142] px-2 py-1 rounded">
                   <Link to="/training-placement">Training and Placement</Link>
                 </li>
@@ -271,6 +271,10 @@ const Header = () => {
                   >
                     Library
                   </a>
+                </li>
+
+                <li className="hover:bg-[#AE9142] px-2 py-1 rounded">
+                  Transcript
                 </li>
 
                 <li className="hover:bg-[#AE9142] px-2 py-1 rounded">
