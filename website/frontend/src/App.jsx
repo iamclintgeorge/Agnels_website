@@ -27,6 +27,9 @@ import IIC from "./pages/IIC/IIC";
 import NIRF from "./pages/NIRF/NIRF";
 import HumanResource from "./pages/HumanResource/HumanResource";
 import NbaNaaC from "./pages/NBA/Nba";
+import Widgets from "./components/Widgets.jsx";
+import News from "./components/News.jsx";
+
 function App() {
   // Fix: Redirect /pdfs/... requests directly to the browser
   if (window.location.pathname.startsWith("/pdfs/")) {
@@ -44,7 +47,9 @@ function App() {
             path="/"
             element={
               <>
+                <News />
                 <AboutUs />
+                {/* <Widgets /> */}
                 <WhatsNew />
               </>
             }
@@ -84,6 +89,7 @@ function App() {
           <Route path ="/nba-naac" element={<NbaNaaC />} />  
           <Route path="/hr" element={<HumanResource />} />
           <Route path="/developers" element={<Developers />} />
+          <Route path="/human-resource" element={<HumanResource />} />
           <Route path="*" element={<ErrorSection />} />
         </Routes>
       </>

@@ -10,10 +10,14 @@ const SearchBar = () => {
 
   // List of pages (routes) to search against
   const pages = [
-    { name: "Homepage", path: "/" },
+    { name: "Dashboard", path: "/" },
     { name: "Image Carousel", path: "home/carousel" },
     { name: "Introduction Text", path: "/home/introtext" },
     { name: "Announcements", path: "/home/whatsNew" },
+    { name: "Department Home", path: "/department/home" },
+    { name: "Training and Placement", path: "/training-placement" },
+    { name: "Research and Publication", path: "/research/home" },
+    { name: "Edit Profile", path: "/profile" },
   ];
 
   // Handle keydown events

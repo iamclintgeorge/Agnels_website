@@ -1,7 +1,7 @@
 // Database connection
 host = localhost
-user = root
-password =
+user = tag
+password =123
 db_name = agneladmin
 
 port = 3663

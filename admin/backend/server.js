@@ -8,6 +8,10 @@ import { fileURLToPath } from "url";
 import routes from "./routes/routes.js";
 import nirfRoutes from "./routes/website/nirf/nirfRoutes.js";
 import nbaNaacRoutes from "./routes/website/nbaNaacRoutes.js";
+import deptHomeRoutes from "./routes/website/department/deptHomeRoutes.js";
+import compActivityRoutes from "./routes/website/homepage/compActivityRoutes.js";
+import profileRoutes from "./routes/website/profileRoutes.js";
+
 // import iicRoutes from "./routes/website/iicRoutes.js";
 
 dotenv.config();
@@ -57,11 +61,18 @@ app.use("/uploads", express.static(path.join(__dirname, "public", "uploads")));
 
 // Integrate IIC routes
 // app.use("/api/iic", iicRoutes);
+// Root test route
+app.get("/", (req, res) => {
+  res.send("API Server is running");
+});
 
 // Routes
 app.use("/", routes);
  app.use("/api/nirf", nirfRoutes);
  app.use("/api/nba-naac", nbaNaacRoutes);
+app.use("/api/department", deptHomeRoutes);
+app.use("/api/department", compActivityRoutes);
+app.use("/api/profile", profileRoutes);
 
 app.listen(port, () => {
   console.log(`Server Started at URI http://localhost:${port}/`);

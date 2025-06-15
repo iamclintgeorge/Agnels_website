@@ -79,6 +79,8 @@ import WhatsNew from "./pages/HomePage/whatsNew";
 import Profile from "./pages/profile";
 import ImgCarousel from "./pages/HomePage/imgCarousel";
 import IntroText from "./pages/HomePage/introText";
+import DeptHome from "./pages/Department/dept_home";
+import CompActivity from "./pages/Department/comp_activity";
 import TrainingPlacement from "./pages/Training-Placement/training-placement";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -88,7 +90,11 @@ import AboutUsAdmin from "./pages/AboutUs/AboutUsAdmin";
 import ResearchAdmin from "./pages/research/ResearchAdmin";
 import AdminNIRF from "./pages/AdminNIRF";
 import AdminNBANAAC from "./pages/AdminNBANAAC";
-
+import AcademicAdmin from "./pages/Academics/AcademicAdmin";
+import AcademicHandbook from "./pages/Academics/AcademicHandbook";
+import AcademicHandbookHonours from "./pages/Academics/AcademicHandbookHonours";
+import Teaching_staff from "./pages/HumanResources/teachingstaff";
+import Nonteaching_staff from "./pages/HumanResources/nonteachingstaff";
 
 const App = () => {
   return (
@@ -102,6 +108,14 @@ const App = () => {
           <Route path="/home/carousel" element={<ImgCarousel />} />
           <Route path="/home/whatsNew" element={<WhatsNew />} />
           <Route path="/home/introtext" element={<IntroText />} />
+          <Route path="/department/home" element={<DeptHome />} />
+          <Route path="/academic/handbook" element={<AcademicHandbook />} />
+          <Route
+            path="/department/computer-engineering/activities"
+            element={<CompActivity />}
+          />
+          <Route path="/academics" element={<AcademicAdmin />} />
+
           <Route path="/profile" element={<Profile />} />
           <Route path="/student" element={<Student />} />
           <Route path="/training-placement" element={<TrainingPlacement />} />
@@ -112,6 +126,8 @@ const App = () => {
           <Route path="/research" element={<ResearchAdmin />} />
           <Route path="/admin/nirf" element={<AdminNIRF />} />
           <Route path="/admin/nba-naac" element={<AdminNBANAAC />} />
+           <Route path="/teachingstaff" element={<Teaching_staff />} />
+          <Route path="/nonteachingstaff" element={<Nonteaching_staff />} />
         </Route>
         <Route path="*" element={<Error404 />} />
       </Routes>
