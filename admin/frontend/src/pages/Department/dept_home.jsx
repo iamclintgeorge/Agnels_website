@@ -14,6 +14,55 @@ const DeptHome = () => {
     fetchText();
   }, []);
 
+  useEffect(() => {
+    // Add custom tab handling when in edit mode
+    if (!editMode || !quillRef.current) return;
+
+    const handleTab = (e) => {
+      if (e.key === "Tab") {
+        e.preventDefault();
+        const quill = quillRef.current.getEditor();
+        const range = quill.getSelection();
+        if (range) {
+          // Insert 4 non-breaking spaces instead of tab character for better consistency
+          const tabSpaces = "\u00A0\u00A0\u00A0\u00A0"; // 4 non-breaking spaces
+          quill.insertText(range.index, tabSpaces);
+          quill.setSelection(range.index + 4);
+        }
+      }
+    };
+
+    // Add event listener with a small delay to ensure editor is ready
+    const timer = setTimeout(() => {
+      const quillEditor = quillRef.current?.getEditor();
+      if (quillEditor) {
+        const editorContainer = quillEditor.container;
+        editorContainer.addEventListener("keydown", handleTab);
+      }
+    }, 100);
+
+    return () => {
+      clearTimeout(timer);
+      const quillEditor = quillRef.current?.getEditor();
+      if (quillEditor) {
+        const editorContainer = quillEditor.container;
+        editorContainer.removeEventListener("keydown", handleTab);
+      }
+    };
+  }, [editMode]);
+
+  // Convert tabs to non-breaking spaces when entering edit mode
+  useEffect(() => {
+    if (editMode && deptText.length > 0 && deptText[0].Content) {
+      // Convert tab characters to non-breaking spaces for consistent display
+      const contentWithSpaces = deptText[0].Content.replace(
+        /\t/g,
+        "\u00A0\u00A0\u00A0\u00A0"
+      );
+      setContent(contentWithSpaces);
+    }
+  }, [editMode, deptText]);
+
   const fetchText = async () => {
     try {
       const response = await axios.get(
@@ -44,8 +93,11 @@ const DeptHome = () => {
     const id = deptText[0].id;
     console.log("Updating with id:", id);
     try {
+      // Convert non-breaking spaces back to regular spaces or tabs for storage
+      const contentForStorage = content.replace(/\u00A0{4}/g, "\t");
+
       await axios.put(`http://localhost:3663/api/department/home/${id}`, {
-        content,
+        content: contentForStorage,
       });
       setMessage("Department text updated successfully!");
       setEditMode(false);
@@ -61,6 +113,7 @@ const DeptHome = () => {
       [{ header: [1, 2, 3, false] }],
       ["bold", "italic", "underline"],
       [{ list: "ordered" }, { list: "bullet" }],
+      [{ indent: "-1" }, { indent: "+1" }], // Add indent controls
       [{ size: ["small", false, "large", "huge"] }],
       [{ font: [] }],
       [{ align: [] }],
@@ -76,6 +129,7 @@ const DeptHome = () => {
     "underline",
     "list",
     "bullet",
+    "indent", // Add indent format
     "size",
     "font",
     "align",
@@ -84,6 +138,26 @@ const DeptHome = () => {
 
   return (
     <div className="p-4">
+      <style jsx>{`
+        /* Custom styling for consistent spacing */
+        .ql-editor {
+          font-family: "Courier New", monospace; /* Use monospace font for consistent spacing */
+          line-height: 1.6;
+        }
+
+        .preview-content {
+          white-space: pre-wrap;
+          font-family: "Courier New", monospace; /* Same font for consistent spacing */
+          line-height: 1.6;
+        }
+
+        /* Ensure non-breaking spaces are visible */
+        .ql-editor,
+        .preview-content {
+          word-spacing: normal;
+        }
+      `}</style>
+
       {deptText.length > 0 ? (
         editMode ? (
           <div>
@@ -120,7 +194,7 @@ const DeptHome = () => {
           <div>
             <div
               dangerouslySetInnerHTML={{ __html: deptText[0].Content }}
-              className="mb-4"
+              className="mb-4 preview-content"
             />
             <button
               onClick={() => setEditMode(true)}
