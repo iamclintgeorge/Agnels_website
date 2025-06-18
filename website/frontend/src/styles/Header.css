@@ -1,0 +1,164 @@
+/* Header */
+.header {
+  background-color: #0c2340;
+  color: white;
+  padding: 0;
+  margin: 0;
+  position: relative;
+  width: 100%;
+  height: 211px;
+}
+
+/* Yellow Border */
+.header-border {
+  background-color: #ae9142;
+  height: 5px;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+/* Header Content */
+.header-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Logo */
+.logo {
+  position: absolute;
+  top: 65px;
+  left: 65px;
+  width: 81px;
+  height: 85px;
+}
+
+/* Institute Information */
+.institute-info h1,
+.institute-info h2,
+.institute-info p {
+  margin: 0;
+}
+
+/* .institute-info h1 {
+  position: absolute;
+  top: 50px;
+  left: 125px;
+  font-family: "Playfair Display", serif;
+  font-weight: 500;
+  font-size: 25px;
+  color: white;
+} */
+
+/* .institute-info h2 {
+  position: absolute;
+  top: 90px;
+  left: 125px;
+  font-family: "Playfair Display", serif;
+  font-weight: 300;
+  font-size: 18px;
+  letter-spacing: 0.25em;
+  color: white;
+} */
+
+/* .institute-info p {
+  position: absolute;
+  top: 120px;
+  left: 125px;
+  font-family: "Playfair Display", serif;
+  font-weight: 300;
+  font-size: 10px;
+  color: white;
+} */
+
+/* Navigation */
+.header-nav ul {
+  list-style: none;
+  display: flex;
+  gap: 20px;
+  padding: 0;
+  margin: 0;
+  align-items: center;
+}
+
+.header-nav li {
+  display: inline-block;
+  font-family: "Inter", serif;
+  font-weight: 400;
+  font-size: 16px;
+}
+
+.header-nav a {
+  color: white;
+  text-decoration: none;
+}
+
+.header-nav a:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.login-btn {
+  background-color: transparent;
+  color: white;
+  border: 1px solid white;
+  font-family: "Inter", serif;
+  font-size: 14px;
+  width: 80px;
+  height: 35px;
+  cursor: pointer;
+}
+
+.login-btn:hover {
+  background-color: white;
+  color: #0c2340;
+}
+
+/* Bottom Links */
+.bottom-links {
+  position: absolute;
+  bottom: 30px;
+  right: 38px;
+  display: flex;
+  gap: 50px;
+  padding: 10px;
+  background-color: #002147;
+  font-family: "Inter", serif;
+  font-size: 18px;
+  border-radius: 5px;
+  z-index: 10;
+}
+
+.bottom-links a {
+  color: white;
+  text-decoration: none;
+}
+
+.bottom-links a:hover {
+  text-decoration: underline;
+}
+
+/* Media Queries for Responsiveness */
+@media (max-width: 768px) {
+  .header-content {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .header-nav ul {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .bottom-links {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+}

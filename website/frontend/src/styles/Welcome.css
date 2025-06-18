@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Vertical Marquee */
+.vertical-marquee-container {
+    height: 200px; /* Adjust height as needed */
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .vertical-marquee {
+    position: absolute;
+    width: 100%;
+    animation: vertical-marquee 15s linear infinite;
+  }
+  
+  @keyframes vertical-marquee {
+    0% {
+      transform: translateY(100%);
+    }
+    100% {
+      transform: translateY(-100%);
+    }
+  }
+  
