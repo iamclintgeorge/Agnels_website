@@ -73,7 +73,7 @@ const Developers = () => {
         image: "/src/assets/imgs/developers page/Leonardo.jpg",
         linkedin:
           "https://www.linkedin.com/in/leonardo-d-souza-035709241?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app",
-        github: "https://github.com/leothedev0705/dvL",
+        github: "https://github.com/leothedev0705",
         department: "Department of Computer Engineering",
       },
       {
