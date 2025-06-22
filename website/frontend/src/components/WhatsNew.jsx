@@ -5,7 +5,17 @@ function WhatsNew() {
     {
       title: "Notice Board",
       tabs: [],
-      content: "Content for Notice Board",
+      content: [
+        "Content for Notice Board 1",
+        "Content for Notice Board 2",
+        "Content for Notice Board 3",
+        "Content for Notice Board 4",
+        "Content for Notice Board 5",
+        "Content for Notice Board 6",
+        "Content for Notice Board 7",
+        "Content for Notice Board 8",
+        "Content for Notice Board 9",
+      ],
     },
     {
       title: "Achievements",
@@ -27,13 +37,11 @@ function WhatsNew() {
     },
   ];
 
-  // State to track active tab for each table
   const [activeTabs, setActiveTabs] = useState(
     tablesData.map(() => 0) // Default to the first tab in each table
   );
 
   const handleTabClick = (tableIndex, tabIndex) => {
-    // Set active tab for the clicked table
     const newActiveTabs = [...activeTabs];
     newActiveTabs[tableIndex] = tabIndex;
     setActiveTabs(newActiveTabs);
@@ -41,19 +49,18 @@ function WhatsNew() {
 
   return (
     <section className="relative py-10 pb-28 px-5 bg-[#F7F7F7]">
-      {/* Background Text */}
       <div className="absolute inset-0 flex text-[#EDEDED] font-medium text-[9.6vw] leading-none uppercase opacity-70 z-0 mt-[250px] tracking-widest p-0 m-0">
         Announcements
       </div>
-      <h2 className="font-medium italic text-2xl text-[#0C2340] pl-16 mb-5 w-[336px] h-[29px] mt-20 ">
+      <h2 className="font-medium italic text-2xl text-[#0C2340] pl-16 mb-2 w-[336px] h-[29px] mt-16 ">
         ANNOUNCEMENTS
       </h2>
-      <div className="w-40 h-[5px] bg-[#AE9142] mt-1 ml-10 mb-40"></div>
+      <div className="w-40 h-[5px] bg-[#AE9142] ml-10 mb-40"></div>
       <div className="flex justify-center gap-5">
         {tablesData.map((table, tableIndex) => (
           <div
             key={tableIndex}
-            className="bg-[#E1E1E1] border rounded-lg w-96 h-auto min-h-96 z-10"
+            className="bg-[#E1E1E1] border rounded-lg w-96 h-[200px] min-h-96 z-10"
             style={{
               boxShadow: "0 4px 6px rgba(0, 0, 0, 0.3)",
             }}
@@ -62,29 +69,43 @@ function WhatsNew() {
               {table.title}
             </h3>
             {/* Tab Container */}
-            <div className="flex justify-between items-center ">
-              {table.tabs.map((tab, tabIndex) => (
-                <span
-                  key={tabIndex}
-                  className={`pt-3 py-0 text-center text-nowrap text-[15px] w-44 h-12 cursor-pointer ${
-                    activeTabs[tableIndex] === tabIndex
-                      ? "text-[#AE9142] font-bold" // Change text color for active tab
-                      : "text-[#000000]" // Default text color for inactive tab
-                  }`}
-                  onClick={() => handleTabClick(tableIndex, tabIndex)}
-                  style={{
-                    boxShadow: "0 4px 6px rgba(0, 0, 0, 0.3)",
-                    border: "0.5px solid #757575",
-                  }}
-                >
-                  {tab}
-                </span>
-              ))}
-            </div>
+            {table.tabs.length > 0 && (
+              <div className="flex justify-between items-center ">
+                {table.tabs.map((tab, tabIndex) => (
+                  <span
+                    key={tabIndex}
+                    className={`pt-3 py-0 text-center text-nowrap text-[15px] w-44 h-12 cursor-pointer ${
+                      activeTabs[tableIndex] === tabIndex
+                        ? "text-[#AE9142] font-bold"
+                        : "text-[#000000]"
+                    }`}
+                    onClick={() => handleTabClick(tableIndex, tabIndex)}
+                    style={{
+                      boxShadow: "0 4px 6px rgba(0, 0, 0, 0.3)",
+                      border: "0.5px solid #757575",
+                    }}
+                  >
+                    {tab}
+                  </span>
+                ))}
+              </div>
+            )}
 
-            {/* Content for the selected tab */}
-            <div className="p-4 mt-4">
-              <p>{table.content[table.tabs[activeTabs[tableIndex]]]}</p>
+            {/* Content for the selected tab or direct content for the table */}
+            <div className="p-4">
+              {table.tabs.length === 0 ? (
+                <div className="vertical-marquee-container">
+                  <div className="vertical-marquee">
+                    {table.content.map((contentItem, index) => (
+                      <div key={index} className="vertical-marquee-item">
+                        <p className="text-[#333]">{contentItem}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <p>{table.content[table.tabs[activeTabs[tableIndex]]]}</p>
+              )}
             </div>
           </div>
         ))}

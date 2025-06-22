@@ -1,21 +1,104 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 const SearchBar = () => {
+  const [query, setQuery] = useState("");
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isActive, setIsActive] = useState(false);
+  const [filteredResults, setFilteredResults] = useState([]);
   const inputRef = useRef(null);
   const wrapperRef = useRef(null);
+  const navigate = useNavigate();
+
+  // List of pages (routes) to search against
+  const pages = [
+    { name: "Home", path: "/" },
+    { name: "About Us", path: "/aboutus" },
+    { name: "Departments", path: "/departments" },
+    { name: "Academics", path: "/academics" },
+    { name: "Admissions", path: "/admissions" },
+    { name: "Students Corner", path: "/studentCorner" },
+    { name: "Downloads", path: "/downloads" },
+    { name: "Important Links", path: "/Important-Links" },
+    { name: "Circulars", path: "/circulars" },
+    { name: "Computer Engineering", path: "/computer_engineering" },
+    { name: "Mechanical Engineering", path: "/mechanical_engineering" },
+    { name: "Electronics and Telecommunication Engineering", path: "/extc" },
+    { name: "Electrical Engineering", path: "/electrical_engineering" },
+    { name: "Basic Science and Humanities", path: "/humanities" },
+  ];
+
+  // Handle keydown events (ctrl + /, Enter, Escape)
+  const handleKeyDown = (e) => {
+    if (e.ctrlKey && e.key === "/") {
+      e.preventDefault();
+      setIsExpanded(true);
+      setIsActive(true);
+      setTimeout(() => inputRef.current?.focus(), 0); // Ensure focus after animation
+    }
+
+    if (e.key === "Escape") {
+      setQuery("");
+      setIsActive(false);
+      setIsExpanded(false);
+      if (inputRef.current) inputRef.current.blur();
+    }
+
+    if (e.key === "Enter" && filteredResults.length > 0) {
+      navigate(filteredResults[0].path);
+      setQuery("");
+      setIsActive(false);
+      setIsExpanded(false);
+    }
+  };
+
+  const handleChange = (e) => {
+    const value = e.target.value;
+    setQuery(value);
+    setIsActive(true);
+  };
+
+  const handleBlur = () => {
+    setTimeout(() => {
+      if (query === "") {
+        setIsActive(false);
+        setIsExpanded(false);
+      }
+    }, 200);
+  };
+
+  // Filter pages based on the query
+  useEffect(() => {
+    if (query.trim()) {
+      const results = pages.filter((page) =>
+        page.name.toLowerCase().includes(query.toLowerCase().trim())
+      );
+      setFilteredResults(results);
+    } else {
+      setFilteredResults([]);
+    }
+  }, [query]);
+
+  const handleResultClick = (path) => {
+    navigate(path);
+    setQuery("");
+    setIsActive(false);
+    setIsExpanded(false);
+  };
 
   // Handle clicks outside to collapse the input
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (wrapperRef.current && !wrapperRef.current.contains(event.target)) {
         setIsExpanded(false);
+        setIsActive(false);
       }
     };
 
     const handleEscape = (e) => {
       if (e.key === "Escape") {
         setIsExpanded(false);
+        setIsActive(false);
         inputRef.current?.blur();
       }
     };
@@ -31,7 +114,8 @@ const SearchBar = () => {
 
   const handleIconClick = () => {
     setIsExpanded(true);
-    setTimeout(() => inputRef.current?.focus(), 0); // Ensure focus after animation
+    setIsActive(true);
+    setTimeout(() => inputRef.current?.focus(), 0);
   };
 
   return (
@@ -44,20 +128,18 @@ const SearchBar = () => {
         type="text"
         name="text"
         placeholder="search.."
+        value={query}
+        onChange={handleChange}
+        onBlur={handleBlur}
+        onFocus={() => setIsExpanded(true)}
         className={`
-        absolute right-12
-        h-12
-        outline-none
-        bg-transparent
-        placeholder:text-gray-400
-        font-librefranklin text-[17px]
-        transition-all duration-500 ease-in-out
-        overflow-hidden
-        ${
-          isExpanded
-            ? "w-64 pl-4 pr-10 text-[#CACACA] border-b-2 border-[#CACACA]"
-            : "w-0 p-0 border-0"
-        }
+          absolute right-12 h-12 outline-none bg-transparent placeholder:text-gray-400 font-librefranklin text-[17px]
+          transition-all duration-500 ease-in-out overflow-hidden
+          ${
+            isExpanded
+              ? "w-64 pl-4 pr-10 text-[#CACACA] border-b-2 border-[#CACACA]"
+              : "w-0 p-0 border-0"
+          }
         `}
       />
       <button
@@ -87,6 +169,32 @@ const SearchBar = () => {
           />
         </svg>
       </button>
+
+      {isActive && filteredResults.length > 0 && (
+        <div
+          className="absolute z-20 w-72 bg-white border rounded-sm shadow-lg max-h-60 overflow-y-auto"
+          style={{ top: "100%" }} // Ensures dropdown stays below the search input
+        >
+          {filteredResults.map((result, index) => (
+            <div
+              key={index}
+              onMouseDown={() => handleResultClick(result.path)} // Use onMouseDown to handle click before blur
+              className="px-4 py-2 cursor-pointer hover:bg-gray-100 font-inter text-gray-800"
+            >
+              {result.name}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {isActive && query && filteredResults.length === 0 && (
+        <div
+          className="absolute z-20 w-72 bg-white border rounded-md shadow-lg max-h-60 overflow-y-auto"
+          style={{ top: "100%" }} // Ensures dropdown stays below the search input
+        >
+          <div className="px-4 py-2 text-gray-500">No results found</div>
+        </div>
+      )}
     </div>
   );
 };
