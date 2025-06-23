@@ -8,21 +8,25 @@ import {
 } from "react-icons/fa";
 
 const Button = ({ icon: Icon, label, subLabel }) => (
-  <button className="flex flex-col items-center p-6 bg-gray-100 rounded-lg shadow-md hover:bg-gray-200 flex-1">
-    <Icon className="text-4xl mb-4" />
-    <div className="text-xl font-semibold">{label}</div>
-    {subLabel && <div className="text-md text-gray-500">{subLabel}</div>}
+  <button className="flex flex-col items-center px-2 pb-4 pt-5 bg-white shadow-[6px_6px_15px_rgba(0,0,0,0.1)] hover:shadow-[8px_8px_20px_rgba(0,0,0,0.2)] transition-all duration-300 ease-in-out flex-1 space-y-3">
+    <Icon className="text-3xl mb-3 text-gray-700" />
+    <div className="text-lg font-inter font-semibold text-gray-800">
+      {label}
+    </div>
+    {subLabel && (
+      <div className="text-sm text-gray-500 font-medium">{subLabel}</div>
+    )}
   </button>
 );
 
 const Widgets = () => (
-  <div className="flex space-x-4 p-4 w-full">
+  <div className="flex space-x-6 px-16 py-12 w-full bg-[#F7F7F7] justify-center">
     <Button icon={FaEnvelope} label="Transcripts" />
     <Button icon={FaCalendarAlt} label="Academic Calendar" />
     <Button icon={FaRegNewspaper} label="E-News Letter" />
-    <Button icon={FaBook} label="Manthan" subLabel="FCRIT Magazine" />
-    <Button icon={FaGlobeAsia} label="ICNTE" subLabel="Connecting Ideas" />
-    <Button icon={FaGlobeAsia} label="INVEST" />
+    <Button icon={FaBook} label="Manthan" />
+    <Button icon={FaGlobeAsia} label="ICNTE" />
+    <Button icon={FaGlobeAsia} label="Invest" />
   </div>
 );
 
