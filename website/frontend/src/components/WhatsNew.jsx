@@ -19,16 +19,17 @@ function WhatsNew() {
     },
     {
       title: "Achievements",
-      tabs: ["B.tech", "DSE (B.tech)", "M.tech/ Ph.D"],
+      tabs: ["BE", "DSE (BE)", "M.tech/ Ph.D", "General"],
       content: {
         "B.tech": "B.Tech Achievements Content",
         "DSE (B.tech)": "DSE (B.Tech) Achievements Content",
         "M.tech/ Ph.D": "M.Tech/Ph.D Achievements Content",
+        General: "General Content",
       },
     },
     {
       title: "Admissions",
-      tabs: ["B.tech", "DSE (B.tech)", "M.tech/ Ph.D"],
+      tabs: ["BE", "DSE (BE)", "M.tech/ Ph.D"],
       content: {
         "B.tech": "B.Tech Admissions Content",
         "DSE (B.tech)": "DSE (B.Tech) Admissions Content",
