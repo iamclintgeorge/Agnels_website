@@ -49,8 +49,8 @@ function App() {
               <>
                 <News />
                 <AboutUs />
-                {/* <Widgets /> */}
                 <WhatsNew />
+                {/* <Widgets /> */}
               </>
             }
           />
