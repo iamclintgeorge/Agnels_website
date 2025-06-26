@@ -26,8 +26,7 @@ const NavBar = () => {
         setFacultyName(response.data.name || "Unknown"); // Set name or fallback
       } catch (error) {
         console.error("Fetch faculty name error:", error);
-        setFacultyName("Error");
-        toast.error("Failed to load faculty name");
+        setFacultyName("Undefined");
       }
     };
 
@@ -57,6 +56,8 @@ const NavBar = () => {
     return null;
   }
 
+  console.log(user.role);
+
   return (
     <>
       <div className="z-10 fixed w-full">
@@ -77,11 +78,17 @@ const NavBar = () => {
               <SearchBar />
             </div>
             <div className="text-white flex flex-row text-sm pr-10">
-              <p
+              {/* <p
                 className="cursor-pointer mr-5 pt-[22px] font-light font-inter"
                 onClick={handleUserClick}
               >
                 {facultyName || "Undefined"}
+              </p> */}
+              <p
+                className="cursor-pointer mr-5 pt-[22px] font-light font-inter"
+                onClick={handleUserClick}
+              >
+                {user.role === "superAdmin" ? "SuperAdmin" : facultyName}
               </p>
               <div className="relative inline-block">
                 <button
@@ -92,10 +99,17 @@ const NavBar = () => {
                 </button>
                 {isUserOpen && (
                   <div className="absolute left-16 transform -translate-x-full py-4 px-5 space-y-4 bg-[#0C2340] text-nowrap">
-                    <Link to="/profile">
+                    {user.role !== "superAdmin" && (
+                      <Link to="/profile">
+                        <p>Edit Profile</p>
+                      </Link>
+                    )}
+
+                    {/* <Link to="/profile">
                       <p>Edit Profile</p>
-                    </Link>
-                    {(user.role === "hod" || user.role === "superAdmin") && (
+                    </Link> */}
+                    <p>Edit Account</p>
+                    {/* {(user.role === "hod" || user.role === "superAdmin") && (
                       <Link to="/hoddesk">
                         <p className="mt-5">HOD's Desk</p>
                       </Link>
@@ -105,7 +119,7 @@ const NavBar = () => {
                       <Link to="/principaldesk">
                         <p className="mt-5">Principal's Desk</p>
                       </Link>
-                    )}
+                    )} */}
                     <Link to="/login">
                       <p className="mt-5">Switch User</p>
                     </Link>
