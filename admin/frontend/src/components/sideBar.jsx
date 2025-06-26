@@ -81,8 +81,8 @@ const SideBar = () => {
   const departmentSections = [
     "About",
     "Committees and Board of Studies",
-    "Infrastructure",
     "Activities",
+    "Infrastructure",
     "Student Association",
     "Magazine",
     "Syllabus",
@@ -94,6 +94,7 @@ const SideBar = () => {
     "Alumni Testimonials",
     "Publications",
     "Projects",
+    
   ];
 
   // Academic sections array
@@ -445,6 +446,10 @@ const SideBar = () => {
 
         <Link to="/training-placement" className="flex justify-between pr-8">
           Training and Placement <span>&gt;</span>
+        </Link>
+
+        <Link to="/studentscorner" className="flex justify-between pr-8">
+          Students Corner <span>&gt;</span>
         </Link>
 
         <div>
