@@ -57,8 +57,8 @@ const mockRoles = [
   },
   {
     id: 6,
-    name: "itHod",
-    displayName: "HOD (IT)",
+    name: "cseHod",
+    displayName: "HOD (CSE)",
     permissions: [
       "dashboard",
       "home_page",
@@ -131,11 +131,6 @@ const availablePermissions = [
     name: "BSH Dept",
     category: "departments",
   },
-  {
-    id: "departments.information-technology",
-    name: "IT Dept",
-    category: "departments",
-  },
   { id: "admission", name: "Admission", category: "content" },
   { id: "academics", name: "Academics", category: "content" },
   {
@@ -148,9 +143,9 @@ const availablePermissions = [
   { id: "human_resource", name: "Human Resource", category: "content" },
   { id: "alumni", name: "Alumni Page", category: "content" },
   { id: "downloads", name: "Downloads Page", category: "content" },
+  { id: "nirf", name: "NIRF", category: "content" },
+  { id: "nba_naac", name: "NBA/NAAC", category: "content" },
   { id: "manage_users", name: "Manage Users", category: "admin" },
-  { id: "nirf", name: "NIRF", category: "admin" },
-  { id: "nba_naac", name: "NBA/NAAC", category: "admin" },
   { id: "logs", name: "Logs", category: "admin" },
 ];
 
