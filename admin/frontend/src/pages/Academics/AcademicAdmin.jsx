@@ -6,7 +6,7 @@ import AcademicCalendar from "./AcademicCalendar";
 import Examinations from "./AcademinExaminations";
 import APMS from "./AcademicLinks"
 import LMS from "./AcademicLinks";
-import StakeholderFeedback from "./StakeHolderFeedback";
+import StakeholderFeedback from "./StakeholderFeedback";
 
 const AcademicAdmin = () => {
   const [selectedSection, setSelectedSection] = useState("Home");

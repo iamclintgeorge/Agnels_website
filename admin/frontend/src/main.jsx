@@ -21,15 +21,21 @@ import HodDesk from "./pages/rolebasedPages/hodDesk";
 import PrincipalDesk from "./pages/rolebasedPages/principalDesk";
 import AboutUsAdmin from "./pages/AboutUs/AboutUsAdmin";
 import ResearchAdmin from "./pages/research/ResearchAdmin";
+import AdminNIRF from "./pages/AdminNIRF";
+import AdminNBANAAC from "./pages/AdminNBANAAC";
 import AcademicAdmin from "./pages/Academics/AcademicAdmin";
 import AcademicHandbook from "./pages/Academics/AcademicHandbook";
-import AcademicHandbookHonours from "./pages/Academics/AcademicHandbookHonours";
+import Teaching_staff from "./pages/HumanResources/teachingstaff";
+import Nonteaching_staff from "./pages/HumanResources/nonteachingstaff";
+import StudentsCorner from "./pages/StudentsCorner/StudentsCorner";
+
 const App = () => {
   return (
     <>
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+
         <Route path="/" element={<AdminLayout />}>
           <Route path="/home/carousel" element={<ImgCarousel />} />
           <Route path="/home/whatsNew" element={<WhatsNew />} />
@@ -50,7 +56,12 @@ const App = () => {
           <Route path="/about-us" element={<AboutUsAdmin />} />
           <Route path="/research/:section" element={<ResearchAdmin />} />
           <Route path="/research" element={<ResearchAdmin />} />
-           
+          <Route path="/admin/nirf" element={<AdminNIRF />} />
+          <Route path="/admin/nba-naac" element={<AdminNBANAAC />} />
+          <Route path="/teachingstaff" element={<Teaching_staff />} />
+          <Route path="/nonteachingstaff" element={<Nonteaching_staff />} />
+          <Route path="/studentscorner" element={<StudentsCorner />} />
+          
         </Route>
         <Route path="*" element={<Error404 />} />
       </Routes>

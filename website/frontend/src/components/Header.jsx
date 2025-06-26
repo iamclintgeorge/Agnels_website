@@ -4,6 +4,7 @@ import { FaBars, FaInstagram, FaFacebookF } from "react-icons/fa";
 import { FaLinkedinIn } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
+import SearchBar from "./searchBar";
 
 const Header = () => {
   const [isBottomMenuOpen, setIsBottomMenuOpen] = useState(false); // For mobile menu
@@ -162,23 +163,26 @@ const Header = () => {
         </nav>
       </div>
 
+      {/* <div className="ml-[90vw] -mt-5 mb-5">Hi</div> */}
+      <SearchBar />
+
       {/* Bottom Navigation Links (Desktop) */}
       <div className="absolute gap-3 text-base p-0 m-0 font-inter z-10 ml-[42vw] mr-10 mt-1 text-nowrap font-light hidden md:flex cursor-default">
         <Link
           to="/"
-          className="hover:bg-white hover:text-black px-4 py-2 rounded transition-all duration-200 ease-in-out transform hover:scale-105 hover:shadow-lg"
+          className="hover:bg-white hover:text-black px-4 py-2 transition-all duration-200 ease-in-out transform hover:scale-105 hover:shadow-lg"
         >
           <p>Home</p>
         </Link>
         <Link
           to="/aboutUs"
-          className="hover:bg-white hover:text-black px-4 py-2 rounded transition-all duration-200 ease-in-out transform hover:scale-105 hover:shadow-lg"
+          className="hover:bg-white hover:text-black px-4 py-2 transition-all duration-200 ease-in-out transform hover:scale-105 hover:shadow-lg"
         >
           <p>About Us</p>
         </Link>
         <Link
           to="/departments"
-          className="hover:bg-white hover:text-black px-4 py-2 rounded transition-all duration-200 ease-in-out transform hover:scale-105 hover:shadow-lg"
+          className="hover:bg-white hover:text-black px-4 py-2 transition-all duration-200 ease-in-out transform hover:scale-105 hover:shadow-lg"
         >
           <p>Departments</p>
         </Link>
@@ -191,13 +195,13 @@ const Header = () => {
         >
           <Link
             to="/academics"
-            className="hover:bg-white hover:text-black px-4 py-2 rounded transition-all duration-200 ease-in-out transform hover:scale-105 hover:shadow-lg flex items-center gap-2"
+            className="hover:bg-white hover:text-black px-4 py-2 transition-all duration-200 ease-in-out transform hover:scale-105 hover:shadow-lg flex items-center gap-2"
           >
             <p>Academics</p>
           </Link>
           {isAcademicsSubMenuOpen && (
             <div className="absolute left-0 top-full bg-[#0c2340] text-white rounded shadow-lg w-52 p-3 z-20">
-              <ul className="flex flex-col gap-2">
+              <ul className="flex flex-col gap-2 text-wrap">
                 <li className="hover:bg-[#AE9142] px-2 py-1 rounded">
                   <Link to="/nirf">NIRF</Link>
                 </li>
@@ -236,7 +240,7 @@ const Header = () => {
         </div>
         <Link
           to="/admissions"
-          className="hover:bg-white hover:text-black px-4 py-2 rounded transition-all duration-200 ease-in-out transform hover:scale-105 hover:shadow-lg"
+          className="hover:bg-white hover:text-black px-4 py-2 transition-all duration-200 ease-in-out transform hover:scale-105 hover:shadow-lg"
         >
           <p>Admissions</p>
         </Link>
@@ -249,13 +253,13 @@ const Header = () => {
         >
           <Link
             to="/studentCorner"
-            className="hover:bg-white hover:text-black px-4 py-2 rounded transition-all duration-200 ease-in-out transform hover:scale-105 hover:shadow-lg flex items-center gap-2"
+            className="hover:bg-white hover:text-black px-4 py-2 transition-all duration-200 ease-in-out transform hover:scale-105 hover:shadow-lg flex items-center gap-2"
           >
             <p>Student Corner</p>
           </Link>
           {isStudentCornerSubMenuOpen && (
-            <div className="absolute left-0 top-full bg-[#0c2340] text-white rounded shadow-lg w-52 p-3 z-20">
-              <ul className="flex flex-col gap-2">
+            <div className="absolute left-0 top-full bg-[#0c2340] text-white rounded shadow-lg w-full p-3 z-20">
+              <ul className="flex flex-col gap-2 text-wrap">
                 <li className="hover:bg-[#AE9142] px-2 py-1 rounded">
                   <Link to="/training-placement">Training and Placement</Link>
                 </li>
@@ -267,6 +271,10 @@ const Header = () => {
                   >
                     Library
                   </a>
+                </li>
+
+                <li className="hover:bg-[#AE9142] px-2 py-1 rounded">
+                  Transcript
                 </li>
 
                 <li className="hover:bg-[#AE9142] px-2 py-1 rounded">

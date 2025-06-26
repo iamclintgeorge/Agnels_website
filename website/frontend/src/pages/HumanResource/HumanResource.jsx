@@ -1,19 +1,12 @@
-
 import React from "react";
 import StaticPages from "../../layouts/staticPages";
 import {
   Teaching_Staff,
   Non_Teaching_Staff,
 } from "./HumanResourceContent";
-// import { useNavigate } from "react-router-dom";
 
 const HumanResource = () => {
-  const sidebar = [
-    "Teaching Staff",
-    "Non-Teaching Staff",
-  ];
-
-  // const navigate = useNavigate();
+  const sidebar = ["Teaching Staff", "Non-Teaching Staff"];
 
   const content = {
     "Teaching Staff": <Teaching_Staff />,
@@ -23,8 +16,8 @@ const HumanResource = () => {
   return (
     <div>
       <StaticPages
-        pagename={"Human Resource"}
-        path={"Academics / Human Resource"}
+        pagename={"Human Resources"}
+        path={"Administration / Human Resources"}
         sidebar={sidebar}
         content={content}
       />
