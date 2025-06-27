@@ -227,6 +227,9 @@ const SideBar = () => {
                 </p>
                 {isComputerEngOpen && (
                   <div className="pt-2 pr-4 pl-8 leading-7 space-y-4">
+                    <Link to="/department/computer/home">
+                      <p className="cursor-pointer">Home</p>
+                    </Link>
                     {departmentSections.map((section) => (
                       <p
                         key={section}
@@ -260,6 +263,9 @@ const SideBar = () => {
                 </p>
                 {isMechanicalEngOpen && (
                   <div className="pt-2 pr-4 pl-8 leading-7 space-y-4">
+                    <Link to="/department/mechanical/home">
+                      <p className="cursor-pointer">Home</p>
+                    </Link>
                     {departmentSections.map((section) => (
                       <p
                         key={section}
@@ -293,6 +299,9 @@ const SideBar = () => {
                 </p>
                 {isEXTCOpen && (
                   <div className="pt-2 pr-4 pl-8 leading-7 space-y-4">
+                    <Link to="/department/extc/home">
+                      <p className="cursor-pointer">Home</p>
+                    </Link>
                     {departmentSections.map((section) => (
                       <p
                         key={section}
@@ -323,6 +332,9 @@ const SideBar = () => {
                 </p>
                 {isElectricalEngOpen && (
                   <div className="pt-2 pr-4 pl-8 leading-7 space-y-4">
+                    <Link to="/department/electrical/home">
+                      <p className="cursor-pointer">Home</p>
+                    </Link>
                     {departmentSections.map((section) => (
                       <p
                         key={section}
@@ -356,6 +368,9 @@ const SideBar = () => {
                 </p>
                 {isCSEOpen && (
                   <div className="pt-2 pr-4 pl-8 leading-7 space-y-4">
+                    <Link to="/department/cse/home">
+                      <p className="cursor-pointer">Home</p>
+                    </Link>
                     {departmentSections.map((section) => (
                       <p
                         key={section}
@@ -389,6 +404,9 @@ const SideBar = () => {
                 </p>
                 {isBasicSciHumOpen && (
                   <div className="pt-2 pr-4 pl-8 leading-7 space-y-4">
+                    <Link to="/department/bsh/home">
+                      <p className="cursor-pointer">Home</p>
+                    </Link>
                     {departmentSections.map((section) => (
                       <p
                         key={section}
