@@ -693,7 +693,14 @@ const DynamicSideBar = () => {
     user: false,
     research: false,
     department: false,
-    departments: {},
+    departments: {
+      "computer-engineering": false,
+      "mechanical-engineering": false,
+      extc: false,
+      "electrical-engineering": false,
+      "computer-science-and-engineering": false,
+      "basic-science-and-humanities": false,
+    },
     humanResource: false,
   });
 
@@ -981,189 +988,62 @@ const DynamicSideBar = () => {
               className="cursor-pointer flex justify-between items-center pr-8"
               onClick={() => toggleSection("department")}
             >
-              &gt;
-            </span>
-          </p>
-          {isDepartmentOpen && (
-            <div className="pt-2 pr-8 pl-4 leading-7 space-y-4">
-              <Link to="/department/home">
-                <p>Home</p>
-              </Link>
-              <div>
-                <p
-                  className="cursor-pointer flex justify-between items-center pr-4"
-                  onClick={handleComputerEngClick}
-                >
-                  Computer Engineering{" "}
-                  <span
-                    className={`transform transition-transform ${
-                      isComputerEngOpen ? "rotate-90" : ""
-                    }`}
-                  >
-                    &gt;
-                  </span>
-                </p>
-                {isComputerEngOpen && (
-                  <div className="pt-2 pr-4 pl-8 leading-7 space-y-4">
-                    <Link to="/department/computer/home">
-                      <p className="cursor-pointer">Home</p>
-                    </Link>
-                    {departmentSections.map((section) => (
-                      <p
-                        key={section}
-                        className="cursor-pointer"
-                        onClick={() =>
-                          handleDepartmentSectionSelect(
-                            "computer-engineering",
-                            section
-                          )
-                        }
-                      >
-                        {section}
-                      </p>
-                    ))}
-                  </div>
-                )}
-              </div>
-              <div>
-                <p
-                  className="cursor-pointer flex justify-between items-center pr-4 leading-7"
-                  onClick={handleMechanicalEngClick}
-                >
-                  Mechanical Engineering{" "}
-                  <span
-                    className={`transform transition-transform ${
-                      isMechanicalEngOpen ? "rotate-90" : ""
-                    }`}
-                  >
-                    &gt;
-                  </span>
-                </p>
-                {isMechanicalEngOpen && (
-                  <div className="pt-2 pr-4 pl-8 leading-7 space-y-4">
-                    <Link to="/department/mechanical/home">
-                      <p className="cursor-pointer">Home</p>
-                    </Link>
-                    {departmentSections.map((section) => (
-                      <p
-                        key={section}
-                        className="cursor-pointer"
-                        onClick={() =>
-                          handleDepartmentSectionSelect(
-                            "mechanical-engineering",
-                            section
-                          )
-                        }
-                      >
-                        {section}
-                      </p>
-                    ))}
-                  </div>
-                )}
-              </div>
-              <div>
-                <p
-                  className="cursor-pointer flex justify-between items-center pr-4"
-                  onClick={handleEXTCClick}
-                >
-                  EXTC{" "}
-                  <span
-                    className={`transform transition-transform ${
-                      isEXTCOpen ? "rotate-90" : ""
-                    }`}
-                  >
-                    &gt;
-                  </span>
-                </p>
-                {isEXTCOpen && (
-                  <div className="pt-2 pr-4 pl-8 leading-7 space-y-4">
-                    <Link to="/department/extc/home">
-                      <p className="cursor-pointer">Home</p>
-                    </Link>
-                    {departmentSections.map((section) => (
-                      <p
-                        key={section}
-                        className="cursor-pointer"
-                        onClick={() =>
-                          handleDepartmentSectionSelect("extc", section)
-                        }
-                      >
-                        {section}
-                      </p>
-                    ))}
-                  </div>
-                )}
-              </div>
-              <div>
-                <p
-                  className="cursor-pointer flex justify-between items-center pr-4"
-                  onClick={handleElectricalEngClick}
-                >
-                  Electrical Engineering{" "}
-                  <span
-                    className={`transform transition-transform ${
-                      isElectricalEngOpen ? "rotate-90" : ""
-                    }`}
-                  >
-                    &gt;
-                  </span>
-                </p>
-                {isElectricalEngOpen && (
-                  <div className="pt-2 pr-4 pl-8 leading-7 space-y-4">
-                    <Link to="/department/electrical/home">
-                      <p className="cursor-pointer">Home</p>
-                    </Link>
-                    {departmentSections.map((section) => (
-                      <p
-                        key={section}
-                        className="cursor-pointer"
-                        onClick={() =>
-                          handleDepartmentSectionSelect(
-                            "electrical-engineering",
-                            section
-                          )
-                        }
-                      >
-                        {section}
-                      </p>
-                    ))}
-                  </div>
-                )}
-              </div>
-              <div>
-                <p
-                  className="cursor-pointer flex justify-between items-center pr-4"
-                  onClick={handleCSEClick}
-                >
-                  Computer Science and Engineering{" "}
-                  <span
-                    className={`transform transition-transform ${
-                      isCSEOpen ? "rotate-90" : ""
-                    }`}
-                  >
-                    &gt;
-                  </span>
-                </p>
-                {isCSEOpen && (
-                  <div className="pt-2 pr-4 pl-8 leading-7 space-y-4">
-                    <Link to="/department/cse/home">
-                      <p className="cursor-pointer">Home</p>
-                    </Link>
-                    {departmentSections.map((section) => (
-                      <p
-                        key={section}
-                        className="cursor-pointer"
-                        onClick={() =>
-                          handleDepartmentSectionSelect(
-                            "computer-science-and-engineering",
-                            section
-                          )
-                        }
-                      >
-                        {section}
-                      </p>
-                    ))}
-                  </div>
+              Departments{" "}
+              <span
+                className={`transform transition-transform ${
+                  openSections.department ? "rotate-90" : ""
+                }`}
+              >
+                &gt;
+              </span>
+            </p>
+            {openSections.department && (
+              <div className="pt-2 pr-8 pl-4 leading-7 space-y-4">
+                <Link to="/department/home">
+                  <p>Home</p>
+                </Link>
+                {departments.map(
+                  (dept) =>
+                    hasPermission(dept.permission) && (
+                      <div key={dept.id}>
+                        <p
+                          className="cursor-pointer flex justify-between items-center pr-4"
+                          onClick={() => toggleSection("departments", dept.id)}
+                        >
+                          {dept.name}{" "}
+                          <span
+                            className={`transform transition-transform ${
+                              openSections.departments[dept.id]
+                                ? "rotate-90"
+                                : ""
+                            }`}
+                          >
+                            &gt;
+                          </span>
+                        </p>
+                        {openSections.departments[dept.id] && (
+                          <div className="pt-2 pr-4 pl-8 leading-7 space-y-4">
+                            <Link to={`/department/${dept.id}/home`}>
+                              <p className="cursor-pointer">Home</p>
+                            </Link>
+                            {departmentSections.map((section) => (
+                              <p
+                                key={section}
+                                className="cursor-pointer"
+                                onClick={() =>
+                                  handleDepartmentSectionSelect(
+                                    dept.id,
+                                    section
+                                  )
+                                }
+                              >
+                                {section}
+                              </p>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    )
                 )}
               </div>
             )}
@@ -1172,9 +1052,9 @@ const DynamicSideBar = () => {
 
         {/* Admission */}
         {hasPermission("admission") && (
-          <p className="flex justify-between pr-8">
+          <Link to="/admission" className="flex justify-between pr-8">
             Admission <span>&gt;</span>
-          </p>
+          </Link>
         )}
 
         {/* Academics Section */}
@@ -1201,30 +1081,9 @@ const DynamicSideBar = () => {
                     className="cursor-pointer"
                     onClick={() => handleAcademicSectionSelect(section)}
                   >
-                    &gt;
-                  </span>
-                </p>
-                {isBasicSciHumOpen && (
-                  <div className="pt-2 pr-4 pl-8 leading-7 space-y-4">
-                    <Link to="/department/bsh/home">
-                      <p className="cursor-pointer">Home</p>
-                    </Link>
-                    {departmentSections.map((section) => (
-                      <p
-                        key={section}
-                        className="cursor-pointer"
-                        onClick={() =>
-                          handleDepartmentSectionSelect(
-                            "basic-science-and-humanities",
-                            section
-                          )
-                        }
-                      >
-                        {section}
-                      </p>
-                    ))}
-                  </div>
-                )}
+                    {section}
+                  </p>
+                ))}
               </div>
             )}
           </div>
@@ -1319,16 +1178,16 @@ const DynamicSideBar = () => {
 
         {/* Alumni Page */}
         {hasPermission("alumni") && (
-          <p className="flex justify-between pr-8">
+          <Link to="/alumni" className="flex justify-between pr-8">
             Alumni Page <span>&gt;</span>
-          </p>
+          </Link>
         )}
 
         {/* Downloads Page */}
         {hasPermission("downloads") && (
-          <p className="flex justify-between pr-8">
+          <Link to="/downloads" className="flex justify-between pr-8">
             Downloads Page <span>&gt;</span>
-          </p>
+          </Link>
         )}
 
         {/* Additional Students Corner for Teaching Staff */}
@@ -1373,25 +1232,27 @@ const DynamicSideBar = () => {
         {/* NIRF */}
         {hasPermission("nirf") && (
           <Link to="/admin/nirf" className="flex justify-between pr-8">
-            NIRF<span></span>
+            NIRF
           </Link>
         )}
 
         {/* NBA/NAAC */}
         {hasPermission("nba_naac") && (
           <Link to="/admin/nba-naac" className="flex justify-between pr-8">
-            NBA/NAAC<span></span>
+            NBA/NAAC
           </Link>
         )}
 
-        {/* Logs */}
-        <p className="flex justify-between pr-8">
+        {/* Edit User Profiles */}
+        <Link to="/edit-profiles" className="flex justify-between pr-8">
           Edit User Profiles <span>&gt;</span>
-        </p>
+        </Link>
+
+        {/* Logs */}
         {hasPermission("logs") && (
-          <p className="flex justify-between pr-8">
+          <Link to="/logs" className="flex justify-between pr-8">
             Logs <span>&gt;</span>
-          </p>
+          </Link>
         )}
       </div>
     </div>
