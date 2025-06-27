@@ -981,60 +981,189 @@ const DynamicSideBar = () => {
               className="cursor-pointer flex justify-between items-center pr-8"
               onClick={() => toggleSection("department")}
             >
-              Departments{" "}
-              <span
-                className={`transform transition-transform ${
-                  openSections.department ? "rotate-90" : ""
-                }`}
-              >
-                &gt;
-              </span>
-            </p>
-            {openSections.department && (
-              <div className="pt-2 pr-8 pl-4 leading-7 space-y-4">
-                <Link to="/department/home">
-                  <p>Home</p>
-                </Link>
-
-                {departments.map(
-                  (dept) =>
-                    hasPermission(dept.permission) && (
-                      <div key={dept.id}>
-                        <p
-                          className="cursor-pointer flex justify-between items-center pr-4"
-                          onClick={() => toggleSection("departments", dept.id)}
-                        >
-                          {dept.name}{" "}
-                          <span
-                            className={`transform transition-transform ${
-                              openSections.departments[dept.id]
-                                ? "rotate-90"
-                                : ""
-                            }`}
-                          >
-                            &gt;
-                          </span>
-                        </p>
-                        {openSections.departments[dept.id] && (
-                          <div className="pt-2 pr-4 pl-8 leading-7 space-y-4">
-                            {departmentSections.map((section) => (
-                              <p
-                                key={section}
-                                className="cursor-pointer"
-                                onClick={() =>
-                                  handleDepartmentSectionSelect(
-                                    dept.id,
-                                    section
-                                  )
-                                }
-                              >
-                                {section}
-                              </p>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    )
+              &gt;
+            </span>
+          </p>
+          {isDepartmentOpen && (
+            <div className="pt-2 pr-8 pl-4 leading-7 space-y-4">
+              <Link to="/department/home">
+                <p>Home</p>
+              </Link>
+              <div>
+                <p
+                  className="cursor-pointer flex justify-between items-center pr-4"
+                  onClick={handleComputerEngClick}
+                >
+                  Computer Engineering{" "}
+                  <span
+                    className={`transform transition-transform ${
+                      isComputerEngOpen ? "rotate-90" : ""
+                    }`}
+                  >
+                    &gt;
+                  </span>
+                </p>
+                {isComputerEngOpen && (
+                  <div className="pt-2 pr-4 pl-8 leading-7 space-y-4">
+                    <Link to="/department/computer/home">
+                      <p className="cursor-pointer">Home</p>
+                    </Link>
+                    {departmentSections.map((section) => (
+                      <p
+                        key={section}
+                        className="cursor-pointer"
+                        onClick={() =>
+                          handleDepartmentSectionSelect(
+                            "computer-engineering",
+                            section
+                          )
+                        }
+                      >
+                        {section}
+                      </p>
+                    ))}
+                  </div>
+                )}
+              </div>
+              <div>
+                <p
+                  className="cursor-pointer flex justify-between items-center pr-4 leading-7"
+                  onClick={handleMechanicalEngClick}
+                >
+                  Mechanical Engineering{" "}
+                  <span
+                    className={`transform transition-transform ${
+                      isMechanicalEngOpen ? "rotate-90" : ""
+                    }`}
+                  >
+                    &gt;
+                  </span>
+                </p>
+                {isMechanicalEngOpen && (
+                  <div className="pt-2 pr-4 pl-8 leading-7 space-y-4">
+                    <Link to="/department/mechanical/home">
+                      <p className="cursor-pointer">Home</p>
+                    </Link>
+                    {departmentSections.map((section) => (
+                      <p
+                        key={section}
+                        className="cursor-pointer"
+                        onClick={() =>
+                          handleDepartmentSectionSelect(
+                            "mechanical-engineering",
+                            section
+                          )
+                        }
+                      >
+                        {section}
+                      </p>
+                    ))}
+                  </div>
+                )}
+              </div>
+              <div>
+                <p
+                  className="cursor-pointer flex justify-between items-center pr-4"
+                  onClick={handleEXTCClick}
+                >
+                  EXTC{" "}
+                  <span
+                    className={`transform transition-transform ${
+                      isEXTCOpen ? "rotate-90" : ""
+                    }`}
+                  >
+                    &gt;
+                  </span>
+                </p>
+                {isEXTCOpen && (
+                  <div className="pt-2 pr-4 pl-8 leading-7 space-y-4">
+                    <Link to="/department/extc/home">
+                      <p className="cursor-pointer">Home</p>
+                    </Link>
+                    {departmentSections.map((section) => (
+                      <p
+                        key={section}
+                        className="cursor-pointer"
+                        onClick={() =>
+                          handleDepartmentSectionSelect("extc", section)
+                        }
+                      >
+                        {section}
+                      </p>
+                    ))}
+                  </div>
+                )}
+              </div>
+              <div>
+                <p
+                  className="cursor-pointer flex justify-between items-center pr-4"
+                  onClick={handleElectricalEngClick}
+                >
+                  Electrical Engineering{" "}
+                  <span
+                    className={`transform transition-transform ${
+                      isElectricalEngOpen ? "rotate-90" : ""
+                    }`}
+                  >
+                    &gt;
+                  </span>
+                </p>
+                {isElectricalEngOpen && (
+                  <div className="pt-2 pr-4 pl-8 leading-7 space-y-4">
+                    <Link to="/department/electrical/home">
+                      <p className="cursor-pointer">Home</p>
+                    </Link>
+                    {departmentSections.map((section) => (
+                      <p
+                        key={section}
+                        className="cursor-pointer"
+                        onClick={() =>
+                          handleDepartmentSectionSelect(
+                            "electrical-engineering",
+                            section
+                          )
+                        }
+                      >
+                        {section}
+                      </p>
+                    ))}
+                  </div>
+                )}
+              </div>
+              <div>
+                <p
+                  className="cursor-pointer flex justify-between items-center pr-4"
+                  onClick={handleCSEClick}
+                >
+                  Computer Science and Engineering{" "}
+                  <span
+                    className={`transform transition-transform ${
+                      isCSEOpen ? "rotate-90" : ""
+                    }`}
+                  >
+                    &gt;
+                  </span>
+                </p>
+                {isCSEOpen && (
+                  <div className="pt-2 pr-4 pl-8 leading-7 space-y-4">
+                    <Link to="/department/cse/home">
+                      <p className="cursor-pointer">Home</p>
+                    </Link>
+                    {departmentSections.map((section) => (
+                      <p
+                        key={section}
+                        className="cursor-pointer"
+                        onClick={() =>
+                          handleDepartmentSectionSelect(
+                            "computer-science-and-engineering",
+                            section
+                          )
+                        }
+                      >
+                        {section}
+                      </p>
+                    ))}
+                  </div>
                 )}
               </div>
             )}
@@ -1072,9 +1201,30 @@ const DynamicSideBar = () => {
                     className="cursor-pointer"
                     onClick={() => handleAcademicSectionSelect(section)}
                   >
-                    {section}
-                  </p>
-                ))}
+                    &gt;
+                  </span>
+                </p>
+                {isBasicSciHumOpen && (
+                  <div className="pt-2 pr-4 pl-8 leading-7 space-y-4">
+                    <Link to="/department/bsh/home">
+                      <p className="cursor-pointer">Home</p>
+                    </Link>
+                    {departmentSections.map((section) => (
+                      <p
+                        key={section}
+                        className="cursor-pointer"
+                        onClick={() =>
+                          handleDepartmentSectionSelect(
+                            "basic-science-and-humanities",
+                            section
+                          )
+                        }
+                      >
+                        {section}
+                      </p>
+                    ))}
+                  </div>
+                )}
               </div>
             )}
           </div>
