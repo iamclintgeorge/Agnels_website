@@ -1320,10 +1320,13 @@ const DynamicSideBar = () => {
           Edit User Profiles <span>&gt;</span>
         </Link>
 
-        {/* Logs */}
-        {hasPermission("logs") && (
-          <Link to="/logs" className="flex justify-between pr-8">
-            Logs <span>&gt;</span>
+        {/* Activity Logs */}
+        {(user.role === "superAdmin" || 
+          user.role === "principal" || 
+          user.role?.endsWith("Hod") || 
+          user.role === "teach_staff") && (
+          <Link to="/activity-logs" className="flex justify-between pr-8">
+            Activity Logs <span>&gt;</span>
           </Link>
         )}
       </div>

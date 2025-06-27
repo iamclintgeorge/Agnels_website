@@ -5,6 +5,8 @@ import {
   deleteHodTextById,
   getAllHodText
 } from "../../models/website/hodDeskModel.js";
+import { logCustomActivity } from "../../middlewares/loggingMiddleware.js";
+import db from "../../config/db.js";
 
 // Get HOD text for a specific department
 export const getHodText = async (req, res) => {
@@ -98,11 +100,30 @@ export const updateHodText = async (req, res) => {
       return res.status(400).json({ error: 'ID is required' });
     }
 
+    // Get old data before updating for logging
+    const oldDataQuery = await new Promise((resolve, reject) => {
+      const query = 'SELECT * FROM hod_desk WHERE id = ?';
+      db.query(query, [id], (error, results) => {
+        if (error) reject(error);
+        else resolve(results[0]);
+      });
+    });
+
     const result = await updateHodTextById(id, content);
     
     if (result.affectedRows === 0) {
       return res.status(404).json({ error: 'HOD text not found' });
     }
+
+    // Log the update with old and new data
+    await logCustomActivity(req, {
+      action: 'UPDATE',
+      resource: 'hod_desk',
+      resourceId: id,
+      oldData: oldDataQuery,
+      newData: { content },
+      description: `Updated HOD desk content for ${department} department`
+    });
 
     res.json({ message: 'HOD text updated successfully' });
   } catch (error) {

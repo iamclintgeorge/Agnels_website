@@ -29,6 +29,12 @@ import hodDeskRoutes from "./routes/website/hodDeskRoutes.js";
 // Import content approval routes
 import contentApprovalRoutes from "./routes/website/contentApprovalRoutes.js";
 
+// Import activity logs routes
+import activityLogsRoutes from "./routes/admin/activityLogsRoutes.js";
+
+// Import logging middleware
+import adminActivityLogger from "./middlewares/loggingMiddleware.js";
+
 // import iicRoutes from "./routes/website/iicRoutes.js";
 
 dotenv.config();
@@ -76,6 +82,9 @@ const __dirname = path.dirname(__filename);
 // Serve static files from the 'public' folder
 app.use("/uploads", express.static(path.join(__dirname, "public", "uploads")));
 
+// Add admin activity logging middleware (after session, before routes)
+app.use(adminActivityLogger);
+
 // Integrate IIC routes
 // app.use("/api/iic", iicRoutes);
 // Root test route
@@ -107,6 +116,9 @@ app.use("/api/hod-desk", hodDeskRoutes);
 
 // Content approval routes
 app.use("/api/content-approval", contentApprovalRoutes);
+
+// Activity logs routes
+app.use("/api/activity-logs", activityLogsRoutes);
 
 app.listen(port, () => {
   console.log(`Server Started at URI http://localhost:${port}/`);

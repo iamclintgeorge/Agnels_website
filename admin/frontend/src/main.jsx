@@ -119,6 +119,9 @@ import ElectricalHod from "./pages/hodDesk/electricalHod";
 // Content Approval Components
 import ApprovalDashboard from "./pages/ContentApproval/ApprovalDashboard";
 
+// Activity Logs Components
+import ActivityLogs from "./pages/AuditLogs/ActivityLogs";
+
 const App = () => {
   return (
     <>
@@ -228,6 +231,9 @@ const App = () => {
 
           {/* Content Approval Routes */}
           <Route path="/content-approval" element={<ApprovalDashboard />} />
+
+          {/* Activity Logs Routes */}
+          <Route path="/activity-logs" element={<ActivityLogs />} />
 
           <Route path="/profile" element={<Profile />} />
           <Route path="/student" element={<Student />} />
