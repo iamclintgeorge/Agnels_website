@@ -631,6 +631,10 @@ const PERMISSIONS_CONFIG = {
     component: "departments",
     roles: ["superAdmin", "bshHod"],
   },
+  "hod-desk": {
+    component: "hod-desk",
+    roles: ["superAdmin", "compHod", "mechHod", "extcHod", "electricalHod", "itHod", "bshHod"],
+  },
   admission: {
     component: "admission",
     roles: ["superAdmin", "principal", "admin"],
@@ -702,6 +706,7 @@ const DynamicSideBar = () => {
       "basic-science-and-humanities": false,
     },
     humanResource: false,
+    hodDesk: false,
   });
 
   // User permissions - this should come from your backend/context
@@ -725,23 +730,27 @@ const DynamicSideBar = () => {
         "home_page",
         "departments.computer-engineering",
         "manage_users",
+        "hod-desk",
       ],
-      mechHod: ["dashboard", "home_page", "departments.mechanical-engineering"],
-      extcHod: ["dashboard", "home_page", "departments.extc"],
+      mechHod: ["dashboard", "home_page", "departments.mechanical-engineering", "hod-desk"],
+      extcHod: ["dashboard", "home_page", "departments.extc", "hod-desk"],
       electricalHod: [
         "dashboard",
         "home_page",
         "departments.electrical-engineering",
+        "hod-desk",
       ],
       itHod: [
         "dashboard",
         "home_page",
         "departments.computer-science-and-engineering",
+        "hod-desk",
       ],
       bshHod: [
         "dashboard",
         "home_page",
         "departments.basic-science-and-humanities",
+        "hod-desk",
       ],
       teach_staff: ["dashboard", "home_page", "students_corner", "research"],
       non_teach_staff: ["dashboard", "home_page"],
@@ -1050,6 +1059,59 @@ const DynamicSideBar = () => {
           </div>
         )}
 
+        {/* HOD Desk Section */}
+        {hasPermission("hod-desk") && (
+          <div>
+            <p
+              className="cursor-pointer flex justify-between items-center pr-8"
+              onClick={() => toggleSection("hodDesk")}
+            >
+              HOD Desk{" "}
+              <span
+                className={`transform transition-transform ${
+                  openSections.hodDesk ? "rotate-90" : ""
+                }`}
+              >
+                &gt;
+              </span>
+            </p>
+            {openSections.hodDesk && (
+              <div className="pt-2 pr-8 pl-4 leading-10">
+                {(user.role === "compHod" || user.role === "superAdmin") && (
+                  <Link to="/hod-desk/computer">
+                    <p>Computer Engineering</p>
+                  </Link>
+                )}
+                {(user.role === "mechHod" || user.role === "superAdmin") && (
+                  <Link to="/hod-desk/mechanical">
+                    <p>Mechanical Engineering</p>
+                  </Link>
+                )}
+                {(user.role === "extcHod" || user.role === "superAdmin") && (
+                  <Link to="/hod-desk/extc">
+                    <p>EXTC</p>
+                  </Link>
+                )}
+                {(user.role === "electricalHod" || user.role === "superAdmin") && (
+                  <Link to="/hod-desk/electrical">
+                    <p>Electrical Engineering</p>
+                  </Link>
+                )}
+                {(user.role === "itHod" || user.role === "superAdmin") && (
+                  <Link to="/hod-desk/it">
+                    <p>Information Technology</p>
+                  </Link>
+                )}
+                {(user.role === "bshHod" || user.role === "superAdmin") && (
+                  <Link to="/hod-desk/bsh">
+                    <p>Basic Science and Humanities</p>
+                  </Link>
+                )}
+              </div>
+            )}
+          </div>
+        )}
+
         {/* Admission */}
         {hasPermission("admission") && (
           <Link to="/admission" className="flex justify-between pr-8">
@@ -1194,6 +1256,16 @@ const DynamicSideBar = () => {
         {(user.role === "teach_staff" || user.role === "superAdmin") && (
           <Link to="/student" className="flex justify-between pr-8">
             Students Corner <span>&gt;</span>
+          </Link>
+        )}
+
+        {/* Content Approval Section */}
+        {(user.role === "superAdmin" || 
+          user.role === "principal" || 
+          user.role?.endsWith("Hod") || 
+          user.role === "teach_staff") && (
+          <Link to="/content-approval" className="flex justify-between pr-8">
+            Content Approval <span>&gt;</span>
           </Link>
         )}
 
