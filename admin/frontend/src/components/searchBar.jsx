@@ -22,7 +22,7 @@ const SearchBar = () => {
 
   // Handle keydown events
   const handleKeyDown = (e) => {
-    if (e.key === "/") {
+    if (e.ctrlKey && e.key === "/") {
       e.preventDefault(); // Prevent "/" from being typed if not focused
       setIsActive(true);
       if (inputRef.current) {
@@ -126,8 +126,8 @@ const SearchBar = () => {
           </button>
         )}
         {!isActive && !query && (
-          <div className="absolute text-sm right-3 font-thin text-[#3e3d3d] cursor-pointer border-2 border-[#cbcbcb] rounded-md px-3 py-1">
-            /
+          <div className="absolute text-xs right-3 font-thin text-[#666666] cursor-pointer border-2 border-[#cbcbcb] rounded-md px-3 py-1 font-mono tracking-tighter">
+            ctrl + /
           </div>
         )}
       </div>

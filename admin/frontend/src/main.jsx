@@ -27,6 +27,8 @@ import AcademicAdmin from "./pages/Academics/AcademicAdmin";
 import AcademicHandbook from "./pages/Academics/AcademicHandbook";
 import Teaching_staff from "./pages/HumanResources/teachingstaff";
 import Nonteaching_staff from "./pages/HumanResources/nonteachingstaff";
+import StudentsCorner from "./pages/StudentsCorner/StudentsCorner";
+import RolePermissionManager from "./pages/rolePermission";
 
 // Import new department components
 import CompHome from "./pages/Department/Computer/Comp_home";
@@ -219,6 +221,11 @@ const App = () => {
           <Route path="/admin/nba-naac" element={<AdminNBANAAC />} />
           <Route path="/teachingstaff" element={<Teaching_staff />} />
           <Route path="/nonteachingstaff" element={<Nonteaching_staff />} />
+          <Route path="/studentscorner" element={<StudentsCorner />} />
+          <Route
+            path="/rolePermissionManager"
+            element={<RolePermissionManager />}
+          />
         </Route>
         <Route path="*" element={<Error404 />} />
       </Routes>

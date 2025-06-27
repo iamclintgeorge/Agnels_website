@@ -33,3 +33,32 @@
 .animate-marquee {
   animation: marquee 40s linear infinite;
 }
+
+/* Vertical Marquee Styles */
+.vertical-marquee-container {
+  position: relative;
+  height: 300px; /* Set the height of the container */
+  overflow: hidden; /* Hide the overflow (content outside the visible area) */
+}
+
+.vertical-marquee {
+  display: flex;
+  flex-direction: column; /* Stack the content vertically */
+  animation: vertical-marquee 10s linear infinite; /* Adjust speed here */
+}
+
+@keyframes vertical-marquee {
+  0% {
+    transform: translateY(
+      50%
+    ); /* Start immediately at the top of the container */
+  }
+  100% {
+    transform: translateY(-100%); /* End above the visible area */
+  }
+}
+
+.vertical-marquee-item {
+  padding: 10px;
+  margin-bottom: 15px; /* Space between items */
+}
