@@ -175,9 +175,9 @@ router.put("/examinations/:id", examinationFileUpload,examinationEditController)
 router.put("/delete-examinations/:id", examinationDeleteController);
 
 // Academic Links Routes
-router.post("/links-create",optionalFileUpload, academicLinksCreateController);
+router.post("/links-create", academicLinksCreateController);
 router.get("/links", academicLinksFetchController);
-router.put("/links/:id",optionalFileUpload, academicLinksEditController);
+router.put("/links/:id", academicLinksEditController);
 router.put("/delete-links/:id", academicLinksDeleteController);
 
 // Stakeholder Feedback Routes - Single endpoint with optional file upload

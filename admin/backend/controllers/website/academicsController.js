@@ -410,7 +410,7 @@ export const examinationDeleteController = async (req, res) => {
 // Academic Links Controllers
 export const academicLinksCreateController = async (req, res) => {
   const { title, description,  link_type, created_by } = req.body;
-  const url = req.file ? `/uploads/${req.file.filename}` : null;
+  const url = req.body.url || null;
   try {
     const result = await academicLinksCreate(title, description, url, link_type, created_by);
     res.json({ message: "Academic Link created successfully", id: result.insertId });
