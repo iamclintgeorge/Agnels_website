@@ -1,8 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import StaticPages from "../../layouts/staticPages";
-import { Homee, AcademicHandbook, AcademicHandbookDetails, AcademicCalender, APMS, LMS, StakeholderFeedback } from "./academicContent";
-
+import { Homee, AcademicHandbook, AcademicHandbookDetails, AcademicCalender, APMS, LMS, StakeholderFeedback,Examination } from "./academicContent";
+ // ✅ Import the Examinations component
 const Academics = () => {
   const navigate = useNavigate(); // ✅ Navigation Hook
 
@@ -22,12 +22,12 @@ const Academics = () => {
     "Academic Handbook": <AcademicHandbook />,
     "Academic Handbook for Honours and Minors": <AcademicHandbookDetails />,
     "Academic Calendar": <AcademicCalender />,
+    "Examinations": <Examination />, // ✅ Correctly references the Examinations component
     "APMS": <APMS />,
     "LMS": <LMS />,
     "Stakeholder Feedback on Syllabus": <StakeholderFeedback />,
   };
 
-  // ✅ Handle sidebar navigation properly
   const handleSidebarClick = (item) => {
     if (item === "Examinations") {
       navigate("/examinations-page"); // ✅ Correctly redirects to a new page
