@@ -27,6 +27,7 @@ import AcademicAdmin from "./pages/Academics/AcademicAdmin";
 import AcademicHandbook from "./pages/Academics/AcademicHandbook";
 import Teaching_staff from "./pages/HumanResources/teachingstaff";
 import Nonteaching_staff from "./pages/HumanResources/nonteachingstaff";
+import RolePermissionManager from "./pages/rolePermission";
 
 // Import new department components
 import CompHome from "./pages/Department/Computer/Comp_home";
@@ -150,76 +151,250 @@ const App = () => {
           <Route path="/department/bsh/home" element={<BSHHome />} />
 
           {/* Computer Engineering Routes */}
-          <Route path="/department/computer-engineering/activities" element={<ComputerActivities />} />
-          <Route path="/department/computer-engineering/student-association" element={<ComputerAssociation />} />
-          <Route path="/department/computer-engineering/magazine" element={<ComputerMagazine />} />
-          <Route path="/department/computer-engineering/time-table" element={<ComputerTimetable />} />
-          <Route path="/department/computer-engineering/achievements" element={<ComputerAchievements />} />
-          <Route path="/department/computer-engineering/innovative-teaching-and-learning-methods" element={<ComputerInnovativeTeaching />} />
-          <Route path="/department/computer-engineering/academic-calendar" element={<ComputerAcademicCalendar />} />
-          <Route path="/department/computer-engineering/publications" element={<ComputerPublications />} />
-          <Route path="/department/computer-engineering/projects" element={<ComputerProjects />} />
-          <Route path="/department/computer-engineering/committees-and-board-of-studies" element={<ComputerCommittees />} />
+          <Route
+            path="/department/computer-engineering/activities"
+            element={<ComputerActivities />}
+          />
+          <Route
+            path="/department/computer-engineering/student-association"
+            element={<ComputerAssociation />}
+          />
+          <Route
+            path="/department/computer-engineering/magazine"
+            element={<ComputerMagazine />}
+          />
+          <Route
+            path="/department/computer-engineering/time-table"
+            element={<ComputerTimetable />}
+          />
+          <Route
+            path="/department/computer-engineering/achievements"
+            element={<ComputerAchievements />}
+          />
+          <Route
+            path="/department/computer-engineering/innovative-teaching-and-learning-methods"
+            element={<ComputerInnovativeTeaching />}
+          />
+          <Route
+            path="/department/computer-engineering/academic-calendar"
+            element={<ComputerAcademicCalendar />}
+          />
+          <Route
+            path="/department/computer-engineering/publications"
+            element={<ComputerPublications />}
+          />
+          <Route
+            path="/department/computer-engineering/projects"
+            element={<ComputerProjects />}
+          />
+          <Route
+            path="/department/computer-engineering/committees-and-board-of-studies"
+            element={<ComputerCommittees />}
+          />
 
           {/* Mechanical Engineering Routes */}
-          <Route path="/department/mechanical-engineering/activities" element={<MechanicalActivities />} />
-          <Route path="/department/mechanical-engineering/student-association" element={<MechanicalAssociation />} />
-          <Route path="/department/mechanical-engineering/magazine" element={<MechanicalMagazine />} />
-          <Route path="/department/mechanical-engineering/time-table" element={<MechanicalTimetable />} />
-          <Route path="/department/mechanical-engineering/achievements" element={<MechanicalAchievements />} />
-          <Route path="/department/mechanical-engineering/innovative-teaching-and-learning-methods" element={<MechanicalInnovativeTeaching />} />
-          <Route path="/department/mechanical-engineering/academic-calendar" element={<MechanicalAcademicCalendar />} />
-          <Route path="/department/mechanical-engineering/publications" element={<MechanicalPublications />} />
-          <Route path="/department/mechanical-engineering/projects" element={<MechanicalProjects />} />
-          <Route path="/department/mechanical-engineering/committees-and-board-of-studies" element={<MechanicalCommittees />} />
+          <Route
+            path="/department/mechanical-engineering/activities"
+            element={<MechanicalActivities />}
+          />
+          <Route
+            path="/department/mechanical-engineering/student-association"
+            element={<MechanicalAssociation />}
+          />
+          <Route
+            path="/department/mechanical-engineering/magazine"
+            element={<MechanicalMagazine />}
+          />
+          <Route
+            path="/department/mechanical-engineering/time-table"
+            element={<MechanicalTimetable />}
+          />
+          <Route
+            path="/department/mechanical-engineering/achievements"
+            element={<MechanicalAchievements />}
+          />
+          <Route
+            path="/department/mechanical-engineering/innovative-teaching-and-learning-methods"
+            element={<MechanicalInnovativeTeaching />}
+          />
+          <Route
+            path="/department/mechanical-engineering/academic-calendar"
+            element={<MechanicalAcademicCalendar />}
+          />
+          <Route
+            path="/department/mechanical-engineering/publications"
+            element={<MechanicalPublications />}
+          />
+          <Route
+            path="/department/mechanical-engineering/projects"
+            element={<MechanicalProjects />}
+          />
+          <Route
+            path="/department/mechanical-engineering/committees-and-board-of-studies"
+            element={<MechanicalCommittees />}
+          />
 
           {/* Electrical Engineering Routes */}
-          <Route path="/department/electrical-engineering/activities" element={<ElectricalActivities />} />
-          <Route path="/department/electrical-engineering/student-association" element={<ElectricalAssociation />} />
-          <Route path="/department/electrical-engineering/magazine" element={<ElectricalMagazine />} />
-          <Route path="/department/electrical-engineering/time-table" element={<ElectricalTimetable />} />
-          <Route path="/department/electrical-engineering/achievements" element={<ElectricalAchievements />} />
-          <Route path="/department/electrical-engineering/innovative-teaching-and-learning-methods" element={<ElectricalInnovativeTeaching />} />
-          <Route path="/department/electrical-engineering/academic-calendar" element={<ElectricalAcademicCalendar />} />
-          <Route path="/department/electrical-engineering/publications" element={<ElectricalPublications />} />
-          <Route path="/department/electrical-engineering/projects" element={<ElectricalProjects />} />
-          <Route path="/department/electrical-engineering/committees-and-board-of-studies" element={<ElectricalCommittees />} />
+          <Route
+            path="/department/electrical-engineering/activities"
+            element={<ElectricalActivities />}
+          />
+          <Route
+            path="/department/electrical-engineering/student-association"
+            element={<ElectricalAssociation />}
+          />
+          <Route
+            path="/department/electrical-engineering/magazine"
+            element={<ElectricalMagazine />}
+          />
+          <Route
+            path="/department/electrical-engineering/time-table"
+            element={<ElectricalTimetable />}
+          />
+          <Route
+            path="/department/electrical-engineering/achievements"
+            element={<ElectricalAchievements />}
+          />
+          <Route
+            path="/department/electrical-engineering/innovative-teaching-and-learning-methods"
+            element={<ElectricalInnovativeTeaching />}
+          />
+          <Route
+            path="/department/electrical-engineering/academic-calendar"
+            element={<ElectricalAcademicCalendar />}
+          />
+          <Route
+            path="/department/electrical-engineering/publications"
+            element={<ElectricalPublications />}
+          />
+          <Route
+            path="/department/electrical-engineering/projects"
+            element={<ElectricalProjects />}
+          />
+          <Route
+            path="/department/electrical-engineering/committees-and-board-of-studies"
+            element={<ElectricalCommittees />}
+          />
 
           {/* EXTC Routes */}
-          <Route path="/department/extc/activities" element={<ExtcActivities />} />
-          <Route path="/department/extc/student-association" element={<ExtcAssociation />} />
+          <Route
+            path="/department/extc/activities"
+            element={<ExtcActivities />}
+          />
+          <Route
+            path="/department/extc/student-association"
+            element={<ExtcAssociation />}
+          />
           <Route path="/department/extc/magazine" element={<ExtcMagazine />} />
-          <Route path="/department/extc/time-table" element={<ExtcTimetable />} />
-          <Route path="/department/extc/achievements" element={<ExtcAchievements />} />
-          <Route path="/department/extc/innovative-teaching-and-learning-methods" element={<ExtcInnovativeTeaching />} />
-          <Route path="/department/extc/academic-calendar" element={<ExtcAcademicCalendar />} />
-          <Route path="/department/extc/publications" element={<ExtcPublications />} />
+          <Route
+            path="/department/extc/time-table"
+            element={<ExtcTimetable />}
+          />
+          <Route
+            path="/department/extc/achievements"
+            element={<ExtcAchievements />}
+          />
+          <Route
+            path="/department/extc/innovative-teaching-and-learning-methods"
+            element={<ExtcInnovativeTeaching />}
+          />
+          <Route
+            path="/department/extc/academic-calendar"
+            element={<ExtcAcademicCalendar />}
+          />
+          <Route
+            path="/department/extc/publications"
+            element={<ExtcPublications />}
+          />
           <Route path="/department/extc/projects" element={<ExtcProjects />} />
-          <Route path="/department/extc/committees-and-board-of-studies" element={<ExtcCommittees />} />
+          <Route
+            path="/department/extc/committees-and-board-of-studies"
+            element={<ExtcCommittees />}
+          />
 
           {/* CSE Routes */}
-          <Route path="/department/computer-science-and-engineering/activities" element={<CseActivities />} />
-          <Route path="/department/computer-science-and-engineering/student-association" element={<CseAssociation />} />
-          <Route path="/department/computer-science-and-engineering/magazine" element={<CseMagazine />} />
-          <Route path="/department/computer-science-and-engineering/time-table" element={<CseTimetable />} />
-          <Route path="/department/computer-science-and-engineering/achievements" element={<CseAchievements />} />
-          <Route path="/department/computer-science-and-engineering/innovative-teaching-and-learning-methods" element={<CseInnovativeTeaching />} />
-          <Route path="/department/computer-science-and-engineering/academic-calendar" element={<CseAcademicCalendar />} />
-          <Route path="/department/computer-science-and-engineering/publications" element={<CsePublications />} />
-          <Route path="/department/computer-science-and-engineering/projects" element={<CseProjects />} />
-          <Route path="/department/computer-science-and-engineering/committees-and-board-of-studies" element={<CseCommittees />} />
+          <Route
+            path="/department/computer-science-and-engineering/activities"
+            element={<CseActivities />}
+          />
+          <Route
+            path="/department/computer-science-and-engineering/student-association"
+            element={<CseAssociation />}
+          />
+          <Route
+            path="/department/computer-science-and-engineering/magazine"
+            element={<CseMagazine />}
+          />
+          <Route
+            path="/department/computer-science-and-engineering/time-table"
+            element={<CseTimetable />}
+          />
+          <Route
+            path="/department/computer-science-and-engineering/achievements"
+            element={<CseAchievements />}
+          />
+          <Route
+            path="/department/computer-science-and-engineering/innovative-teaching-and-learning-methods"
+            element={<CseInnovativeTeaching />}
+          />
+          <Route
+            path="/department/computer-science-and-engineering/academic-calendar"
+            element={<CseAcademicCalendar />}
+          />
+          <Route
+            path="/department/computer-science-and-engineering/publications"
+            element={<CsePublications />}
+          />
+          <Route
+            path="/department/computer-science-and-engineering/projects"
+            element={<CseProjects />}
+          />
+          <Route
+            path="/department/computer-science-and-engineering/committees-and-board-of-studies"
+            element={<CseCommittees />}
+          />
 
           {/* BSH Routes */}
-          <Route path="/department/basic-science-and-humanities/activities" element={<BshActivities />} />
-          <Route path="/department/basic-science-and-humanities/student-association" element={<BshAssociation />} />
-          <Route path="/department/basic-science-and-humanities/magazine" element={<BshMagazine />} />
-          <Route path="/department/basic-science-and-humanities/time-table" element={<BshTimetable />} />
-          <Route path="/department/basic-science-and-humanities/achievements" element={<BshAchievements />} />
-          <Route path="/department/basic-science-and-humanities/innovative-teaching-and-learning-methods" element={<BshInnovativeTeaching />} />
-          <Route path="/department/basic-science-and-humanities/academic-calendar" element={<BshAcademicCalendar />} />
-          <Route path="/department/basic-science-and-humanities/publications" element={<BshPublications />} />
-          <Route path="/department/basic-science-and-humanities/projects" element={<BshProjects />} />
-          <Route path="/department/basic-science-and-humanities/committees-and-board-of-studies" element={<BshCommittees />} />
+          <Route
+            path="/department/basic-science-and-humanities/activities"
+            element={<BshActivities />}
+          />
+          <Route
+            path="/department/basic-science-and-humanities/student-association"
+            element={<BshAssociation />}
+          />
+          <Route
+            path="/department/basic-science-and-humanities/magazine"
+            element={<BshMagazine />}
+          />
+          <Route
+            path="/department/basic-science-and-humanities/time-table"
+            element={<BshTimetable />}
+          />
+          <Route
+            path="/department/basic-science-and-humanities/achievements"
+            element={<BshAchievements />}
+          />
+          <Route
+            path="/department/basic-science-and-humanities/innovative-teaching-and-learning-methods"
+            element={<BshInnovativeTeaching />}
+          />
+          <Route
+            path="/department/basic-science-and-humanities/academic-calendar"
+            element={<BshAcademicCalendar />}
+          />
+          <Route
+            path="/department/basic-science-and-humanities/publications"
+            element={<BshPublications />}
+          />
+          <Route
+            path="/department/basic-science-and-humanities/projects"
+            element={<BshProjects />}
+          />
+          <Route
+            path="/department/basic-science-and-humanities/committees-and-board-of-studies"
+            element={<BshCommittees />}
+          />
 
           {/* HOD Desk Routes */}
           <Route path="/hod-desk/computer" element={<ComHod />} />
@@ -247,6 +422,10 @@ const App = () => {
           <Route path="/admin/nba-naac" element={<AdminNBANAAC />} />
           <Route path="/teachingstaff" element={<Teaching_staff />} />
           <Route path="/nonteachingstaff" element={<Nonteaching_staff />} />
+          <Route
+            path="/rolePermissionManager"
+            element={<RolePermissionManager />}
+          />
         </Route>
         <Route path="*" element={<Error404 />} />
       </Routes>

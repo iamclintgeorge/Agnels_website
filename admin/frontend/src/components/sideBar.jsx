@@ -633,7 +633,15 @@ const PERMISSIONS_CONFIG = {
   },
   "hod-desk": {
     component: "hod-desk",
-    roles: ["superAdmin", "compHod", "mechHod", "extcHod", "electricalHod", "itHod", "bshHod"],
+    roles: [
+      "superAdmin",
+      "compHod",
+      "mechHod",
+      "extcHod",
+      "electricalHod",
+      "itHod",
+      "bshHod",
+    ],
   },
   admission: {
     component: "admission",
@@ -732,7 +740,12 @@ const DynamicSideBar = () => {
         "manage_users",
         "hod-desk",
       ],
-      mechHod: ["dashboard", "home_page", "departments.mechanical-engineering", "hod-desk"],
+      mechHod: [
+        "dashboard",
+        "home_page",
+        "departments.mechanical-engineering",
+        "hod-desk",
+      ],
       extcHod: ["dashboard", "home_page", "departments.extc", "hod-desk"],
       electricalHod: [
         "dashboard",
@@ -1092,7 +1105,8 @@ const DynamicSideBar = () => {
                     <p>EXTC</p>
                   </Link>
                 )}
-                {(user.role === "electricalHod" || user.role === "superAdmin") && (
+                {(user.role === "electricalHod" ||
+                  user.role === "superAdmin") && (
                   <Link to="/hod-desk/electrical">
                     <p>Electrical Engineering</p>
                   </Link>
@@ -1260,9 +1274,9 @@ const DynamicSideBar = () => {
         )}
 
         {/* Content Approval Section */}
-        {(user.role === "superAdmin" || 
-          user.role === "principal" || 
-          user.role?.endsWith("Hod") || 
+        {(user.role === "superAdmin" ||
+          user.role === "principal" ||
+          user.role?.endsWith("Hod") ||
           user.role === "teach_staff") && (
           <Link to="/content-approval" className="flex justify-between pr-8">
             Content Approval <span>&gt;</span>
@@ -1321,9 +1335,9 @@ const DynamicSideBar = () => {
         </Link>
 
         {/* Activity Logs */}
-        {(user.role === "superAdmin" || 
-          user.role === "principal" || 
-          user.role?.endsWith("Hod") || 
+        {(user.role === "superAdmin" ||
+          user.role === "principal" ||
+          user.role?.endsWith("Hod") ||
           user.role === "teach_staff") && (
           <Link to="/activity-logs" className="flex justify-between pr-8">
             Activity Logs <span>&gt;</span>
