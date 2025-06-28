@@ -27,8 +27,6 @@ import AcademicAdmin from "./pages/Academics/AcademicAdmin";
 import AcademicHandbook from "./pages/Academics/AcademicHandbook";
 import Teaching_staff from "./pages/HumanResources/teachingstaff";
 import Nonteaching_staff from "./pages/HumanResources/nonteachingstaff";
-import StudentsCorner from "./pages/StudentsCorner/StudentsCorner";
-import RolePermissionManager from "./pages/rolePermission";
 
 // Import new department components
 import CompHome from "./pages/Department/Computer/Comp_home";
@@ -109,6 +107,20 @@ import BshAcademicCalendar from "./pages/Department/BSH/bsh_academic_calendar";
 import BshPublications from "./pages/Department/BSH/bsh_publications";
 import BshProjects from "./pages/Department/BSH/bsh_projects";
 import BshCommittees from "./pages/Department/BSH/bsh_committees";
+
+// HOD Desk Components
+import ComHod from "./pages/hodDesk/comHod";
+import MechHod from "./pages/hodDesk/mechHod";
+import ExtcHod from "./pages/hodDesk/extcHod";
+import BshHod from "./pages/hodDesk/bshHod";
+import ItHod from "./pages/hodDesk/itHod";
+import ElectricalHod from "./pages/hodDesk/electricalHod";
+
+// Content Approval Components
+import ApprovalDashboard from "./pages/ContentApproval/ApprovalDashboard";
+
+// Activity Logs Components
+import ActivityLogs from "./pages/AuditLogs/ActivityLogs";
 
 const App = () => {
   return (
@@ -209,6 +221,20 @@ const App = () => {
           <Route path="/department/basic-science-and-humanities/projects" element={<BshProjects />} />
           <Route path="/department/basic-science-and-humanities/committees-and-board-of-studies" element={<BshCommittees />} />
 
+          {/* HOD Desk Routes */}
+          <Route path="/hod-desk/computer" element={<ComHod />} />
+          <Route path="/hod-desk/mechanical" element={<MechHod />} />
+          <Route path="/hod-desk/extc" element={<ExtcHod />} />
+          <Route path="/hod-desk/electrical" element={<ElectricalHod />} />
+          <Route path="/hod-desk/it" element={<ItHod />} />
+          <Route path="/hod-desk/bsh" element={<BshHod />} />
+
+          {/* Content Approval Routes */}
+          <Route path="/content-approval" element={<ApprovalDashboard />} />
+
+          {/* Activity Logs Routes */}
+          <Route path="/activity-logs" element={<ActivityLogs />} />
+
           <Route path="/profile" element={<Profile />} />
           <Route path="/student" element={<Student />} />
           <Route path="/training-placement" element={<TrainingPlacement />} />
@@ -221,11 +247,6 @@ const App = () => {
           <Route path="/admin/nba-naac" element={<AdminNBANAAC />} />
           <Route path="/teachingstaff" element={<Teaching_staff />} />
           <Route path="/nonteachingstaff" element={<Nonteaching_staff />} />
-          <Route path="/studentscorner" element={<StudentsCorner />} />
-          <Route
-            path="/rolePermissionManager"
-            element={<RolePermissionManager />}
-          />
         </Route>
         <Route path="*" element={<Error404 />} />
       </Routes>
