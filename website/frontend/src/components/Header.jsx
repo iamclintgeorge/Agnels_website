@@ -168,6 +168,7 @@ const Header = () => {
 
       {/* Bottom Navigation Links (Desktop) */}
       <div className="absolute gap-3 text-base p-0 m-0 font-inter z-10 ml-[42vw] mr-10 mt-1 text-nowrap font-light hidden md:flex cursor-default">
+        {/* <Link to="/" className="hover:border-b-2 hover:border-white px-4 py-2"></Link> */}
         <Link
           to="/"
           className="hover:bg-white hover:text-black px-4 py-2 transition-all duration-200 ease-in-out transform hover:scale-105 hover:shadow-lg"
