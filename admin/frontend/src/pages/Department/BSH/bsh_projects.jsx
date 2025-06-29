@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 
-const CompActivity = () => {
+const BSHProjects = () => {
   const [pdfs, setPdfs] = useState([]);
   const [file, setFile] = useState(null);
   const [title, setTitle] = useState("");
@@ -15,7 +15,7 @@ const CompActivity = () => {
   const fetchPdfs = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:3663/api/department/computer-engineering/activities"
+        "http://localhost:3663/api/department/basic-science-and-humanities/projects"
       );
       setPdfs(response.data);
     } catch (err) {
@@ -42,7 +42,7 @@ const CompActivity = () => {
     setUploading(true);
     try {
       await axios.post(
-        "http://localhost:3663/api/department/computer-engineering/activities",
+        "http://localhost:3663/api/department/basic-science-and-humanities/projects",
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -65,7 +65,7 @@ const CompActivity = () => {
 
     try {
       await axios.delete(
-        `http://localhost:3663/api/department/computer-engineering/activities/${id}`
+        `http://localhost:3663/api/department/basic-science-and-humanities/projects/${id}`
       );
       toast.success("PDF deleted successfully");
       fetchPdfs();
@@ -78,7 +78,7 @@ const CompActivity = () => {
   return (
     <div className="p-4">
       <h2 className="text-2xl font-bold mb-4">
-        Computer Engineering Activities
+        BSH - Projects
       </h2>
       <form onSubmit={handleUpload} className="mb-8">
         <div className="mb-4">
@@ -145,4 +145,4 @@ const CompActivity = () => {
   );
 };
 
-export default CompActivity;
+export default BSHProjects;

@@ -12,6 +12,29 @@ import deptHomeRoutes from "./routes/website/department/deptHomeRoutes.js";
 import compActivityRoutes from "./routes/website/homepage/compActivityRoutes.js";
 import profileRoutes from "./routes/website/profileRoutes.js";
 
+// Import new department routes
+import computerRoutes from "./routes/website/department/computerRoutes.js";
+import mechanicalRoutes from "./routes/website/department/mechanicalRoutes.js";
+import electricalRoutes from "./routes/website/department/electricalRoutes.js";
+import extcRoutes from "./routes/website/department/extcRoutes.js";
+import cseRoutes from "./routes/website/department/cseRoutes.js";
+import bshRoutes from "./routes/website/department/bshRoutes.js";
+
+// Import department PDF routes
+import deptPdfRoutes from "./routes/website/deptPdfRoutes.js";
+
+// Import HOD desk routes
+import hodDeskRoutes from "./routes/website/hodDeskRoutes.js";
+
+// Import content approval routes
+import contentApprovalRoutes from "./routes/website/contentApprovalRoutes.js";
+
+// Import activity logs routes
+import activityLogsRoutes from "./routes/admin/activityLogsRoutes.js";
+
+// Import logging middleware
+import adminActivityLogger from "./middlewares/loggingMiddleware.js";
+
 // import iicRoutes from "./routes/website/iicRoutes.js";
 
 dotenv.config();
@@ -59,6 +82,9 @@ const __dirname = path.dirname(__filename);
 // Serve static files from the 'public' folder
 app.use("/uploads", express.static(path.join(__dirname, "public", "uploads")));
 
+// Add admin activity logging middleware (after session, before routes)
+app.use(adminActivityLogger);
+
 // Integrate IIC routes
 // app.use("/api/iic", iicRoutes);
 // Root test route
@@ -73,6 +99,26 @@ app.use("/", routes);
 app.use("/api/department", deptHomeRoutes);
 app.use("/api/department", compActivityRoutes);
 app.use("/api/profile", profileRoutes);
+
+// New department routes
+app.use("/api/department/computer", computerRoutes);
+app.use("/api/department/mechanical", mechanicalRoutes);
+app.use("/api/department/electrical", electricalRoutes);
+app.use("/api/department/extc", extcRoutes);
+app.use("/api/department/cse", cseRoutes);
+app.use("/api/department/bsh", bshRoutes);
+
+// Department PDF routes (for all departments and sections)
+app.use("/api/department", deptPdfRoutes);
+
+// HOD desk routes
+app.use("/api/hod-desk", hodDeskRoutes);
+
+// Content approval routes
+app.use("/api/content-approval", contentApprovalRoutes);
+
+// Activity logs routes
+app.use("/api/activity-logs", activityLogsRoutes);
 
 app.listen(port, () => {
   console.log(`Server Started at URI http://localhost:${port}/`);
