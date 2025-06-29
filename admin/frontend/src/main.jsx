@@ -13,7 +13,6 @@ import Profile from "./pages/profile";
 import ImgCarousel from "./pages/HomePage/imgCarousel";
 import IntroText from "./pages/HomePage/introText";
 import DeptHome from "./pages/Department/dept_home";
-import CompActivity from "./pages/Department/comp_activity";
 import TrainingPlacement from "./pages/Training-Placement/training-placement";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -136,10 +135,6 @@ const App = () => {
           <Route path="/home/introtext" element={<IntroText />} />
           <Route path="/department/home" element={<DeptHome />} />
           <Route path="/academic/handbook" element={<AcademicHandbook />} />
-          <Route
-            path="/department/computer-engineering/activities"
-            element={<CompActivity />}
-          />
           <Route path="/academics" element={<AcademicAdmin />} />
 
           {/* Department Home Routes */}
