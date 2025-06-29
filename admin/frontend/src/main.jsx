@@ -143,12 +143,27 @@ const App = () => {
           <Route path="/academics" element={<AcademicAdmin />} />
 
           {/* Department Home Routes */}
-          <Route path="/department/computer/home" element={<CompHome />} />
-          <Route path="/department/mechanical/home" element={<MechHome />} />
-          <Route path="/department/electrical/home" element={<ElectHome />} />
+          <Route
+            path="/department/computer-engineering/home"
+            element={<CompHome />}
+          />
+          <Route
+            path="/department/mechanical-engineering/home"
+            element={<MechHome />}
+          />
+          <Route
+            path="/department/electrical-engineering/home"
+            element={<ElectHome />}
+          />
           <Route path="/department/extc/home" element={<ExtcHome />} />
-          <Route path="/department/cse/home" element={<CSEHome />} />
-          <Route path="/department/bsh/home" element={<BSHHome />} />
+          <Route
+            path="/department/computer-science-and-engineering/home"
+            element={<CSEHome />}
+          />
+          <Route
+            path="/department/basic-science-and-humanities/home"
+            element={<BSHHome />}
+          />
 
           {/* Computer Engineering Routes */}
           <Route

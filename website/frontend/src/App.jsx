@@ -50,7 +50,7 @@ function App() {
                 <News />
                 <AboutUs />
                 <WhatsNew />
-                <Widgets />
+                {/* <Widgets /> */}
               </>
             }
           />
