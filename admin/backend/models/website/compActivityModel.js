@@ -7,7 +7,7 @@ export const compActivityUpload = async (
   filename
 ) => {
   const query = `
-    INSERT INTO department_activities (department, section, title, filename)
+    INSERT INTO dept_Pdf_files (department, section, title, filename)
     VALUES (?, ?, ?, ?)
   `;
   const values = [department, section, title, filename];
@@ -24,7 +24,7 @@ export const compActivityUpload = async (
 export const compActivityDisplay = async (department, section) => {
   const query = `
     SELECT id, title, filename AS pdfUrl, created_at, updated_at
-    FROM department_activities
+    FROM dept_Pdf_files
     WHERE department = ? AND section = ?
   `;
   const values = [department, section];
@@ -41,11 +41,11 @@ export const compActivityDisplay = async (department, section) => {
 export const compActivityDelete = async (id, department, section) => {
   const selectQuery = `
     SELECT filename
-    FROM department_activities
+    FROM dept_Pdf_files
     WHERE id = ? AND department = ? AND section = ?
   `;
   const deleteQuery = `
-    DELETE FROM department_activities
+    DELETE FROM dept_Pdf_files
     WHERE id = ? AND department = ? AND section = ?
   `;
   const values = [id, department, section];
