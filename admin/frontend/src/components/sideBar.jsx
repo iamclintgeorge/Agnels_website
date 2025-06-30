@@ -1269,7 +1269,7 @@ const DynamicSideBar = () => {
         {/* Additional Students Corner for Teaching Staff */}
         {(user.role === "teach_staff" || user.role === "superAdmin") && (
           <Link to="/student" className="flex justify-between pr-8">
-            Students Corner <span>&gt;</span>
+            Dummy Route for Authorization <span>&gt;</span>
           </Link>
         )}
 
@@ -1304,12 +1304,53 @@ const DynamicSideBar = () => {
                 <p className="mt-5">
                   <Link to="/signup">Create User</Link>
                 </p>
-                <p>Delete User</p>
                 {user.role === "superAdmin" && (
                   <p>
                     <Link to="/rolePermissionManager">Role Management</Link>
                   </p>
                 )}
+              </div>
+            )}
+          </div>
+        )}
+
+        {hasPermission("iic") && (
+          <div>
+            <p
+              className="cursor-pointer mb-0 pb-0 flex justify-between items-center pr-8"
+              onClick={() => toggleSection("iic")}
+            >
+              IIC{" "}
+              <span
+                className={`transform transition-transform ${
+                  openSections.iic ? "rotate-90" : ""
+                }`}
+              >
+                &gt;
+              </span>
+            </p>
+            {openSections.iic && (
+              <div className="pr-8 pl-4 space-y-4 leading-6">
+                <p className="mt-5">
+                  <Link to="/iic-innovation-council">
+                    Institution's Innovation Council
+                  </Link>
+                </p>
+                <p className="mt-5">
+                  <Link to="/iic-innovation-policy">
+                    Innovation and Startup Policy
+                  </Link>
+                </p>
+                <p className="mt-5">
+                  <Link to="/iic-innovation-ambassador">
+                    Innovation Ambassador
+                  </Link>
+                </p>
+                <p className="mt-5">
+                  <Link to="/iic-innovation-centre">
+                    Centre of Innovation and Entrepreneurship
+                  </Link>
+                </p>
               </div>
             )}
           </div>
@@ -1330,7 +1371,7 @@ const DynamicSideBar = () => {
         )}
 
         {/* Edit User Profiles */}
-        <Link to="/edit-profiles" className="flex justify-between pr-8">
+        <Link to="/" className="flex justify-between pr-8">
           Edit User Profiles <span>&gt;</span>
         </Link>
 
