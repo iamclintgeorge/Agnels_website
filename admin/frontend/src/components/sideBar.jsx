@@ -1330,7 +1330,7 @@ const DynamicSideBar = () => {
         )}
 
         {/* Edit User Profiles */}
-        <Link to="/edit-profiles" className="flex justify-between pr-8">
+        <Link to="/" className="flex justify-between pr-8">
           Edit User Profiles <span>&gt;</span>
         </Link>
 
