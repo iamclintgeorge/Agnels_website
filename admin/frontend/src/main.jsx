@@ -28,6 +28,12 @@ import Teaching_staff from "./pages/HumanResources/teachingstaff";
 import Nonteaching_staff from "./pages/HumanResources/nonteachingstaff";
 import RolePermissionManager from "./pages/rolePermission";
 
+// IIC
+import Iic_ambassador from "./pages/IIC/iic_ambassador";
+import Iic_council from "./pages/IIC/iic_council";
+import Iic_innovation from "./pages/IIC/iic_innovation";
+import Iic_policy from "./pages/IIC/iic_policy";
+
 // Import new department components
 import CompHome from "./pages/Department/Computer/Comp_home";
 import MechHome from "./pages/Department/Mechanical/Mech_home";
@@ -137,6 +143,15 @@ const App = () => {
           <Route path="/academic/handbook" element={<AcademicHandbook />} />
           <Route path="/academics" element={<AcademicAdmin />} />
 
+          {/* IIC Routes */}
+          <Route path="/iic-innovation-council" element={<Iic_council />} />
+          <Route path="/iic-innovation-policy" element={<Iic_policy />} />
+          <Route
+            path="/iic-innovation-ambassador"
+            element={<Iic_ambassador />}
+          />
+          <Route path="/iic-innovation-centre" element={<Iic_innovation />} />
+
           {/* Department Home Routes */}
           <Route
             path="/department/computer-engineering/home"
@@ -159,7 +174,6 @@ const App = () => {
             path="/department/basic-science-and-humanities/home"
             element={<BSHHome />}
           />
-
           {/* Computer Engineering Routes */}
           <Route
             path="/department/computer-engineering/activities"
@@ -201,7 +215,6 @@ const App = () => {
             path="/department/computer-engineering/committees-and-board-of-studies"
             element={<ComputerCommittees />}
           />
-
           {/* Mechanical Engineering Routes */}
           <Route
             path="/department/mechanical-engineering/activities"
@@ -243,7 +256,6 @@ const App = () => {
             path="/department/mechanical-engineering/committees-and-board-of-studies"
             element={<MechanicalCommittees />}
           />
-
           {/* Electrical Engineering Routes */}
           <Route
             path="/department/electrical-engineering/activities"
@@ -285,7 +297,6 @@ const App = () => {
             path="/department/electrical-engineering/committees-and-board-of-studies"
             element={<ElectricalCommittees />}
           />
-
           {/* EXTC Routes */}
           <Route
             path="/department/extc/activities"
@@ -321,7 +332,6 @@ const App = () => {
             path="/department/extc/committees-and-board-of-studies"
             element={<ExtcCommittees />}
           />
-
           {/* CSE Routes */}
           <Route
             path="/department/computer-science-and-engineering/activities"
@@ -363,7 +373,6 @@ const App = () => {
             path="/department/computer-science-and-engineering/committees-and-board-of-studies"
             element={<CseCommittees />}
           />
-
           {/* BSH Routes */}
           <Route
             path="/department/basic-science-and-humanities/activities"
@@ -405,7 +414,6 @@ const App = () => {
             path="/department/basic-science-and-humanities/committees-and-board-of-studies"
             element={<BshCommittees />}
           />
-
           {/* HOD Desk Routes */}
           <Route path="/hod-desk/computer" element={<ComHod />} />
           <Route path="/hod-desk/mechanical" element={<MechHod />} />
@@ -413,13 +421,10 @@ const App = () => {
           <Route path="/hod-desk/electrical" element={<ElectricalHod />} />
           <Route path="/hod-desk/it" element={<ItHod />} />
           <Route path="/hod-desk/bsh" element={<BshHod />} />
-
           {/* Content Approval Routes */}
           <Route path="/content-approval" element={<ApprovalDashboard />} />
-
           {/* Activity Logs Routes */}
           <Route path="/activity-logs" element={<ActivityLogs />} />
-
           <Route path="/profile" element={<Profile />} />
           <Route path="/student" element={<Student />} />
           <Route path="/training-placement" element={<TrainingPlacement />} />

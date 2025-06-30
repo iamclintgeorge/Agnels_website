@@ -1315,6 +1315,48 @@ const DynamicSideBar = () => {
           </div>
         )}
 
+        {hasPermission("iic") && (
+          <div>
+            <p
+              className="cursor-pointer mb-0 pb-0 flex justify-between items-center pr-8"
+              onClick={() => toggleSection("iic")}
+            >
+              IIC{" "}
+              <span
+                className={`transform transition-transform ${
+                  openSections.iic ? "rotate-90" : ""
+                }`}
+              >
+                &gt;
+              </span>
+            </p>
+            {openSections.iic && (
+              <div className="pr-8 pl-4 space-y-4 leading-6">
+                <p className="mt-5">
+                  <Link to="/iic-innovation-council">
+                    Institution's Innovation Council
+                  </Link>
+                </p>
+                <p className="mt-5">
+                  <Link to="/iic-innovation-policy">
+                    Innovation and Startup Policy
+                  </Link>
+                </p>
+                <p className="mt-5">
+                  <Link to="/iic-innovation-ambassador">
+                    Innovation Ambassador
+                  </Link>
+                </p>
+                <p className="mt-5">
+                  <Link to="/iic-innovation-centre">
+                    Centre of Innovation and Entrepreneurship
+                  </Link>
+                </p>
+              </div>
+            )}
+          </div>
+        )}
+
         {/* NIRF */}
         {hasPermission("nirf") && (
           <Link to="/admin/nirf" className="flex justify-between pr-8">
