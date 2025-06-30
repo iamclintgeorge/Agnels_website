@@ -26,6 +26,7 @@ import AcademicAdmin from "./pages/Academics/AcademicAdmin";
 import AcademicHandbook from "./pages/Academics/AcademicHandbook";
 import Teaching_staff from "./pages/HumanResources/teachingstaff";
 import Nonteaching_staff from "./pages/HumanResources/nonteachingstaff";
+import StudentsCorner from "./pages/StudentsCorner/StudentsCorner";
 import RolePermissionManager from "./pages/rolePermission";
 
 // IIC
@@ -142,6 +143,7 @@ const App = () => {
           <Route path="/department/home" element={<DeptHome />} />
           <Route path="/academic/handbook" element={<AcademicHandbook />} />
           <Route path="/academics" element={<AcademicAdmin />} />
+          <Route path="/studentscorner" element={<StudentsCorner />} />
 
           {/* IIC Routes */}
           <Route path="/iic-innovation-council" element={<Iic_council />} />

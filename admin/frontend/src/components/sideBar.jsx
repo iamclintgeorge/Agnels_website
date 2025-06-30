@@ -1269,7 +1269,7 @@ const DynamicSideBar = () => {
         {/* Additional Students Corner for Teaching Staff */}
         {(user.role === "teach_staff" || user.role === "superAdmin") && (
           <Link to="/student" className="flex justify-between pr-8">
-            Students Corner <span>&gt;</span>
+            Dummy Route for Authorization <span>&gt;</span>
           </Link>
         )}
 
@@ -1304,7 +1304,6 @@ const DynamicSideBar = () => {
                 <p className="mt-5">
                   <Link to="/signup">Create User</Link>
                 </p>
-                <p>Delete User</p>
                 {user.role === "superAdmin" && (
                   <p>
                     <Link to="/rolePermissionManager">Role Management</Link>
