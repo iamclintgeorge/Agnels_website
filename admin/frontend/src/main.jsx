@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./pages/login";
 import Signup from "./pages/signup";
 import Error404 from "./pages/error404";
+import Error403 from "./pages/error403";
 import AdminLayout from "./layout/adminLayout";
 import Student from "./pages/student";
 import { AuthProvider } from "./services/useAuthCheck";
@@ -445,6 +446,7 @@ const App = () => {
           />
         </Route>
         <Route path="*" element={<Error404 />} />
+        <Route path="/error403" element={<Error403 />} />
       </Routes>
       <ToastContainer />
     </>
