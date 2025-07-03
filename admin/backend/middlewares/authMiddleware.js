@@ -1,9 +1,5 @@
 export const authMiddleware = (req, res, next) => {
-  // console.log("Cookies:", req.cookies);
   const sessionId = req.cookies["connect.sid"];
-  // console.log("Session ID in cookie:", sessionId);
-  // console.log("req.session", req.session);
-  // console.log("req.session.user", req.session.user);
 
   if (!sessionId || !req.session || !req.session.user) {
     console.log("sessionId not found in authMiddleware");
@@ -21,6 +17,31 @@ export const checkAuth = (req, res) => {
   });
 };
 
+export const checkPermission = (requiredPermission) => {
+  return (req, res, next) => {
+    if (!req.user) {
+      return res.status(401).json({ message: "User not authenticated" });
+    }
+
+    // Super admin has all permissions
+    if (
+      req.user.role === "superAdmin" ||
+      req.user.permissions.includes("all")
+    ) {
+      return next();
+    }
+
+    // Check if user has the required permission
+    if (!req.user.permissions.includes(requiredPermission)) {
+      return res.status(403).json({
+        message: "Access forbidden - You don't have the required permission",
+      });
+    }
+
+    next();
+  };
+};
+
 export const checkRole = (allowedRoles) => {
   return (req, res, next) => {
     if (!req.user) {
@@ -28,7 +49,9 @@ export const checkRole = (allowedRoles) => {
     }
 
     if (!allowedRoles.includes(req.user.role)) {
-      return res.status(403).json({ message: "Access forbidden" });
+      return res
+        .status(403)
+        .json({ message: "Access forbidden - Invalid role" });
     }
 
     next();

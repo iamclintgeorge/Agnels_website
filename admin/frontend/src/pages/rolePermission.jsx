@@ -160,17 +160,38 @@ const RolePermissionManager = () => {
     permissions: [],
   });
 
-  const handleCreateRole = () => {
+  const handleCreateRole = async () => {
     if (newRole.name && newRole.displayName) {
-      const newRoleData = {
-        id: Date.now(),
-        name: newRole.name.toLowerCase().replace(/\s+/g, "_"),
-        displayName: newRole.displayName,
-        permissions: newRole.permissions,
-      };
-      setRoles([...roles, newRoleData]);
-      setNewRole({ name: "", displayName: "", permissions: [] });
-      setIsCreateMode(false);
+      try {
+        const newRoleData = {
+          id: Date.now(),
+          name: newRole.name.toLowerCase().replace(/\s+/g, "_"),
+          displayName: newRole.displayName,
+          permissions: newRole.permissions,
+        };
+
+        const updatedRoles = [...roles, newRoleData];
+
+        const response = await fetch("http://localhost:3663/api/roles", {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({ roles: updatedRoles }),
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to create role");
+        }
+
+        setRoles(updatedRoles);
+        setNewRole({ name: "", displayName: "", permissions: [] });
+        setIsCreateMode(false);
+      } catch (error) {
+        console.error("Error creating role:", error);
+        alert("Failed to create role. Please try again.");
+      }
     }
   };
 
@@ -178,16 +199,54 @@ const RolePermissionManager = () => {
     setEditingRole({ ...role });
   };
 
-  const handleSaveEdit = () => {
-    setRoles(
-      roles.map((role) => (role.id === editingRole.id ? editingRole : role))
-    );
-    setEditingRole(null);
+  const handleSaveEdit = async () => {
+    try {
+      const response = await fetch("http://localhost:3663/api/roles", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({ roles }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to update roles");
+      }
+
+      setRoles(
+        roles.map((role) => (role.id === editingRole.id ? editingRole : role))
+      );
+      setEditingRole(null);
+    } catch (error) {
+      console.error("Error updating roles:", error);
+      alert("Failed to update roles. Please try again.");
+    }
   };
 
-  const handleDeleteRole = (roleId) => {
+  const handleDeleteRole = async (roleId) => {
     if (window.confirm("Are you sure you want to delete this role?")) {
-      setRoles(roles.filter((role) => role.id !== roleId));
+      try {
+        const updatedRoles = roles.filter((role) => role.id !== roleId);
+
+        const response = await fetch("http://localhost:3663/api/roles", {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify({ roles: updatedRoles }),
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to delete role");
+        }
+
+        setRoles(updatedRoles);
+      } catch (error) {
+        console.error("Error deleting role:", error);
+        alert("Failed to delete role. Please try again.");
+      }
     }
   };
 

@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt";
 import { signupUser, loginUser } from "../../models/admin/userModels.js";
+import { roleBasedAccess } from "../../utils/permissionMap.js";
 
 export const signupController = async (req, res) => {
   try {
@@ -24,11 +25,15 @@ export const signupController = async (req, res) => {
       return res.status(500).json({ message: "Failed to create user" });
     }
 
+    // Get permissions based on role
+    const permissions = roleBasedAccess[user.role] || [];
+
     req.session.user = {
       id: user.id,
       emailId: user.emailId,
       userName: user.userName,
       role: user.role,
+      permissions: permissions,
     };
 
     console.log("req.session.user", req.session.user);
@@ -52,22 +57,30 @@ export const loginController = async (req, res) => {
 
     const user = await loginUser(emailId, password);
     if (!user) {
-      return res.status(401).json({ message: "Invalid username or password" });
+      return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    const match = await bcrypt.compare(password, user.password);
-    if (!match) {
-      return res.status(401).json({ message: "Invalid username or password" });
-    }
+    // Get permissions based on role
+    const permissions = roleBasedAccess[user.role] || [];
 
     req.session.user = {
       id: user.id,
       emailId: user.emailId,
       userName: user.userName,
       role: user.role,
+      permissions: permissions,
     };
 
-    res.status(200).json({ message: "User successfully logged in", user });
+    res.status(200).json({
+      message: "Login successful",
+      user: {
+        id: user.id,
+        emailId: user.emailId,
+        userName: user.userName,
+        role: user.role,
+        permissions: permissions,
+      },
+    });
   } catch (err) {
     console.error(err);
     res
