@@ -50,14 +50,14 @@ function WhatsNew() {
 
   return (
     <section className="relative py-10 pb-28 px-5 bg-[#F7F7F7]">
-      <div className="absolute inset-0 flex text-[#EDEDED] font-medium text-[9.6vw] leading-none uppercase opacity-70 z-0 mt-[250px] tracking-widest p-0 m-0">
+      <div className="absolute inset-0 flex text-[#EDEDED] font-medium text-[9.6vw] leading-none uppercase opacity-70 z-0 mt-[220px] md:mt-[250px] tracking-widest p-0 m-0">
         Announcements
       </div>
-      <h2 className="font-medium italic text-2xl text-[#0C2340] pl-16 mb-2 w-[336px] h-[29px] mt-16 ">
+      <h2 className="font-medium italic text-2xl text-[#0C2340] mb-5 w-[336px] h-[29px] mt-20 pl-0 md:pl-16 text-center md:text-left mx-auto md:mx-0">
         ANNOUNCEMENTS
       </h2>
-      <div className="w-40 h-[5px] bg-[#AE9142] ml-10 mb-40"></div>
-      <div className="flex justify-center gap-5">
+      <div className="w-40 h-[5px] bg-[#AE9142] mt-1 mb-24 md:mb-40 mx-auto md:mx-0"></div>
+      <div className="flex flex-col md:flex-row justify-center gap-y-12 md:gap-5 items-center">
         {tablesData.map((table, tableIndex) => (
           <div
             key={tableIndex}

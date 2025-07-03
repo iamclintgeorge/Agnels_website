@@ -74,7 +74,7 @@ const NavBar = () => {
                 </p>
               </div>
             </Link>
-            <div>
+            <div className="hidden md:block">
               <SearchBar />
             </div>
             <div className="text-white flex flex-row text-sm pr-10">
