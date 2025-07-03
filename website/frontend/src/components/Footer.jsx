@@ -16,11 +16,11 @@ const Footer = () => {
           {/* Logo & Institute Info */}
           <a href="/">
             <div className="footer-section text-center md:text-left">
-              <div className="ml-24 mb-2">
+              <div className="mb-2 md:ml-24 flex justify-center md:justify-start">
                 <img
                   src="/src/assets/imgs/fcritlogo.png"
                   alt="FCRIT Logo"
-                  className="w-20 h-20 mx-auto md:mx-0 mb-1"
+                  className="w-20 h-20 mb-1"
                 />
               </div>
               <div className="pl-0 pt-0">
