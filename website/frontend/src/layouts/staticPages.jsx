@@ -34,9 +34,9 @@ const StaticPages = (props) => {
 
       {/* Sidebar Section */}
       <main className="flex flex-col items-center py-16">
-        <div className="flex w-11/12 max-w-7xl">
+        <div className="flex flex-col md:flex-row w-11/12 max-w-7xl">
           {/* Sidebar */}
-          <div className="w-1/4 pr-6">
+          <div className="w-full md:w-1/4 pr-0 md:pr-6 mb-8 md:mb-0">
             <ul className="space-y-3">
               {props.sidebar.map((tab, index) => (
                 <li
@@ -47,17 +47,18 @@ const StaticPages = (props) => {
                   <span className="block px-2 py-3 text-black font-[350] font-inter transition duration-300 ease-in-out group-hover:text-[#0c2340] group-hover:bg-gray-50">
                     {tab}
                   </span>
-                  <span className="absolute left-0 bottom-0 w-0 h-[2px] bg-black transition-all duration-300 group-hover:w-full"></span>
+                  <span className={`absolute left-0 bottom-0 h-[2px] bg-black transition-all duration-300 ${activeTab === tab ? 'w-full' : 'w-0'} group-hover:w-full`}></span>
                 </li>
               ))}
             </ul>
+            <hr className="mt-4 border-t border-gray-300 block md:hidden" />
           </div>
 
           {/* Divider */}
-          <div className="w-[1px] bg-gray-300"></div>
+          <div className="hidden md:block w-[1px] bg-gray-300"></div>
 
           {/* Content Area */}
-          <div className="w-3/4 pl-6">{props.content[activeTab]}</div>
+          <div className="w-full md:w-3/4 pl-0 md:pl-6">{props.content[activeTab]}</div>
         </div>
       </main>
     </div>

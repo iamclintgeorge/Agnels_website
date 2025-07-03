@@ -15,7 +15,7 @@ const Header = () => {
   const navigate = useNavigate();
 
   return (
-    <header className="bg-[#0c2340] text-white p-0 m-0  relative h-48 sm:h-52 w-full z-20">
+    <header className="bg-[#0c2340] text-white p-0 m-0  relative h-48 sm:h-52 w-full z-10">
       {/* Yellow Border */}
       <div className="flex top-0 left-0 w-full bg-[#AE9142] h-6 items-center justify-center text-black text-[10px] sm:text-xs font-normal">
         An Autonomous Institute & Permanently Affiliated to University of Mumbai
@@ -97,9 +97,19 @@ const Header = () => {
         </div>
 
         {/* Hamburger Icon */}
-        <div className="md:hidden absolute mt-12 right-4 flex items-center">
-          <button onClick={() => setIsBottomMenuOpen(!isBottomMenuOpen)}>
-            <FaBars className="text-white text-2xl" />
+        <div className="md:hidden absolute mt-12 right-4 flex items-center z-30">
+          <button 
+            onClick={() => {
+              console.log('Hamburger clicked, current state:', isBottomMenuOpen);
+              setIsBottomMenuOpen(!isBottomMenuOpen);
+            }}
+            className="z-30"
+          >
+            {isBottomMenuOpen ? (
+              <span className="text-white text-3xl">&times;</span>
+            ) : (
+              <FaBars className="text-white text-2xl" />
+            )}
           </button>
         </div>
 
@@ -287,190 +297,49 @@ const Header = () => {
 
       {/* Mobile Dropdown for Bottom Navigation */}
       {isBottomMenuOpen && (
-        <div className="md:hidden p-4 bg-[#0c2340] text-white z-10">
-          {/* Home, About Us, etc. section */}
-          <ul className="list-none flex flex-col gap-3 font-inter font-light">
-            <li className="hover:underline">
-              <Link to="/" onClick={() => setIsBottomMenuOpen(false)}>
-                Home
-              </Link>
-            </li>
-            <li className="hover:underline">
-              <Link to="/aboutUs" onClick={() => setIsBottomMenuOpen(false)}>
-                About Us
-              </Link>
-            </li>
-            <li className="hover:underline">
-              <Link
-                to="/departments"
-                onClick={() => setIsBottomMenuOpen(false)}
-              >
-                Departments
-              </Link>
-            </li>
+        <div className="fixed inset-0 w-full h-full bg-[#0C2340] flex flex-col z-[99999] px-4 pt-6 md:hidden overflow-y-auto">
+          {/* Top Row: Close Icon and Logo/Text */}
+          <div className="flex items-center justify-between mb-6">
+            <button className="text-white text-3xl" onClick={() => setIsBottomMenuOpen(false)}>&times;</button>
+            {/* Centered and smaller styled text for mobile */}
+            <div className="flex flex-col items-center justify-center mx-auto text-center w-full">
+              <p className="font-inter text-[8px] font-light leading-6 tracking-[0.7px] italic text-white">Agnel Charities</p>
+              <p className="font-playfair text-[13px] font-medium tracking-wide text-white">FR. CONCEICAO RODRIGUES</p>
+              <p className="font-playfair font-thin text-[9px] tracking-[2.5px] text-white">INSTITUTE OF TECHNOLOGY</p>
+              <div className="flex items-center justify-center mt-1 w-full">
+                <span className="border-t border-[#999999] w-[20vw]"></span>
+                <p className="font-playfair text-[6px] tracking-[1.5px] mx-2 leading-5 text-white">VASHI</p>
+                <span className="border-t border-[#999999] w-[20vw]"></span>
+              </div>
+            </div>
+            <div className="w-8" /> {/* Spacer to balance the close icon */}
+          </div>
 
-            {/* Academics with the same sub-links */}
-            <li className="hover:underline">
-              <Link to="/academics" onClick={() => setIsBottomMenuOpen(false)}>
-                Academics
-              </Link>
-              {/* Sub-items */}
-              <ul className="ml-4 mt-1">
-                <li className="hover:underline">
-                  <Link to="/nirf" onClick={() => setIsBottomMenuOpen(false)}>
-                    NIRF
-                  </Link>
-                </li>
-                <li className="hover:underline">
-                  <Link to="/iqac" onClick={() => setIsBottomMenuOpen(false)}>
-                    IQAC
-                  </Link>
-                </li>
-                <li className="hover:underline">
-                  <Link to="/iic" onClick={() => setIsBottomMenuOpen(false)}>
-                    IIC
-                  </Link>
-                </li>
-                <li className="hover:underline">
-                  <Link
-                    to="/research_Publications"
-                    onClick={() => setIsBottomMenuOpen(false)}
-                  >
-                    Research and Publications
-                  </Link>
-                </li>
-                <li className="hover:underline">
-                  <Link to="/hr" onClick={() => setIsBottomMenuOpen(false)}>
-                    Human Resource
-                  </Link>
-                </li>
-                <li className="hover:underline">
-                  <Link
-                    to="/nba-naac"
-                    onClick={() => setIsBottomMenuOpen(false)}
-                  >
-                    NBA/NAAC
-                  </Link>
-                </li>
-                <li className="hover:underline">
-                  <Link
-                    to="/academic-calendar"
-                    onClick={() => setIsBottomMenuOpen(false)}
-                  >
-                    Academic Calendar
-                  </Link>
-                </li>
-                <li className="hover:underline">
-                  <Link to="/icnte" onClick={() => setIsBottomMenuOpen(false)}>
-                    ICNTE
-                  </Link>
-                </li>
-              </ul>
-            </li>
+          {/* Main Menu */}
+          <nav className="flex flex-col space-y-6">
+            <Link to="/" className="text-white text-base" onClick={() => setIsBottomMenuOpen(false)}>Home</Link>
+            <Link to="/aboutUs" className="text-white text-base flex items-center justify-between" onClick={() => setIsBottomMenuOpen(false)}>About Us <span>{'>'}</span></Link>
+            <Link to="/departments" className="text-white text-base flex items-center justify-between" onClick={() => setIsBottomMenuOpen(false)}>Departments <span>{'>'}</span></Link>
+            <Link to="/academics" className="text-white text-base flex items-center justify-between" onClick={() => setIsBottomMenuOpen(false)}>Academics <span>{'>'}</span></Link>
+            <Link to="/admissions" className="text-white text-base flex items-center justify-between" onClick={() => setIsBottomMenuOpen(false)}>Admission <span>{'>'}</span></Link>
+            <Link to="/studentCorner" className="text-white text-base flex items-center justify-between" onClick={() => setIsBottomMenuOpen(false)}>Students <span>{'>'}</span></Link>
+          </nav>
 
-            <li className="hover:underline">
-              <Link to="/admissions" onClick={() => setIsBottomMenuOpen(false)}>
-                Admission
-              </Link>
-            </li>
+          {/* Divider */}
+          <div className="border-t border-gray-400 my-8"></div>
 
-            {/* Student Corner with the same sub-links */}
-            <li className="hover:underline">
-              <Link
-                to="/studentCorner"
-                onClick={() => setIsBottomMenuOpen(false)}
-              >
-                Student Corner
-              </Link>
-              {/* Sub-items */}
-              <ul className="ml-4 mt-1">
-                <li className="hover:underline">
-                  <Link
-                    to="/training-placement"
-                    onClick={() => setIsBottomMenuOpen(false)}
-                  >
-                    Training and Placement
-                  </Link>
-                </li>
-                <li className="hover:underline">
-                  <Link
-                    to="/library"
-                    onClick={() => setIsBottomMenuOpen(false)}
-                  >
-                    Library
-                  </Link>
-                </li>
-                <li className="hover:underline">
-                  <Link to="/almuni" onClick={() => setIsBottomMenuOpen(false)}>
-                    Alumni
-                  </Link>
-                </li>
-                <li className="hover:underline">
-                  <Link
-                    to="/transcript"
-                    onClick={() => setIsBottomMenuOpen(false)}
-                  >
-                    Transcript
-                  </Link>
-                </li>
-                <li className="hover:underline">
-                  <Link
-                    to="/manthanMagzine"
-                    onClick={() => setIsBottomMenuOpen(false)}
-                  >
-                    Manthan Magazine
-                  </Link>
-                </li>
-              </ul>
-            </li>
-          </ul>
+          {/* Secondary Links */}
+          <nav className="flex flex-col space-y-4">
+            <Link to="/downloads" className="text-white text-base" onClick={() => setIsBottomMenuOpen(false)}>Downloads</Link>
+            <a href="https://fcrit.ac.in/static_pdfs/feedback/SSS_23_24.pdf" target="_blank" rel="noopener noreferrer" className="text-white text-base" onClick={() => setIsBottomMenuOpen(false)}>Feedback</a>
+            <Link to="/Important-Links" className="text-white text-base" onClick={() => setIsBottomMenuOpen(false)}>Important Links</Link>
+            <Link to="/circulars" className="text-white text-base" onClick={() => setIsBottomMenuOpen(false)}>Circulars</Link>
+            <a href="https://www.eduqfix.com/PayDirect/#/student/pay/XxoRsO6mfiXGAnQY1R64lGgQcWtw4tYKPWYLPO8nzoGBvtL6DIe+F9YjQMK1keFr/254" target="_blank" rel="noopener noreferrer" className="text-white text-base" onClick={() => setIsBottomMenuOpen(false)}>Fee Payment</a>
+          </nav>
 
-          {/* Thin White Line */}
-          <div className="my-2 border-t border-white"></div>
-
-          {/* Downloads, Feedback, etc. section */}
-          <ul className="list-none flex flex-col gap-3 font-inter font-light">
-            <li className="hover:underline">
-              <Link to="/downloads" onClick={() => setIsBottomMenuOpen(false)}>
-                Downloads
-              </Link>
-            </li>
-            <li className="hover:underline">
-              <a
-                href="https://fcrit.ac.in/static_pdfs/feedback/SSS_23_24.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => setIsBottomMenuOpen(false)}
-              >
-                Feedback
-              </a>
-            </li>
-            <li className="hover:underline">
-              <Link
-                to="/Important-Links"
-                onClick={() => setIsBottomMenuOpen(false)}
-              >
-                Important Links
-              </Link>
-            </li>
-            <li className="hover:underline">
-              <Link to="/circulars" onClick={() => setIsBottomMenuOpen(false)}>
-                Circulars
-              </Link>
-            </li>
-            <li className="hover:underline">
-              <a
-                href="https://www.eduqfix.com/PayDirect/#/student/pay/XxoRsO6mfiXGAnQY1R64lGgQcWtw4tYKPWYLPO8nzoGBvtL6DIe+F9YjQMK1keFr/254"
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={() => setIsBottomMenuOpen(false)}
-              >
-                Fee Payment
-              </a>
-            </li>
-            <li className="ml-4 mt-[-3px]">
+          {/* Login Button at the Bottom */}
               <button
-                className="bg-transparent border-white border-[1px] text-xs px-4 py-[5px]"
+            className="mt-12 mb-8 border border-white text-white py-2 rounded w-full"
                 onClick={() => {
                   setIsBottomMenuOpen(false);
                   navigate("/login");
@@ -478,8 +347,6 @@ const Header = () => {
               >
                 Login
               </button>
-            </li>
-          </ul>
         </div>
       )}
     </header>

@@ -17,6 +17,9 @@ export default {
           "100%": { transform: "translateX(-100%)" }, // Ends at the left
         },
       },
+      screens: {
+        'xs': '500px', // custom breakpoint for 500px
+      },
     },
   },
   plugins: [],

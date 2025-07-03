@@ -62,7 +62,7 @@ const SearchBar = () => {
       />
       <button
         onClick={handleIconClick}
-        className="w-12 h-12 flex items-center justify-center rounded-full text-white z-10"
+        className="w-12 h-12 flex items-center justify-center rounded-full text-white z-10 hidden xl:flex"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
