@@ -11,6 +11,9 @@ export const routePermissions = {
   "/api/department/cse": "departments.computer-science-and-engineering",
   "/api/department/bsh": "departments.basic-science-and-humanities",
 
+  // Department management routes (new system)
+  "/api/dept": "department_management",
+
   // Other content routes
   "/api/aboutus": "about_us",
   "/api/academic": "academics",
@@ -23,6 +26,15 @@ export const routePermissions = {
   // Admin routes
   "/api/users": "manage_users",
   "/api/logs": "logs",
+  
+  // Faculty routes
+  "/api/faculty": "faculty_management",
+  
+  // Infrastructure routes
+  "/api/infrastructure": "infrastructure_management",
+  
+  // Role management routes
+  "/api/roles": "role_management",
 };
 
 // Define role-based access
@@ -33,25 +45,61 @@ export const roleBasedAccess = {
     "home_page",
     "departments.computer-engineering",
     "manage_users",
+    "faculty_management",
+    "infrastructure_management",
+    "department_management",
   ],
-  mechHod: ["dashboard", "home_page", "departments.mechanical-engineering"],
-  extcHod: ["dashboard", "home_page", "departments.extc"],
+  mechHod: [
+    "dashboard", 
+    "home_page", 
+    "departments.mechanical-engineering", 
+    "faculty_management", 
+    "infrastructure_management",
+    "department_management",
+  ],
+  extcHod: [
+    "dashboard", 
+    "home_page", 
+    "departments.extc", 
+    "faculty_management", 
+    "infrastructure_management",
+    "department_management",
+  ],
   bshHod: [
     "dashboard",
     "home_page",
     "departments.basic-science-and-humanities",
+    "faculty_management",
+    "infrastructure_management",
+    "department_management",
   ],
   cseHod: [
     "dashboard",
     "home_page",
     "departments.computer-science-and-engineering",
+    "faculty_management",
+    "infrastructure_management",
+    "department_management",
   ],
   electricalHod: [
     "dashboard",
     "home_page",
     "departments.electrical-engineering",
+    "faculty_management",
+    "infrastructure_management",
+    "department_management",
   ],
   teach_staff: ["dashboard", "home_page", "students_corner"],
   non_teach_staff: ["dashboard", "home_page"],
-  principal: ["dashboard", "home_page", "about_us", "academics", "research"],
+  principal: [
+    "dashboard", 
+    "home_page", 
+    "about_us", 
+    "academics", 
+    "research", 
+    "faculty_management", 
+    "infrastructure_management", 
+    "role_management",
+    "department_management",
+  ],
 };
