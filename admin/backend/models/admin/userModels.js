@@ -51,3 +51,37 @@ export const loginUser = async (emailId, password) => {
     throw new Error("Failed to log in the user");
   }
 };
+
+//Fetch User Roles
+export const fetchRoles = async (req, res) => {
+  const query = "SELECT * FROM roles";
+
+  try {
+    const [rows] = await db.promise().query(query);
+    const res = rows;
+
+    if (!res) {
+      return null;
+    }
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+//Fetch User Permissions
+export const fetchPermissions = async (req, res) => {
+  const query = "SELECT * FROM permissions";
+
+  try {
+    const [rows] = await db.promise().query(query);
+    const res = rows;
+
+    if (!res) {
+      return null;
+    }
+    return res;
+  } catch (error) {
+    console.log(error);
+  }
+};
