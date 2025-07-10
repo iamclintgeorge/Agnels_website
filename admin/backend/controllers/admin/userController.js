@@ -1,6 +1,5 @@
 import bcrypt from "bcrypt";
 import { signupUser, loginUser } from "../../models/admin/userModels.js";
-import { roleBasedAccess } from "../../utils/permissionMap.js";
 
 export const signupController = async (req, res) => {
   try {
@@ -25,15 +24,12 @@ export const signupController = async (req, res) => {
       return res.status(500).json({ message: "Failed to create user" });
     }
 
-    // Get permissions based on role
-    const permissions = roleBasedAccess[user.role] || [];
-
     req.session.user = {
       id: user.id,
       emailId: user.emailId,
       userName: user.userName,
       role: user.role,
-      permissions: permissions,
+      permissions: user.permissions,
     };
 
     console.log("req.session.user", req.session.user);
@@ -60,15 +56,12 @@ export const loginController = async (req, res) => {
       return res.status(401).json({ message: "Invalid credentials" });
     }
 
-    // Get permissions based on role
-    const permissions = roleBasedAccess[user.role] || [];
-
     req.session.user = {
       id: user.id,
       emailId: user.emailId,
       userName: user.userName,
       role: user.role,
-      permissions: permissions,
+      permissions: user.permissions,
     };
 
     res.status(200).json({
@@ -78,7 +71,7 @@ export const loginController = async (req, res) => {
         emailId: user.emailId,
         userName: user.userName,
         role: user.role,
-        permissions: permissions,
+        permissions: user.permissions,
       },
     });
   } catch (err) {
