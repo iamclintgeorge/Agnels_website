@@ -9,7 +9,12 @@ export const signupUser = async (emailId, userName, hashedPassword, role) => {
 
   try {
     const [result] = await db.promise().query(query, values);
-    return { id: result.insertId, emailId, userName, role };
+    const [roleRows] = await db
+      .promise()
+      .query("SELECT permissions FROM roles WHERE name = ?", [role]);
+
+    const permissions = roleRows[0]?.permissions || [];
+    return { id: result.insertId, emailId, userName, role, permissions };
   } catch (err) {
     console.error("Error inserting user:", err);
     throw new Error("Failed to sign up the user");
@@ -33,6 +38,12 @@ export const loginUser = async (emailId, password) => {
     if (!match) {
       return null;
     }
+
+    const [roleRows] = await db
+      .promise()
+      .query("SELECT permissions FROM roles WHERE name = ?", [user.role]);
+
+    user.permissions = roleRows[0]?.permissions || [];
 
     return user;
   } catch (error) {
