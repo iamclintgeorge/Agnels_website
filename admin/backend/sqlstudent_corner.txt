@@ -1,0 +1,236 @@
+/* ===============================  Code‑of‑Conduct  ========= */
+CREATE TABLE sc_code_of_conduct_documents (
+  id          INT AUTO_INCREMENT PRIMARY KEY,
+  title       VARCHAR(200) NOT NULL,
+  file_path   VARCHAR(255) NOT NULL,   -- relative path or full URL to PDF
+  uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+/* ===============================  Student Council  ========= */
+CREATE TABLE sc_student_council_members (
+  id        INT AUTO_INCREMENT PRIMARY KEY,
+  full_name VARCHAR(120) NOT NULL,
+  position  VARCHAR(80)  NOT NULL,     -- e.g. 'General Secretary'
+  council_year VARCHAR(9) NOT NULL     -- free‑text: '2023‑24'
+);
+
+CREATE TABLE sc_student_council_reports (
+  id          INT AUTO_INCREMENT PRIMARY KEY,
+  event_name  VARCHAR(120) NOT NULL,   -- 'FACES', 'ETAMAX', etc.
+  council_year VARCHAR(9) NOT NULL,    -- '2023‑24'
+  file_path   VARCHAR(255) NOT NULL,
+  uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+/* ===============================  Professional Bodies  ===== */
+CREATE TABLE sc_professional_bodies (
+  id          INT AUTO_INCREMENT PRIMARY KEY,
+  short_name  VARCHAR(20)  NOT NULL,   -- 'CSI', 'IEEE', ...
+  full_name   VARCHAR(200) NOT NULL,
+  logo_path   VARCHAR(255),
+  description TEXT,
+  website     VARCHAR(255)
+);
+
+/* ===============================  NSS  ===================== */
+CREATE TABLE sc_nss_program_officers (
+  id        INT AUTO_INCREMENT PRIMARY KEY,
+  full_name VARCHAR(120) NOT NULL
+);
+
+CREATE TABLE sc_nss_activity_reports (
+  id          INT AUTO_INCREMENT PRIMARY KEY,
+  year_label  VARCHAR(9)  NOT NULL,    -- '2021‑22', '2020‑21', ...
+  label       VARCHAR(120) NOT NULL,   -- 'Activity Report', 'Special Camp'
+  file_path   VARCHAR(255) NOT NULL,
+  uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+/* ===============================  Student Clubs  =========== */
+CREATE TABLE sc_student_clubs (
+  id          INT AUTO_INCREMENT PRIMARY KEY,
+  name        VARCHAR(120) NOT NULL,
+  logo_path   VARCHAR(255),
+  description TEXT,
+  website     VARCHAR(255)
+);
+
+/* ===============================  Infrastructure  ========= */
+CREATE TABLE sc_facilities (
+  id          INT AUTO_INCREMENT PRIMARY KEY,
+  name        VARCHAR(120) NOT NULL,   -- 'Library', 'Gymnasium', ...
+  image_path  VARCHAR(255),
+  short_desc  VARCHAR(255),
+  long_desc   TEXT
+);
+
+/* ===============================  Cultural Activities  ===== */
+CREATE TABLE sc_cultural_activities (
+  id           INT AUTO_INCREMENT PRIMARY KEY,
+  title        VARCHAR(150) NOT NULL,
+  event_date   DATE,
+  description  TEXT,
+  gallery_path VARCHAR(255)           -- folder / album / URL
+);
+
+/* ===============================  Anti‑Ragging  ============ */
+CREATE TABLE sc_anti_ragging_contacts (
+  id          INT AUTO_INCREMENT PRIMARY KEY,
+  full_name   VARCHAR(120) NOT NULL,
+  designation VARCHAR(120),
+  phone       VARCHAR(20),
+  email       VARCHAR(120)
+);
+
+CREATE TABLE sc_anti_ragging_notices (
+  id          INT AUTO_INCREMENT PRIMARY KEY,
+  title       VARCHAR(200) NOT NULL,
+  file_path   VARCHAR(255) NOT NULL,   -- PDF notice
+  posted_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+/* ===============================  Student Surveys  ========= */
+
+CREATE TABLE sc_surveys (
+  id            INT AUTO_INCREMENT PRIMARY KEY,
+  title         VARCHAR(200) NOT NULL,
+  survey_year   VARCHAR(9)   NOT NULL,   -- e.g. '2023‑24'
+  form_url      VARCHAR(255) NOT NULL,   -- Google / MS Forms link
+  results_file  VARCHAR(255),            -- optional PDF / Excel
+  active        BOOLEAN DEFAULT TRUE     -- no display‑width warning
+);
+
+
+
+
+
+
+/* ============================================================
+   0.  Code‑of‑Conduct  (single PDF)
+============================================================ */
+INSERT INTO sc_code_of_conduct_documents (title, file_path)
+VALUES
+  ('Code of Conduct for Students', 'src/assets/pdfs/CodeofConductStudents.pdf');
+
+
+/* ============================================================
+   1.  Student Council
+============================================================ */
+/* 1‑A Council Members */
+INSERT INTO sc_student_council_members (full_name, position, council_year)
+VALUES
+  ('Sojith Sunny',        'General Secretary',          '2023-24'),
+  ('Sanchi Tiwade',       'Joint Secretary',            '2023-24'),
+  ('Atharva Magar',       'Cultural Secretary',         '2023-24'),
+  ('Abhishek Rubde',      'Asst. Cultural Secretary',   '2023-24'),
+  ('Om Shinde',           'Sports Secretary',           '2023-24'),
+  ('Srushti Patil',       'Asst. Sports Secretary',     '2023-24'),
+  ('Poorva Raut',         'Ladies Representative',      '2023-24'),
+  ('Manvi Desai',         'Asst. Ladies Representative','2023-24'),
+  ('Aishwarya V Iyer',    'Technical Head',             '2023-24'),
+  ('Sanket Zende',        'Asst. Technical Head',       '2023-24'),
+  ('Swaraj Patil',        'Treasurer',                  '2023-24'),
+  ('Soham Shravane',      'Asst. Treasurer',            '2023-24'),
+  ('Ann Rachel Koshy',    'Sponsorship Head',           '2023-24'),
+  ('Vaishakh Varier',     'Documentation Head',         '2023-24'),
+  ('Poorva Narkhede',     'Creative Head',              '2023-24'),
+  ('Kaustubh Lamkhade',   'Public Representative',      '2023-24'),
+  ('Rayyan Khan',         'Security Head',              '2023-24'),
+  ('Yaseer Quraishi',     'OC Head',                    '2023-24');
+
+/* 1‑B Council Event Reports */
+INSERT INTO sc_student_council_reports (event_name, council_year, file_path)
+VALUES
+  -- FACES
+  ('FACES',  '2023', 'faces_2023.pdf'),
+  ('FACES',  '2022', 'faces_2022.pdf'),
+  ('FACES',  '2021', 'faces_2021.pdf'),
+  ('FACES',  '2020', 'faces_2020.pdf'),
+  ('FACES',  '2019', 'faces_2019.pdf'),
+  -- ETAMAX
+  ('ETAMAX', '2023', 'etamax_2023.pdf'),
+  ('ETAMAX', '2022', 'etamax_2022.pdf'),
+  ('ETAMAX', '2021', 'etamax_2021.pdf'),
+  ('ETAMAX', '2020', 'etamax_2020.pdf'),
+  ('ETAMAX', '2019', 'etamax_2019.pdf');
+
+
+/* ============================================================
+   2.  Professional Bodies
+============================================================ */
+INSERT INTO sc_professional_bodies (short_name, full_name, logo_path, description)
+VALUES
+  ('CSI',  'Computer Society of India',                                         'src/assets/imgs/csi.png',   'Department of Computer Engineering'),
+  ('SAE',  'Society of Automotive Engineers India',                             'src/assets/imgs/sae.png',   NULL),
+  ('IEEE', 'The Institute of Electrical and Electronics Engineers',             'src/assets/imgs/ieee.png',  NULL),
+  ('IE',   'The Institution of Engineers (India)',                              'src/assets/imgs/iei.jpg',   NULL),
+  ('CSI',  'Computer Society of India – IT Chapter',                            'src/assets/imgs/csi.png',   'Department of Information Technology'),
+  ('ISHRAE','Indian Society of Heating, Refrigerating and Air‑Conditioning Engineers','src/assets/imgs/ishrae.jpg', NULL),
+  ('IETE', 'Institution of Electronics and Telecommunication Engineers',        'src/assets/imgs/iete2.jpg', NULL);
+
+
+/* ============================================================
+   3.  NSS
+============================================================ */
+/* 3‑A Program Officers */
+INSERT INTO sc_nss_program_officers (full_name)
+VALUES ('Mr. Rahul Jadhav'),
+       ('Mrs. Dhanashree Hadsul');
+
+/* 3‑B Activity / Camp Reports */
+INSERT INTO sc_nss_activity_reports (year_label, label, file_path)
+VALUES
+  ('2021-22', 'Activity Report',                      'nss_activity_2021-22.pdf'),
+  ('2020-21', 'Activity Report',                      'nss_activity_2020-21.pdf'),
+  ('2019-20', 'Activity Report',                      'nss_activity_2019-20.pdf'),
+  ('2019-20', 'Special Camp Report',                  'nss_special_camp_2019-20.pdf');
+
+
+/* ============================================================
+   4.  Student Clubs
+============================================================ */
+INSERT INTO sc_student_clubs (name, logo_path)
+VALUES
+  ('Agnel Robotics Club',    'src/assets/imgs/agnels-robotic-club.png'),
+  ('Agnel Sports Club',      'src/assets/imgs/sports-club.jpeg'),
+  ('Drama Club',             'src/assets/imgs/drama-club.jpeg'),
+  ('AI and Deep Learning Club','src/assets/imgs/artificial-intelligence-and-deep-learning-club.jpeg'),
+  ('Music Club',             'src/assets/imgs/music-club.jpeg'),
+  ('College Magazine',       'src/assets/imgs/college-magazine.jpeg'),
+  ('Coders\' Club',          'src/assets/imgs/coders-club.jpeg');
+
+
+/* ============================================================
+   5.  Infrastructure Facilities
+============================================================ */
+INSERT INTO sc_facilities (name, image_path, short_desc)
+VALUES
+  ('Library',             'src/assets/imgs/library.jpg',            'Institute Central Library'),
+  ('Gymnasium',           'src/assets/imgs/gymnasium.jpg',          'Campus Gym and Fitness Centre'),
+  ('Boys and Girls Hostel','src/assets/imgs/hostel.jpg',            'On‑campus accommodation'),
+  ('Swimming Pool',       'src/assets/imgs/swimming-pool.jpg',      'Olympic‑size pool'),
+  ('Medical Centre',      'src/assets/imgs/medical-centre.jpeg',    '24×7 Medical Facility'),
+  ('Meditation Centre',   'src/assets/imgs/meditation-centre.jpg',  'Quiet meditation hall'),
+  ('Basketball Court',    'src/assets/imgs/basketball-court.jpg',   'Outdoor court'),
+  ('Football Turf',       'src/assets/imgs/football-turf.jpg',      'Flood‑lit synthetic turf'),
+  ('Badminton Gurukul',   'src/assets/imgs/badminton-gurukul.jpg',  'Indoor badminton academy'),
+  ('Canteen',             'src/assets/imgs/canteen.jpg',            'Multi‑cuisine canteen');
+
+
+/* ============================================================
+   6.  Cultural Activities  (none yet – table stays empty)
+============================================================ */
+
+/* ============================================================
+   7.  Anti‑Ragging
+============================================================ */
+INSERT INTO sc_anti_ragging_contacts (full_name, designation, phone, email)
+VALUES
+  ('Prof. A. B. Sharma', 'Anti‑Ragging Committee Chair', '9876543210', 'antiragging@fcrit.ac.in');
+
+-- No formal notices uploaded yet; table sc_anti_ragging_notices can stay empty.
+
+/* ============================================================
+   8.  Student Satisfaction Surveys  (none uploaded yet)
+============================================================ */
+-- INSERT as soon as you have a live survey link
