@@ -11,7 +11,6 @@ import profileRoutes from "./website/profileRoutes.js";
 import facultyRoutes from "./website/department/facultyRoutes.js";
 import infrastructureRoutes from "./website/department/infrastructureRoutes.js";
 import departmentRoutes from "./website/department/departmentRoutes.js";
-import roleRoutes from "./admin/roleRoutes.js";
 import studentcornerRoutes from "./website/studentcorner/studentcornerRoutes.js";
 const router = express.Router();
 
@@ -27,7 +26,6 @@ router.use("/api/profile", profileRoutes);
 router.use("/api/faculty", facultyRoutes);
 router.use("/api/infrastructure", infrastructureRoutes);
 router.use("/api/dept", departmentRoutes);
-router.use("/api/roles", roleRoutes);
 router.use("/api/students-corner", studentcornerRoutes);
 
 // router.use("/api/announcements", announcementRoutes);
