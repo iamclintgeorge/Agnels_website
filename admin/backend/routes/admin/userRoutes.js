@@ -6,7 +6,6 @@ import {
   fetchrolesController,
   fetchpermissionsController,
 } from "../../controllers/admin/userController.js";
-import { updateRolePermissions } from "../../controllers/admin/rolePermissionController.js";
 import {
   authMiddleware,
   checkAuth,
@@ -30,14 +29,6 @@ router.post("/signout", logoutController);
 router.get("/check-auth", authMiddleware, checkAuth);
 router.get("/fetchroles", fetchrolesController);
 router.get("/fetchpermissions", fetchpermissionsController);
-
-// Role permission management
-router.put(
-  "/roles",
-  authMiddleware,
-  checkPermission("manage_users"),
-  updateRolePermissions
-);
 
 // Role CRUD
 router.post(
