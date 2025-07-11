@@ -8,10 +8,14 @@ import compActivityRoutes from "./website/homepage/compActivityRoutes.js";
 import academicRoutes from "./website/academics/academics.js";
 import humanRRoutes from "./website/humanRRoutes.js";
 import profileRoutes from "./website/profileRoutes.js";
+<<<<<<< HEAD
 import facultyRoutes from "./website/department/facultyRoutes.js";
 import infrastructureRoutes from "./website/department/infrastructureRoutes.js";
 import departmentRoutes from "./website/department/departmentRoutes.js";
 import roleRoutes from "./admin/roleRoutes.js";
+=======
+import studentcornerRoutes from "./website/studentcorner/studentcornerRoutes.js";
+>>>>>>> origin/main
 const router = express.Router();
 
 router.use("/api", userRoutes);
@@ -23,10 +27,14 @@ router.use("/api/aboutus", aboutusRoutes);
 router.use("/api/academic", academicRoutes);
 router.use("/api/humanResource", humanRRoutes);
 router.use("/api/profile", profileRoutes);
+<<<<<<< HEAD
 router.use("/api/faculty", facultyRoutes);
 router.use("/api/infrastructure", infrastructureRoutes);
 router.use("/api/dept", departmentRoutes);
 router.use("/api/roles", roleRoutes);
+=======
+router.use("/api/students-corner", studentcornerRoutes);
+>>>>>>> origin/main
 
 // router.use("/api/announcements", announcementRoutes);
 
