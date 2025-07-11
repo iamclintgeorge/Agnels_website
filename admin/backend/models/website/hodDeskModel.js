@@ -3,7 +3,7 @@ import db from "../../config/db.js";
 // Get HOD text by section
 export const getHodTextBySection = async (section) => {
   try {
-    const [rows] = await db.execute(
+    const [rows] = await db.promise().query(
       "SELECT * FROM infoText WHERE Section = ? ORDER BY Created_At DESC LIMIT 1",
       [section]
     );
@@ -17,7 +17,7 @@ export const getHodTextBySection = async (section) => {
 // Create new HOD text entry
 export const createHodText = async (section, content) => {
   try {
-    const [result] = await db.execute(
+    const [result] = await db.promise().query(
       "INSERT INTO infoText (Section, Content) VALUES (?, ?)",
       [section, content]
     );
@@ -31,7 +31,7 @@ export const createHodText = async (section, content) => {
 // Update HOD text by ID
 export const updateHodTextById = async (id, content) => {
   try {
-    const [result] = await db.execute(
+    const [result] = await db.promise().query(
       "UPDATE infoText SET Content = ?, Updated_At = CURRENT_TIMESTAMP WHERE id = ?",
       [content, id]
     );
@@ -45,7 +45,7 @@ export const updateHodTextById = async (id, content) => {
 // Delete HOD text by ID
 export const deleteHodTextById = async (id) => {
   try {
-    const [result] = await db.execute(
+    const [result] = await db.promise().query(
       "DELETE FROM infoText WHERE id = ?",
       [id]
     );
@@ -59,7 +59,7 @@ export const deleteHodTextById = async (id) => {
 // Get all HOD text entries (for admin purposes)
 export const getAllHodText = async () => {
   try {
-    const [rows] = await db.execute(
+    const [rows] = await db.promise().query(
       "SELECT * FROM infoText ORDER BY Section, Created_At DESC"
     );
     return rows;

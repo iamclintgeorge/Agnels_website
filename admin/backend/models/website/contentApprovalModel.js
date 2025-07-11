@@ -3,7 +3,7 @@ import db from "../../config/db.js";
 // Get approval rules for content type and user role
 export const getApprovalRules = async (contentType, requesterRole, department = null) => {
   try {
-    const [rows] = await db.execute(
+    const [rows] = await db.promise().query(
       `SELECT * FROM content_approval_rules 
        WHERE content_type = ? AND requester_role = ? 
        AND (department = ? OR department IS NULL)
@@ -35,7 +35,7 @@ export const createApprovalRequest = async (data) => {
       requiredApprovalLevel
     } = data;
 
-    const [result] = await db.execute(
+    const [result] = await db.promise().query(
       `INSERT INTO content_approval_requests 
        (content_type, content_id, section, title, current_content, proposed_content, 
         change_type, change_summary, requested_by, requester_role, department, required_approval_level)
@@ -109,7 +109,7 @@ export const getApprovalRequestsByRole = async (userRole, userId, status = null,
 
     query += ` ORDER BY car.created_at DESC`;
 
-    const [rows] = await db.execute(query, params);
+    const [rows] = await db.promise().query(query, params);
     return rows;
   } catch (error) {
     console.error("Error getting approval requests by role:", error);
@@ -120,7 +120,7 @@ export const getApprovalRequestsByRole = async (userRole, userId, status = null,
 // Get specific approval request
 export const getApprovalRequestById = async (id) => {
   try {
-    const [rows] = await db.execute(
+    const [rows] = await db.promise().query(
       `SELECT car.*, 
              u_requester.userName as requester_name, u_requester.emailId as requester_email,
              u_hod.userName as hod_name,
@@ -188,7 +188,7 @@ export const approveRequest = async (requestId, approverId, approverRole, commen
 
     updateValues.push(requestId);
     
-    const [result] = await db.execute(
+    const [result] = await db.promise().query(
       `UPDATE content_approval_requests 
        SET ${updateFields.join(', ')} 
        WHERE id = ?`,
@@ -209,14 +209,30 @@ export const approveRequest = async (requestId, approverId, approverRole, commen
 // Reject request
 export const rejectRequest = async (requestId, rejectedBy, rejectorRole, comments) => {
   try {
-    const [result] = await db.execute(
+    const updateFields = ['status = ?', 'rejected_by = ?', 'rejected_at = CURRENT_TIMESTAMP'];
+    const updateValues = ['rejected', rejectedBy];
+
+    if (rejectorRole.endsWith('Hod')) {
+      updateFields.push('hod_comments = ?');
+      updateValues.push(comments);
+    } else if (rejectorRole === 'principal') {
+      updateFields.push('principal_comments = ?');
+      updateValues.push(comments);
+    } else if (rejectorRole === 'superAdmin') {
+      updateFields.push('superadmin_comments = ?');
+      updateValues.push(comments);
+    }
+
+    updateValues.push(requestId);
+
+    const [result] = await db.promise().query(
       `UPDATE content_approval_requests 
-       SET status = 'rejected'
+       SET ${updateFields.join(', ')} 
        WHERE id = ?`,
-      [requestId]
+      updateValues
     );
 
-    // Log the rejection
+    // Log the rejection action
     await logApprovalAction(requestId, 'rejected', rejectedBy, rejectorRole, comments);
 
     return result;
@@ -229,15 +245,31 @@ export const rejectRequest = async (requestId, rejectedBy, rejectorRole, comment
 // Request revision
 export const requestRevision = async (requestId, reviewerId, reviewerRole, comments) => {
   try {
-    const [result] = await db.execute(
+    const updateFields = ['status = ?', 'revision_requested_by = ?', 'revision_requested_at = CURRENT_TIMESTAMP'];
+    const updateValues = ['revision_requested', reviewerId];
+
+    if (reviewerRole.endsWith('Hod')) {
+      updateFields.push('hod_comments = ?');
+      updateValues.push(comments);
+    } else if (reviewerRole === 'principal') {
+      updateFields.push('principal_comments = ?');
+      updateValues.push(comments);
+    } else if (reviewerRole === 'superAdmin') {
+      updateFields.push('superadmin_comments = ?');
+      updateValues.push(comments);
+    }
+
+    updateValues.push(requestId);
+
+    const [result] = await db.promise().query(
       `UPDATE content_approval_requests 
-       SET status = 'needs_revision', approval_level = 1
+       SET ${updateFields.join(', ')} 
        WHERE id = ?`,
-      [requestId]
+      updateValues
     );
 
-    // Log the revision request
-    await logApprovalAction(requestId, 'revised', reviewerId, reviewerRole, comments);
+    // Log the revision request action
+    await logApprovalAction(requestId, 'revision_requested', reviewerId, reviewerRole, comments);
 
     return result;
   } catch (error) {
@@ -246,18 +278,18 @@ export const requestRevision = async (requestId, reviewerId, reviewerRole, comme
   }
 };
 
-// Mark request as implemented
+// Mark as implemented
 export const markAsImplemented = async (requestId, implementedBy) => {
   try {
-    const [result] = await db.execute(
+    const [result] = await db.promise().query(
       `UPDATE content_approval_requests 
-       SET implemented_at = CURRENT_TIMESTAMP
-       WHERE id = ? AND status = 'approved'`,
-      [requestId]
+       SET status = 'implemented', implemented_by = ?, implemented_at = CURRENT_TIMESTAMP 
+       WHERE id = ?`,
+      [implementedBy, requestId]
     );
 
-    // Log the implementation
-    await logApprovalAction(requestId, 'implemented', implementedBy, 'system', 'Content successfully implemented');
+    // Log the implementation action
+    await logApprovalAction(requestId, 'implemented', implementedBy, 'system', 'Content changes implemented');
 
     return result;
   } catch (error) {
@@ -269,33 +301,12 @@ export const markAsImplemented = async (requestId, implementedBy) => {
 // Log approval action
 export const logApprovalAction = async (requestId, action, performedBy, performerRole, comments = null) => {
   try {
-    // Get current status for history
-    const request = await getApprovalRequestById(requestId);
-    const previousStatus = request ? request.status : null;
-
-    let newStatus = previousStatus;
-    switch (action) {
-      case 'approved':
-        newStatus = request && request.approval_level >= request.required_approval_level ? 'approved' : 'pending';
-        break;
-      case 'rejected':
-        newStatus = 'rejected';
-        break;
-      case 'revised':
-        newStatus = 'needs_revision';
-        break;
-      case 'implemented':
-        newStatus = 'approved';
-        break;
-    }
-
-    const [result] = await db.execute(
-      `INSERT INTO content_change_history 
-       (approval_request_id, action, performed_by, performer_role, comments, previous_status, new_status)
-       VALUES (?, ?, ?, ?, ?, ?, ?)`,
-      [requestId, action, performedBy, performerRole, comments, previousStatus, newStatus]
+    const [result] = await db.promise().query(
+      `INSERT INTO content_approval_history 
+       (request_id, action, performed_by, performer_role, comments) 
+       VALUES (?, ?, ?, ?, ?)`,
+      [requestId, action, performedBy, performerRole, comments]
     );
-
     return result;
   } catch (error) {
     console.error("Error logging approval action:", error);
@@ -306,12 +317,12 @@ export const logApprovalAction = async (requestId, action, performedBy, performe
 // Get approval history for a request
 export const getApprovalHistory = async (requestId) => {
   try {
-    const [rows] = await db.execute(
-      `SELECT cch.*, u.userName, u.emailId
-       FROM content_change_history cch
-       LEFT JOIN users u ON cch.performed_by = u.id
-       WHERE cch.approval_request_id = ?
-       ORDER BY cch.action_timestamp ASC`,
+    const [rows] = await db.promise().query(
+      `SELECT ah.*, u.userName as performer_name 
+       FROM content_approval_history ah
+       LEFT JOIN users u ON ah.performed_by = u.id
+       WHERE ah.request_id = ?
+       ORDER BY ah.created_at ASC`,
       [requestId]
     );
     return rows;
@@ -321,7 +332,7 @@ export const getApprovalHistory = async (requestId) => {
   }
 };
 
-// Get pending approvals count for dashboard
+// Get pending approvals count for user
 export const getPendingApprovalsCount = async (userRole, department = null) => {
   try {
     let query = `
@@ -329,20 +340,22 @@ export const getPendingApprovalsCount = async (userRole, department = null) => {
       FROM content_approval_requests
       WHERE status = 'pending'
     `;
+    
     const params = [];
 
-    if (userRole.endsWith('Hod') && department) {
-      query += ` AND department = ? AND approval_level = 1`;
+    if (userRole === 'superAdmin') {
+      // SuperAdmin can approve all
+    } else if (userRole.endsWith('Hod')) {
+      query += ` AND department = ? AND approval_level < 1`;
       params.push(department);
     } else if (userRole === 'principal') {
-      query += ` AND required_approval_level >= 2 AND approval_level = 2`;
-    } else if (userRole === 'superAdmin') {
-      query += ` AND approval_level = 3`;
+      query += ` AND required_approval_level >= 2 AND approval_level < 2`;
     } else {
+      // Regular users can't approve
       return { count: 0 };
     }
 
-    const [rows] = await db.execute(query, params);
+    const [rows] = await db.promise().query(query, params);
     return rows[0];
   } catch (error) {
     console.error("Error getting pending approvals count:", error);
@@ -350,15 +363,16 @@ export const getPendingApprovalsCount = async (userRole, department = null) => {
   }
 };
 
-// Get department by user role
+// Helper function to get department from user role
 export const getDepartmentByUserRole = (userRole) => {
   const departmentMap = {
     'compHod': 'computer-engineering',
     'mechHod': 'mechanical-engineering',
-    'electricalHod': 'electrical-engineering',
     'extcHod': 'extc',
-    'bshHod': 'basic-science-and-humanities',
-    'itHod': 'computer-science-and-engineering'
+    'electricalHod': 'electrical-engineering',
+    'cseHod': 'computer-science-and-engineering',
+    'bshHod': 'basic-science-and-humanities'
   };
+  
   return departmentMap[userRole] || null;
 }; 
