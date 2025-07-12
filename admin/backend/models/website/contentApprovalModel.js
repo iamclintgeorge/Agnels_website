@@ -1,7 +1,11 @@
 import db from "../../config/db.js";
 
 // Get approval rules for content type and user role
-export const getApprovalRules = async (contentType, requesterRole, department = null) => {
+export const getApprovalRules = async (
+  contentType,
+  requesterRole,
+  department = null
+) => {
   try {
     const [rows] = await db.promise().query(
       `SELECT * FROM content_approval_rules 
@@ -10,19 +14,20 @@ export const getApprovalRules = async (contentType, requesterRole, department = 
        ORDER BY department DESC LIMIT 1`,
       [contentType, requesterRole, department]
     );
-    return rows[0] || null;
+    return rows[0] || null; // return the first row or null if no rule is found
   } catch (error) {
     console.error("Error getting approval rules:", error);
-    throw error;
+    throw error; // throw error to be handled by calling function
   }
 };
+
+// ...existing code...
 
 // Create approval request
 export const createApprovalRequest = async (data) => {
   try {
     const {
       contentType,
-      contentId,
       section,
       title,
       currentContent,
@@ -30,90 +35,45 @@ export const createApprovalRequest = async (data) => {
       changeType,
       changeSummary,
       requestedBy,
-      requesterRole,
-      department,
-      requiredApprovalLevel
+      requiredApprovalLevel,
     } = data;
 
-    const [result] = await db.promise().query(
-      `INSERT INTO content_approval_requests 
-       (content_type, content_id, section, title, current_content, proposed_content, 
-        change_type, change_summary, requested_by, requester_role, department, required_approval_level)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [contentType, contentId, section, title, currentContent, proposedContent, 
-       changeType, changeSummary, requestedBy, requesterRole, department, requiredApprovalLevel]
-    );
-
-    // Log the submission
-    await logApprovalAction(result.insertId, 'submitted', requestedBy, requesterRole, 'Request submitted for approval');
-    
-    return result.insertId;
-  } catch (error) {
-    console.error("Error creating approval request:", error);
-    throw error;
-  }
-};
-
-// Get approval requests by status and user role
-export const getApprovalRequestsByRole = async (userRole, userId, status = null, department = null) => {
-  try {
-    let query = `
-      SELECT car.*, 
-             u_requester.userName as requester_name,
-             u_hod.userName as hod_name,
-             u_principal.userName as principal_name,
-             u_superadmin.userName as superadmin_name
-      FROM content_approval_requests car
-      LEFT JOIN users u_requester ON car.requested_by = u_requester.id
-      LEFT JOIN users u_hod ON car.hod_approved_by = u_hod.id
-      LEFT JOIN users u_principal ON car.principal_approved_by = u_principal.id
-      LEFT JOIN users u_superadmin ON car.superadmin_approved_by = u_superadmin.id
-      WHERE 1=1
-    `;
-    
-    const params = [];
-
-    // Filter based on user role and what they can approve
-    if (userRole === 'superAdmin') {
-      // SuperAdmin can see all requests
-      if (status) {
-        query += ` AND car.status = ?`;
-        params.push(status);
-      }
-    } else if (userRole.endsWith('Hod')) {
-      // HODs can see requests for their department
-      if (department) {
-        query += ` AND car.department = ?`;
-        params.push(department);
-      }
-      if (status) {
-        query += ` AND car.status = ?`;
-        params.push(status);
-      }
-    } else if (userRole === 'principal') {
-      // Principal can see all requests requiring principal approval
-      query += ` AND car.required_approval_level >= 2`;
-      if (status) {
-        query += ` AND car.status = ?`;
-        params.push(status);
-      }
-    } else {
-      // Regular users can only see their own requests
-      query += ` AND car.requested_by = ?`;
-      params.push(userId);
-      if (status) {
-        query += ` AND car.status = ?`;
-        params.push(status);
-      }
+    // Validate content type length (ensure it doesn't exceed the VARCHAR limit of 100)
+    if (!contentType || contentType.length > 100) {
+      throw new Error("Invalid content_type value or too long.");
     }
 
-    query += ` ORDER BY car.created_at DESC`;
+    // Insert new approval request into the database
+    const [result] = await db.promise().query(
+      `INSERT INTO approval_requests 
+       (content_type, section, title, current_content, proposed_content, operation, change_summary, requester_id, status, approval_level, required_approval_level)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'pending', 1, ?)`,
+      [
+        contentType, // content_type (e.g. "introtext")
+        section, // section (e.g. "homepage")
+        title, // title of the change request
+        currentContent, // the current content before update
+        proposedContent, // the new content to be approved
+        changeType, // operation type (create, update, delete)
+        changeSummary, // a short description of the change
+        requestedBy, // ID of the user who is requesting
+        requiredApprovalLevel, // level of approval required
+      ]
+    );
 
-    const [rows] = await db.promise().query(query, params);
-    return rows;
+    // Log the approval action for history tracking
+    await logApprovalAction(
+      result.insertId,
+      "submitted",
+      requestedBy,
+      null,
+      "Request submitted for approval"
+    );
+
+    return result.insertId; // return the newly created request ID
   } catch (error) {
-    console.error("Error getting approval requests by role:", error);
-    throw error;
+    console.error("Error creating approval request:", error);
+    throw error; // throw error to be handled at higher level
   }
 };
 
@@ -126,7 +86,7 @@ export const getApprovalRequestById = async (id) => {
              u_hod.userName as hod_name,
              u_principal.userName as principal_name,
              u_superadmin.userName as superadmin_name
-       FROM content_approval_requests car
+       FROM approval_requests car
        LEFT JOIN users u_requester ON car.requested_by = u_requester.id
        LEFT JOIN users u_hod ON car.hod_approved_by = u_hod.id
        LEFT JOIN users u_principal ON car.principal_approved_by = u_principal.id
@@ -142,62 +102,105 @@ export const getApprovalRequestById = async (id) => {
 };
 
 // Approve request at specific level
-export const approveRequest = async (requestId, approverId, approverRole, comments = null) => {
+export const approveRequest = async (
+  requestId,
+  approverId,
+  approverRole,
+  comments = null
+) => {
   try {
     let updateFields = [];
     let updateValues = [];
 
     // Determine which approval level to update
-    if (approverRole.endsWith('Hod')) {
-      updateFields = ['hod_approved_by = ?', 'hod_approved_at = CURRENT_TIMESTAMP'];
+    if (approverRole.endsWith("Hod")) {
+      updateFields = [
+        "hod_approved_by = ?",
+        "hod_approved_at = CURRENT_TIMESTAMP",
+      ];
       updateValues = [approverId];
       if (comments) {
-        updateFields.push('hod_comments = ?');
+        updateFields.push("hod_comments = ?");
         updateValues.push(comments);
       }
-    } else if (approverRole === 'principal') {
-      updateFields = ['principal_approved_by = ?', 'principal_approved_at = CURRENT_TIMESTAMP'];
+    } else if (approverRole === "principal") {
+      updateFields = [
+        "principal_approved_by = ?",
+        "principal_approved_at = CURRENT_TIMESTAMP",
+      ];
       updateValues = [approverId];
       if (comments) {
-        updateFields.push('principal_comments = ?');
+        updateFields.push("principal_comments = ?");
         updateValues.push(comments);
       }
-    } else if (approverRole === 'superAdmin') {
-      updateFields = ['superadmin_approved_by = ?', 'superadmin_approved_at = CURRENT_TIMESTAMP'];
+    } else if (approverRole === "superAdmin") {
+      updateFields = [
+        "superadmin_approved_by = ?",
+        "superadmin_approved_at = CURRENT_TIMESTAMP",
+      ];
       updateValues = [approverId];
       if (comments) {
-        updateFields.push('superadmin_comments = ?');
+        updateFields.push("superadmin_comments = ?");
         updateValues.push(comments);
       }
     }
 
     // Get current request to check approval level
     const request = await getApprovalRequestById(requestId);
-    if (!request) throw new Error('Request not found');
+    if (!request) throw new Error("Request not found");
 
     // Update approval level
     const newApprovalLevel = request.approval_level + 1;
-    updateFields.push('approval_level = ?');
+    updateFields.push("approval_level = ?");
     updateValues.push(newApprovalLevel);
 
     // Check if this completes the approval process
+    let result;
     if (newApprovalLevel > request.required_approval_level) {
-      updateFields.push('status = ?', 'final_approved_by = ?', 'final_approved_at = CURRENT_TIMESTAMP');
-      updateValues.push('approved', approverId);
+      updateFields.push(
+        "status = ?",
+        "final_approved_by = ?",
+        "final_approved_at = CURRENT_TIMESTAMP"
+      );
+      updateValues.push("approved", approverId);
     }
 
     updateValues.push(requestId);
-    
-    const [result] = await db.promise().query(
-      `UPDATE content_approval_requests 
-       SET ${updateFields.join(', ')} 
+    result = await db.promise().query(
+      `UPDATE approval_requests 
+       SET ${updateFields.join(", ")} 
        WHERE id = ?`,
       updateValues
     );
 
+    // If fully approved, apply the change to the target table (e.g., introtext)
+    if (
+      newApprovalLevel > request.required_approval_level &&
+      request.content_type === "introtext" &&
+      request.operation === "update"
+    ) {
+      // For introtext, update the content in the introtext table
+      // You may need to adjust the table/column names as per your schema
+      await db
+        .promise()
+        .query(`UPDATE introtext SET Content = ? WHERE id = ?`, [
+          request.proposed_content,
+          request.content_id,
+        ]);
+    }
+
     // Log the approval action
-    const action = newApprovalLevel > request.required_approval_level ? 'approved' : 'approved';
-    await logApprovalAction(requestId, action, approverId, approverRole, comments);
+    const action =
+      newApprovalLevel > request.required_approval_level
+        ? "approved"
+        : "approved";
+    await logApprovalAction(
+      requestId,
+      action,
+      approverId,
+      approverRole,
+      comments
+    );
 
     return result;
   } catch (error) {
@@ -207,33 +210,48 @@ export const approveRequest = async (requestId, approverId, approverRole, commen
 };
 
 // Reject request
-export const rejectRequest = async (requestId, rejectedBy, rejectorRole, comments) => {
+export const rejectRequest = async (
+  requestId,
+  rejectedBy,
+  rejectorRole,
+  comments
+) => {
   try {
-    const updateFields = ['status = ?', 'rejected_by = ?', 'rejected_at = CURRENT_TIMESTAMP'];
-    const updateValues = ['rejected', rejectedBy];
+    const updateFields = [
+      "status = ?",
+      "rejected_by = ?",
+      "rejected_at = CURRENT_TIMESTAMP",
+    ];
+    const updateValues = ["rejected", rejectedBy];
 
-    if (rejectorRole.endsWith('Hod')) {
-      updateFields.push('hod_comments = ?');
+    if (rejectorRole.endsWith("Hod")) {
+      updateFields.push("hod_comments = ?");
       updateValues.push(comments);
-    } else if (rejectorRole === 'principal') {
-      updateFields.push('principal_comments = ?');
+    } else if (rejectorRole === "principal") {
+      updateFields.push("principal_comments = ?");
       updateValues.push(comments);
-    } else if (rejectorRole === 'superAdmin') {
-      updateFields.push('superadmin_comments = ?');
+    } else if (rejectorRole === "superAdmin") {
+      updateFields.push("superadmin_comments = ?");
       updateValues.push(comments);
     }
 
     updateValues.push(requestId);
 
     const [result] = await db.promise().query(
-      `UPDATE content_approval_requests 
-       SET ${updateFields.join(', ')} 
+      `UPDATE approval_requests 
+       SET ${updateFields.join(", ")} 
        WHERE id = ?`,
       updateValues
     );
 
     // Log the rejection action
-    await logApprovalAction(requestId, 'rejected', rejectedBy, rejectorRole, comments);
+    await logApprovalAction(
+      requestId,
+      "rejected",
+      rejectedBy,
+      rejectorRole,
+      comments
+    );
 
     return result;
   } catch (error) {
@@ -243,33 +261,48 @@ export const rejectRequest = async (requestId, rejectedBy, rejectorRole, comment
 };
 
 // Request revision
-export const requestRevision = async (requestId, reviewerId, reviewerRole, comments) => {
+export const requestRevision = async (
+  requestId,
+  reviewerId,
+  reviewerRole,
+  comments
+) => {
   try {
-    const updateFields = ['status = ?', 'revision_requested_by = ?', 'revision_requested_at = CURRENT_TIMESTAMP'];
-    const updateValues = ['revision_requested', reviewerId];
+    const updateFields = [
+      "status = ?",
+      "revision_requested_by = ?",
+      "revision_requested_at = CURRENT_TIMESTAMP",
+    ];
+    const updateValues = ["revision_requested", reviewerId];
 
-    if (reviewerRole.endsWith('Hod')) {
-      updateFields.push('hod_comments = ?');
+    if (reviewerRole.endsWith("Hod")) {
+      updateFields.push("hod_comments = ?");
       updateValues.push(comments);
-    } else if (reviewerRole === 'principal') {
-      updateFields.push('principal_comments = ?');
+    } else if (reviewerRole === "principal") {
+      updateFields.push("principal_comments = ?");
       updateValues.push(comments);
-    } else if (reviewerRole === 'superAdmin') {
-      updateFields.push('superadmin_comments = ?');
+    } else if (reviewerRole === "superAdmin") {
+      updateFields.push("superadmin_comments = ?");
       updateValues.push(comments);
     }
 
     updateValues.push(requestId);
 
     const [result] = await db.promise().query(
-      `UPDATE content_approval_requests 
-       SET ${updateFields.join(', ')} 
+      `UPDATE approval_requests 
+       SET ${updateFields.join(", ")} 
        WHERE id = ?`,
       updateValues
     );
 
     // Log the revision request action
-    await logApprovalAction(requestId, 'revision_requested', reviewerId, reviewerRole, comments);
+    await logApprovalAction(
+      requestId,
+      "revision_requested",
+      reviewerId,
+      reviewerRole,
+      comments
+    );
 
     return result;
   } catch (error) {
@@ -282,14 +315,20 @@ export const requestRevision = async (requestId, reviewerId, reviewerRole, comme
 export const markAsImplemented = async (requestId, implementedBy) => {
   try {
     const [result] = await db.promise().query(
-      `UPDATE content_approval_requests 
+      `UPDATE approval_requests 
        SET status = 'implemented', implemented_by = ?, implemented_at = CURRENT_TIMESTAMP 
        WHERE id = ?`,
       [implementedBy, requestId]
     );
 
     // Log the implementation action
-    await logApprovalAction(requestId, 'implemented', implementedBy, 'system', 'Content changes implemented');
+    await logApprovalAction(
+      requestId,
+      "implemented",
+      implementedBy,
+      "system",
+      "Content changes implemented"
+    );
 
     return result;
   } catch (error) {
@@ -299,7 +338,13 @@ export const markAsImplemented = async (requestId, implementedBy) => {
 };
 
 // Log approval action
-export const logApprovalAction = async (requestId, action, performedBy, performerRole, comments = null) => {
+export const logApprovalAction = async (
+  requestId,
+  action,
+  performedBy,
+  performerRole,
+  comments = null
+) => {
   try {
     const [result] = await db.promise().query(
       `INSERT INTO content_approval_history 
@@ -337,18 +382,18 @@ export const getPendingApprovalsCount = async (userRole, department = null) => {
   try {
     let query = `
       SELECT COUNT(*) as count
-      FROM content_approval_requests
+      FROM approval_requests
       WHERE status = 'pending'
     `;
-    
+
     const params = [];
 
-    if (userRole === 'superAdmin') {
+    if (userRole === "superAdmin") {
       // SuperAdmin can approve all
-    } else if (userRole.endsWith('Hod')) {
+    } else if (userRole.endsWith("Hod")) {
       query += ` AND department = ? AND approval_level < 1`;
       params.push(department);
-    } else if (userRole === 'principal') {
+    } else if (userRole === "principal") {
       query += ` AND required_approval_level >= 2 AND approval_level < 2`;
     } else {
       // Regular users can't approve
@@ -366,13 +411,13 @@ export const getPendingApprovalsCount = async (userRole, department = null) => {
 // Helper function to get department from user role
 export const getDepartmentByUserRole = (userRole) => {
   const departmentMap = {
-    'compHod': 'computer-engineering',
-    'mechHod': 'mechanical-engineering',
-    'extcHod': 'extc',
-    'electricalHod': 'electrical-engineering',
-    'cseHod': 'computer-science-and-engineering',
-    'bshHod': 'basic-science-and-humanities'
+    compHod: "computer-engineering",
+    mechHod: "mechanical-engineering",
+    extcHod: "extc",
+    electricalHod: "electrical-engineering",
+    cseHod: "computer-science-and-engineering",
+    bshHod: "basic-science-and-humanities",
   };
-  
+
   return departmentMap[userRole] || null;
-}; 
+};
