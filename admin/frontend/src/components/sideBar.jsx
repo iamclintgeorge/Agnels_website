@@ -508,35 +508,35 @@ const DynamicSideBar = () => {
               </span>
             </p>
             {openSections.hodDesk && (
-              <div className="pt-2 pr-8 pl-4 leading-10">
+              <div className="pt-4 pr-8 pl-4 leading-7 space-y-4">
                 {(user.role === "compHod" || user.role === "superAdmin") && (
-                  <Link to="/hod-desk/computer">
+                  <Link to="/hod-desk/computer" className="block">
                     <p>Computer Engineering</p>
                   </Link>
                 )}
                 {(user.role === "mechHod" || user.role === "superAdmin") && (
-                  <Link to="/hod-desk/mechanical">
+                  <Link to="/hod-desk/mechanical" className="block">
                     <p>Mechanical Engineering</p>
                   </Link>
                 )}
                 {(user.role === "extcHod" || user.role === "superAdmin") && (
-                  <Link to="/hod-desk/extc">
+                  <Link to="/hod-desk/extc" className="block">
                     <p>EXTC</p>
                   </Link>
                 )}
                 {(user.role === "electricalHod" ||
                   user.role === "superAdmin") && (
-                  <Link to="/hod-desk/electrical">
+                  <Link to="/hod-desk/electrical" className="block">
                     <p>Electrical Engineering</p>
                   </Link>
                 )}
                 {(user.role === "itHod" || user.role === "superAdmin") && (
-                  <Link to="/hod-desk/it">
+                  <Link to="/hod-desk/it" className="block">
                     <p>Information Technology</p>
                   </Link>
                 )}
                 {(user.role === "bshHod" || user.role === "superAdmin") && (
-                  <Link to="/hod-desk/bsh">
+                  <Link to="/hod-desk/bsh" className="block">
                     <p>Basic Science and Humanities</p>
                   </Link>
                 )}
@@ -723,11 +723,14 @@ const DynamicSideBar = () => {
                 <p className="mt-5">
                   <Link to="/signup">Create User</Link>
                 </p>
-                {user.role === "superAdmin" && (
-                  <p>
-                    <Link to="/rolePermissionManager">Role Management</Link>
-                  </p>
-                )}
+                <p>
+                  <Link to="/rolePermissionManager">
+                    Role Permission Manager
+                  </Link>
+                </p>
+                <p>
+                  <Link to="/roleHierarchy">Role Hierarchy Manager</Link>
+                </p>
               </div>
             )}
           </div>
@@ -790,19 +793,16 @@ const DynamicSideBar = () => {
         )}
 
         {/* Edit User Profiles */}
-        <Link to="/roleHierarchy" className="flex justify-between pr-8">
-          Edit User Profiles <span>&gt;</span>
+        <Link to="/" className="flex justify-between pr-8">
+          Manage Faculty Staffs <span>&gt;</span>
         </Link>
 
         {/* Activity Logs */}
-        {(user.role === "superAdmin" ||
-          user.role === "principal" ||
-          user.role?.endsWith("Hod") ||
-          user.role === "teach_staff") && (
+        <p>
           <Link to="/activity-logs" className="flex justify-between pr-8">
             Activity Logs <span>&gt;</span>
           </Link>
-        )}
+        </p>
       </div>
     </div>
   );

@@ -3,19 +3,27 @@ import * as ApprovalModel from "../../models/website/contentApprovalModel.js";
 // Create approval request
 export const createApprovalRequest = async (req, res) => {
   try {
-    const {
-      contentType,
-      contentId,
-      section,
-      title,
-      currentContent,
-      proposedContent,
-      changeType,
-      changeSummary,
-    } = req.body;
+    // Accept both camelCase and snake_case keys
+    const body = req.body;
+    const contentType = body.contentType || body.content_type;
+    const contentId = body.contentId || body.content_id;
+    const section = body.section;
+    const title = body.title;
+    const currentContent = body.currentContent || body.current_content;
+    const proposedContent = body.proposedContent || body.proposed_content;
+    const changeType = body.changeType || body.operation || body.change_type;
+    const changeSummary = body.changeSummary || body.change_summary;
 
     const requestedBy = req.session.user.id;
     const requesterRole = req.session.user.role;
+
+    // Validate required fields
+    if (!contentType || !title) {
+      return res.status(400).json({
+        success: false,
+        message: "contentType and title are required.",
+      });
+    }
 
     // Determine department based on content or user role
     let department = null;
@@ -103,29 +111,26 @@ export const getMyApprovalRequests = async (req, res) => {
 // Get pending approvals for current user to review
 export const getPendingApprovals = async (req, res) => {
   try {
-    const userRole = req.session.user.role;
+    const db = (await import("../../config/db.js")).default;
     const userId = req.session.user.id;
-    const department = ApprovalModel.getDepartmentByUserRole(userRole);
-
-    const requests = await ApprovalModel.getApprovalRequestsByRole(
-      userRole,
-      userId,
-      "pending",
-      department
+    // Get all slave roles for this master user
+    const [slaveRows] = await db
+      .promise()
+      .query(`SELECT slaveId FROM role_hierarchy WHERE masterId = ?`, [userId]);
+    const slaveIds = slaveRows.map((row) => row.slaveId);
+    if (slaveIds.length === 0) {
+      return res.json({ success: true, requests: [] });
+    }
+    // Get all pending requests from these slaves
+    const [requests] = await db.promise().query(
+      `SELECT ar.*, u.userName as requester_name FROM approval_requests ar
+       LEFT JOIN users u ON ar.requester_id = u.id
+       WHERE ar.status = 'pending' AND ar.requester_id IN (?)`,
+      [slaveIds]
     );
-
-    // Filter to only show requests that need approval at current user's level
-    const pendingForUser = requests.filter((request) => {
-      if (userRole.endsWith("Hod") && request.approval_level === 1) return true;
-      if (userRole === "principal" && request.approval_level === 2) return true;
-      if (userRole === "superAdmin" && request.approval_level === 3)
-        return true;
-      return false;
-    });
-
     res.json({
       success: true,
-      requests: pendingForUser,
+      requests,
     });
   } catch (error) {
     console.error("Error getting pending approvals:", error);

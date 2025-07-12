@@ -120,8 +120,7 @@ app.use("/api/hod-desk", hodDeskRoutes);
 // Content approval routes
 // app.use("/api/content-approval", contentApprovalRoutes);
 app.use("/api/role-hierarchy", roleHierarchyController);
-
-
+app.use("/api/content-approval", contentApprovalRoutes);
 
 // Activity logs routes
 app.use("/api/activity-logs", activityLogsRoutes);
