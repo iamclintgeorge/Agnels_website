@@ -31,25 +31,29 @@ router.post(
     const { master, slave } = req.body;
     console.log("/role-hierarchy");
     console.log(master, slave);
-    if (!master || !slave) {
+
+    if (!master || !slave || !Array.isArray(slave) || slave.length === 0) {
       return res
         .status(400)
-        .json({ message: "Master and Slave are required." });
+        .json({ message: "Master and Slave(s) are required." });
     }
+
     try {
+      // Insert multiple slave entries for the given master
+      const values = slave.map((slaveId) => [master, slaveId]);
       const [result] = await db
         .promise()
-        .query("INSERT INTO role_hierarchy (masterId, slaveId) VALUES (?, ?)", [
-          master,
-          slave,
+        .query("INSERT INTO role_hierarchy (masterId, slaveId) VALUES ?", [
+          values,
         ]);
+
       res.status(201).json({
         message: "Role hierarchy created successfully",
         status: "success",
         data: result,
       });
     } catch (err) {
-      console.log(err);
+      console.log("Error", err);
       res.status(500).json({ message: "Database error", error: err });
     }
   }

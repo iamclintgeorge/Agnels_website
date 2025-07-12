@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios from "axios";
 
 /**
  * Submits a content approval request to the backend.
@@ -11,9 +11,7 @@ import axios from 'axios';
  * @returns {Promise}
  */
 export const submitApprovalRequest = async (data) => {
-  return axios.post(
-    'http://localhost:3663/api/content-approval/submit',
-    data,
-    { withCredentials: true }
-  );
+  return axios.post("http://localhost:3663/api/content-approval/submit", data, {
+    withCredentials: true,
+  });
 };

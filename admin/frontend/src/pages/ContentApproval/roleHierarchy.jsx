@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Plus, Edit2, Trash2, Save, X, Users, Settings } from "lucide-react";
+import { Plus, Trash2, X, Users, Settings } from "lucide-react";
 import axios from "axios";
 
 const RoleHierarchy = () => {
@@ -8,7 +8,7 @@ const RoleHierarchy = () => {
   const [editingRole, setEditingRole] = useState(null);
   const [isCreateMode, setIsCreateMode] = useState(false);
   const [selectedTab, setSelectedTab] = useState("roles");
-  const [newHierarchy, setNewHierarchy] = useState({ master: "", slave: "" });
+  const [newHierarchy, setNewHierarchy] = useState({ master: "", slaves: [] });
 
   // Fetch roles and hierarchy data
   useEffect(() => {
@@ -38,21 +38,33 @@ const RoleHierarchy = () => {
 
   // CREATE ROLE HIERARCHY
   const handleCreateHierarchy = async () => {
-    if (newHierarchy.master && newHierarchy.slave) {
+    if (newHierarchy.master && newHierarchy.slaves.length > 0) {
       try {
+        // Send the hierarchy data to the backend
         const response = await axios.post(
           "http://localhost:3663/api/role-hierarchy",
-          newHierarchy
+          {
+            master: newHierarchy.master,
+            slave: newHierarchy.slaves, // Sending slave as an array
+          }
         );
-        if (response.status !== 201)
+
+        if (response.status !== 201) {
           throw new Error("Failed to create hierarchy");
+        }
+
+        // Fetch the updated data after the hierarchy is created
         fetchMasterSlaveData();
-        setNewHierarchy({ master: "", slave: "" });
+
+        // Reset state after successful creation
+        setNewHierarchy({ master: "", slaves: [] });
         setIsCreateMode(false);
       } catch (error) {
         console.error("Error creating hierarchy:", error);
         alert("Failed to create hierarchy. Please try again.");
       }
+    } else {
+      alert("Please select a master and at least one slave.");
     }
   };
 
@@ -73,29 +85,57 @@ const RoleHierarchy = () => {
     }
   };
 
-  const RoleHierarchyCard = ({ master, slave }) => (
+  const groupedData = masterSlaveData.reduce((acc, entry) => {
+    const masterRole = roles.find((role) => role.id === entry.masterId);
+    const slaveRole = roles.find((role) => role.id === entry.slaveId);
+    if (masterRole) {
+      if (!acc[masterRole.id]) {
+        acc[masterRole.id] = {
+          master: masterRole,
+          slaves: [],
+        };
+      }
+      if (slaveRole) {
+        acc[masterRole.id].slaves.push(slaveRole);
+      }
+    }
+    return acc;
+  }, {});
+
+  const RoleHierarchyCard = ({ master, slaves }) => (
     <div className="bg-white rounded-lg shadow-md p-6 border border-gray-200">
       <div className="flex justify-between items-start mb-4">
         <div>
           <h3 className="text-lg font-semibold text-gray-800">
             Master: {master.displayName}
           </h3>
-          <p className="text-sm text-gray-600">Slave: {slave.displayName}</p>
-        </div>
-        <div className="flex space-x-2">
-          <button
-            onClick={() => handleDeleteHierarchy(master.id, slave.id)}
-            className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
-          >
-            <Trash2 size={16} />
-          </button>
+          <p className="text-sm text-gray-600">
+            Slaves:
+            <ul className="mt-2">
+              {slaves.map((slave) => (
+                <li
+                  key={slave.id}
+                  className="text-sm text-gray-600 flex justify-between items-center"
+                >
+                  <span>{slave.displayName}</span>
+                  {/* Delete Button */}
+                  <button
+                    onClick={() => handleDeleteHierarchy(master.id, slave.id)}
+                    className="text-red-600 ml-2"
+                  >
+                    <Trash2 size={16} />
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </p>
         </div>
       </div>
     </div>
   );
 
   return (
-    <div className="min-h-scree p-6">
+    <div className="min-h-screen p-6">
       <div className="max-w-7xl mx-auto">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
@@ -175,6 +215,7 @@ const RoleHierarchy = () => {
                           setNewHierarchy({
                             ...newHierarchy,
                             master: e.target.value,
+                            slaves: [], // reset slaves when master changes
                           })
                         }
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -190,25 +231,36 @@ const RoleHierarchy = () => {
 
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
-                        Slave Role
+                        Slave Roles
                       </label>
-                      <select
-                        value={newHierarchy.slave}
-                        onChange={(e) =>
-                          setNewHierarchy({
-                            ...newHierarchy,
-                            slave: e.target.value,
-                          })
-                        }
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                      >
-                        <option value="">Select Slave Role</option>
-                        {roles.map((role) => (
-                          <option key={role.id} value={role.id}>
-                            {role.displayName}
-                          </option>
-                        ))}
-                      </select>
+                      <div className="space-y-2">
+                        {roles
+                          .filter((role) => role.id !== newHierarchy.master) // Filter out selected master role
+                          .map((role) => (
+                            <div key={role.id} className="flex items-center">
+                              <input
+                                type="checkbox"
+                                value={role.id}
+                                onChange={(e) => {
+                                  const selectedSlaves = e.target.checked
+                                    ? [...newHierarchy.slaves, role.id]
+                                    : newHierarchy.slaves.filter(
+                                        (id) => id !== role.id
+                                      );
+                                  setNewHierarchy({
+                                    ...newHierarchy,
+                                    slaves: selectedSlaves,
+                                  });
+                                }}
+                                checked={newHierarchy.slaves.includes(role.id)}
+                                className="h-4 w-4 text-blue-600 border-gray-300 rounded"
+                              />
+                              <span className="ml-2 text-sm">
+                                {role.displayName}
+                              </span>
+                            </div>
+                          ))}
+                      </div>
                     </div>
                   </div>
 
@@ -232,11 +284,11 @@ const RoleHierarchy = () => {
 
             {/* Roles Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {masterSlaveData.map((entry) => (
+              {Object.values(groupedData).map(({ master, slaves }) => (
                 <RoleHierarchyCard
-                  key={`${entry.masterId}-${entry.slaveId}`}
-                  master={roles.find((role) => role.id === entry.masterId)}
-                  slave={roles.find((role) => role.id === entry.slaveId)}
+                  key={master.id}
+                  master={master}
+                  slaves={slaves}
                 />
               ))}
             </div>
@@ -247,12 +299,12 @@ const RoleHierarchy = () => {
           <div className="bg-white rounded-lg shadow-md p-6">
             <h2 className="text-xl font-semibold mb-4">Manage Hierarchy</h2>
             <div className="space-y-4">
-              {masterSlaveData.length > 0 ? (
-                masterSlaveData.map((entry) => (
+              {Object.values(groupedData).length > 0 ? (
+                Object.values(groupedData).map(({ master, slaves }) => (
                   <RoleHierarchyCard
-                    key={`${entry.masterId}-${entry.slaveId}`}
-                    master={roles.find((role) => role.id === entry.masterId)}
-                    slave={roles.find((role) => role.id === entry.slaveId)}
+                    key={master.id}
+                    master={master}
+                    slaves={slaves}
                   />
                 ))
               ) : (

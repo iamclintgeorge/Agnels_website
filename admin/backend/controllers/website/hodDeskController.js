@@ -15,10 +15,10 @@ export const getHodText = async (req, res) => {
 
     // Map department names to section names
     const sectionMap = {
-      computer: "comHod",
+      computer: "compHod",
       mechanical: "mechHod",
       extc: "extcHod",
-      electrical: "electricalHod",
+      electrical: "electHod",
       it: "itHod",
       bsh: "bshHod",
     };
@@ -59,10 +59,10 @@ export const createHodTextEntry = async (req, res) => {
 
     // Map department names to section names
     const sectionMap = {
-      computer: "comHod",
+      computer: "compHod",
       mechanical: "mechHod",
       extc: "extcHod",
-      electrical: "electricalHod",
+      electrical: "electHod",
       it: "itHod",
       bsh: "bshHod",
     };
@@ -75,11 +75,9 @@ export const createHodTextEntry = async (req, res) => {
     // Check if content already exists for this section
     const existing = await getHodTextBySection(section);
     if (existing.length > 0) {
-      return res
-        .status(400)
-        .json({
-          error: "Content already exists for this section. Use update instead.",
-        });
+      return res.status(400).json({
+        error: "Content already exists for this section. Use update instead.",
+      });
     }
 
     const result = await createHodText(section, content);
