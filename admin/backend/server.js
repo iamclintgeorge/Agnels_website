@@ -12,6 +12,7 @@ import deptHomeRoutes from "./routes/website/department/deptHomeRoutes.js";
 import compActivityRoutes from "./routes/website/homepage/compActivityRoutes.js";
 import profileRoutes from "./routes/website/profileRoutes.js";
 import studentcornerRoutes from "./routes/website/studentcorner/studentcornerRoutes.js";
+import { roleHierarchyController } from "./controllers/website/contentApprovalController.js";
 
 // Import new department routes
 import computerRoutes from "./routes/website/department/computerRoutes.js";
@@ -95,12 +96,12 @@ app.get("/", (req, res) => {
 
 // Routes
 app.use("/", routes);
- app.use("/api/nirf", nirfRoutes);
- app.use("/api/nba-naac", nbaNaacRoutes);
+app.use("/api/nirf", nirfRoutes);
+app.use("/api/nba-naac", nbaNaacRoutes);
 app.use("/api/department", deptHomeRoutes);
 app.use("/api/department", compActivityRoutes);
 app.use("/api/profile", profileRoutes);
-app.use("/api/studentcorner",studentcornerRoutes)
+app.use("/api/studentcorner", studentcornerRoutes);
 
 // New department routes
 app.use("/api/department/computer", computerRoutes);
@@ -117,7 +118,10 @@ app.use("/api/department", deptPdfRoutes);
 app.use("/api/hod-desk", hodDeskRoutes);
 
 // Content approval routes
-app.use("/api/content-approval", contentApprovalRoutes);
+// app.use("/api/content-approval", contentApprovalRoutes);
+app.use("/api/role-hierarchy", roleHierarchyController);
+
+
 
 // Activity logs routes
 app.use("/api/activity-logs", activityLogsRoutes);

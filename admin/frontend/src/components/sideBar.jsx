@@ -407,7 +407,7 @@ const DynamicSideBar = () => {
               </span>
             </p>
             {openSections.about && (
-              <div className="pt-2 pr-8 pl-4 leading-10">
+              <div className="pt-3 pr-8 pl-4 leading-7 space-y-5">
                 {aboutSections.map((section) => (
                   <p
                     key={section}
@@ -790,7 +790,7 @@ const DynamicSideBar = () => {
         )}
 
         {/* Edit User Profiles */}
-        <Link to="/" className="flex justify-between pr-8">
+        <Link to="/roleHierarchy" className="flex justify-between pr-8">
           Edit User Profiles <span>&gt;</span>
         </Link>
 

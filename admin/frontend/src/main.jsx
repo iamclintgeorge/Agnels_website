@@ -19,7 +19,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import HodDesk from "./pages/rolebasedPages/hodDesk";
 import PrincipalDesk from "./pages/rolebasedPages/principalDesk";
-import AboutUsAdmin from "./pages/AboutUs/AboutUsAdmin";
+import AboutUsManager from "./pages/AboutUsManager/AboutUsManager";
 import ResearchAdmin from "./pages/research/ResearchAdmin";
 import AdminNIRF from "./pages/AdminNIRF";
 import AdminNBANAAC from "./pages/AdminNBANAAC";
@@ -126,6 +126,7 @@ import ElectricalHod from "./pages/hodDesk/electricalHod";
 
 // Content Approval Components
 import ApprovalDashboard from "./pages/ContentApproval/ApprovalDashboard";
+import RoleHierarchy from "./pages/ContentApproval/roleHierarchy";
 
 // Activity Logs Components
 import ActivityLogs from "./pages/AuditLogs/ActivityLogs";
@@ -145,6 +146,7 @@ const App = () => {
           <Route path="/academic/handbook" element={<AcademicHandbook />} />
           <Route path="/academics" element={<AcademicAdmin />} />
           <Route path="/studentscorner" element={<StudentsCorner />} />
+          <Route path="/roleHierarchy" element={<RoleHierarchy />} />
 
           {/* IIC Routes */}
           <Route path="/iic-innovation-council" element={<Iic_council />} />
@@ -154,7 +156,6 @@ const App = () => {
             element={<Iic_ambassador />}
           />
           <Route path="/iic-innovation-centre" element={<Iic_innovation />} />
-
           {/* Department Home Routes */}
           <Route
             path="/department/computer-engineering/home"
@@ -433,7 +434,7 @@ const App = () => {
           <Route path="/training-placement" element={<TrainingPlacement />} />
           <Route path="/hoddesk" element={<HodDesk />} />
           <Route path="/principaldesk" element={<PrincipalDesk />} />
-          <Route path="/about-us" element={<AboutUsAdmin />} />
+          <Route path="/about-us" element={<AboutUsManager />} />
           <Route path="/research/:section" element={<ResearchAdmin />} />
           <Route path="/research" element={<ResearchAdmin />} />
           <Route path="/admin/nirf" element={<AdminNIRF />} />
