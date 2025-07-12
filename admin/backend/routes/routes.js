@@ -12,9 +12,11 @@ import facultyRoutes from "./website/department/facultyRoutes.js";
 import infrastructureRoutes from "./website/department/infrastructureRoutes.js";
 import departmentRoutes from "./website/department/departmentRoutes.js";
 import studentcornerRoutes from "./website/studentcorner/studentcornerRoutes.js";
+import roleHierarchyRoutes from "./admin/roleHierarchyRoutes.js";
 const router = express.Router();
 
 router.use("/api", userRoutes);
+router.use("/api", roleHierarchyRoutes);
 router.use("/api/home", homeRoutes);
 // router.use("/api/department", deptHomeRoutes);
 router.use("/api/department", compActivityRoutes);

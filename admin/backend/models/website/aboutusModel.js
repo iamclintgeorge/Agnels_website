@@ -6,7 +6,7 @@
 //       `;
 
 //   try {
-//     const [rows] = await db.promise().query(query);
+//     const [rows] = await db.promise().promise().query(query);
 //     return rows;
 //   } catch (error) {
 //     console.error("Database fetch error:", error);
@@ -22,7 +22,7 @@ export const principalTextDisplay = async () => {
   `;
 
   try {
-    const [rows] = await db.query(query);
+    const [rows] = await db.promise().query(query);
     return rows;
   } catch (error) {
     console.error("Database fetch error:", error);
@@ -209,7 +209,7 @@ export const getAllAboutUsSections = async () => {
     WHERE Section != 'principalDesk';
   `;
   try {
-    const [rows] = await db.query(query);
+    const [rows] = await db.promise().query(query);
     return rows.map((row) => {
       try {
         // Try to parse as JSON, if it fails, wrap the content in a content object
