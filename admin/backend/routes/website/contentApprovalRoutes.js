@@ -5,7 +5,7 @@ import {
   getPendingApprovals,
   // getApprovalRequest,
   approveRequest,
-  // rejectRequest,
+  rejectRequest,
   // requestRevision,
   // getDashboardStats,
   // getApprovalHistory,
@@ -41,7 +41,7 @@ router.get("/pending", getPendingApprovals);
 router.post("/:id/approve", approveRequest);
 
 // // Reject a request
-// router.post("/:id/reject", rejectRequest);
+router.post("/:id/reject", rejectRequest);
 
 // // Request revision
 // router.post("/:id/revision", requestRevision);

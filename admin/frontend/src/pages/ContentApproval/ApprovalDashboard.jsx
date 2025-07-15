@@ -128,6 +128,38 @@ const ApprovalDashboard = () => {
     }
   };
 
+  const handleRejectAction = async (requestId, req_roleId) => {
+    try {
+      setActionLoading(true);
+      const response = await axios.post(
+        `http://localhost:3663/api/content-approval/${requestId}/reject`,
+        { slaveId: req_roleId },
+        {
+          withCredentials: true,
+        }
+      );
+
+      if (response.status >= 200 && response.status < 300) {
+        showToast(`Request rejected successfully`, "error");
+        setModalOpen(false);
+        setComments("");
+        setShowCommentInput(false);
+        setPendingAction(null);
+        setPendingRequests((prev) =>
+          prev.filter((req) => req.id !== requestId)
+        );
+        fetchDashboardData();
+      } else {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+    } catch (error) {
+      console.error(`Error Reject request:`, error);
+      showToast(`Failed to Reject request`, "error");
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
   const handleActionClick = (action, requestId) => {
     if (action === "approve") {
       handleApprovalAction(requestId);
@@ -259,7 +291,7 @@ const ApprovalDashboard = () => {
               disabled={actionLoading}
               className="px-3 py-1 bg-green-600 text-white rounded text-xs hover:bg-green-700 disabled:opacity-50"
             >
-              Approvebutton
+              Approve
             </button>
             <button
               onClick={(e) => {
@@ -274,7 +306,7 @@ const ApprovalDashboard = () => {
             <button
               onClick={(e) => {
                 e.stopPropagation();
-                handleActionClick("reject", request.id);
+                handleRejectAction(request.id, request.req_roleId);
               }}
               disabled={actionLoading}
               className="px-3 py-1 bg-red-600 text-white rounded text-xs hover:bg-red-700 disabled:opacity-50"
@@ -368,7 +400,7 @@ const ApprovalDashboard = () => {
                 {actionLoading && (
                   <Loader2 size={16} className="animate-spin" />
                 )}
-                Approvemodal
+                Approve
               </button>
               <button
                 onClick={() => handleActionClick("revision", request.id)}
@@ -378,7 +410,9 @@ const ApprovalDashboard = () => {
                 Request Revision
               </button>
               <button
-                onClick={() => handleActionClick("reject", request.id)}
+                onClick={() =>
+                  handleRejectAction(request.id, request.req_roleId)
+                }
                 disabled={actionLoading}
                 className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 disabled:opacity-50 flex items-center gap-2"
               >
