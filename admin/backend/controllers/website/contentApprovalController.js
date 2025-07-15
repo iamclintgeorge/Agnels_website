@@ -238,14 +238,23 @@ export const approveRequest = async (req, res) => {
 
         // Make an internal request to the endpoint URL
         try {
-          const response = await axios.post(
+          const response = await axios.put(
             `http://localhost:3663/${endpoint_url}/${content_id}`,
-            proposed_content
+            { content: proposed_content },
+            {
+              // headers: {
+              //   "Content-Type": "application/json",
+              // },
+            }
           );
 
           console.log(`Data forwarded to ${endpoint_url} successfully`);
         } catch (error) {
-          console.log("Error while forwarding the Approved Endpoint:", error);
+          console.log(
+            "Error while forwarding the Approved Endpoint:",
+            error,
+            `http://localhost:3663/${endpoint_url}/${content_id}`
+          );
         }
 
         // Return successful response

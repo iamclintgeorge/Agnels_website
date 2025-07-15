@@ -111,7 +111,7 @@ const ApprovalDashboard = () => {
       );
 
       if (response.status >= 200 && response.status < 300) {
-        showToast(`Request ${action}d successfully`, "success");
+        showToast(`Request approved successfully`, "success");
         setModalOpen(false);
         setComments("");
         setShowCommentInput(false);
