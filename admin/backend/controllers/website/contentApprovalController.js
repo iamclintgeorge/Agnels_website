@@ -286,44 +286,38 @@ export const approveRequest = async (req, res) => {
   }
 };
 
-// // Reject request
-// export const rejectRequest = async (req, res) => {
-//   try {
-//     const { id } = req.params;
-//     const { comments } = req.body;
-//     const rejectedBy = req.session.user.id;
-//     const rejectorRole = req.session.user.role;
+// Reject request
+export const rejectRequest = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const slaveId = req.body.slaveId;
 
-//     if (!comments) {
-//       return res.status(400).json({
-//         success: false,
-//         message: "Comments are required for rejection",
-//       });
-//     }
+    // Check for master verification
+    const [verifyMaster] = await db
+      .promise()
+      .query(`SELECT masterId FROM role_hierarchy WHERE slaveId = ?`, [
+        slaveId,
+      ]);
 
-//     const request = await ApprovalModel.getApprovalRequestById(id);
-//     if (!request) {
-//       return res.status(404).json({
-//         success: false,
-//         message: "Approval request not found",
-//       });
-//     }
-
-//     await ApprovalModel.rejectRequest(id, rejectedBy, rejectorRole, comments);
-
-//     res.json({
-//       success: true,
-//       message: "Request rejected successfully",
-//     });
-//   } catch (error) {
-//     console.error("Error rejecting request:", error);
-//     res.status(500).json({
-//       success: false,
-//       message: "Failed to reject request",
-//       error: error.message,
-//     });
-//   }
-// };
+    if (verifyMaster.length > 0) {
+      // Update the request status
+      const updateQuery = `UPDATE approval_requests SET status = ? WHERE id = ?`;
+      await db.promise().query(updateQuery, ["Rejected", id]);
+    } else {
+      return res.status(500).json({
+        success: false,
+        message: "Master not authorized",
+      });
+    }
+  } catch (error) {
+    console.error("Error Rejecting request:", error);
+    res.status(500).json({
+      success: false,
+      message: "Failed to Reject request",
+      error: error.message,
+    });
+  }
+};
 
 // // Request revision
 // export const requestRevision = async (req, res) => {
