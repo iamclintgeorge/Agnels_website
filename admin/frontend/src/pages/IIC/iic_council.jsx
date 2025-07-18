@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, forwardRef } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -8,7 +8,6 @@ const Iic_council = () => {
   const [editMode, setEditMode] = useState(false);
   const [content, setContent] = useState("");
   const [message, setMessage] = useState("");
-  const quillRef = useRef(null);
 
   useEffect(() => {
     fetchText();
@@ -16,7 +15,9 @@ const Iic_council = () => {
 
   const fetchText = async () => {
     try {
-      const response = await axios.get("http://localhost:3663/api/iic/text");
+      const response = await axios.get("http://localhost:3663/api/iic/text", {
+        params: { section: "iic_council" },
+      });
       setText(response.data);
       if (response.data && response.data.content) {
         setContent(response.data.content);
@@ -35,7 +36,9 @@ const Iic_council = () => {
     }
 
     try {
-      await axios.put(`http://localhost:3663/api/iic/text/${text.id}`, { content });
+      await axios.put(`http://localhost:3663/api/iic/text/${text.id}`, {
+        content,
+      });
       setMessage("Text updated successfully!");
       setEditMode(false);
       fetchText();
@@ -55,24 +58,23 @@ const Iic_council = () => {
     ],
   };
 
-  const QuillWrapper = forwardRef((props, ref) => (
-    <ReactQuill {...props} ref={ref} />
-  ));
-
   return (
     <div className="p-4">
       {text && text.content ? (
         editMode ? (
           <div>
-            <QuillWrapper
-              ref={quillRef}
+            <ReactQuill
               value={content}
               onChange={setContent}
               modules={modules}
+              theme="snow"
               className="mb-4"
             />
             <div className="flex gap-4">
-              <button onClick={handleUpdate} className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+              <button
+                onClick={handleUpdate}
+                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+              >
                 Save
               </button>
               <button
@@ -85,12 +87,18 @@ const Iic_council = () => {
                 Cancel
               </button>
             </div>
-            {message && <p className="mt-2">{message}</p>}
+            {message && <p className="mt-2 text-green-600">{message}</p>}
           </div>
         ) : (
           <div>
-            <div dangerouslySetInnerHTML={{ __html: text.content }} className="mb-4" />
-            <button onClick={() => setEditMode(true)} className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+            <div
+              dangerouslySetInnerHTML={{ __html: text.content }}
+              className="mb-4"
+            />
+            <button
+              onClick={() => setEditMode(true)}
+              className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+            >
               Edit
             </button>
           </div>
