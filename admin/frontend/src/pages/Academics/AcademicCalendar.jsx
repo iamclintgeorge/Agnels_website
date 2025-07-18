@@ -53,7 +53,7 @@ const AcademicCalendar = () => {
       const formDataToSend = new FormData();
       formDataToSend.append('year', formData.year);
       formDataToSend.append('issue_date', formData.issueDate);
-      formDataToSend.append('created_by', "Admin");
+      formDataToSend.append('created_by', 1);
       if (formData.pdfFile) {
      formDataToSend.append('pdf', formData.pdfFile); // ✅ matches multer.single("pdf")
 

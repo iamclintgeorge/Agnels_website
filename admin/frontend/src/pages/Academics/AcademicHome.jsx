@@ -720,3 +720,101 @@ const AcademicHome = () => {
 };
 
 export default AcademicHome;
+
+// import React, { useEffect, useState } from "react";
+// import axios from "axios";
+
+// const AcademicHome = () => {
+//   const [homeData, setHomeData] = useState(null);
+//   const [loading, setLoading] = useState(true);
+
+//   useEffect(() => {
+//     const fetchHomeData = async () => {
+//       try {
+//         const res = await axios.get("http://localhost:3663/api/academic/home");
+//         if (res.data.result && res.data.result.length > 0) {
+//           setHomeData(res.data.result[0]);
+//         }
+//       } catch (error) {
+//         console.error("Error fetching academic home:", error);
+//       } finally {
+//         setLoading(false);
+//       }
+//     };
+
+//     fetchHomeData();
+//   }, []);
+
+//   const renderIcon = (iconName) => {
+//     const iconMap = {
+//       FaChalkboardTeacher: "👨‍🏫",
+//       FaUsers: "👥",
+//       FaEye: "👁️",
+//       FaClipboardCheck: "📋",
+//       FaCheckCircle: "✅",
+//       FaUniversity: "🏛️",
+//       FaGraduationCap: "🎓",
+//       FaBook: "📖",
+//       FaCertificate: "📜",
+//       FaAward: "🏆",
+//       FaChartLine: "📈",
+//       FaCog: "⚙️",
+//     };
+//     return iconMap[iconName] || "📌";
+//   };
+
+//   if (loading) return <div className="p-6 text-lg">Loading...</div>;
+
+//   return (
+//     <div className="bg-[#f4f4db] min-h-screen font-sans px-4 py-8">
+//       <div className="max-w-6xl mx-auto">
+//         {/* Title and Description */}
+//         <h1 className="text-2xl font-bold mb-4 text-blue-900">
+//           {homeData?.title}
+//         </h1>
+//         <p className="text-gray-800 leading-relaxed whitespace-pre-line mb-6">
+//           {homeData?.description}
+//         </p>
+
+//         {/* Hero Image (if available) */}
+//         {homeData?.hero_image_url && (
+//           <img
+//             src={`http://localhost:3663${homeData.hero_image_url}`}
+//             alt="Academic Hero"
+//             className="rounded shadow mb-10 max-h-[400px] w-auto"
+//           />
+//         )}
+
+//         {/* Sections */}
+//         {homeData?.sections?.map((section, index) => (
+//           <div key={section.id} className="mb-10">
+//             <h2 className="text-xl font-semibold text-blue-800 border-b-2 border-blue-400 pb-1 mb-4">
+//               {index + 1}. {section.title}
+//             </h2>
+//             <p className="text-gray-700 mb-4 whitespace-pre-line">{section.description}</p>
+
+//             {/* Cards within the section */}
+//             {section.cards && section.cards.length > 0 && (
+//               <div className="grid gap-4 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+//                 {section.cards.map((card) => (
+//                   <div
+//                     key={card.id}
+//                     className="bg-white p-4 rounded-lg shadow border border-gray-200"
+//                   >
+//                     <div className="flex items-center text-blue-600 mb-2">
+//                       <span className="mr-2 text-xl">{renderIcon(card.icon)}</span>
+//                       <h4 className="font-semibold text-gray-900">{card.title}</h4>
+//                     </div>
+//                     <p className="text-gray-700 text-sm whitespace-pre-line">{card.description}</p>
+//                   </div>
+//                 ))}
+//               </div>
+//             )}
+//           </div>
+//         ))}
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default AcademicHome;
