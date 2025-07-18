@@ -44,6 +44,7 @@
 //     const id = introText[0].id;
 //     console.log("Updating with id:", id);
 //     try {
+//       // console.log(`URL: `, `http://localhost:3663/api/home/introtext/${id}`);
 //       await axios.put(`http://localhost:3663/api/home/introtext/${id}`, {
 //         content,
 //       });
@@ -169,17 +170,19 @@ const IntroText = () => {
 
     // Create approval request instead of direct update
     try {
-      // Send approval request to the backend
       const response = await axios.post(
         "http://localhost:3663/api/content-approval/request",
         {
-          content_type: "introtext", // You can modify this to match your use case
-          operation: "update",
-          section: "homepage", // Adjust as per your content structure
-          title: "Intro Text Update", // Title or description of the change
-          change_summary: "Updated intro text", // Short description of change
+          // content_type: "introtext", // You can modify this to match your use case
+          // operation: "update",
+          method: "POST",
+          section: "homepage",
+          title: "Intro Text Update",
+          change_summary: "Updated intro text",
           current_content: introText[0].Content,
-          proposed_content: content, // Proposed content after edit
+          proposed_content: content,
+          endpoint_url: "api/home/introtext",
+          id: id,
         }
       );
       console.log("Approval request created:", response.data);
