@@ -11,7 +11,7 @@ import {
 const router = express.Router();
 
 router.get("/text", getIICTextController);
-router.put("/text/:id", updateIICTextController);  // Update IIC Text
+router.put("/text/:id", updateIICTextController); // Update IIC Text
 router.post("/pdf", upload.single("file"), uploadIICPDFController);
 router.get("/pdf", getIICPDFsController);
 
