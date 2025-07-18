@@ -37,7 +37,7 @@ import activityLogsRoutes from "./routes/admin/activityLogsRoutes.js";
 // Import logging middleware
 import adminActivityLogger from "./middlewares/loggingMiddleware.js";
 
-// import iicRoutes from "./routes/website/iicRoutes.js";
+import iicRoutes from "./routes/website/iicRoutes.js";
 
 dotenv.config();
 
@@ -121,6 +121,9 @@ app.use("/api/hod-desk", hodDeskRoutes);
 // app.use("/api/content-approval", contentApprovalRoutes);
 app.use("/api/role-hierarchy", roleHierarchyController);
 app.use("/api/content-approval", contentApprovalRoutes);
+
+// Integrate IIC routes
+app.use("/api/iic", iicRoutes);
 
 // Activity logs routes
 app.use("/api/activity-logs", activityLogsRoutes);
