@@ -120,7 +120,7 @@ const Header = () => {
         <nav className="mt-[-40px] hidden md:flex">
           <ul className="list-none flex gap-3 text-sm p-0 m-0 font-inter font-light">
             <li className="hover:underline">
-              <Link to="/downloads" className="text-white hover:text-blue-700">
+              <Link to="/downloads" className="text-white">
                 Downloads
               </Link>
             </li>
@@ -130,7 +130,7 @@ const Header = () => {
                 href="https://fcrit.ac.in/static_pdfs/feedback/SSS_23_24.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-white hover:text-blue-700"
+                className="text-white"
               >
                 Feedback
               </a>
@@ -138,16 +138,13 @@ const Header = () => {
 
             <li className="hidden md:inline">|</li>
             <li className="hover:underline">
-              <Link
-                to="/Important-Links"
-                className="text-white hover:text-blue-700"
-              >
+              <Link to="/Important-Links" className="text-white">
                 Important Links
               </Link>
             </li>
             <li className="hidden md:inline">|</li>
             <li className="hover:underline">
-              <Link to="/circulars" className="text-white hover:text-blue-700">
+              <Link to="/circulars" className="text-white">
                 Circulars
               </Link>
             </li>
@@ -158,7 +155,7 @@ const Header = () => {
                 href="https://www.eduqfix.com/PayDirect/#/student/pay/XxoRsO6mfiXGAnQY1R64lGgQcWtw4tYKPWYLPO8nzoGBvtL6DIe+F9YjQMK1keFr/254"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-white hover:text-blue-700"
+                className="text-white"
               >
                 Fee Payment
               </a>
