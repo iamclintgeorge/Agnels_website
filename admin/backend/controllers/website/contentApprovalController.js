@@ -180,21 +180,49 @@ export const approveRequest = async (req, res) => {
               error: error.message,
             });
           }
+        } else if (method === "POST") {
+          try {
+            const response = await axios.post(
+              `http://localhost:3663/${endpoint_url}`,
+              { content: proposed_content }
+            );
+            console.log(`Data forwarded to ${endpoint_url} successfully`);
+          } catch (error) {
+            console.log(
+              "Error while forwarding the Approved Endpoint (POST):",
+              error,
+              `http://localhost:3663/${endpoint_url}`
+            );
+            return res.status(500).json({
+              success: false,
+              message: "Error forwarding approved request (POST)",
+              error: error.message,
+            });
+          }
+        } else if (method === "DELETE") {
+          try {
+            const response = await axios.delete(
+              `http://localhost:3663/${endpoint_url}/${content_id}`
+            );
+            console.log(`Data forwarded to ${endpoint_url} successfully`);
+          } catch (error) {
+            console.log(
+              "Error while forwarding the Approved Endpoint (DELETE):",
+              error,
+              `http://localhost:3663/${endpoint_url}/${content_id}`
+            );
+            return res.status(500).json({
+              success: false,
+              message: "Error forwarding approved request (DELETE)",
+              error: error.message,
+            });
+          }
+        } else {
+          return res.status(400).json({
+            success: false,
+            message: `Invalid method: ${method}`,
+          });
         }
-        // else if (method === "POST") {
-        //   await axios.post(`http://localhost:3663/${endpoint_url}`, {
-        //     content: proposed_content,
-        //   });
-        // } else if (method === "DELETE") {
-        //   await axios.delete(
-        //     `http://localhost:3663/${endpoint_url}/${content_id}`
-        //   );
-        // } else {
-        //   return res.status(400).json({
-        //     success: false,
-        //     message: `Invalid method: ${method}`,
-        //   });
-        // }
 
         return res.status(200).json({
           success: true,

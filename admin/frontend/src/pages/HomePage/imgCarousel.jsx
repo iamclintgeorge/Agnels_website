@@ -23,6 +23,37 @@ const ImgCarousel = () => {
     }
   };
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   if (!altText || !image) {
+  //     setMessage("Please enter both alt text and select an image.");
+  //     return;
+  //   }
+
+  //   const formData = new FormData();
+  //   formData.append("altText", altText);
+  //   formData.append("image", image);
+
+  //   try {
+  //     await axios.post("http://localhost:3663/api/home/carousel", formData, {
+  //       headers: { "Content-Type": "multipart/form-data" },
+  //       maxContentLength: Infinity,
+  //       maxBodyLength: Infinity,
+  //     });
+
+  //     console.log("POST Request for Carousel SUCCESS");
+  //     setMessage("Image uploaded successfully!");
+  //     setAltText("");
+  //     setImage(null);
+  //     e.target.reset();
+  //     fetchImages(); // Refresh images
+  //   } catch (error) {
+  //     console.log("Error Message: ", error);
+  //     setMessage("Error uploading image.");
+  //   }
+  // };
+
+  //Using Content Approval System
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!altText || !image) {
@@ -35,11 +66,27 @@ const ImgCarousel = () => {
     formData.append("image", image);
 
     try {
-      await axios.post("http://localhost:3663/api/home/carousel", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-        maxContentLength: Infinity,
-        maxBodyLength: Infinity,
-      });
+      // await axios.post("http://localhost:3663/api/home/carousel", formData, {
+      //   headers: { "Content-Type": "multipart/form-data" },
+      //   maxContentLength: Infinity,
+      //   maxBodyLength: Infinity,
+      // });
+      const response = await axios.post(
+        "http://localhost:3663/api/content-approval/request",
+        {
+          method: "POST",
+          section: "homepage",
+          title: "Upload Homepage Image Carousel",
+          change_summary: "Added Image to Carousel",
+          current_content: "",
+          proposed_content: JSON.stringify({
+            altText: altText,
+            imageFilename: image.name,
+          }),
+          endpoint_url: "api/home/carousel",
+          id: 0,
+        }
+      );
 
       console.log("POST Request for Carousel SUCCESS");
       setMessage("Image uploaded successfully!");
