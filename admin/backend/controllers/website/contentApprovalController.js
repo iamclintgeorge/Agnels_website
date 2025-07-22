@@ -1,6 +1,13 @@
 import axios from "axios";
-
 import db from "../../config/db.js";
+import fs from "fs";
+import path from "path";
+import FormData from "form-data";
+import { fileURLToPath } from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 // import * as ApprovalModel from "../../models/website/contentApprovalModel.js";
 import { createApprovalRequestModal } from "../../models/website/contentApprovalModel.js";
 
@@ -15,7 +22,14 @@ export const createApprovalRequest = async (req, res) => {
     const title = body.title;
     const changeSummary = body.changeSummary || body.change_summary;
     const currentContent = body.currentContent || body.current_content;
-    const proposedContent = body.proposedContent || body.proposed_content;
+    const file = req.file;
+    const uploadedFilename = file?.filename || null;
+    let proposedContent = body.proposedContent || body.proposed_content;
+    if (uploadedFilename) {
+      const parsed = JSON.parse(proposedContent || "{}");
+      parsed.imageFilename = uploadedFilename;
+      proposedContent = JSON.stringify(parsed);
+    }
     const endpoint = body.endpoint_url;
     const id = body.id;
     // const changeType = body.changeType || body.operation || body.change_type;
@@ -95,131 +109,252 @@ export const getPendingApprovals = async (req, res) => {
   }
 };
 
+// export const approveRequest = async (req, res) => {
+//   try {
+//     const { id } = req.params;
+//     const slaveId = req.body.slaveId;
+
+//     // Check for master verification
+//     const [verifyMaster] = await db
+//       .promise()
+//       .query(`SELECT masterId FROM role_hierarchy WHERE slaveId = ?`, [
+//         slaveId,
+//       ]);
+
+//     if (verifyMaster.length === 0) {
+//       return res
+//         .status(403)
+//         .json({ success: false, message: "Master not authorized" });
+//     }
+
+//     // Fetch the request details
+//     const [fetchDetails] = await db
+//       .promise()
+//       .query(`SELECT * FROM approval_requests WHERE id = ?`, [id]);
+
+//     const requestData = fetchDetails[0];
+//     if (!requestData) {
+//       return res
+//         .status(404)
+//         .json({ success: false, message: "Request not found" });
+//     }
+
+//     const {
+//       req_userID,
+//       req_userRole,
+//       title,
+//       section,
+//       method,
+//       status,
+//       change_summary,
+//       current_content,
+//       proposed_content,
+//       endpoint_url,
+//       content_id,
+//     } = requestData;
+
+//     const dataToForward = {
+//       id,
+//       req_userID,
+//       req_userRole,
+//       title,
+//       section,
+//       method,
+//       status,
+//       change_summary,
+//       current_content,
+//       proposed_content,
+//       content_id,
+//     };
+
+//     // Handle file if it's a pending upload
+//     // if (proposed_content.startsWith("/uploads/pending/")) {
+//     //   const fileName = path.basename(proposed_content);
+//     //   const oldPath = path.join(
+//     //     __dirname,
+//     //     "../public/uploads/pending",
+//     //     fileName
+//     //   );
+//     //   const newPath = path.join(__dirname, "../public/uploads", fileName);
+
+//     //   try {
+//     //     fs.renameSync(oldPath, newPath);
+//     //     dataToForward.proposed_content = `/uploads/${fileName}`;
+//     //   } catch (moveErr) {
+//     //     return res.status(500).json({
+//     //       success: false,
+//     //       message: "File move failed",
+//     //       error: moveErr.message,
+//     //     });
+//     //   }
+//     // }
+
+//     try {
+//       if (method === "PUT") {
+//         await axios.put(`http://localhost:3663/${endpoint_url}/${content_id}`, {
+//           content: proposed_content,
+//         });
+//       } else if (method === "POST") {
+//         const parsed = JSON.parse(proposed_content);
+//         const fileName = parsed.imageFilename;
+
+//         const pendingPath = path.join(
+//           __dirname,
+//           "../../public/uploads/pending",
+//           fileName
+//         );
+//         const finalPath = path.join(
+//           __dirname,
+//           "../../public/uploads",
+//           fileName
+//         );
+
+//         // Move file from pending to uploads if it exists
+//         if (fs.existsSync(pendingPath)) {
+//           try {
+//             fs.renameSync(pendingPath, finalPath);
+//             console.log("Moved from pending to uploads.");
+//           } catch (err) {
+//             return res.status(500).json({
+//               success: false,
+//               message: "File move failed",
+//               error: err.message,
+//             });
+//           }
+//         }
+
+//         // Create form data matching original working structure
+//         const form = new FormData();
+//         form.append("altText", parsed.altText); // <- not inside "content"
+//         form.append("image", fs.createReadStream(finalPath));
+
+//         try {
+//           await axios.post(`http://localhost:3663/${endpoint_url}`, form, {
+//             headers: form.getHeaders(),
+//           });
+//           res
+//             .status(200)
+//             .json({ success: true, message: "Forwarded successfully" });
+//         } catch (error) {
+//           console.error("Error while forwarding the request:", error.message);
+//           return res.status(500).json({
+//             success: false,
+//             message: "Error forwarding the approved request",
+//             error: error.message,
+//           });
+//         }
+//       } else if (method === "DELETE") {
+//         await axios.delete(
+//           `http://localhost:3663/${endpoint_url}/${content_id}`
+//         );
+//       } else {
+//         return res
+//           .status(400)
+//           .json({ success: false, message: "Invalid method" });
+//       }
+
+//       const updateQuery = `UPDATE approval_requests SET status = ? WHERE id = ?`;
+//       await db.promise().query(updateQuery, ["Approved", id]);
+
+//       return res
+//         .status(200)
+//         .json({ success: true, message: "Request approved successfully" });
+//     } catch (error) {
+//       console.error("Error while forwarding the request:", error.message);
+//       return res.status(500).json({
+//         success: false,
+//         message: "Error forwarding approved request",
+//         error: error.message,
+//       });
+//     }
+//   } catch (error) {
+//     console.error("Error approving request:", error.message);
+//     return res.status(500).json({
+//       success: false,
+//       message: "Failed to approve request",
+//       error: error.message,
+//     });
+//   }
+// };
+
 export const approveRequest = async (req, res) => {
   try {
     const { id } = req.params;
-    // const approverId = req.session.user.id;
-    // const approverRole = req.session.user.role;
     const slaveId = req.body.slaveId;
 
-    // Check for master verification
+    // Verify master-slave relationship
     const [verifyMaster] = await db
       .promise()
       .query(`SELECT masterId FROM role_hierarchy WHERE slaveId = ?`, [
         slaveId,
       ]);
 
-    // Update the request status
-    if (verifyMaster.length > 0) {
-      const updateQuery = `UPDATE approval_requests SET status = ? WHERE id = ?`;
-      await db.promise().query(updateQuery, ["Approved", id]);
+    if (verifyMaster.length === 0) {
+      return res
+        .status(403)
+        .json({ success: false, message: "Master not authorized" });
+    }
 
-      // Fetch the request details
-      try {
-        const [fetchDetails] = await db
-          .promise()
-          .query(`SELECT * FROM approval_requests WHERE id = ?`, [id]);
+    // Fetch request details
+    const [fetchDetails] = await db
+      .promise()
+      .query(`SELECT * FROM approval_requests WHERE id = ?`, [id]);
 
-        const requestData = fetchDetails[0];
+    const requestData = fetchDetails[0];
+    if (!requestData) {
+      return res
+        .status(404)
+        .json({ success: false, message: "Request not found" });
+    }
 
-        // Ensure request data exists
-        if (!requestData) {
-          return res.status(404).json({
-            success: false,
-            message: "Request not found",
-          });
-        }
+    const { method, endpoint_url, content_id, proposed_content } = requestData;
 
-        const {
-          req_userID,
-          req_userRole,
-          title,
-          section,
-          method,
-          status,
-          change_summary,
-          current_content,
-          proposed_content,
-          endpoint_url,
-          content_id,
-        } = requestData;
+    // Forward based on method type
+    try {
+      const url = `http://localhost:3663/${endpoint_url}`;
 
-        // Prepare data to be forwarded
-        const dataToForward = {
-          id,
-          req_userID,
-          req_userRole,
-          title,
-          section,
-          method,
-          status,
-          change_summary,
-          current_content,
-          proposed_content,
-          content_id,
-        };
-
-        // Make an internal request to the endpoint URL
-        if (method == "PUT") {
-          try {
-            const response = await axios.put(
-              `http://localhost:3663/${endpoint_url}/${content_id}`,
-              { content: proposed_content }
-            );
-
-            console.log(`Data forwarded to ${endpoint_url} successfully`);
-          } catch (error) {
-            console.log(
-              "Error while forwarding the Approved Endpoint:",
-              error,
-              `http://localhost:3663/${endpoint_url}/${content_id}`
-            );
-            return res.status(500).json({
-              success: false,
-              message: "Error forwarding approved request",
-              error: error.message,
-            });
-          }
-        }
-        // else if (method === "POST") {
-        //   await axios.post(`http://localhost:3663/${endpoint_url}`, {
-        //     content: proposed_content,
-        //   });
-        // } else if (method === "DELETE") {
-        //   await axios.delete(
-        //     `http://localhost:3663/${endpoint_url}/${content_id}`
-        //   );
-        // } else {
-        //   return res.status(400).json({
-        //     success: false,
-        //     message: `Invalid method: ${method}`,
-        //   });
-        // }
-
-        return res.status(200).json({
-          success: true,
-          message: "Request approved successfully",
+      if (method === "PUT") {
+        await axios.put(`${url}/${content_id}`, {
+          content: proposed_content,
         });
-      } catch (error) {
-        console.error("Error while fetching request details:", error);
-        return res.status(500).json({
-          success: false,
-          message: "Failed to fetch request details",
-          error: error.message,
+      } else if (method === "POST") {
+        await axios.post(url, {
+          content: proposed_content,
         });
+      } else if (method === "DELETE") {
+        await axios.delete(`${url}/${content_id}`);
+      } else {
+        return res
+          .status(400)
+          .json({ success: false, message: "Invalid method" });
       }
-    } else {
+
+      // Update status to Approved
+      await db
+        .promise()
+        .query(`UPDATE approval_requests SET status = ? WHERE id = ?`, [
+          "Approved",
+          id,
+        ]);
+
+      return res.status(200).json({
+        success: true,
+        message: "Request approved and forwarded successfully",
+      });
+    } catch (forwardErr) {
+      console.error("Error while forwarding the request:", forwardErr.message);
       return res.status(500).json({
         success: false,
-        message: "Master not authorized",
+        message: "Error forwarding the approved request",
+        error: forwardErr.message,
       });
     }
-  } catch (error) {
-    console.error("Error approving request:", error);
-    res.status(500).json({
+  } catch (err) {
+    console.error("Error approving request:", err.message);
+    return res.status(500).json({
       success: false,
       message: "Failed to approve request",
-      error: error.message,
+      error: err.message,
     });
   }
 };

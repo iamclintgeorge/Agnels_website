@@ -23,6 +23,37 @@ const ImgCarousel = () => {
     }
   };
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   if (!altText || !image) {
+  //     setMessage("Please enter both alt text and select an image.");
+  //     return;
+  //   }
+
+  //   const formData = new FormData();
+  //   formData.append("altText", altText);
+  //   formData.append("image", image);
+
+  //   try {
+  //     await axios.post("http://localhost:3663/api/home/carousel", formData, {
+  //       headers: { "Content-Type": "multipart/form-data" },
+  //       maxContentLength: Infinity,
+  //       maxBodyLength: Infinity,
+  //     });
+
+  //     console.log("POST Request for Carousel SUCCESS");
+  //     setMessage("Image uploaded successfully!");
+  //     setAltText("");
+  //     setImage(null);
+  //     e.target.reset();
+  //     fetchImages(); // Refresh images
+  //   } catch (error) {
+  //     console.log("Error Message: ", error);
+  //     setMessage("Error uploading image.");
+  //   }
+  // };
+
+  //Using Content Approval System
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!altText || !image) {
@@ -31,15 +62,32 @@ const ImgCarousel = () => {
     }
 
     const formData = new FormData();
-    formData.append("altText", altText);
-    formData.append("image", image);
+    formData.append("file", image); // File object
+    formData.append("method", "POST");
+    formData.append("section", "homepage");
+    formData.append("title", "Upload Homepage Image Carousel");
+    formData.append("change_summary", "Added Image to Carousel");
+    formData.append("current_content", "");
+    formData.append(
+      "proposed_content",
+      JSON.stringify({
+        altText: altText,
+        imageFilename: image.name,
+      })
+    );
+    formData.append("endpoint_url", "api/home/carousel");
+    formData.append("id", 0);
 
     try {
-      await axios.post("http://localhost:3663/api/home/carousel", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-        maxContentLength: Infinity,
-        maxBodyLength: Infinity,
-      });
+      const response = await axios.post(
+        "http://localhost:3663/api/content-approval/request",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
       console.log("POST Request for Carousel SUCCESS");
       setMessage("Image uploaded successfully!");

@@ -5,20 +5,49 @@ import {
   introTextDisplay,
   introTextUpdate,
 } from "../../models/website/homeModel.js";
-import fs from "fs/promises";
+// import fs from "fs/promises";
 import path from "path";
 import db from "../../config/db.js";
+import fs from "fs";
+
+// export const carouselUploadController = async (req, res) => {
+//   try {
+//     const { altText } = req.body;
+//     const image = req.file;
+
+//     if (!image) {
+//       return res.status(400).json({ message: "No image uploaded" });
+//     }
+
+//     const imageUrl = `/uploads/${image.filename}`;
+//     await carouselUpload(altText, imageUrl);
+
+//     res.json({
+//       message: "Upload successful",
+//       imageUrl: imageUrl,
+//       altText: altText,
+//     });
+//   } catch (error) {
+//     console.error("Upload error:", error);
+//     res.status(500).json({ message: "Error uploading image" });
+//   }
+// };
 
 export const carouselUploadController = async (req, res) => {
   try {
-    const { altText } = req.body;
-    const image = req.file;
+    const { content } = req.body;
+    const parsed = JSON.parse(content);
+    const { altText, imageFilename } = parsed;
 
-    if (!image) {
-      return res.status(400).json({ message: "No image uploaded" });
+    const pendingPath = path.join("public/uploads/pending", imageFilename);
+    const finalPath = path.join("public/uploads", imageFilename);
+
+    // Move image if it exists
+    if (fs.existsSync(pendingPath)) {
+      fs.renameSync(pendingPath, finalPath);
     }
 
-    const imageUrl = `/uploads/${image.filename}`;
+    const imageUrl = `/uploads/${imageFilename}`;
     await carouselUpload(altText, imageUrl);
 
     res.json({

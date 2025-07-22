@@ -173,8 +173,6 @@ const IntroText = () => {
       const response = await axios.post(
         "http://localhost:3663/api/content-approval/request",
         {
-          // content_type: "introtext", // You can modify this to match your use case
-          // operation: "update",
           method: "PUT",
           section: "homepage",
           title: "Intro Text Update",
