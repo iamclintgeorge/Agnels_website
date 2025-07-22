@@ -80,9 +80,15 @@ export const carouselDeleteController = async (req, res) => {
       return res.status(404).json({ message: "Image not found" });
     }
 
-    // Delete the file from the server
+    // Delete the file synchronously
     const filePath = path.join(process.cwd(), "public", image.imageUrl);
-    await fs.unlink(filePath);
+    try {
+      if (fs.existsSync(filePath)) {
+        fs.unlinkSync(filePath);
+      }
+    } catch (err) {
+      console.warn("File delete issue:", filePath);
+    }
 
     res.json({ message: "Image deleted successfully" });
   } catch (error) {
