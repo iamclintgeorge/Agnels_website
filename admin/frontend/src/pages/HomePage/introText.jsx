@@ -175,7 +175,7 @@ const IntroText = () => {
         {
           // content_type: "introtext", // You can modify this to match your use case
           // operation: "update",
-          method: "POST",
+          method: "PUT",
           section: "homepage",
           title: "Intro Text Update",
           change_summary: "Updated intro text",

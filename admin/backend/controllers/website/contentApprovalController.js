@@ -59,35 +59,6 @@ export const createApprovalRequest = async (req, res) => {
   }
 };
 
-// Get approval requests for current user
-// export const getMyApprovalRequests = async (req, res) => {
-//   try {
-//     const { status } = req.query;
-//     const userId = req.session.user.id;
-//     const userRole = req.session.user.role;
-
-//     const department = ApprovalModel.getDepartmentByUserRole(userRole);
-//     const requests = await ApprovalModel.getApprovalRequestsByRole(
-//       userRole,
-//       userId,
-//       status,
-//       department
-//     );
-
-//     res.json({
-//       success: true,
-//       requests,
-//     });
-//   } catch (error) {
-//     console.error("Error getting approval requests:", error);
-//     res.status(500).json({
-//       success: false,
-//       message: "Failed to get approval requests",
-//       error: error.message,
-//     });
-//   }
-// };
-
 // Get pending approvals for current user to review
 export const getPendingApprovals = async (req, res) => {
   try {
@@ -124,54 +95,6 @@ export const getPendingApprovals = async (req, res) => {
   }
 };
 
-// Get specific approval request details
-// export const getApprovalRequest = async (req, res) => {
-//   try {
-//     const { id } = req.params;
-//     const userRole = req.session.user.role;
-//     const userId = req.session.user.id;
-
-//     const request = await ApprovalModel.getApprovalRequestById(id);
-//     if (!request) {
-//       return res.status(404).json({
-//         success: false,
-//         message: "Approval request not found",
-//       });
-//     }
-
-//     // Check if user has permission to view this request
-//     const department = ApprovalModel.getDepartmentByUserRole(userRole);
-//     if (
-//       userRole !== "superAdmin" &&
-//       userRole !== "principal" &&
-//       request.department !== department &&
-//       request.requested_by !== userId
-//     ) {
-//       return res.status(403).json({
-//         success: false,
-//         message: "Access denied",
-//       });
-//     }
-
-//     // Get approval history
-//     const history = await ApprovalModel.getApprovalHistory(id);
-
-//     res.json({
-//       success: true,
-//       request,
-//       history,
-//     });
-//   } catch (error) {
-//     console.error("Error getting approval request:", error);
-//     res.status(500).json({
-//       success: false,
-//       message: "Failed to get approval request",
-//       error: error.message,
-//     });
-//   }
-// };
-
-// Approve request
 export const approveRequest = async (req, res) => {
   try {
     const { id } = req.params;
@@ -186,13 +109,13 @@ export const approveRequest = async (req, res) => {
         slaveId,
       ]);
 
+    // Update the request status
     if (verifyMaster.length > 0) {
-      // Update the request status
       const updateQuery = `UPDATE approval_requests SET status = ? WHERE id = ?`;
       await db.promise().query(updateQuery, ["Approved", id]);
 
+      // Fetch the request details
       try {
-        // Fetch the request details
         const [fetchDetails] = await db
           .promise()
           .query(`SELECT * FROM approval_requests WHERE id = ?`, [id]);
@@ -237,27 +160,42 @@ export const approveRequest = async (req, res) => {
         };
 
         // Make an internal request to the endpoint URL
-        try {
-          const response = await axios.put(
-            `http://localhost:3663/${endpoint_url}/${content_id}`,
-            { content: proposed_content },
-            {
-              // headers: {
-              //   "Content-Type": "application/json",
-              // },
-            }
-          );
+        if (method == "PUT") {
+          try {
+            const response = await axios.put(
+              `http://localhost:3663/${endpoint_url}/${content_id}`,
+              { content: proposed_content }
+            );
 
-          console.log(`Data forwarded to ${endpoint_url} successfully`);
-        } catch (error) {
-          console.log(
-            "Error while forwarding the Approved Endpoint:",
-            error,
-            `http://localhost:3663/${endpoint_url}/${content_id}`
-          );
+            console.log(`Data forwarded to ${endpoint_url} successfully`);
+          } catch (error) {
+            console.log(
+              "Error while forwarding the Approved Endpoint:",
+              error,
+              `http://localhost:3663/${endpoint_url}/${content_id}`
+            );
+            return res.status(500).json({
+              success: false,
+              message: "Error forwarding approved request",
+              error: error.message,
+            });
+          }
         }
+        // else if (method === "POST") {
+        //   await axios.post(`http://localhost:3663/${endpoint_url}`, {
+        //     content: proposed_content,
+        //   });
+        // } else if (method === "DELETE") {
+        //   await axios.delete(
+        //     `http://localhost:3663/${endpoint_url}/${content_id}`
+        //   );
+        // } else {
+        //   return res.status(400).json({
+        //     success: false,
+        //     message: `Invalid method: ${method}`,
+        //   });
+        // }
 
-        // Return successful response
         return res.status(200).json({
           success: true,
           message: "Request approved successfully",
@@ -353,6 +291,82 @@ export const rejectRequest = async (req, res) => {
 //     res.status(500).json({
 //       success: false,
 //       message: "Failed to request revision",
+//       error: error.message,
+//     });
+//   }
+// };
+
+// Get approval requests for current user
+// export const getMyApprovalRequests = async (req, res) => {
+//   try {
+//     const { status } = req.query;
+//     const userId = req.session.user.id;
+//     const userRole = req.session.user.role;
+
+//     const department = ApprovalModel.getDepartmentByUserRole(userRole);
+//     const requests = await ApprovalModel.getApprovalRequestsByRole(
+//       userRole,
+//       userId,
+//       status,
+//       department
+//     );
+
+//     res.json({
+//       success: true,
+//       requests,
+//     });
+//   } catch (error) {
+//     console.error("Error getting approval requests:", error);
+//     res.status(500).json({
+//       success: false,
+//       message: "Failed to get approval requests",
+//       error: error.message,
+//     });
+//   }
+// };
+
+// Get specific approval request details
+// export const getApprovalRequest = async (req, res) => {
+//   try {
+//     const { id } = req.params;
+//     const userRole = req.session.user.role;
+//     const userId = req.session.user.id;
+
+//     const request = await ApprovalModel.getApprovalRequestById(id);
+//     if (!request) {
+//       return res.status(404).json({
+//         success: false,
+//         message: "Approval request not found",
+//       });
+//     }
+
+//     // Check if user has permission to view this request
+//     const department = ApprovalModel.getDepartmentByUserRole(userRole);
+//     if (
+//       userRole !== "superAdmin" &&
+//       userRole !== "principal" &&
+//       request.department !== department &&
+//       request.requested_by !== userId
+//     ) {
+//       return res.status(403).json({
+//         success: false,
+//         message: "Access denied",
+//       });
+//     }
+
+//     // Get approval history
+//     const history = await ApprovalModel.getApprovalHistory(id);
+
+//     res.json({
+//       success: true,
+//       request,
+//       history,
+//     });
+//   } catch (error) {
+//     console.error("Error getting approval request:", error);
+//     res.status(500).json({
+//       success: false,
+//       message: "Failed to get approval request",
 //       error: error.message,
 //     });
 //   }
