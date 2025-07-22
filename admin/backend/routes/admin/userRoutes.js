@@ -70,15 +70,4 @@ router.delete(
   deletePermissionController
 );
 
-//Sample test route
-router.get(
-  "/student",
-  authMiddleware,
-  checkRole(["superAdmin", "teach_staff"]),
-  (req, res) => {
-    res.status(200).json({ content: "Welcome, Teacher!" });
-    console.log("/student router");
-  }
-);
-
 export default router;

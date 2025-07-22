@@ -7,7 +7,6 @@ import Signup from "./pages/signup";
 import Error404 from "./pages/error404";
 import Error403 from "./pages/error403";
 import AdminLayout from "./layout/adminLayout";
-import Student from "./pages/student";
 import { AuthProvider } from "./services/useAuthCheck";
 import WhatsNew from "./pages/HomePage/whatsNew";
 import Profile from "./pages/profile";
@@ -430,7 +429,6 @@ const App = () => {
           {/* Activity Logs Routes */}
           <Route path="/activity-logs" element={<ActivityLogs />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/student" element={<Student />} />
           <Route path="/training-placement" element={<TrainingPlacement />} />
           <Route path="/hoddesk" element={<HodDesk />} />
           <Route path="/principaldesk" element={<PrincipalDesk />} />
