@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { fetchDepartmentSectionContent } from "../../../../services/departmentService";
 
 // Generic component for displaying department section content
-const DepartmentSectionContent = ({ sectionName, departmentName = "Basic Science and Humanities" }) => {
+const DepartmentSectionContent = ({ sectionName, departmentName = "Information Technology" }) => {
   const [content, setContent] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -122,4 +122,4 @@ export const Publications = () => {
 
 export const Projects = () => {
   return <DepartmentSectionContent sectionName="Projects" />;
-};
+}; 

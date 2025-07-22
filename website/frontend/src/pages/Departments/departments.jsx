@@ -1,58 +1,15 @@
-// import React from "react";
-// import StaticPages from "../../layouts/staticPages";
-
-// import {
-//   Home,
-//   Comps,
-//   Mech,
-//   EXTC,
-//   Electrical,
-//   InfoT,
-//   Humanities,
-// } from "./departmentContent";
-// import { useNavigate } from "react-router-dom";
-
-// const Departments = () => {
-//   const sidebar = [
-//     "Home",
-//     "Computer Engineering",
-//     "Mechanical Engineering",
-//     "Electronics and Telecommunication Engineering",
-//     "Electrical Engineering",
-//     "Information Technology",
-//     "Basic Science and Humanities",
-//   ];
-
-//   const navigate = useNavigate();
-
-//   const content = {
-//     Home: <Home />,
-//     "Computer Engineering": <Comps />,
-//     "Mechanical Engineering": <Mech />,
-//     "Electronics and Telecommunication Engineering": <EXTC />,
-//     "Electrical Engineering": <Electrical />,
-//     "Information Technology": <InfoT />,
-//     "Basic Science and Humanities": <Humanities />,
-//   };
-
-//   return (
-//     <div>
-//       <StaticPages
-//         pagename={"Departments"}
-//         path={"Home / Departments"}
-//         sidebar={sidebar}
-//         content={content}
-//       />
-//     </div>
-//   );
-// };
-
-// export default Departments;
-
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import StaticPages from "../../layouts/staticPages";
-import { Home } from "./departmentContent"; // Import Home component
+import {
+  Home,
+  Comps,
+  Mech,
+  EXTC,
+  Electrical,
+  InfoT,
+  Humanities,
+} from "./departmentContent";
 
 const Departments = () => {
   const navigate = useNavigate();
@@ -68,7 +25,18 @@ const Departments = () => {
     "Basic Science and Humanities",
   ];
 
-  // Define sidebar paths
+  // Define content for each department
+  const content = {
+    Home: <Home />,
+    "Computer Engineering": <Comps />,
+    "Mechanical Engineering": <Mech />,
+    "Electronics and Telecommunication Engineering": <EXTC />,
+    "Electrical Engineering": <Electrical />,
+    "Information Technology": <InfoT />,
+    "Basic Science and Humanities": <Humanities />,
+  };
+
+  // Define sidebar paths (optional for future use)
   const sidebarPaths = {
     Home: "/departments",
     "Computer Engineering": "/computer_engineering",
@@ -79,9 +47,11 @@ const Departments = () => {
     "Basic Science and Humanities": "/humanities",
   };
 
-  // Handle sidebar click and navigate
+  // Handle sidebar click and navigate (optional)
   const handleTabClick = (tab) => {
-    navigate(sidebarPaths[tab]);
+    if (sidebarPaths[tab]) {
+      navigate(sidebarPaths[tab]);
+    }
   };
 
   return (
@@ -89,7 +59,7 @@ const Departments = () => {
       pagename={"Departments"}
       path={"Home / Departments"}
       sidebar={sidebar}
-      content={{ Home: <Home /> }}
+      content={content}
       onTabClick={handleTabClick}
     />
   );
