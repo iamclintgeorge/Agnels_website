@@ -12,6 +12,7 @@ import {
   // roleHierarchyController,
 } from "../../controllers/website/contentApprovalController.js";
 import { authMiddleware } from "../../middlewares/authMiddleware.js";
+import { approvalUpload } from "../../utils/approvalUploads.js";
 
 const router = express.Router();
 
@@ -20,7 +21,7 @@ const router = express.Router();
 router.use(authMiddleware);
 
 // Create new approval request
-router.post("/request", createApprovalRequest);
+router.post("/request", approvalUpload.single("file"), createApprovalRequest);
 
 // // Get user's own approval requests
 // router.get("/my-requests", getMyApprovalRequests);
