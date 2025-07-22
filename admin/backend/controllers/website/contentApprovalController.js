@@ -365,32 +365,106 @@ export const rejectRequest = async (req, res) => {
     const { id } = req.params;
     const slaveId = req.body.slaveId;
 
-    // Check for master verification
+    // Verify master authorization
     const [verifyMaster] = await db
       .promise()
       .query(`SELECT masterId FROM role_hierarchy WHERE slaveId = ?`, [
         slaveId,
       ]);
 
-    if (verifyMaster.length > 0) {
-      // Update the request status
-      const updateQuery = `UPDATE approval_requests SET status = ? WHERE id = ?`;
-      await db.promise().query(updateQuery, ["Rejected", id]);
-    } else {
-      return res.status(500).json({
+    if (verifyMaster.length === 0) {
+      return res.status(403).json({
         success: false,
         message: "Master not authorized",
       });
     }
+
+    // Fetch request details
+    const [fetchDetails] = await db
+      .promise()
+      .query(`SELECT proposed_content FROM approval_requests WHERE id = ?`, [
+        id,
+      ]);
+
+    const requestData = fetchDetails[0];
+    if (!requestData) {
+      return res.status(404).json({
+        success: false,
+        message: "Request not found",
+      });
+    }
+
+    // Attempt to delete the file from /uploads/pending if it exists
+    try {
+      const { imageFilename } = JSON.parse(
+        requestData.proposed_content || "{}"
+      );
+      if (imageFilename) {
+        const pendingPath = path.join("public/uploads/pending", imageFilename);
+        if (fs.existsSync(pendingPath)) {
+          fs.unlinkSync(pendingPath);
+        }
+      }
+    } catch (parseErr) {
+      console.warn(
+        "Could not parse proposed_content or delete file:",
+        parseErr.message
+      );
+    }
+
+    // Update the request status to Rejected
+    await db
+      .promise()
+      .query(`UPDATE approval_requests SET status = ? WHERE id = ?`, [
+        "Rejected",
+        id,
+      ]);
+
+    res.status(200).json({
+      success: true,
+      message: "Request rejected successfully",
+    });
   } catch (error) {
-    console.error("Error Rejecting request:", error);
+    console.error("Error rejecting request:", error);
     res.status(500).json({
       success: false,
-      message: "Failed to Reject request",
+      message: "Failed to reject request",
       error: error.message,
     });
   }
 };
+
+// export const rejectRequest = async (req, res) => {
+//   try {
+//     const { id } = req.params;
+//     const slaveId = req.body.slaveId;
+
+//     // Check for master verification
+//     const [verifyMaster] = await db
+//       .promise()
+//       .query(`SELECT masterId FROM role_hierarchy WHERE slaveId = ?`, [
+//         slaveId,
+//       ]);
+
+//     if (verifyMaster.length > 0) {
+//       // Update the request status
+//       const updateQuery = `UPDATE approval_requests SET status = ? WHERE id = ?`;
+//       await db.promise().query(updateQuery, ["Rejected", id]);
+//     } else {
+//       return res.status(500).json({
+//         success: false,
+//         message: "Master not authorized",
+//       });
+//     }
+//   } catch (error) {
+//     console.error("Error Rejecting request:", error);
+//     res.status(500).json({
+//       success: false,
+//       message: "Failed to Reject request",
+//       error: error.message,
+//     });
+//   }
+// };
 
 // // Request revision
 // export const requestRevision = async (req, res) => {
