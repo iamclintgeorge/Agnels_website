@@ -101,20 +101,47 @@ const ImgCarousel = () => {
     }
   };
 
-  const handleDelete = async (id) => {
-    if (!id) {
+  const handleDelete = async (img) => {
+    if (!img?.Id) {
       console.error("No valid Id provided for deletion");
       setMessage("Cannot delete: No valid ID found.");
       return;
     }
+
+    const currentContent = {
+      altText: img.altText,
+      imageFilename: img.imageFilename || img.imageUrl?.split("/").pop(), // fallback if filename missing
+      imageUrl: img.imageUrl,
+    };
+
     try {
-      console.log(`Attempting to delete image with Id: ${id}`);
-      await axios.delete(`http://localhost:3663/api/home/carousel/${id}`);
-      setMessage("Image deleted successfully!");
+      console.log(`Attempting to delete image with Id: ${img.Id}`);
+
+      const formData = new FormData();
+      formData.append("method", "DELETE");
+      formData.append("section", "homepage");
+      formData.append("title", "Delete Carousel Image");
+      formData.append("change_summary", "Deleted Image from homepage Carousel");
+      formData.append("current_content", JSON.stringify(currentContent));
+      formData.append("proposed_content", "");
+      formData.append("endpoint_url", "api/home/carousel");
+      formData.append("id", img.Id);
+
+      const response = await axios.post(
+        "http://localhost:3663/api/content-approval/request",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      setMessage("Image delete request submitted for approval!");
       fetchImages(); // Refresh images
     } catch (error) {
       console.error("Delete error:", error);
-      setMessage("Error deleting image.");
+      setMessage("Error submitting delete request.");
     }
   };
 
@@ -176,7 +203,7 @@ const ImgCarousel = () => {
                 <p className="mt-2 text-sm">{img.altText}</p>
                 <button
                   className="mt-2 bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600"
-                  onClick={() => handleDelete(img.Id)}
+                  onClick={() => handleDelete(img)}
                 >
                   Delete
                 </button>
