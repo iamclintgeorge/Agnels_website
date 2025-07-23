@@ -49,7 +49,7 @@ const ApprovalDashboard = () => {
       const response = await axios.get(
         "http://localhost:3663/api/content-approval/pending",
         {
-          withCredentials: true, // Equivalent to credentials: "include"
+          withCredentials: true,
         }
       );
 
@@ -62,10 +62,10 @@ const ApprovalDashboard = () => {
         // Calculate stats from the data
         const requests = data.requests;
         const newStats = {
-          pendingApprovals: requests.filter((r) => r.status === "pending")
+          pendingApprovals: requests.filter((r) => r.status === "Pending")
             .length,
           totalRequests: requests.length,
-          approvedRequests: requests.filter((r) => r.status === "approved")
+          approvedRequests: requests.filter((r) => r.status === "Approved")
             .length,
           rejectedRequests: requests.filter((r) => r.status === "rejected")
             .length,
