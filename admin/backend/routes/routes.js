@@ -13,6 +13,10 @@ import infrastructureRoutes from "./website/department/infrastructureRoutes.js";
 import departmentRoutes from "./website/department/departmentRoutes.js";
 import studentcornerRoutes from "./website/studentcorner/studentcornerRoutes.js";
 import roleHierarchyRoutes from "./admin/roleHierarchyRoutes.js";
+import {
+  authMiddleware,
+  checkPermission,
+} from "../middlewares/authMiddleware.js";
 const router = express.Router();
 
 router.use("/api", userRoutes);
@@ -21,7 +25,12 @@ router.use("/api/home", homeRoutes);
 // router.use("/api/department", deptHomeRoutes);
 router.use("/api/department", compActivityRoutes);
 router.use("/api/training-placement", trainingPlacementRoutes);
-router.use("/api/aboutus", aboutusRoutes);
+router.use(
+  "/api/aboutus",
+  authMiddleware,
+  checkPermission("about_us"),
+  aboutusRoutes
+);
 router.use("/api/academic", academicRoutes);
 router.use("/api/humanResource", humanRRoutes);
 router.use("/api/profile", profileRoutes);

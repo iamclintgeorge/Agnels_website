@@ -385,6 +385,9 @@ const DynamicSideBar = () => {
                 <Link to="/home/whatsNew">
                   <p>Announcements</p>
                 </Link>
+                <Link to="/">
+                  <p>Set Modal</p>
+                </Link>
               </div>
             )}
           </div>
@@ -786,7 +789,7 @@ const DynamicSideBar = () => {
         )}
 
         {/* Edit User Profiles */}
-        <Link to="/" className="flex justify-between pr-8">
+        <Link to="/ManageFacultyStaff" className="flex justify-between pr-8">
           Manage Faculty Staffs <span>&gt;</span>
         </Link>
 

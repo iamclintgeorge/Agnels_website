@@ -4,8 +4,8 @@ import "./index.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./pages/login";
 import Signup from "./pages/signup";
-import Error404 from "./pages/error404";
-import Error403 from "./pages/error403";
+import Error404 from "./pages/Error_Pages/error404";
+import Error403 from "./pages/Error_Pages/error403";
 import AdminLayout from "./layout/adminLayout";
 import { AuthProvider } from "./services/useAuthCheck";
 import WhatsNew from "./pages/HomePage/whatsNew";
@@ -28,6 +28,7 @@ import Teaching_staff from "./pages/HumanResources/teachingstaff";
 import Nonteaching_staff from "./pages/HumanResources/nonteachingstaff";
 import StudentsCorner from "./pages/StudentsCorner/StudentsCorner";
 import RolePermissionManager from "./pages/rolePermission";
+import ManageFacultyStaff from "./pages/manageFacultyStaff";
 
 // IIC
 import Iic_ambassador from "./pages/IIC/iic_ambassador";
@@ -146,6 +147,7 @@ const App = () => {
           <Route path="/academics" element={<AcademicAdmin />} />
           <Route path="/studentscorner" element={<StudentsCorner />} />
           <Route path="/roleHierarchy" element={<RoleHierarchy />} />
+          <Route path="/ManageFacultyStaff" element={<ManageFacultyStaff />} />
 
           {/* IIC Routes */}
           <Route path="/iic-innovation-council" element={<Iic_council />} />

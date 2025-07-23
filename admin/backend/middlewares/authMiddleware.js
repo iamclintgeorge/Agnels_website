@@ -32,6 +32,9 @@ export const checkPermission = (requiredPermission) => {
       return res.status(401).json({ message: "User not authenticated" });
     }
 
+    console.log("checkPermission");
+    console.log("User:", req.user);
+
     // Super admin has all permissions
     if (
       req.user.role === "superAdmin" ||
