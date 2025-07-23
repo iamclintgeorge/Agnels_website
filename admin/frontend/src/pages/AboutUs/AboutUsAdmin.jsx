@@ -345,6 +345,7 @@ const AboutUsAdmin = () => {
     if (authError === "forbidden") {
       navigate("/error403");
     }
+    console.log(authError);
   }, [authError, navigate]);
 
   // Handle changes to content data
