@@ -51,7 +51,7 @@ const ManageFacultyStaff = () => {
   const handleDelete = async (id) => {
     if (!window.confirm("Delete this faculty?")) return;
     try {
-      await axios.delete(`http://localhost:3663/api/faculties/${id}`);
+      await axios.put(`http://localhost:3663/api/faculties/delete/${id}`);
       setFaculties((prev) => prev.filter((f) => f.id !== id));
       closeModal();
     } catch (e) {
@@ -127,7 +127,7 @@ const ManageFacultyStaff = () => {
                 <h3 className="text-lg font-semibold text-gray-800">
                   {faculty.name}
                 </h3>
-                <p className="text-gray-600">Dept: {faculty.department_id}</p>
+                <p className="text-gray-600">User Id: {faculty.id}</p>
               </div>
             ))}
             {filteredFaculties.length === 0 && (

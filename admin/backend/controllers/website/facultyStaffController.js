@@ -3,7 +3,11 @@ import db from "../../config/db.js";
 // GET all faculty members
 export const getAllFaculties = async (req, res) => {
   try {
-    const [rows] = await db.promise().query("SELECT * FROM faculties");
+    const [rows] = await db
+      .promise()
+      .query(
+        "SELECT * FROM faculties WHERE teaching_staff = 1 ORDER BY sr_no ASC"
+      );
     res.status(200).json(rows);
   } catch (error) {
     console.error("Error fetching faculties:", error);
@@ -43,7 +47,7 @@ export const deleteFaculty = async (req, res) => {
   try {
     const [result] = await db
       .promise()
-      .query("DELETE FROM faculties WHERE id = ?", [id]);
+      .query("UPDATE faculties SET teaching_staff = 0 WHERE id = ?", [id]);
 
     if (result.affectedRows === 0) {
       return res.status(404).json({ message: "Faculty not found" });

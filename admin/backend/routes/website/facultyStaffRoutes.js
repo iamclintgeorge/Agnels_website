@@ -18,6 +18,6 @@ router.get("/departments", getAllDepartments);
 router.put("/:id", updateFaculty);
 
 // Delete a faculty
-router.delete("/:id", deleteFaculty);
+router.put("/delete/:id", deleteFaculty);
 
 export default router;
