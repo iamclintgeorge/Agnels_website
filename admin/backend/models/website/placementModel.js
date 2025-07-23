@@ -4,7 +4,7 @@ import db from "../../config/db.js"; // Adjust the path accordingly
 export const getOverview = () => {
   const sql = "SELECT * FROM placement_overview LIMIT 1";
   return new Promise((resolve, reject) => {
-    db.query(sql, (err, result) => {
+    db.promise().query(sql, (err, result) => {
       if (err) return reject(err);
       resolve(result[0] || {});
     });
@@ -19,7 +19,7 @@ export const updateOverview = (description, vision, mission) => {
                vision = VALUES(vision),
                mission = VALUES(mission)`;
   return new Promise((resolve, reject) => {
-    db.query(sql, [description, vision, mission], (err, result) => {
+    db.promise().query(sql, [description, vision, mission], (err, result) => {
       if (err) return reject(err);
       resolve(result);
     });
@@ -30,7 +30,7 @@ export const updateOverview = (description, vision, mission) => {
 export const getStatistics = () => {
   const sql = "SELECT * FROM placement_statistics ORDER BY academic_year DESC";
   return new Promise((resolve, reject) => {
-    db.query(sql, (err, result) => {
+    db.promise().query(sql, (err, result) => {
       if (err) return reject(err);
       resolve(result);
     });
@@ -43,7 +43,7 @@ export const addStatistics = (academic_year, total_placements, average_package, 
                  (academic_year, total_placements, average_package, highest_package, companies_visited) 
                  VALUES (?, ?, ?, ?, ?)`;
   return new Promise((resolve, reject) => {
-    db.query(sql, [academic_year, total_placements, average_package, highest_package, companies_visited], (err, result) => {
+    db.promise().query(sql, [academic_year, total_placements, average_package, highest_package, companies_visited], (err, result) => {
       if (err) return reject(err);
       resolve(result);
     });
@@ -53,7 +53,7 @@ export const addStatistics = (academic_year, total_placements, average_package, 
 export const deleteStatistics = (id) => {
   const sql = "DELETE FROM placement_statistics WHERE id = ?";
   return new Promise((resolve, reject) => {
-    db.query(sql, [id], (err, result) => {
+    db.promise().query(sql, [id], (err, result) => {
       if (err) return reject(err);
       resolve(result);
     });
@@ -69,7 +69,7 @@ export const updateStatistics = (id, academic_year, total_placements, average_pa
                      companies_visited = ? 
                  WHERE id = ?`;
   return new Promise((resolve, reject) => {
-    db.query(sql, [academic_year, total_placements, average_package, highest_package, companies_visited, id], (err, result) => {
+    db.promise().query(sql, [academic_year, total_placements, average_package, highest_package, companies_visited, id], (err, result) => {
       if (err) return reject(err);
       resolve(result);
     });
@@ -80,7 +80,7 @@ export const updateStatistics = (id, academic_year, total_placements, average_pa
 export const getRecruiters = () => {
   const sql = "SELECT * FROM placement_recruiters ORDER BY created_at DESC";
   return new Promise((resolve, reject) => {
-    db.query(sql, (err, result) => {
+    db.promise().query(sql, (err, result) => {
       if (err) return reject(err);
       resolve(result);
     });
@@ -92,7 +92,7 @@ export const addRecruiter = (company_name, logo_path, description) => {
   const sql = `INSERT INTO placement_recruiters (company_name, logo_path, description) 
                VALUES (?, ?, ?)`;
   return new Promise((resolve, reject) => {
-    db.query(sql, [company_name, logo_path, description], (err, result) => {
+    db.promise().query(sql, [company_name, logo_path, description], (err, result) => {
       if (err) return reject(err);
       resolve(result);
     });
@@ -102,10 +102,10 @@ export const addRecruiter = (company_name, logo_path, description) => {
 export const deleteRecruiter = (id) => {
   const selectSql = "SELECT logo_path FROM placement_recruiters WHERE id = ?";
   return new Promise((resolve, reject) => {
-    db.query(selectSql, [id], (err, result) => {
+    db.promise().query(selectSql, [id], (err, result) => {
       if (err) return reject(err);
       const deleteSql = "DELETE FROM placement_recruiters WHERE id = ?";
-      db.query(deleteSql, [id], (deleteErr, deleteResult) => {
+      db.promise().query(deleteSql, [id], (deleteErr, deleteResult) => {
         if (deleteErr) return reject(deleteErr);
         resolve({ logo_path: result[0]?.logo_path, deleteResult });
       });
@@ -118,7 +118,7 @@ export const updateRecruiter = (id, company_name, description, logo_path) => {
                SET company_name = ?, description = ?, logo_path = ? 
                WHERE id = ?`;
   return new Promise((resolve, reject) => {
-    db.query(sql, [company_name, description, logo_path, id], (err, result) => {
+    db.promise().query(sql, [company_name, description, logo_path, id], (err, result) => {
       if (err) return reject(err);
       resolve(result);
     });

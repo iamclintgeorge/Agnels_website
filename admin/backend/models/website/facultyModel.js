@@ -21,7 +21,7 @@ export const getFacultiesByDepartment = async (departmentId) => {
   `;
 
   try {
-    const [rows] = await db.query(query, [departmentId]);
+    const [rows] = await db.promise().query(query, [departmentId]);
     return rows;
   } catch (error) {
     console.error("Database fetch error:", error);
@@ -49,7 +49,7 @@ export const getFacultyById = async (facultyId) => {
   `;
 
   try {
-    const [facultyRows] = await db.query(facultyQuery, [facultyId]);
+    const [facultyRows] = await db.promise().query(facultyQuery, [facultyId]);
     
     if (facultyRows.length === 0) {
       return null;
@@ -63,7 +63,7 @@ export const getFacultyById = async (facultyId) => {
       FROM faculty_resumes 
       WHERE faculty_id = ?;
     `;
-    const [resumes] = await db.query(resumeQuery, [facultyId]);
+    const [resumes] = await db.promise().query(resumeQuery, [facultyId]);
 
     // Get faculty publications
     const publicationQuery = `
@@ -71,7 +71,7 @@ export const getFacultyById = async (facultyId) => {
       FROM faculty_publications 
       WHERE faculty_id = ?;
     `;
-    const [publications] = await db.query(publicationQuery, [facultyId]);
+    const [publications] = await db.promise().query(publicationQuery, [facultyId]);
 
     // Get faculty online profiles
     const profileQuery = `
@@ -79,7 +79,7 @@ export const getFacultyById = async (facultyId) => {
       FROM faculty_online_profiles 
       WHERE faculty_id = ?;
     `;
-    const [profiles] = await db.query(profileQuery, [facultyId]);
+    const [profiles] = await db.promise().query(profileQuery, [facultyId]);
 
     // Get faculty specializations
     const specializationQuery = `
@@ -87,7 +87,7 @@ export const getFacultyById = async (facultyId) => {
       FROM faculty_specializations 
       WHERE faculty_id = ?;
     `;
-    const [specializations] = await db.query(specializationQuery, [facultyId]);
+    const [specializations] = await db.promise().query(specializationQuery, [facultyId]);
 
     // Get faculty subjects
     const subjectQuery = `
@@ -95,7 +95,7 @@ export const getFacultyById = async (facultyId) => {
       FROM faculty_subjects 
       WHERE faculty_id = ?;
     `;
-    const [subjects] = await db.query(subjectQuery, [facultyId]);
+    const [subjects] = await db.promise().query(subjectQuery, [facultyId]);
 
     // Get faculty papers
     const paperQuery = `
@@ -104,7 +104,7 @@ export const getFacultyById = async (facultyId) => {
       WHERE faculty_id = ? 
       ORDER BY sr_no ASC;
     `;
-    const [papers] = await db.query(paperQuery, [facultyId]);
+    const [papers] = await db.promise().query(paperQuery, [facultyId]);
 
     // Get faculty researches
     const researchQuery = `
@@ -112,7 +112,7 @@ export const getFacultyById = async (facultyId) => {
       FROM faculty_researches 
       WHERE faculty_id = ?;
     `;
-    const [researches] = await db.query(researchQuery, [facultyId]);
+    const [researches] = await db.promise().query(researchQuery, [facultyId]);
 
     return {
       ...faculty,
@@ -150,7 +150,7 @@ export const getAllFaculties = async () => {
   `;
 
   try {
-    const [rows] = await db.query(query);
+    const [rows] = await db.promise().query(query);
     return rows;
   } catch (error) {
     console.error("Database fetch error:", error);
@@ -175,7 +175,7 @@ export const createFaculty = async (facultyData) => {
   `;
 
   try {
-    const [result] = await db.query(query, [
+    const [result] = await db.promise().query(query, [
       facultyData.department_id,
       facultyData.sr_no,
       facultyData.name,
@@ -212,7 +212,7 @@ export const updateFaculty = async (facultyId, facultyData) => {
   `;
 
   try {
-    const [result] = await db.query(query, [
+    const [result] = await db.promise().query(query, [
       facultyData.department_id,
       facultyData.sr_no,
       facultyData.name,
@@ -237,7 +237,7 @@ export const deleteFaculty = async (facultyId) => {
   const query = `DELETE FROM faculties WHERE id = ?;`;
 
   try {
-    const [result] = await db.query(query, [facultyId]);
+    const [result] = await db.promise().query(query, [facultyId]);
     return result.affectedRows > 0;
   } catch (error) {
     console.error("Database delete error:", error);
@@ -253,7 +253,7 @@ export const addFacultyResume = async (facultyId, attachment) => {
   `;
 
   try {
-    const [result] = await db.query(query, [facultyId, attachment]);
+    const [result] = await db.promise().query(query, [facultyId, attachment]);
     return { id: result.insertId, faculty_id: facultyId, attachment };
   } catch (error) {
     console.error("Database insert error:", error);
@@ -269,7 +269,7 @@ export const addFacultyPublication = async (facultyId, attachment) => {
   `;
 
   try {
-    const [result] = await db.query(query, [facultyId, attachment]);
+    const [result] = await db.promise().query(query, [facultyId, attachment]);
     return { id: result.insertId, faculty_id: facultyId, attachment };
   } catch (error) {
     console.error("Database insert error:", error);
@@ -285,7 +285,7 @@ export const addFacultyOnlineProfile = async (facultyId, description, createdBy)
   `;
 
   try {
-    const [result] = await db.query(query, [facultyId, description, createdBy]);
+    const [result] = await db.promise().query(query, [facultyId, description, createdBy]);
     return { id: result.insertId, faculty_id: facultyId, description, created_by: createdBy };
   } catch (error) {
     console.error("Database insert error:", error);
@@ -301,7 +301,7 @@ export const addFacultySpecialization = async (facultyId, description, createdBy
   `;
 
   try {
-    const [result] = await db.query(query, [facultyId, description, createdBy]);
+    const [result] = await db.promise().query(query, [facultyId, description, createdBy]);
     return { id: result.insertId, faculty_id: facultyId, description, created_by: createdBy };
   } catch (error) {
     console.error("Database insert error:", error);
@@ -317,7 +317,7 @@ export const addFacultySubject = async (facultyId, subject, type, semester, crea
   `;
 
   try {
-    const [result] = await db.query(query, [facultyId, subject, type, semester, createdBy]);
+    const [result] = await db.promise().query(query, [facultyId, subject, type, semester, createdBy]);
     return { id: result.insertId, faculty_id: facultyId, subject, type, semester, created_by: createdBy };
   } catch (error) {
     console.error("Database insert error:", error);
@@ -333,7 +333,7 @@ export const addFacultyPaper = async (facultyId, srNo, title, description, link,
   `;
 
   try {
-    const [result] = await db.query(query, [facultyId, srNo, title, description, link, createdBy]);
+    const [result] = await db.promise().query(query, [facultyId, srNo, title, description, link, createdBy]);
     return { id: result.insertId, faculty_id: facultyId, sr_no: srNo, title, description, link, created_by: createdBy };
   } catch (error) {
     console.error("Database insert error:", error);
@@ -349,7 +349,7 @@ export const addFacultyResearch = async (facultyId, title, grantType, fundingOrg
   `;
 
   try {
-    const [result] = await db.query(query, [facultyId, title, grantType, fundingOrganization, amount, duration, createdBy]);
+    const [result] = await db.promise().query(query, [facultyId, title, grantType, fundingOrganization, amount, duration, createdBy]);
     return { 
       id: result.insertId, 
       faculty_id: facultyId, 

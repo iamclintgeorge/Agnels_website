@@ -37,7 +37,7 @@ export const getAboutUsSection = async (sectionKey) => {
     WHERE Section = ?;
   `;
   try {
-    const [rows] = await db.query(query, [sectionKey]);
+    const [rows] = await db.promise().query(query, [sectionKey]);
     if (rows.length > 0) {
       try {
         // Try to parse as JSON, if it fails, wrap the content in a content object
@@ -166,10 +166,9 @@ export const upsertAboutUsSection = async (sectionKey, contentObject) => {
 
   try {
     // First check if the section exists
-    const [existingRows] = await db.query(
-      "SELECT id FROM infoText WHERE Section = ?",
-      [sectionKey]
-    );
+    const [existingRows] = await db
+      .promise()
+      .query("SELECT id FROM infoText WHERE Section = ?", [sectionKey]);
 
     let result;
     if (existingRows.length > 0) {
@@ -180,7 +179,7 @@ export const upsertAboutUsSection = async (sectionKey, contentObject) => {
         SET Content = ?, Updated_At = CURRENT_TIMESTAMP 
         WHERE Section = ?;
       `;
-      [result] = await db.query(query, [contentString, sectionKey]);
+      [result] = await db.promise().query(query, [contentString, sectionKey]);
     } else {
       console.log(`Creating new section ${sectionKey}`);
       // Insert new section
@@ -188,7 +187,7 @@ export const upsertAboutUsSection = async (sectionKey, contentObject) => {
         INSERT INTO infoText (Section, Content) 
         VALUES (?, ?);
       `;
-      [result] = await db.query(query, [sectionKey, contentString]);
+      [result] = await db.promise().query(query, [sectionKey, contentString]);
     }
 
     console.log(`Database operation successful for ${sectionKey}`);

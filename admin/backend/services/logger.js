@@ -108,7 +108,7 @@ export const logAdminActivity = async (activityData) => {
     ];
 
     await new Promise((resolve, reject) => {
-      db.query(query, values, (error, results) => {
+      db.promise().query(query, values, (error, results) => {
         if (error) {
           logger.error('Failed to log admin activity to database:', error);
           reject(error);
@@ -193,7 +193,7 @@ export const getActivityLogs = async (filters = {}) => {
     values.push(parseInt(limit), parseInt(offset));
 
     return new Promise((resolve, reject) => {
-      db.query(query, values, (error, results) => {
+      db.promise().query(query, values, (error, results) => {
         if (error) {
           logger.error('Failed to fetch activity logs:', error);
           reject(error);
@@ -243,7 +243,7 @@ export const getActivityStats = async (filters = {}) => {
     
     for (const [key, query] of Object.entries(queries)) {
       results[key] = await new Promise((resolve, reject) => {
-        db.query(query, [startDate, endDate], (error, result) => {
+        db.promise().query(query, [startDate, endDate], (error, result) => {
           if (error) {
             logger.error(`Failed to fetch ${key}:`, error);
             reject(error);
