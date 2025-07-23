@@ -108,7 +108,7 @@ export const updateHodText = async (req, res) => {
     // Get old data before updating for logging
     const oldDataQuery = await new Promise((resolve, reject) => {
       const query = "SELECT * FROM infoText WHERE id = ?";
-      db.query(query, [id], (error, results) => {
+      db.promise().query(query, [id], (error, results) => {
         if (error) reject(error);
         else resolve(results[0]);
       });

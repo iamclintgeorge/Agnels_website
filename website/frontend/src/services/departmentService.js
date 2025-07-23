@@ -13,6 +13,16 @@ const DEPARTMENT_IDS = {
   Home: "general", // For general department home
 };
 
+const DEPT_API_SLUGS = {
+  "Computer Engineering": "computer-engineering",
+  "Mechanical Engineering": "mechanical-engineering",
+  "Electronics and Telecommunication Engineering":
+    "electronics-and-telecommunication-engineering",
+  "Electrical Engineering": "electrical-engineering",
+  "Information Technology": "information-technology",
+  "Basic Science and Humanities": "basic-science-and-humanities",
+};
+
 // Department name to API mapping for home endpoints
 const DEPARTMENT_ENDPOINTS = {
   "Computer Engineering": `${API_BASE_URL}/department/computer/home`,
@@ -207,19 +217,34 @@ export const fetchDepartmentSectionContent = async (
         endpoint = `${API_BASE_URL}/dept/activities/${departmentId}`;
         break;
       case "publications":
-        endpoint = `${API_BASE_URL}/dept/publications/${departmentId}`;
+        const publicationsdeptSlug = DEPT_API_SLUGS[departmentName];
+        if (publicationsdeptSlug) {
+          endpoint = `${API_BASE_URL}/department/${publicationsdeptSlug}/publications`;
+        }
         break;
       case "magazine":
-        endpoint = `${API_BASE_URL}/dept/magazines/${departmentId}`;
+        const magazinedeptSlug = DEPT_API_SLUGS[departmentName];
+        if (magazinedeptSlug) {
+          endpoint = `${API_BASE_URL}/department/${magazinedeptSlug}/magazine`;
+        }
         break;
       case "achievements":
-        endpoint = `${API_BASE_URL}/dept/achievements/${departmentId}`;
+        const achievementsdeptSlug = DEPT_API_SLUGS[departmentName];
+        if (achievementsdeptSlug) {
+          endpoint = `${API_BASE_URL}/department/${achievementsdeptSlug}/achievements`;
+        }
         break;
       case "timetable":
-        endpoint = `${API_BASE_URL}/dept/timetables/${departmentId}`;
+        const timetabledeptSlug = DEPT_API_SLUGS[departmentName];
+        if (timetabledeptSlug) {
+          endpoint = `${API_BASE_URL}/department/${timetabledeptSlug}/time-table`;
+        }
         break;
       case "association":
-        endpoint = `${API_BASE_URL}/dept/associations/${departmentId}`;
+        const AssocdeptSlug = DEPT_API_SLUGS[departmentName];
+        if (AssocdeptSlug) {
+          endpoint = `${API_BASE_URL}/department/${AssocdeptSlug}/association`;
+        }
         break;
       case "committees":
         endpoint = `${API_BASE_URL}/dept/committees/${departmentId}`;
@@ -231,9 +256,10 @@ export const fetchDepartmentSectionContent = async (
         endpoint = `${API_BASE_URL}/dept/undergraduate-projects/${departmentId}`;
         break;
       case "innovative_teaching":
-        // Note: Check if there's a specific API for innovative teaching,
-        // otherwise it will fall back to text content only
-        endpoint = `${API_BASE_URL}/dept/innovative-teaching/${departmentId}`;
+        const innovative_teachingdeptSlug = DEPT_API_SLUGS[departmentName];
+        if (innovative_teachingdeptSlug) {
+          endpoint = `${API_BASE_URL}/department/${innovative_teachingdeptSlug}/innovative-teaching`;
+        }
         break;
       case "infra":
         endpoint = `${API_BASE_URL}/infrastructure/department/${departmentId}`;
