@@ -385,6 +385,9 @@ const DynamicSideBar = () => {
                 <Link to="/home/whatsNew">
                   <p>Announcements</p>
                 </Link>
+                <Link to="/">
+                  <p>Set Modal</p>
+                </Link>
               </div>
             )}
           </div>
@@ -685,13 +688,6 @@ const DynamicSideBar = () => {
           </Link>
         )}
 
-        {/* Additional Students Corner for Teaching Staff */}
-        {(user.role === "teach_staff" || user.role === "superAdmin") && (
-          <Link to="/student" className="flex justify-between pr-8">
-            Dummy Route for Authorization <span>&gt;</span>
-          </Link>
-        )}
-
         {/* Content Approval Section */}
         {(user.role === "superAdmin" ||
           user.role === "principal" ||
@@ -793,7 +789,7 @@ const DynamicSideBar = () => {
         )}
 
         {/* Edit User Profiles */}
-        <Link to="/" className="flex justify-between pr-8">
+        <Link to="/ManageFacultyStaff" className="flex justify-between pr-8">
           Manage Faculty Staffs <span>&gt;</span>
         </Link>
 

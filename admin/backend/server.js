@@ -13,6 +13,7 @@ import compActivityRoutes from "./routes/website/homepage/compActivityRoutes.js"
 import profileRoutes from "./routes/website/profileRoutes.js";
 import studentcornerRoutes from "./routes/website/studentcorner/studentcornerRoutes.js";
 import { roleHierarchyController } from "./controllers/website/contentApprovalController.js";
+import facultyStaffRoute from "./routes/website/facultyStaffRoutes.js";
 
 // Import new department routes
 import computerRoutes from "./routes/website/department/computerRoutes.js";
@@ -128,6 +129,9 @@ app.use("/api/content-approval", contentApprovalRoutes);
 
 // Integrate IIC routes
 app.use("/api/iic", iicRoutes);
+
+//Manage Faculty Staff Routes
+app.use("/api/faculties", facultyStaffRoute);
 
 // Activity logs routes
 app.use("/api/activity-logs", activityLogsRoutes);
