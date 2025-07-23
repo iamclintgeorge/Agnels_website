@@ -14,7 +14,21 @@ router.get(
   checkPermission("manage_users"),
   async (req, res) => {
     try {
-      const [rows] = await db.promise().query("SELECT * FROM role_hierarchy");
+      const query = `
+  SELECT 
+    rh.masterId,
+    rh.slaveId,
+    rh.userId,
+    r1.displayName AS masterName,
+    r2.displayName AS slaveName,
+    f.name AS facultyName
+  FROM role_hierarchy rh
+  LEFT JOIN roles r1 ON rh.masterId = r1.id
+  LEFT JOIN roles r2 ON rh.slaveId = r2.id
+  LEFT JOIN faculties f ON rh.userId = f.id
+`;
+
+      const [rows] = await db.promise().query(query);
       res.json(rows);
     } catch (err) {
       res.status(500).json({ message: "Database error", error: err });
@@ -28,33 +42,52 @@ router.post(
   authMiddleware,
   checkPermission("manage_users"),
   async (req, res) => {
-    const { master, slave } = req.body;
+    const { master, slaves = [], users = [] } = req.body;
     console.log("/role-hierarchy");
-    console.log(master, slave);
+    console.log("Master:", master, "Slaves:", slaves, "Users:", users);
 
-    if (!master || !slave || !Array.isArray(slave) || slave.length === 0) {
+    if (!master || (!Array.isArray(slaves) && !Array.isArray(users))) {
+      return res.status(400).json({
+        message: "Master and at least one Slave or User is required.",
+      });
+    }
+
+    if (slaves.length === 0 && users.length === 0) {
       return res
         .status(400)
-        .json({ message: "Master and Slave(s) are required." });
+        .json({ message: "Please provide at least one slaveId or userId." });
     }
 
     try {
-      // Insert multiple slave entries for the given master
-      const values = slave.map((slaveId) => [master, slaveId]);
-      const [result] = await db
-        .promise()
-        .query("INSERT INTO role_hierarchy (masterId, slaveId) VALUES ?", [
-          values,
-        ]);
+      const queries = [];
+      const slaveValues = slaves.map((slaveId) => [master, slaveId, null]);
+      const userValues = users.map((userId) => [master, null, userId]);
 
-      res.status(201).json({
-        message: "Role hierarchy created successfully",
-        status: "success",
-        data: result,
-      });
+      const allValues = [...slaveValues, ...userValues];
+
+      if (allValues.length > 0) {
+        const [result] = await db
+          .promise()
+          .query(
+            "INSERT INTO role_hierarchy (masterId, slaveId, userId) VALUES ?",
+            [allValues]
+          );
+
+        return res.status(201).json({
+          message: "Role hierarchy created successfully",
+          status: "success",
+          data: result,
+        });
+      } else {
+        return res
+          .status(400)
+          .json({ message: "No valid slaveId or userId provided." });
+      }
     } catch (err) {
-      console.log("Error", err);
-      res.status(500).json({ message: "Database error", error: err });
+      console.error("Error:", err);
+      return res
+        .status(500)
+        .json({ message: "Database error", error: err.message });
     }
   }
 );

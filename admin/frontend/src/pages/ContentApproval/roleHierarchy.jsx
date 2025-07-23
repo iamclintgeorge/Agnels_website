@@ -5,12 +5,14 @@ import axios from "axios";
 const RoleHierarchy = () => {
   const [roles, setRoles] = useState([]);
   const [masterSlaveData, setMasterSlaveData] = useState([]);
-  const [editingRole, setEditingRole] = useState(null);
   const [isCreateMode, setIsCreateMode] = useState(false);
   const [selectedTab, setSelectedTab] = useState("roles");
   const [newHierarchy, setNewHierarchy] = useState({ master: "", slaves: [] });
+  const [showFacultyList, setShowFacultyList] = useState(false);
+  const [facultyList, setFacultyList] = useState([]);
+  const [selectedFacultyIds, setSelectedFacultyIds] = useState([]);
+  const [searchFaculty, setSearchFaculty] = useState("");
 
-  // Fetch roles and hierarchy data
   useEffect(() => {
     fetchRoles();
     fetchMasterSlaveData();
@@ -36,44 +38,46 @@ const RoleHierarchy = () => {
     }
   };
 
-  // CREATE ROLE HIERARCHY
   const handleCreateHierarchy = async () => {
-    if (newHierarchy.master && newHierarchy.slaves.length > 0) {
+    const slaveRoleIds = newHierarchy.slaves;
+    const facultyUserIds = selectedFacultyIds;
+
+    if (
+      newHierarchy.master &&
+      (slaveRoleIds.length > 0 || facultyUserIds.length > 0)
+    ) {
       try {
-        // Send the hierarchy data to the backend
         const response = await axios.post(
           "http://localhost:3663/api/role-hierarchy",
           {
             master: newHierarchy.master,
-            slave: newHierarchy.slaves, // Sending slave as an array
+            slaves: slaveRoleIds,
+            users: facultyUserIds,
           }
         );
 
-        if (response.status !== 201) {
+        if (response.status !== 201)
           throw new Error("Failed to create hierarchy");
-        }
 
-        // Fetch the updated data after the hierarchy is created
         fetchMasterSlaveData();
-
-        // Reset state after successful creation
         setNewHierarchy({ master: "", slaves: [] });
+        setSelectedFacultyIds([]);
+        setShowFacultyList(false);
         setIsCreateMode(false);
       } catch (error) {
         console.error("Error creating hierarchy:", error);
         alert("Failed to create hierarchy. Please try again.");
       }
     } else {
-      alert("Please select a master and at least one slave.");
+      alert("Please select a master and at least one slave or user.");
     }
   };
 
-  // DELETE HIERARCHY
-  const handleDeleteHierarchy = async (masterId, slaveId) => {
+  const handleDeleteHierarchy = async (masterId, targetId) => {
     if (window.confirm("Are you sure you want to remove this hierarchy?")) {
       try {
         const response = await axios.delete(
-          `http://localhost:3663/api/role-hierarchy/${masterId}/${slaveId}`
+          `http://localhost:3663/api/role-hierarchy/${masterId}/${targetId}`
         );
         if (response.status !== 200)
           throw new Error("Failed to delete hierarchy");
@@ -86,49 +90,46 @@ const RoleHierarchy = () => {
   };
 
   const groupedData = masterSlaveData.reduce((acc, entry) => {
-    const masterRole = roles.find((role) => role.id === entry.masterId);
-    const slaveRole = roles.find((role) => role.id === entry.slaveId);
-    if (masterRole) {
-      if (!acc[masterRole.id]) {
-        acc[masterRole.id] = {
-          master: masterRole,
-          slaves: [],
-        };
-      }
-      if (slaveRole) {
-        acc[masterRole.id].slaves.push(slaveRole);
-      }
+    const masterId = entry.masterId;
+    if (!acc[masterId]) {
+      acc[masterId] = {
+        master: { id: masterId, displayName: entry.masterName },
+        entries: [],
+      };
     }
+    acc[masterId].entries.push(entry);
     return acc;
   }, {});
 
-  const RoleHierarchyCard = ({ master, slaves }) => (
+  const RoleHierarchyCard = ({ master, entries }) => (
     <div className="bg-white rounded-lg shadow-md p-6 border border-gray-200">
       <div className="flex justify-between items-start mb-4">
         <div>
           <h3 className="text-lg font-semibold text-gray-800">
             Master: {master.displayName}
           </h3>
-          <p className="text-sm text-gray-600">
-            Slaves:
-            <ul className="mt-2">
-              {slaves.map((slave) => (
-                <li
-                  key={slave.id}
-                  className="text-sm text-gray-600 flex justify-between items-center"
+          <p className="text-sm text-gray-600">Slaves:</p>
+          <ul className="mt-2 space-y-1">
+            {entries.map((entry) => (
+              <li
+                key={entry.slaveId || entry.userId}
+                className="text-sm text-gray-600 flex justify-between items-center"
+              >
+                <span>{entry.slaveName || entry.facultyName}</span>
+                <button
+                  onClick={() =>
+                    handleDeleteHierarchy(
+                      master.id,
+                      entry.slaveId || entry.userId
+                    )
+                  }
+                  className="text-red-600 ml-2"
                 >
-                  <span>{slave.displayName}</span>
-                  {/* Delete Button */}
-                  <button
-                    onClick={() => handleDeleteHierarchy(master.id, slave.id)}
-                    className="text-red-600 ml-2"
-                  >
-                    <Trash2 size={16} />
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </p>
+                  <Trash2 size={16} />
+                </button>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
     </div>
@@ -146,34 +147,32 @@ const RoleHierarchy = () => {
           </p>
         </div>
 
-        {/* Tab Navigation */}
-        <div className="mb-6">
-          <div className="border-b border-gray-200">
-            <nav className="-mb-px flex space-x-8">
-              <button
-                onClick={() => setSelectedTab("roles")}
-                className={`py-2 px-1 border-b-2 font-medium text-sm ${
-                  selectedTab === "roles"
-                    ? "border-blue-500 text-blue-600"
-                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-                }`}
-              >
-                <Users className="inline mr-2" size={16} />
-                Roles
-              </button>
-              <button
-                onClick={() => setSelectedTab("hierarchy")}
-                className={`py-2 px-1 border-b-2 font-medium text-sm ${
-                  selectedTab === "hierarchy"
-                    ? "border-blue-500 text-blue-600"
-                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-                }`}
-              >
-                <Settings className="inline mr-2" size={16} />
-                Hierarchy
-              </button>
-            </nav>
-          </div>
+        {/* Tabs */}
+        <div className="mb-6 border-b border-gray-200">
+          <nav className="-mb-px flex space-x-8">
+            <button
+              onClick={() => setSelectedTab("roles")}
+              className={`py-2 px-1 border-b-2 font-medium text-sm ${
+                selectedTab === "roles"
+                  ? "border-blue-500 text-blue-600"
+                  : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+              }`}
+            >
+              <Users className="inline mr-2" size={16} />
+              Roles
+            </button>
+            <button
+              onClick={() => setSelectedTab("hierarchy")}
+              className={`py-2 px-1 border-b-2 font-medium text-sm ${
+                selectedTab === "hierarchy"
+                  ? "border-blue-500 text-blue-600"
+                  : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+              }`}
+            >
+              <Settings className="inline mr-2" size={16} />
+              Hierarchy
+            </button>
+          </nav>
         </div>
 
         {selectedTab === "roles" && (
@@ -188,7 +187,7 @@ const RoleHierarchy = () => {
               </button>
             </div>
 
-            {/* Create Hierarchy Modal */}
+            {/* Modal */}
             {isCreateMode && (
               <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                 <div className="bg-white rounded-lg p-6 w-full max-w-4xl max-h-[90vh] overflow-y-auto">
@@ -204,6 +203,7 @@ const RoleHierarchy = () => {
                     </button>
                   </div>
 
+                  {/* Master Selection */}
                   <div className="space-y-4 mb-6">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -215,10 +215,10 @@ const RoleHierarchy = () => {
                           setNewHierarchy({
                             ...newHierarchy,
                             master: e.target.value,
-                            slaves: [], // reset slaves when master changes
+                            slaves: [],
                           })
                         }
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md"
                       >
                         <option value="">Select Master Role</option>
                         {roles.map((role) => (
@@ -229,27 +229,28 @@ const RoleHierarchy = () => {
                       </select>
                     </div>
 
+                    {/* Slave Role Selection */}
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-1">
                         Slave Roles
                       </label>
                       <div className="space-y-2">
                         {roles
-                          .filter((role) => role.id !== newHierarchy.master) // Filter out selected master role
+                          .filter((role) => role.id !== newHierarchy.master)
                           .map((role) => (
                             <div key={role.id} className="flex items-center">
                               <input
                                 type="checkbox"
                                 value={role.id}
                                 onChange={(e) => {
-                                  const selectedSlaves = e.target.checked
+                                  const selected = e.target.checked
                                     ? [...newHierarchy.slaves, role.id]
                                     : newHierarchy.slaves.filter(
                                         (id) => id !== role.id
                                       );
                                   setNewHierarchy({
                                     ...newHierarchy,
-                                    slaves: selectedSlaves,
+                                    slaves: selected,
                                   });
                                 }}
                                 checked={newHierarchy.slaves.includes(role.id)}
@@ -260,10 +261,84 @@ const RoleHierarchy = () => {
                               </span>
                             </div>
                           ))}
+
+                        {/* Faculty option */}
+                        <div className="flex items-center">
+                          <input
+                            type="checkbox"
+                            value="other"
+                            onChange={(e) => {
+                              setShowFacultyList(e.target.checked);
+                              if (e.target.checked) {
+                                axios
+                                  .get(
+                                    "http://localhost:3663/api/faculties?limit=1000"
+                                  )
+                                  .then((res) => setFacultyList(res.data))
+                                  .catch((err) => console.error(err));
+                              } else {
+                                setSelectedFacultyIds([]);
+                              }
+                            }}
+                            checked={showFacultyList}
+                            className="h-4 w-4 text-blue-600 border-gray-300 rounded"
+                          />
+                          <span className="ml-2 text-sm font-semibold text-purple-700">
+                            Other (Select Faculty)
+                          </span>
+                        </div>
                       </div>
+
+                      {/* Faculty Selector */}
+                      {showFacultyList && (
+                        <div className="mt-4">
+                          <input
+                            type="text"
+                            value={searchFaculty}
+                            onChange={(e) => setSearchFaculty(e.target.value)}
+                            placeholder="Search faculty by name..."
+                            className="w-full mb-2 px-3 py-2 border border-gray-300 rounded-md"
+                          />
+                          <div className="max-h-48 overflow-y-auto border border-gray-200 rounded p-2 space-y-1">
+                            {facultyList
+                              .filter((f) =>
+                                f.name
+                                  .toLowerCase()
+                                  .includes(searchFaculty.toLowerCase())
+                              )
+                              .map((faculty) => (
+                                <div
+                                  key={faculty.id}
+                                  className="flex items-center"
+                                >
+                                  <input
+                                    type="checkbox"
+                                    value={faculty.id}
+                                    onChange={(e) => {
+                                      const updated = e.target.checked
+                                        ? [...selectedFacultyIds, faculty.id]
+                                        : selectedFacultyIds.filter(
+                                            (id) => id !== faculty.id
+                                          );
+                                      setSelectedFacultyIds(updated);
+                                    }}
+                                    checked={selectedFacultyIds.includes(
+                                      faculty.id
+                                    )}
+                                    className="h-4 w-4 text-blue-600 border-gray-300 rounded"
+                                  />
+                                  <span className="ml-2 text-sm">
+                                    {faculty.name}
+                                  </span>
+                                </div>
+                              ))}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   </div>
 
+                  {/* Buttons */}
                   <div className="flex justify-end space-x-3 mt-6">
                     <button
                       onClick={() => setIsCreateMode(false)}
@@ -284,11 +359,11 @@ const RoleHierarchy = () => {
 
             {/* Roles Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {Object.values(groupedData).map(({ master, slaves }) => (
+              {Object.values(groupedData).map(({ master, entries }) => (
                 <RoleHierarchyCard
                   key={master.id}
                   master={master}
-                  slaves={slaves}
+                  entries={entries}
                 />
               ))}
             </div>
@@ -300,11 +375,11 @@ const RoleHierarchy = () => {
             <h2 className="text-xl font-semibold mb-4">Manage Hierarchy</h2>
             <div className="space-y-4">
               {Object.values(groupedData).length > 0 ? (
-                Object.values(groupedData).map(({ master, slaves }) => (
+                Object.values(groupedData).map(({ master, entries }) => (
                   <RoleHierarchyCard
                     key={master.id}
                     master={master}
-                    slaves={slaves}
+                    entries={entries}
                   />
                 ))
               ) : (
