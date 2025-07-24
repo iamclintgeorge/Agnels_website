@@ -458,6 +458,7 @@ export const academicCalendarEdit = async (
   description,
   created_by
 ) => {
+  console.log("issue_date: ", issue_date);
   const query = `
     UPDATE academic_calendar 
     SET year = ?, semester = ?, issue_date = ?, pdf_url = ?, description = ?, created_by = ? 
@@ -710,7 +711,7 @@ export const stakeholderFeedbackCreate = async (
 ) => {
   const query = `
     INSERT INTO stakeholder_feedback (title, description, pdf_url, feedback_type, created_by)
-    VALUES (?, ?, ?, ?, ?)
+    VALUES (?, ?, ?, 'syllabus', '1')
   `;
   const values = [title, description, pdf_url, feedback_type, created_by];
 

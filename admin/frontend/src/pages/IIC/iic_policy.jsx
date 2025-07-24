@@ -54,6 +54,16 @@ const Iic_policy = () => {
     }
   };
 
+  const deletePdf = async (pdfId) => {
+    try {
+      await axios.delete(`http://localhost:3663/api/iic/pdf/${pdfId}`);
+      setMessage("PDF deleted successfully!");
+      fetchPdfs(); // Refresh the PDF list
+    } catch (err) {
+      setMessage("Error deleting PDF.");
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!pdfFile) {
@@ -163,7 +173,7 @@ const Iic_policy = () => {
         {displayPdfs.length > 0 ? (
           <ul className="list-disc pl-5">
             {displayPdfs.map((pdf) => (
-              <li key={pdf.id}>
+              <li key={pdf.id} className="flex justify-between items-center">
                 <a
                   href={`http://localhost:3663/uploads/IIC/${pdf.file_url}`}
                   target="_blank"
@@ -172,6 +182,12 @@ const Iic_policy = () => {
                 >
                   {pdf.title}
                 </a>
+                <button
+                  onClick={() => deletePdf(pdf.id)}
+                  className="text-red-500 hover:text-red-700 ml-4"
+                >
+                  Delete
+                </button>
               </li>
             ))}
           </ul>

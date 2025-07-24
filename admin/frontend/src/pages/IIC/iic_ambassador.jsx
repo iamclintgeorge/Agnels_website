@@ -30,8 +30,7 @@ const Iic_ambassador = () => {
   return (
 <>
 {/* {text.content} */}
-{text.length > 0 ? text[0].content : "No content"}
-hello
+{text.length > 0 ? text[0].content : "No content available in the DB"}
 </>
   )
 }
