@@ -1,15 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 
-
 const Iic_innovation = () => {
-
   const [text, setText] = useState([]);
 
-   useEffect(() => {
-      fetchText();
-    }, []);
-  
+  useEffect(() => {
+    fetchText();
+  }, []);
+
   const fetchText = async () => {
     try {
       const response = await axios.get("http://localhost:3663/api/iic/text");
@@ -28,13 +26,11 @@ const Iic_innovation = () => {
   };
 
   return (
-<>
-{/* {text.content} */}
-{text.length > 0 ? text[0].content : "No content"}
-hello
-</>
-  )
-}
+    <>
+      {/* {text.content} */}
+      {text.length > 0 ? text[0].content : "No content available in the DB"}
+    </>
+  );
+};
 
 export default Iic_innovation;
-
