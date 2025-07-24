@@ -572,7 +572,7 @@ const DynamicSideBar = () => {
               </span>
             </p>
             {openSections.academic && (
-              <div className="pt-2 pr-8 pl-4 leading-10">
+              <div className="pt-2 pr-8 pl-4 leading-7 space-y-4">
                 {academicSections.map((section) => (
                   <p
                     key={section}
