@@ -29,6 +29,7 @@ import Nonteaching_staff from "./pages/HumanResources/nonteachingstaff";
 import StudentsCorner from "./pages/StudentsCorner/StudentsCorner";
 import RolePermissionManager from "./pages/rolePermission";
 import ManageFacultyStaff from "./pages/manageFacultyStaff";
+import AdminAdmissions from "./pages/AdminAdmissions";
 
 // IIC
 import Iic_ambassador from "./pages/IIC/iic_ambassador";

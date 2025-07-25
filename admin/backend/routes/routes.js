@@ -12,6 +12,7 @@ import facultyRoutes from "./website/department/facultyRoutes.js";
 import infrastructureRoutes from "./website/department/infrastructureRoutes.js";
 import departmentRoutes from "./website/department/departmentRoutes.js";
 import studentcornerRoutes from "./website/studentcorner/studentcornerRoutes.js";
+import admissionRoutes from "./website/admissionRoutes.js";
 import roleHierarchyRoutes from "./admin/roleHierarchyRoutes.js";
 import {
   authMiddleware,
@@ -38,6 +39,7 @@ router.use("/api/faculty", facultyRoutes);
 router.use("/api/infrastructure", infrastructureRoutes);
 router.use("/api/dept", departmentRoutes);
 router.use("/api/students-corner", studentcornerRoutes);
+router.use("/api/admission", admissionRoutes);
 
 // router.use("/api/announcements", announcementRoutes);
 

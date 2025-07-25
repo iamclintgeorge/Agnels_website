@@ -6,9 +6,8 @@ import {
   PostGraduate,
   PHD,
   FeePayment,
-  
 } from "./AdmissionContent";
-// import { useNavigate } from "react-router-dom";
+import AdmissionForm from "./AdmissionForm";
 
 const Admission = () => {
   const sidebar = [
@@ -16,11 +15,9 @@ const Admission = () => {
     "Under Graduate",
     "Post Graduate",
     "PHD",
-    "Fee Payment"
-    
+    "Fee Payment",
+    "Apply Now",
   ];
-
-  // const navigate = useNavigate();
 
   const content = {
     AdmissionProcess: <Admission_Process />,
@@ -28,7 +25,7 @@ const Admission = () => {
     "Post Graduate": <PostGraduate />,
     "PHD": <PHD />,
     "Fee Payment": <FeePayment />,
-    
+    "Apply Now": <AdmissionForm />,
   };
 
   return (
