@@ -4,25 +4,28 @@ import {
 } from "../../models/website/computerModel.js";
 
 export const computerHomeTextController = async (req, res) => {
+  const { id } = req.params;
   try {
-    const text = await computerHomeTextDisplay();
+    const text = await computerHomeTextDisplay(id);
     res.json(text);
   } catch (error) {
     console.error("Fetch error:", error);
-    res.status(500).json({ message: "Error fetching Computer Department Home text" });
+    res
+      .status(500)
+      .json({ message: "Error fetching Computer Department Home text" });
   }
 };
 
 export const computerHomeTextUpdateController = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { departmentId, id } = req.params;
     const { content } = req.body;
 
     if (!content) {
       return res.status(400).json({ message: "Content is required" });
     }
 
-    const updatedText = await computerHomeTextUpdate(id, content);
+    const updatedText = await computerHomeTextUpdate(departmentId, id, content);
     if (!updatedText) {
       return res.status(404).json({ message: "Text not found" });
     }
@@ -30,6 +33,8 @@ export const computerHomeTextUpdateController = async (req, res) => {
     res.json({ message: "Text updated successfully", content: updatedText });
   } catch (error) {
     console.error("Update error:", error);
-    res.status(500).json({ message: "Error updating Computer Department Home text" });
+    res
+      .status(500)
+      .json({ message: "Error updating Computer Department Home text" });
   }
-}; 
+};

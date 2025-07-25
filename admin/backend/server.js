@@ -109,12 +109,12 @@ app.use("/api/profile", profileRoutes);
 app.use("/api/studentcorner", studentcornerRoutes);
 
 // New department routes
-app.use("/api/department/computer", computerRoutes);
-app.use("/api/department/mechanical", mechanicalRoutes);
-app.use("/api/department/electrical", electricalRoutes);
-app.use("/api/department/extc", extcRoutes);
-app.use("/api/department/cse", cseRoutes);
-app.use("/api/department/bsh", bshRoutes);
+app.use("/api/department/home", computerRoutes);
+// app.use("/api/department/mechanical", mechanicalRoutes);
+// app.use("/api/department/electrical", electricalRoutes);
+// app.use("/api/department/extc", extcRoutes);
+// app.use("/api/department/cse", cseRoutes);
+// app.use("/api/department/bsh", bshRoutes);
 
 // Department PDF routes (for all departments and sections)
 app.use("/api/department", deptPdfRoutes);

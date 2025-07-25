@@ -9,6 +9,7 @@ const CSEHome = () => {
   const [content, setContent] = useState("");
   const [message, setMessage] = useState("");
   const quillRef = useRef(null);
+  const departmentId = 6;
 
   useEffect(() => {
     fetchText();
@@ -53,9 +54,9 @@ const CSEHome = () => {
 
   // Convert tabs to non-breaking spaces when entering edit mode
   useEffect(() => {
-    if (editMode && deptText.length > 0 && deptText[0].Content) {
+    if (editMode && deptText.length > 0 && deptText[0].paragraph1) {
       // Convert tab characters to non-breaking spaces for consistent display
-      const contentWithSpaces = deptText[0].Content.replace(
+      const contentWithSpaces = deptText[0].paragraph1.replace(
         /\t/g,
         "\u00A0\u00A0\u00A0\u00A0"
       );
@@ -66,19 +67,27 @@ const CSEHome = () => {
   const fetchText = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:3663/api/department/cse/home"
+        `http://localhost:3663/api/department/home/${departmentId}`
       );
-      console.log("Fetched CSE Department Text:", response.data);
+      console.log(
+        "Fetched Computer Science and Engineering Department Text:",
+        response.data
+      );
       setDeptText(response.data);
       if (response.data.length > 0 && response.data[0].id) {
-        setContent(response.data[0].Content);
+        setContent(response.data[0].paragraph1);
       } else {
         console.warn("No valid id or content in fetched data:", response.data);
         setMessage("No valid text entry found.");
       }
     } catch (err) {
-      console.error("Error loading CSE department text:", err);
-      setMessage("Error fetching CSE department text.");
+      console.error(
+        "Error loading Computer Science and Engineering department text:",
+        err
+      );
+      setMessage(
+        "Error fetching Computer Science and Engineering department text."
+      );
     }
   };
 
@@ -96,15 +105,22 @@ const CSEHome = () => {
       // Convert non-breaking spaces back to regular spaces or tabs for storage
       const contentForStorage = content.replace(/\u00A0{4}/g, "\t");
 
-      await axios.put(`http://localhost:3663/api/department/cse/home/${id}`, {
-        content: contentForStorage,
-      });
-      setMessage("CSE department text updated successfully!");
+      await axios.put(
+        `http://localhost:3663/api/department/home/${departmentId}/${id}`,
+        {
+          content: contentForStorage,
+        }
+      );
+      setMessage(
+        "Computer Science and Engineering department text updated successfully!"
+      );
       setEditMode(false);
       fetchText();
     } catch (error) {
       console.error("Update error:", error);
-      setMessage("Error updating CSE department text.");
+      setMessage(
+        "Error updating Computer Science and Engineering department text."
+      );
     }
   };
 
@@ -158,8 +174,10 @@ const CSEHome = () => {
         }
       `}</style>
 
-      <h2 className="text-2xl font-bold mb-4">Computer Science and Engineering - Home</h2>
-      
+      <h2 className="text-2xl font-bold mb-4">
+        Computer Science and Engineering - Home
+      </h2>
+
       {deptText.length > 0 ? (
         editMode ? (
           <div>
@@ -182,7 +200,7 @@ const CSEHome = () => {
               <button
                 onClick={() => {
                   setEditMode(false);
-                  setContent(deptText[0]?.Content || "");
+                  setContent(deptText[0]?.paragraph1 || "");
                   setMessage("");
                 }}
                 className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
@@ -195,7 +213,7 @@ const CSEHome = () => {
         ) : (
           <div>
             <div
-              dangerouslySetInnerHTML={{ __html: deptText[0].Content }}
+              dangerouslySetInnerHTML={{ __html: deptText[0].paragraph1 }}
               className="mb-4 preview-content"
             />
             <button
@@ -207,10 +225,12 @@ const CSEHome = () => {
           </div>
         )
       ) : (
-        <p>No CSE department home text available.</p>
+        <p>
+          No Computer Science and Engineering department home text available.
+        </p>
       )}
     </div>
   );
 };
 
-export default CSEHome; 
+export default CSEHome;

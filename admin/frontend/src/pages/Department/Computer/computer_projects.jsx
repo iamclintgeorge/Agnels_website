@@ -27,8 +27,12 @@ const ComputerProjects = () => {
   const fetchProjects = async () => {
     try {
       const [undergraduateResponse, miniResponse] = await Promise.all([
-        axios.get(`http://localhost:3663/api/dept/projects/undergraduate/${departmentId}`),
-        axios.get(`http://localhost:3663/api/dept/projects/mini/${departmentId}`)
+        axios.get(
+          `http://localhost:3663/api/department/projects/undergraduate/${departmentId}`
+        ),
+        axios.get(
+          `http://localhost:3663/api/department/projects/mini/${departmentId}`
+        ),
       ]);
 
       if (undergraduateResponse.data.success) {
@@ -72,12 +76,12 @@ const ComputerProjects = () => {
           "http://localhost:3663/api/dept/projects/undergraduate/create",
           {
             departmentId: departmentId,
-            projects: projects
+            projects: projects,
           },
           {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem('token')}`
-            }
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
           }
         );
       } else {
@@ -86,12 +90,12 @@ const ComputerProjects = () => {
           {
             departmentId: departmentId,
             level: level,
-            projects: projects
+            projects: projects,
           },
           {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem('token')}`
-            }
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
           }
         );
       }
@@ -123,8 +127,8 @@ const ComputerProjects = () => {
           { projects: editProjectContent },
           {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem('token')}`
-            }
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
           }
         );
       } else {
@@ -133,8 +137,8 @@ const ComputerProjects = () => {
           { projects: editProjectContent },
           {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem('token')}`
-            }
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
           }
         );
       }
@@ -152,7 +156,8 @@ const ComputerProjects = () => {
   };
 
   const handleDeleteProject = async (id, isUndergraduate = false) => {
-    if (!window.confirm("Are you sure you want to delete this project?")) return;
+    if (!window.confirm("Are you sure you want to delete this project?"))
+      return;
 
     try {
       let response;
@@ -161,8 +166,8 @@ const ComputerProjects = () => {
           `http://localhost:3663/api/dept/projects/undergraduate/${id}`,
           {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem('token')}`
-            }
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
           }
         );
       } else {
@@ -170,8 +175,8 @@ const ComputerProjects = () => {
           `http://localhost:3663/api/dept/projects/mini/${id}`,
           {
             headers: {
-              Authorization: `Bearer ${localStorage.getItem('token')}`
-            }
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
           }
         );
       }
@@ -193,12 +198,12 @@ const ComputerProjects = () => {
         {
           departmentId: departmentId,
           section: "projects",
-          content: textContent
+          content: textContent,
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-          }
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         }
       );
       if (response.data.success) {
@@ -217,7 +222,7 @@ const ComputerProjects = () => {
     if (activeTab === "BE") {
       return undergraduateProjects;
     } else {
-      return miniProjects.filter(project => project.level === activeTab);
+      return miniProjects.filter((project) => project.level === activeTab);
     }
   };
 
@@ -236,8 +241,17 @@ const ComputerProjects = () => {
   };
 
   const formats = [
-    "header", "bold", "italic", "underline", "list", "bullet",
-    "indent", "size", "font", "align", "link",
+    "header",
+    "bold",
+    "italic",
+    "underline",
+    "list",
+    "bullet",
+    "indent",
+    "size",
+    "font",
+    "align",
+    "link",
   ];
 
   return (
@@ -281,7 +295,11 @@ const ComputerProjects = () => {
           </div>
         ) : (
           <div
-            dangerouslySetInnerHTML={{ __html: deptText || "No information available. Click Edit to add content." }}
+            dangerouslySetInnerHTML={{
+              __html:
+                deptText ||
+                "No information available. Click Edit to add content.",
+            }}
             className="prose max-w-none"
           />
         )}
@@ -289,7 +307,9 @@ const ComputerProjects = () => {
 
       {/* Add New Project Form */}
       <div className="mb-8 p-4 border border-gray-200 rounded-lg">
-        <h3 className="text-lg font-semibold mb-4 text-gray-700">Add New Project</h3>
+        <h3 className="text-lg font-semibold mb-4 text-gray-700">
+          Add New Project
+        </h3>
         <form onSubmit={handleCreateProject} className="space-y-4">
           <div>
             <label className="block text-gray-700 mb-2">Level</label>
@@ -367,7 +387,9 @@ const ComputerProjects = () => {
                       ✏️
                     </button>
                     <button
-                      onClick={() => handleDeleteProject(project.id, activeTab === "BE")}
+                      onClick={() =>
+                        handleDeleteProject(project.id, activeTab === "BE")
+                      }
                       className="text-red-500 hover:text-red-700"
                       title="Delete"
                     >
@@ -375,7 +397,7 @@ const ComputerProjects = () => {
                     </button>
                   </div>
                 </div>
-                
+
                 {editingProject === project.id ? (
                   <div>
                     <ReactQuill
@@ -387,7 +409,9 @@ const ComputerProjects = () => {
                     />
                     <div className="flex space-x-2">
                       <button
-                        onClick={() => handleUpdateProject(project.id, activeTab === "BE")}
+                        onClick={() =>
+                          handleUpdateProject(project.id, activeTab === "BE")
+                        }
                         className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
                       >
                         Save
@@ -409,9 +433,10 @@ const ComputerProjects = () => {
                     className="prose max-w-none"
                   />
                 )}
-                
+
                 <p className="text-sm text-gray-500 mt-2">
-                  Created: {new Date(project.created_timestamp).toLocaleDateString()}
+                  Created:{" "}
+                  {new Date(project.created_timestamp).toLocaleDateString()}
                 </p>
               </div>
             ))

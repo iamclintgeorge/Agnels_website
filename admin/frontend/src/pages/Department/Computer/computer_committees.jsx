@@ -24,7 +24,7 @@ const ComputerCommittees = () => {
   const fetchCommittees = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3663/api/dept/committees/${departmentId}`
+        `http://localhost:3663/api/department/committees/${departmentId}`
       );
       if (response.data.success) {
         setCommittees(response.data.data);
@@ -38,7 +38,7 @@ const ComputerCommittees = () => {
   const fetchDeptText = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3663/api/dept/text/${departmentId}/committees`
+        `http://localhost:3663/api/department/text/${departmentId}/committees`
       );
       if (response.data.success && response.data.data) {
         setDeptText(response.data.data.content);
@@ -72,9 +72,9 @@ const ComputerCommittees = () => {
         "http://localhost:3663/api/dept/committees/create",
         formData,
         {
-          headers: { 
+          headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${localStorage.getItem('token')}`
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         }
       );
@@ -94,15 +94,20 @@ const ComputerCommittees = () => {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this committee document?")) return;
+    if (
+      !window.confirm(
+        "Are you sure you want to delete this committee document?"
+      )
+    )
+      return;
 
     try {
       const response = await axios.delete(
         `http://localhost:3663/api/dept/committees/${id}`,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-          }
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         }
       );
       if (response.data.success) {
@@ -111,7 +116,9 @@ const ComputerCommittees = () => {
       }
     } catch (err) {
       console.error("Delete error:", err);
-      toast.error(err.response?.data?.message || "Error deleting committee document");
+      toast.error(
+        err.response?.data?.message || "Error deleting committee document"
+      );
     }
   };
 
@@ -122,12 +129,12 @@ const ComputerCommittees = () => {
         {
           departmentId: departmentId,
           section: "committees",
-          content: textContent
+          content: textContent,
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-          }
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         }
       );
       if (response.data.success) {
@@ -147,7 +154,9 @@ const ComputerCommittees = () => {
       fetchCommittees();
       return;
     }
-    const filtered = committees.filter(committee => committee.type === filterType);
+    const filtered = committees.filter(
+      (committee) => committee.type === filterType
+    );
     setCommittees(filtered);
   };
 
@@ -166,8 +175,17 @@ const ComputerCommittees = () => {
   };
 
   const formats = [
-    "header", "bold", "italic", "underline", "list", "bullet",
-    "indent", "size", "font", "align", "link",
+    "header",
+    "bold",
+    "italic",
+    "underline",
+    "list",
+    "bullet",
+    "indent",
+    "size",
+    "font",
+    "align",
+    "link",
   ];
 
   return (
@@ -211,7 +229,11 @@ const ComputerCommittees = () => {
           </div>
         ) : (
           <div
-            dangerouslySetInnerHTML={{ __html: deptText || "No information available. Click Edit to add content." }}
+            dangerouslySetInnerHTML={{
+              __html:
+                deptText ||
+                "No information available. Click Edit to add content.",
+            }}
             className="prose max-w-none"
           />
         )}
@@ -219,7 +241,9 @@ const ComputerCommittees = () => {
 
       {/* Upload Form */}
       <div className="mb-8 p-4 border border-gray-200 rounded-lg">
-        <h3 className="text-lg font-semibold mb-4 text-gray-700">Upload New Committee Document</h3>
+        <h3 className="text-lg font-semibold mb-4 text-gray-700">
+          Upload New Committee Document
+        </h3>
         <form onSubmit={handleUpload} className="space-y-4">
           <div>
             <label className="block text-gray-700 mb-2">Type</label>
@@ -264,8 +288,10 @@ const ComputerCommittees = () => {
 
       {/* Committees List */}
       <div>
-        <h3 className="text-lg font-semibold mb-4 text-gray-700">Committee Documents</h3>
-        
+        <h3 className="text-lg font-semibold mb-4 text-gray-700">
+          Committee Documents
+        </h3>
+
         {/* Filter by Type */}
         <div className="mb-4">
           <label className="block text-gray-700 mb-2">Filter by Type:</label>
@@ -320,7 +346,8 @@ const ComputerCommittees = () => {
                     {committee.attachment}
                   </a>
                   <p className="text-sm text-gray-500 mt-1">
-                    Uploaded: {new Date(committee.created_timestamp).toLocaleDateString()}
+                    Uploaded:{" "}
+                    {new Date(committee.created_timestamp).toLocaleDateString()}
                   </p>
                 </div>
               </div>

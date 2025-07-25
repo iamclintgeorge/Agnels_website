@@ -6,7 +6,7 @@ import {
 
 const router = express.Router();
 
-router.get("/home", computerHomeTextController);
-router.put("/home/:id", computerHomeTextUpdateController);
+router.get("/:id", computerHomeTextController);
+router.put("/:departmentId/:id", computerHomeTextUpdateController);
 
-export default router; 
+export default router;

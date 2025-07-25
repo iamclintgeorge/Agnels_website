@@ -9,6 +9,7 @@ const MechHome = () => {
   const [content, setContent] = useState("");
   const [message, setMessage] = useState("");
   const quillRef = useRef(null);
+  const departmentId = 5;
 
   useEffect(() => {
     fetchText();
@@ -53,9 +54,9 @@ const MechHome = () => {
 
   // Convert tabs to non-breaking spaces when entering edit mode
   useEffect(() => {
-    if (editMode && deptText.length > 0 && deptText[0].Content) {
+    if (editMode && deptText.length > 0 && deptText[0].paragraph1) {
       // Convert tab characters to non-breaking spaces for consistent display
-      const contentWithSpaces = deptText[0].Content.replace(
+      const contentWithSpaces = deptText[0].paragraph1.replace(
         /\t/g,
         "\u00A0\u00A0\u00A0\u00A0"
       );
@@ -64,21 +65,22 @@ const MechHome = () => {
   }, [editMode, deptText]);
 
   const fetchText = async () => {
+    const departmentId = 5;
     try {
       const response = await axios.get(
-        "http://localhost:3663/api/department/mechanical/home"
+        `http://localhost:3663/api/department/home/${departmentId}`
       );
       console.log("Fetched Mechanical Department Text:", response.data);
       setDeptText(response.data);
       if (response.data.length > 0 && response.data[0].id) {
-        setContent(response.data[0].Content);
+        setContent(response.data[0].paragraph1);
       } else {
         console.warn("No valid id or content in fetched data:", response.data);
         setMessage("No valid text entry found.");
       }
     } catch (err) {
-      console.error("Error loading mechanical department text:", err);
-      setMessage("Error fetching mechanical department text.");
+      console.error("Error loading Mechanical department text:", err);
+      setMessage("Error fetching Mechanical department text.");
     }
   };
 
@@ -96,15 +98,18 @@ const MechHome = () => {
       // Convert non-breaking spaces back to regular spaces or tabs for storage
       const contentForStorage = content.replace(/\u00A0{4}/g, "\t");
 
-      await axios.put(`http://localhost:3663/api/department/mechanical/home/${id}`, {
-        content: contentForStorage,
-      });
+      await axios.put(
+        `http://localhost:3663/api/department/home/${departmentId}/${id}`,
+        {
+          content: contentForStorage,
+        }
+      );
       setMessage("Mechanical department text updated successfully!");
       setEditMode(false);
       fetchText();
     } catch (error) {
       console.error("Update error:", error);
-      setMessage("Error updating mechanical department text.");
+      setMessage("Error updating Mechanical department text.");
     }
   };
 
@@ -159,7 +164,7 @@ const MechHome = () => {
       `}</style>
 
       <h2 className="text-2xl font-bold mb-4">Mechanical Engineering - Home</h2>
-      
+
       {deptText.length > 0 ? (
         editMode ? (
           <div>
@@ -182,7 +187,7 @@ const MechHome = () => {
               <button
                 onClick={() => {
                   setEditMode(false);
-                  setContent(deptText[0]?.Content || "");
+                  setContent(deptText[0]?.paragraph1 || "");
                   setMessage("");
                 }}
                 className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
@@ -195,7 +200,7 @@ const MechHome = () => {
         ) : (
           <div>
             <div
-              dangerouslySetInnerHTML={{ __html: deptText[0].Content }}
+              dangerouslySetInnerHTML={{ __html: deptText[0].paragraph1 }}
               className="mb-4 preview-content"
             />
             <button
@@ -207,10 +212,10 @@ const MechHome = () => {
           </div>
         )
       ) : (
-        <p>No mechanical department home text available.</p>
+        <p>No Mechanical department home text available.</p>
       )}
     </div>
   );
 };
 
-export default MechHome; 
+export default MechHome;

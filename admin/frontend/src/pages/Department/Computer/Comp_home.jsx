@@ -9,6 +9,7 @@ const CompHome = () => {
   const [content, setContent] = useState("");
   const [message, setMessage] = useState("");
   const quillRef = useRef(null);
+  const departmentId = 2;
 
   useEffect(() => {
     fetchText();
@@ -53,9 +54,9 @@ const CompHome = () => {
 
   // Convert tabs to non-breaking spaces when entering edit mode
   useEffect(() => {
-    if (editMode && deptText.length > 0 && deptText[0].Content) {
+    if (editMode && deptText.length > 0 && deptText[0].paragraph1) {
       // Convert tab characters to non-breaking spaces for consistent display
-      const contentWithSpaces = deptText[0].Content.replace(
+      const contentWithSpaces = deptText[0].paragraph1.replace(
         /\t/g,
         "\u00A0\u00A0\u00A0\u00A0"
       );
@@ -66,12 +67,12 @@ const CompHome = () => {
   const fetchText = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:3663/api/department/computer/home"
+        `http://localhost:3663/api/department/home/${departmentId}`
       );
       console.log("Fetched Computer Department Text:", response.data);
       setDeptText(response.data);
       if (response.data.length > 0 && response.data[0].id) {
-        setContent(response.data[0].Content);
+        setContent(response.data[0].paragraph1);
       } else {
         console.warn("No valid id or content in fetched data:", response.data);
         setMessage("No valid text entry found.");
@@ -96,9 +97,12 @@ const CompHome = () => {
       // Convert non-breaking spaces back to regular spaces or tabs for storage
       const contentForStorage = content.replace(/\u00A0{4}/g, "\t");
 
-      await axios.put(`http://localhost:3663/api/department/computer/home/${id}`, {
-        content: contentForStorage,
-      });
+      await axios.put(
+        `http://localhost:3663/api/department/home/${departmentId}/${id}`,
+        {
+          content: contentForStorage,
+        }
+      );
       setMessage("Computer department text updated successfully!");
       setEditMode(false);
       fetchText();
@@ -159,7 +163,7 @@ const CompHome = () => {
       `}</style>
 
       <h2 className="text-2xl font-bold mb-4">Computer Engineering - Home</h2>
-      
+
       {deptText.length > 0 ? (
         editMode ? (
           <div>
@@ -182,7 +186,7 @@ const CompHome = () => {
               <button
                 onClick={() => {
                   setEditMode(false);
-                  setContent(deptText[0]?.Content || "");
+                  setContent(deptText[0]?.paragraph1 || "");
                   setMessage("");
                 }}
                 className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
@@ -195,7 +199,7 @@ const CompHome = () => {
         ) : (
           <div>
             <div
-              dangerouslySetInnerHTML={{ __html: deptText[0].Content }}
+              dangerouslySetInnerHTML={{ __html: deptText[0].paragraph1 }}
               className="mb-4 preview-content"
             />
             <button
@@ -213,4 +217,4 @@ const CompHome = () => {
   );
 };
 
-export default CompHome; 
+export default CompHome;
