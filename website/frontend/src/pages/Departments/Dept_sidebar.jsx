@@ -58,7 +58,7 @@ export const Departments = () => {
     "Mechanical Engineering": "/mechanical_engineering",
     "Electronics and Telecommunication Engineering": "/extc",
     "Electrical Engineering": "/electrical_engineering",
-    "Information Technology": "/it",
+    "Computer Science and Engineering (Prev. IT)": "/it",
     "Basic Science and Humanities": "/humanities",
   };
 
@@ -80,7 +80,8 @@ export const Departments = () => {
   );
 };
 
-export const Dept_section = (departmentName) => {
+export const Dept_section = ({ departmentName }) => {
+  console.log("Dept_section", departmentName);
   const navigate = useNavigate();
   const sidebar = [
     "About",
@@ -103,30 +104,34 @@ export const Dept_section = (departmentName) => {
   ];
 
   const content = {
-    About: <About />,
-    "Head of Department": <HeadOfDepartment department={departmentName} />,
+    About: <About departmentName={departmentName} />,
+    "Head of Department": <HeadOfDepartment departmentName={departmentName} />,
 
     "Faculty and Supporting Staff": (
-      <FacultySupportingStaff department={departmentName} />
+      <FacultySupportingStaff departmentName={departmentName} />
     ),
     "Committees and Board of Studies": (
-      <CommitteesBoardOfStudy department={departmentName} />
+      <CommitteesBoardOfStudy departmentName={departmentName} />
     ),
-    Infrastructure: <Infrastructure department={departmentName} />,
-    Activities: <Activities department={departmentName} />,
-    "Student Association": <StudentAssociation department={departmentName} />,
-    Magazine: <Magazine department={departmentName} />,
-    Syllabus: <Syllabus department={departmentName} />,
-    "Result Analysis": <ResultAnalysis department={departmentName} />,
-    "Time Table": <TimeTable department={departmentName} />,
-    Achievements: <Achievements department={departmentName} />,
-    "Academic Calendar": <AcademicCalendar department={departmentName} />,
+    Infrastructure: <Infrastructure departmentName={departmentName} />,
+    Activities: <Activities departmentName={departmentName} />,
+    "Student Association": (
+      <StudentAssociation departmentName={departmentName} />
+    ),
+    Magazine: <Magazine departmentName={departmentName} />,
+    Syllabus: <Syllabus departmentName={departmentName} />,
+    "Result Analysis": <ResultAnalysis departmentName={departmentName} />,
+    "Time Table": <TimeTable departmentName={departmentName} />,
+    Achievements: <Achievements departmentName={departmentName} />,
+    "Academic Calendar": <AcademicCalendar departmentName={departmentName} />,
     "Innovative Teaching and Learning Methods": (
-      <InnovativeTeaching department={departmentName} />
+      <InnovativeTeaching departmentName={departmentName} />
     ),
-    "Alumni Testimonials": <AlumniTestimonials department={departmentName} />,
-    Publications: <Publications department={departmentName} />,
-    Projects: <Projects department={departmentName} />,
+    "Alumni Testimonials": (
+      <AlumniTestimonials departmentName={departmentName} />
+    ),
+    Publications: <Publications departmentName={departmentName} />,
+    Projects: <Projects departmentName={departmentName} />,
   };
 
   return (
