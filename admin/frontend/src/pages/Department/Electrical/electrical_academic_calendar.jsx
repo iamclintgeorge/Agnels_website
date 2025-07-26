@@ -13,7 +13,7 @@ const ElectricalAcademicCalendar = () => {
   const [editMode, setEditMode] = useState(false);
   const [textContent, setTextContent] = useState("");
   const quillRef = useRef(null);
-  const departmentId = 4; // Electrical Engineering department ID
+  const departmentId = 4; // Computer Engineering department ID
 
   useEffect(() => {
     fetchCalendars();

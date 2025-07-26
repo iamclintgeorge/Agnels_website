@@ -4,7 +4,7 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { toast } from "react-toastify";
 
-const CseActivities = () => {
+const ComputerActivities = () => {
   const [activities, setActivities] = useState([]);
   const [deptText, setDeptText] = useState("");
   const [file, setFile] = useState(null);
@@ -13,7 +13,7 @@ const CseActivities = () => {
   const [editMode, setEditMode] = useState(false);
   const [textContent, setTextContent] = useState("");
   const quillRef = useRef(null);
-  const departmentId = 6;
+  const departmentId = 2; // Computer Engineering department ID
 
   useEffect(() => {
     fetchActivities();
@@ -171,7 +171,7 @@ const CseActivities = () => {
   return (
     <div className="p-6 bg-white">
       <h2 className="text-2xl font-bold mb-6 text-gray-800">
-        Computer Science and Engineering - Activities
+        Computer Engineering - Activities
       </h2>
 
       {/* Text Content Section */}
@@ -306,4 +306,4 @@ const CseActivities = () => {
   );
 };
 
-export default CseActivities;
+export default ComputerActivities;

@@ -14,7 +14,7 @@ const MechanicalCommittees = () => {
   const [editMode, setEditMode] = useState(false);
   const [textContent, setTextContent] = useState("");
   const quillRef = useRef(null);
-  const departmentId = 5; // Mechanical Engineering department ID
+  const departmentId = 5;
 
   useEffect(() => {
     fetchCommittees();

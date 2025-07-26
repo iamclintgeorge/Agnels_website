@@ -4,40 +4,40 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { toast } from "react-toastify";
 
-const CseActivities = () => {
-  const [activities, setActivities] = useState([]);
+const ComputerAcademicCalendar = () => {
+  const [calendars, setCalendars] = useState([]);
   const [deptText, setDeptText] = useState("");
   const [file, setFile] = useState(null);
-  const [heading, setHeading] = useState("");
+  const [type, setType] = useState("Under-graduate");
   const [uploading, setUploading] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [textContent, setTextContent] = useState("");
   const quillRef = useRef(null);
-  const departmentId = 6;
+  const departmentId = 2; // Computer Engineering department ID
 
   useEffect(() => {
-    fetchActivities();
+    fetchCalendars();
     fetchDeptText();
   }, []);
 
-  const fetchActivities = async () => {
+  const fetchCalendars = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3663/api/department/activities/${departmentId}`
+        `http://localhost:3663/api/department/calendars/${departmentId}`
       );
       if (response.data.success) {
-        setActivities(response.data.data);
+        setCalendars(response.data.data);
       }
     } catch (err) {
-      console.error("Error loading activities:", err);
-      toast.error("Error fetching activities");
+      console.error("Error loading academic calendars:", err);
+      toast.error("Error fetching academic calendars");
     }
   };
 
   const fetchDeptText = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3663/api/department/text/${departmentId}/activities`
+        `http://localhost:3663/api/department/text/${departmentId}/academic_calendar`
       );
       if (response.data.success && response.data.data) {
         setDeptText(response.data.data.content);
@@ -54,20 +54,20 @@ const CseActivities = () => {
 
   const handleUpload = async (e) => {
     e.preventDefault();
-    if (!file || !heading) {
-      toast.error("Please select a file and provide a heading");
+    if (!file || !type) {
+      toast.error("Please select a file and type");
       return;
     }
 
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("heading", heading);
+    formData.append("type", type);
     formData.append("departmentId", departmentId);
 
     setUploading(true);
     try {
       const response = await axios.post(
-        "http://localhost:3663/api/department/activities/create",
+        "http://localhost:3663/api/department/calendars/create",
         formData,
         {
           headers: {
@@ -77,10 +77,10 @@ const CseActivities = () => {
         }
       );
       if (response.data.success) {
-        toast.success("Activity uploaded successfully");
+        toast.success("Academic calendar uploaded successfully");
         setFile(null);
-        setHeading("");
-        fetchActivities();
+        setType("Under-graduate");
+        fetchCalendars();
       }
     } catch (err) {
       console.error("Upload error:", err);
@@ -91,12 +91,14 @@ const CseActivities = () => {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this activity?"))
+    if (
+      !window.confirm("Are you sure you want to delete this academic calendar?")
+    )
       return;
 
     try {
       const response = await axios.delete(
-        `http://localhost:3663/api/department/activities/${id}`,
+        `http://localhost:3663/api/department/calendars/${id}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -104,12 +106,14 @@ const CseActivities = () => {
         }
       );
       if (response.data.success) {
-        toast.success("Activity deleted successfully");
-        fetchActivities();
+        toast.success("Academic calendar deleted successfully");
+        fetchCalendars();
       }
     } catch (err) {
       console.error("Delete error:", err);
-      toast.error(err.response?.data?.message || "Error deleting activity");
+      toast.error(
+        err.response?.data?.message || "Error deleting academic calendar"
+      );
     }
   };
 
@@ -119,7 +123,7 @@ const CseActivities = () => {
         "http://localhost:3663/api/department/text/create",
         {
           departmentId: departmentId,
-          section: "activities",
+          section: "academic_calendar",
           content: textContent,
         },
         {
@@ -171,7 +175,7 @@ const CseActivities = () => {
   return (
     <div className="p-6 bg-white">
       <h2 className="text-2xl font-bold mb-6 text-gray-800">
-        Computer Science and Engineering - Activities
+        Computer Engineering - Academic Calendar
       </h2>
 
       {/* Text Content Section */}
@@ -198,7 +202,7 @@ const CseActivities = () => {
               modules={modules}
               formats={formats}
               className="mb-4"
-              placeholder="Add information about department activities. You can include links to uploaded files here..."
+              placeholder="Add information about academic calendars. You can include links to uploaded files here..."
             />
             <button
               onClick={handleTextUpdate}
@@ -222,18 +226,20 @@ const CseActivities = () => {
       {/* Upload Form */}
       <div className="mb-8 p-4 border border-gray-200 rounded-lg">
         <h3 className="text-lg font-semibold mb-4 text-gray-700">
-          Upload New Activity
+          Upload New Academic Calendar
         </h3>
         <form onSubmit={handleUpload} className="space-y-4">
           <div>
-            <label className="block text-gray-700 mb-2">Activity Heading</label>
-            <input
-              type="text"
-              value={heading}
-              onChange={(e) => setHeading(e.target.value)}
+            <label className="block text-gray-700 mb-2">Type</label>
+            <select
+              value={type}
+              onChange={(e) => setType(e.target.value)}
               className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder="Enter activity heading/title"
-            />
+            >
+              <option value="Under-graduate">Under-graduate</option>
+              <option value="Post-graduate">Post-graduate</option>
+              <option value="PhD">PhD</option>
+            </select>
           </div>
           <div>
             <label className="block text-gray-700 mb-2">Upload File</label>
@@ -249,28 +255,60 @@ const CseActivities = () => {
             disabled={uploading}
             className="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600 disabled:bg-blue-300"
           >
-            {uploading ? "Uploading..." : "Upload Activity"}
+            {uploading ? "Uploading..." : "Upload Academic Calendar"}
           </button>
         </form>
       </div>
 
-      {/* Activities List */}
+      {/* Academic Calendars List */}
       <div>
-        <h3 className="text-lg font-semibold mb-4 text-gray-700">Activities</h3>
+        <h3 className="text-lg font-semibold mb-4 text-gray-700">
+          Academic Calendars
+        </h3>
+        {/* Filter by Type */}
+        <div className="mb-4">
+          <label className="block text-gray-700 mb-2">Filter by Type:</label>
+          <select
+            value=""
+            onChange={(e) => {
+              const filterType = e.target.value;
+              if (filterType) {
+                setCalendars((prev) =>
+                  prev.filter((cal) => cal.type === filterType)
+                );
+              } else {
+                fetchCalendars(); // Reload all
+              }
+            }}
+            className="p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="">All Types</option>
+            <option value="Under-graduate">Under-graduate</option>
+            <option value="Post-graduate">Post-graduate</option>
+            <option value="PhD">PhD</option>
+          </select>
+          <button
+            onClick={fetchCalendars}
+            className="ml-2 bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+          >
+            Reset Filter
+          </button>
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {activities.length > 0 ? (
-            activities.map((activity) => (
+          {calendars.length > 0 ? (
+            calendars.map((calendar) => (
               <div
-                key={activity.id}
+                key={calendar.id}
                 className="border border-gray-200 p-4 rounded-lg hover:shadow-md transition-shadow"
               >
                 <div className="flex justify-between items-start mb-2">
-                  <h4 className="font-medium text-gray-800 line-clamp-2">
-                    {activity.heading}
-                  </h4>
+                  <span className="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
+                    {calendar.type}
+                  </span>
                   <button
-                    onClick={() => handleDelete(activity.id)}
-                    className="text-red-500 hover:text-red-700 ml-2"
+                    onClick={() => handleDelete(calendar.id)}
+                    className="text-red-500 hover:text-red-700"
                     title="Delete"
                   >
                     ×
@@ -278,26 +316,23 @@ const CseActivities = () => {
                 </div>
                 <div>
                   <a
-                    href={`http://localhost:3663/uploads/department/${activity.attachment}`}
+                    href={`http://localhost:3663/uploads/department/${calendar.attachment}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-500 hover:underline font-medium"
                   >
-                    View Document
+                    {calendar.attachment}
                   </a>
                   <p className="text-sm text-gray-500 mt-1">
-                    File: {activity.attachment}
-                  </p>
-                  <p className="text-sm text-gray-500">
                     Uploaded:{" "}
-                    {new Date(activity.created_timestamp).toLocaleDateString()}
+                    {new Date(calendar.created_timestamp).toLocaleDateString()}
                   </p>
                 </div>
               </div>
             ))
           ) : (
             <div className="col-span-full text-center py-8 text-gray-500">
-              No activities available.
+              No academic calendars available.
             </div>
           )}
         </div>
@@ -306,4 +341,4 @@ const CseActivities = () => {
   );
 };
 
-export default CseActivities;
+export default ComputerAcademicCalendar;

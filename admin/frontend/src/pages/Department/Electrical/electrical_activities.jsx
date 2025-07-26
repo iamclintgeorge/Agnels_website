@@ -13,7 +13,7 @@ const ElectricalActivities = () => {
   const [editMode, setEditMode] = useState(false);
   const [textContent, setTextContent] = useState("");
   const quillRef = useRef(null);
-  const departmentId = 4; // Electrical Engineering department ID
+  const departmentId = 4;
 
   useEffect(() => {
     fetchActivities();
@@ -61,8 +61,8 @@ const ElectricalActivities = () => {
 
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("departmentId", departmentId);
     formData.append("heading", heading);
+    formData.append("departmentId", departmentId);
 
     setUploading(true);
     try {
@@ -256,10 +256,7 @@ const ElectricalActivities = () => {
 
       {/* Activities List */}
       <div>
-        <h3 className="text-lg font-semibold mb-4 text-gray-700">
-          Department Activities
-        </h3>
-
+        <h3 className="text-lg font-semibold mb-4 text-gray-700">Activities</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {activities.length > 0 ? (
             activities.map((activity) => (
@@ -268,12 +265,12 @@ const ElectricalActivities = () => {
                 className="border border-gray-200 p-4 rounded-lg hover:shadow-md transition-shadow"
               >
                 <div className="flex justify-between items-start mb-2">
-                  <h4 className="font-semibold text-gray-800 mb-2">
+                  <h4 className="font-medium text-gray-800 line-clamp-2">
                     {activity.heading}
                   </h4>
                   <button
                     onClick={() => handleDelete(activity.id)}
-                    className="text-red-500 hover:text-red-700"
+                    className="text-red-500 hover:text-red-700 ml-2"
                     title="Delete"
                   >
                     ×
@@ -286,9 +283,12 @@ const ElectricalActivities = () => {
                     rel="noopener noreferrer"
                     className="text-blue-500 hover:underline font-medium"
                   >
-                    {activity.attachment}
+                    View Document
                   </a>
                   <p className="text-sm text-gray-500 mt-1">
+                    File: {activity.attachment}
+                  </p>
+                  <p className="text-sm text-gray-500">
                     Uploaded:{" "}
                     {new Date(activity.created_timestamp).toLocaleDateString()}
                   </p>
