@@ -6,7 +6,9 @@ const ComputerAssociation = () => {
   const [pdfs, setPdfs] = useState([]);
   const [file, setFile] = useState(null);
   const [title, setTitle] = useState("");
+  const [year, setYear] = useState(""); // New state for the year
   const [uploading, setUploading] = useState(false);
+  const departmentId = 2;
 
   // Fetch PDFs when the component mounts
   useEffect(() => {
@@ -18,10 +20,10 @@ const ComputerAssociation = () => {
     console.log("fetchPdfs called");
     try {
       const response = await axios.get(
-        "http://localhost:3663/api/department/computer-engineering/association"
+        `http://localhost:3663/api/department/associations/${departmentId}`
       );
       console.log("Fetched PDFs:", response.data);
-      setPdfs(response.data);
+      setPdfs(response.data.data); // Ensure to access 'data' property
     } catch (err) {
       console.error("Error loading PDFs:", err);
       toast.error("Error fetching PDFs");
@@ -39,15 +41,19 @@ const ComputerAssociation = () => {
     e.preventDefault();
 
     // Basic validation before proceeding
-    if (!file || !title) {
-      console.log("Validation failed: no file or title");
-      toast.error("Please select a PDF file and provide a title");
+    if (!file || !title || !year) {
+      console.log("Validation failed: no file, title or year");
+      toast.error(
+        "Please select a PDF file, provide a title, and specify a year"
+      );
       return;
     }
 
     const formData = new FormData();
-    formData.append("pdf", file);
-    formData.append("title", title);
+    formData.append("file", file); // Make sure to use the correct field name expected by backend
+    formData.append("departmentId", departmentId);
+    formData.append("title", title); // You can optionally send title if needed by backend
+    formData.append("year", year); // Send the year in the form data
 
     setUploading(true);
     console.log("Uploading PDF...");
@@ -55,7 +61,7 @@ const ComputerAssociation = () => {
     try {
       // Upload the PDF
       const uploadResponse = await axios.post(
-        "http://localhost:3663/api/department/computer-engineering/association",
+        "http://localhost:3663/api/department/associations/create",
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -70,6 +76,7 @@ const ComputerAssociation = () => {
       // Reset form fields
       setFile(null);
       setTitle("");
+      setYear(""); // Reset the year field
 
       // Refetch PDFs after upload
       console.log("Refetching PDFs after upload...");
@@ -90,7 +97,7 @@ const ComputerAssociation = () => {
     console.log("Deleting PDF with id:", id);
     try {
       await axios.delete(
-        `http://localhost:3663/api/department/computer-engineering/association/${id}`
+        `http://localhost:3663/api/department/associations/${id}`
       );
       toast.success("PDF deleted successfully");
       fetchPdfs(); // Fetch updated PDFs after deletion
@@ -116,6 +123,19 @@ const ComputerAssociation = () => {
             placeholder="Enter PDF title"
           />
         </div>
+
+        {/* Year Input */}
+        <div className="mb-4">
+          <label className="block text-gray-700 mb-2">Year</label>
+          <input
+            type="number"
+            value={year}
+            onChange={(e) => setYear(e.target.value)}
+            className="w-full p-2 border rounded"
+            placeholder="Enter year"
+          />
+        </div>
+
         <div className="mb-4">
           <label className="block text-gray-700 mb-2">Upload PDF</label>
           <input
@@ -144,12 +164,12 @@ const ComputerAssociation = () => {
             >
               <div>
                 <a
-                  href={`http://localhost:3663${pdf.pdfUrl}`}
+                  href={pdf.attachment} // Use the correct property (attachment)
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-blue-500 hover:underline"
                 >
-                  {pdf.title}
+                  {`Report for ${pdf.year}`} {/* You can use year or title */}
                 </a>
                 <p className="text-sm text-gray-500">
                   Uploaded: {new Date(pdf.created_at).toLocaleDateString()}

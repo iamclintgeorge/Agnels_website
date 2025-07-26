@@ -25,7 +25,7 @@ const CommitteesBoardOfStudy = ({ departmentName }) => {
     try {
       const departmentSlug = departmentId[departmentName];
       const response = await axios.get(
-        `http://localhost:3663/api/dept/committees/${departmentSlug}`
+        `http://localhost:3663/api/department/committees/${departmentSlug}`
       );
       console.log(`Fetched ${departmentName} Department File:`, response.data);
 

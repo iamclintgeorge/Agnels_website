@@ -67,7 +67,7 @@ const ComputerAcademicCalendar = () => {
     setUploading(true);
     try {
       const response = await axios.post(
-        "http://localhost:3663/api/dept/calendars/create",
+        "http://localhost:3663/api/department/calendars/create",
         formData,
         {
           headers: {
@@ -98,7 +98,7 @@ const ComputerAcademicCalendar = () => {
 
     try {
       const response = await axios.delete(
-        `http://localhost:3663/api/dept/calendars/${id}`,
+        `http://localhost:3663/api/department/calendars/${id}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -120,7 +120,7 @@ const ComputerAcademicCalendar = () => {
   const handleTextUpdate = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:3663/api/dept/text/create",
+        "http://localhost:3663/api/department/text/create",
         {
           departmentId: departmentId,
           section: "academic_calendar",

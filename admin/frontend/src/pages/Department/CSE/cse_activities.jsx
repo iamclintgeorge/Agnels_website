@@ -23,7 +23,7 @@ const CseActivities = () => {
   const fetchActivities = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3663/api/dept/activities/${departmentId}`
+        `http://localhost:3663/api/department/activities/${departmentId}`
       );
       if (response.data.success) {
         setActivities(response.data.data);
@@ -37,7 +37,7 @@ const CseActivities = () => {
   const fetchDeptText = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3663/api/dept/text/${departmentId}/activities`
+        `http://localhost:3663/api/department/text/${departmentId}/activities`
       );
       if (response.data.success && response.data.data) {
         setDeptText(response.data.data.content);
@@ -67,12 +67,12 @@ const CseActivities = () => {
     setUploading(true);
     try {
       const response = await axios.post(
-        "http://localhost:3663/api/dept/activities/create",
+        "http://localhost:3663/api/department/activities/create",
         formData,
         {
-          headers: { 
+          headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${localStorage.getItem('token')}`
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         }
       );
@@ -91,15 +91,16 @@ const CseActivities = () => {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this activity?")) return;
+    if (!window.confirm("Are you sure you want to delete this activity?"))
+      return;
 
     try {
       const response = await axios.delete(
-        `http://localhost:3663/api/dept/activities/${id}`,
+        `http://localhost:3663/api/department/activities/${id}`,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-          }
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         }
       );
       if (response.data.success) {
@@ -115,16 +116,16 @@ const CseActivities = () => {
   const handleTextUpdate = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:3663/api/dept/text/create",
+        "http://localhost:3663/api/department/text/create",
         {
           departmentId: departmentId,
           section: "activities",
-          content: textContent
+          content: textContent,
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-          }
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         }
       );
       if (response.data.success) {
@@ -154,8 +155,17 @@ const CseActivities = () => {
   };
 
   const formats = [
-    "header", "bold", "italic", "underline", "list", "bullet",
-    "indent", "size", "font", "align", "link",
+    "header",
+    "bold",
+    "italic",
+    "underline",
+    "list",
+    "bullet",
+    "indent",
+    "size",
+    "font",
+    "align",
+    "link",
   ];
 
   return (
@@ -198,20 +208,28 @@ const CseActivities = () => {
             </button>
           </div>
         ) : (
-          <div 
+          <div
             className="prose max-w-none"
-            dangerouslySetInnerHTML={{ __html: deptText || "No information available. Click Edit to add content." }}
+            dangerouslySetInnerHTML={{
+              __html:
+                deptText ||
+                "No information available. Click Edit to add content.",
+            }}
           />
         )}
       </div>
 
       {/* Upload Form */}
       <div className="mb-8 p-4 border border-gray-200 rounded-lg">
-        <h3 className="text-lg font-semibold mb-4 text-gray-700">Upload New Activity</h3>
+        <h3 className="text-lg font-semibold mb-4 text-gray-700">
+          Upload New Activity
+        </h3>
         <form onSubmit={handleUpload} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-              <label className="block text-gray-700 mb-2">Activity Heading *</label>
+              <label className="block text-gray-700 mb-2">
+                Activity Heading *
+              </label>
               <input
                 type="text"
                 value={heading}
@@ -248,7 +266,7 @@ const CseActivities = () => {
       {/* Activities List */}
       <div className="mb-6">
         <h3 className="text-lg font-semibold mb-4 text-gray-700">Activities</h3>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {activities.length > 0 ? (
             activities.map((activity) => (
@@ -257,7 +275,9 @@ const CseActivities = () => {
                 className="border p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow"
               >
                 <div className="mb-3">
-                  <h4 className="font-semibold text-gray-800">{activity.heading}</h4>
+                  <h4 className="font-semibold text-gray-800">
+                    {activity.heading}
+                  </h4>
                 </div>
                 <div className="mb-3">
                   <a
@@ -269,7 +289,8 @@ const CseActivities = () => {
                     View File
                   </a>
                   <p className="text-sm text-gray-500">
-                    Uploaded: {new Date(activity.created_at).toLocaleDateString()}
+                    Uploaded:{" "}
+                    {new Date(activity.created_at).toLocaleDateString()}
                   </p>
                 </div>
                 <button

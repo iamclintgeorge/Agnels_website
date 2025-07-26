@@ -69,7 +69,7 @@ const ComputerCommittees = () => {
     setUploading(true);
     try {
       const response = await axios.post(
-        "http://localhost:3663/api/dept/committees/create",
+        "http://localhost:3663/api/department/committees/create",
         formData,
         {
           headers: {
@@ -103,7 +103,7 @@ const ComputerCommittees = () => {
 
     try {
       const response = await axios.delete(
-        `http://localhost:3663/api/dept/committees/${id}`,
+        `http://localhost:3663/api/department/committees/${id}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -125,7 +125,7 @@ const ComputerCommittees = () => {
   const handleTextUpdate = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:3663/api/dept/text/create",
+        "http://localhost:3663/api/department/text/create",
         {
           departmentId: departmentId,
           section: "committees",

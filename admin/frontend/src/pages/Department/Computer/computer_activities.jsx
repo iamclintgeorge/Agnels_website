@@ -67,7 +67,7 @@ const ComputerActivities = () => {
     setUploading(true);
     try {
       const response = await axios.post(
-        "http://localhost:3663/api/dept/activities/create",
+        "http://localhost:3663/api/department/activities/create",
         formData,
         {
           headers: {
@@ -96,7 +96,7 @@ const ComputerActivities = () => {
 
     try {
       const response = await axios.delete(
-        `http://localhost:3663/api/dept/activities/${id}`,
+        `http://localhost:3663/api/department/activities/${id}`,
         {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -116,7 +116,7 @@ const ComputerActivities = () => {
   const handleTextUpdate = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:3663/api/dept/text/create",
+        "http://localhost:3663/api/department/text/create",
         {
           departmentId: departmentId,
           section: "activities",

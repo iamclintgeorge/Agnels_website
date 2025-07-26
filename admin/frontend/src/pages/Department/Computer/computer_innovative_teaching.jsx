@@ -7,6 +7,7 @@ const ComputerInnovativeteaching = () => {
   const [file, setFile] = useState(null);
   const [title, setTitle] = useState("");
   const [uploading, setUploading] = useState(false);
+  const departmentId = 2;
 
   useEffect(() => {
     fetchPdfs();

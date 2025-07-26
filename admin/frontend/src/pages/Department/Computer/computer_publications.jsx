@@ -6,8 +6,11 @@ const ComputerPublications = () => {
   const [pdfs, setPdfs] = useState([]);
   const [file, setFile] = useState(null);
   const [title, setTitle] = useState("");
+  const [year, setYear] = useState(""); // Year state for the form
   const [uploading, setUploading] = useState(false);
+  const departmentId = 2;
 
+  // Fetching PDFs from the backend server
   useEffect(() => {
     fetchPdfs();
   }, []);
@@ -15,9 +18,10 @@ const ComputerPublications = () => {
   const fetchPdfs = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:3663/api/department/computer-engineering/publications"
+        `http://localhost:3663/api/department/publications/${departmentId}`
       );
-      setPdfs(response.data);
+      setPdfs(response.data.data); // Assuming the response structure has a 'data' field with PDFs
+      console.log(response.data);
     } catch (err) {
       console.error("Error loading PDFs:", err);
       toast.error("Error fetching PDFs");
@@ -30,19 +34,23 @@ const ComputerPublications = () => {
 
   const handleUpload = async (e) => {
     e.preventDefault();
-    if (!file || !title) {
-      toast.error("Please select a PDF file and provide a title");
+    if (!file || !title || !year) {
+      toast.error(
+        "Please select a PDF file, provide a title, and select a year"
+      );
       return;
     }
 
     const formData = new FormData();
-    formData.append("pdf", file);
+    formData.append("file", file);
     formData.append("title", title);
+    formData.append("year", year);
+    formData.append("departmentId", departmentId);
 
     setUploading(true);
     try {
       await axios.post(
-        "http://localhost:3663/api/department/computer-engineering/publications",
+        "http://localhost:3663/api/department/publications/create",
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -51,6 +59,7 @@ const ComputerPublications = () => {
       toast.success("PDF uploaded successfully");
       setFile(null);
       setTitle("");
+      setYear(""); // Reset year field after upload
       fetchPdfs();
     } catch (err) {
       console.error("Upload error:", err);
@@ -65,7 +74,7 @@ const ComputerPublications = () => {
 
     try {
       await axios.delete(
-        `http://localhost:3663/api/department/computer-engineering/publications/${id}`
+        `http://localhost:3663/api/department/publications/${id}`
       );
       toast.success("PDF deleted successfully");
       fetchPdfs();
@@ -77,9 +86,7 @@ const ComputerPublications = () => {
 
   return (
     <div className="p-4">
-      <h2 className="text-2xl font-bold mb-4">
-        Computer - Publications
-      </h2>
+      <h2 className="text-2xl font-bold mb-4">Computer - Publications</h2>
       <form onSubmit={handleUpload} className="mb-8">
         <div className="mb-4">
           <label className="block text-gray-700 mb-2">PDF Title</label>
@@ -100,6 +107,16 @@ const ComputerPublications = () => {
             className="w-full p-2 border rounded"
           />
         </div>
+        <div className="mb-4">
+          <label className="block text-gray-700 mb-2">Year</label>
+          <input
+            type="text"
+            value={year}
+            onChange={(e) => setYear(e.target.value)}
+            className="w-full p-2 border rounded"
+            placeholder="Enter Year"
+          />
+        </div>
         <button
           type="submit"
           disabled={uploading}
@@ -118,15 +135,16 @@ const ComputerPublications = () => {
             >
               <div>
                 <a
-                  href={`http://localhost:3663${pdf.pdfUrl}`}
+                  href={pdf.attachment} // Use the direct URL from backend
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-blue-500 hover:underline"
                 >
-                  {pdf.title}
+                  {pdf.year} {/* Display the year */}
                 </a>
                 <p className="text-sm text-gray-500">
-                  Uploaded: {new Date(pdf.created_at).toLocaleDateString()}
+                  Uploaded:{" "}
+                  {new Date(pdf.created_timestamp).toLocaleDateString()}
                 </p>
               </div>
               <button

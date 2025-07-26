@@ -6,7 +6,9 @@ const ComputerMagazine = () => {
   const [pdfs, setPdfs] = useState([]);
   const [file, setFile] = useState(null);
   const [title, setTitle] = useState("");
+  const [year, setYear] = useState(""); // Add state for year
   const [uploading, setUploading] = useState(false);
+  const departmentId = 2;
 
   useEffect(() => {
     fetchPdfs();
@@ -15,9 +17,13 @@ const ComputerMagazine = () => {
   const fetchPdfs = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:3663/api/department/computer-engineering/magazine"
+        `http://localhost:3663/api/department/magazines/${departmentId}`
       );
-      setPdfs(response.data);
+      if (response.data.success) {
+        setPdfs(response.data.data); // Correctly access the 'data' array
+      } else {
+        toast.error("No PDFs found");
+      }
     } catch (err) {
       console.error("Error loading PDFs:", err);
       toast.error("Error fetching PDFs");
@@ -30,19 +36,22 @@ const ComputerMagazine = () => {
 
   const handleUpload = async (e) => {
     e.preventDefault();
-    if (!file || !title) {
-      toast.error("Please select a PDF file and provide a title");
+    if (!file || !title || !year) {
+      // Make sure year is also provided
+      toast.error("Please select a PDF file, provide a title, and a year");
       return;
     }
 
     const formData = new FormData();
-    formData.append("pdf", file);
+    formData.append("file", file);
     formData.append("title", title);
+    formData.append("year", year); // Pass the year to the backend
+    formData.append("departmentId", departmentId);
 
     setUploading(true);
     try {
       await axios.post(
-        "http://localhost:3663/api/department/computer-engineering/magazine",
+        "http://localhost:3663/api/department/magazines/create",
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -51,6 +60,7 @@ const ComputerMagazine = () => {
       toast.success("PDF uploaded successfully");
       setFile(null);
       setTitle("");
+      setYear(""); // Reset the year field after upload
       fetchPdfs();
     } catch (err) {
       console.error("Upload error:", err);
@@ -65,7 +75,7 @@ const ComputerMagazine = () => {
 
     try {
       await axios.delete(
-        `http://localhost:3663/api/department/computer-engineering/magazine/${id}`
+        `http://localhost:3663/api/department/magazines/${id}`
       );
       toast.success("PDF deleted successfully");
       fetchPdfs();
@@ -77,9 +87,7 @@ const ComputerMagazine = () => {
 
   return (
     <div className="p-4">
-      <h2 className="text-2xl font-bold mb-4">
-        Computer - Magazine
-      </h2>
+      <h2 className="text-2xl font-bold mb-4">Computer - Magazine</h2>
       <form onSubmit={handleUpload} className="mb-8">
         <div className="mb-4">
           <label className="block text-gray-700 mb-2">PDF Title</label>
@@ -89,6 +97,16 @@ const ComputerMagazine = () => {
             onChange={(e) => setTitle(e.target.value)}
             className="w-full p-2 border rounded"
             placeholder="Enter PDF title"
+          />
+        </div>
+        <div className="mb-4">
+          <label className="block text-gray-700 mb-2">Year</label>
+          <input
+            type="text"
+            value={year}
+            onChange={(e) => setYear(e.target.value)} // Handle year change
+            className="w-full p-2 border rounded"
+            placeholder="Enter year (e.g., 2023-24)"
           />
         </div>
         <div className="mb-4">
@@ -118,12 +136,12 @@ const ComputerMagazine = () => {
             >
               <div>
                 <a
-                  href={`http://localhost:3663${pdf.pdfUrl}`}
+                  href={pdf.attachment} // Directly using the attachment URL from backend response
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-blue-500 hover:underline"
                 >
-                  {pdf.title}
+                  {`Magazine from ${pdf.year}`} {/* Displaying the year */}
                 </a>
                 <p className="text-sm text-gray-500">
                   Uploaded: {new Date(pdf.created_at).toLocaleDateString()}

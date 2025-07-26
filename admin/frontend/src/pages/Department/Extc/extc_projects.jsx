@@ -19,7 +19,7 @@ const ExtcProjects = () => {
   const tabs = [
     { id: "BE", label: "BE Projects", type: "BE" },
     { id: "TE", label: "TE Projects", type: "TE" },
-    { id: "SE", label: "SE Projects", type: "SE" }
+    { id: "SE", label: "SE Projects", type: "SE" },
   ];
 
   useEffect(() => {
@@ -31,7 +31,7 @@ const ExtcProjects = () => {
     try {
       // Fetch undergraduate projects (BE)
       const undergraduateResponse = await axios.get(
-        `http://localhost:3663/api/dept/projects/undergraduate/${departmentId}/BE`
+        `http://localhost:3663/api/department/projects/undergraduate/${departmentId}/BE`
       );
       if (undergraduateResponse.data.success) {
         setUndergraduateProjects(undergraduateResponse.data.data);
@@ -39,7 +39,7 @@ const ExtcProjects = () => {
 
       // Fetch mini projects (TE/SE)
       const miniResponse = await axios.get(
-        `http://localhost:3663/api/dept/projects/mini/${departmentId}`
+        `http://localhost:3663/api/department/projects/mini/${departmentId}`
       );
       if (miniResponse.data.success) {
         setMiniProjects(miniResponse.data.data);
@@ -53,7 +53,7 @@ const ExtcProjects = () => {
   const fetchDeptText = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3663/api/dept/text/${departmentId}/projects`
+        `http://localhost:3663/api/department/text/${departmentId}/projects`
       );
       if (response.data.success && response.data.data) {
         setDeptText(response.data.data.content);
@@ -67,16 +67,16 @@ const ExtcProjects = () => {
   const handleTextUpdate = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:3663/api/dept/text/create",
+        "http://localhost:3663/api/department/text/create",
         {
           departmentId: departmentId,
           section: "projects",
-          content: textContent
+          content: textContent,
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-          }
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         }
       );
       if (response.data.success) {
@@ -94,20 +94,20 @@ const ExtcProjects = () => {
   const handleProjectUpdate = async (project) => {
     try {
       const isUndergraduate = project.type === "BE";
-      const endpoint = isUndergraduate 
-        ? `http://localhost:3663/api/dept/projects/undergraduate/${project.id}`
-        : `http://localhost:3663/api/dept/projects/mini/${project.id}`;
-      
+      const endpoint = isUndergraduate
+        ? `http://localhost:3663/api/department/projects/undergraduate/${project.id}`
+        : `http://localhost:3663/api/department/projects/mini/${project.id}`;
+
       const response = await axios.put(
         endpoint,
         { projects: projectContent },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-          }
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         }
       );
-      
+
       if (response.data.success) {
         toast.success("Project updated successfully!");
         setEditingProject(null);
@@ -123,14 +123,14 @@ const ExtcProjects = () => {
   const handleCreateProject = async (type) => {
     try {
       const isUndergraduate = type === "BE";
-      const endpoint = isUndergraduate 
-        ? "http://localhost:3663/api/dept/projects/undergraduate/create"
-        : "http://localhost:3663/api/dept/projects/mini/create";
-      
+      const endpoint = isUndergraduate
+        ? "http://localhost:3663/api/department/projects/undergraduate/create"
+        : "http://localhost:3663/api/department/projects/mini/create";
+
       const payload = {
         departmentId: departmentId,
         type: type,
-        projects: "Add your project details here..."
+        projects: "Add your project details here...",
       };
 
       if (!isUndergraduate) {
@@ -139,10 +139,10 @@ const ExtcProjects = () => {
 
       const response = await axios.post(endpoint, payload, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`
-        }
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
       });
-      
+
       if (response.data.success) {
         toast.success("Project created successfully!");
         fetchProjects();
@@ -154,20 +154,21 @@ const ExtcProjects = () => {
   };
 
   const handleDeleteProject = async (project) => {
-    if (!window.confirm("Are you sure you want to delete this project?")) return;
+    if (!window.confirm("Are you sure you want to delete this project?"))
+      return;
 
     try {
       const isUndergraduate = project.type === "BE";
-      const endpoint = isUndergraduate 
-        ? `http://localhost:3663/api/dept/projects/undergraduate/${project.id}`
-        : `http://localhost:3663/api/dept/projects/mini/${project.id}`;
-      
+      const endpoint = isUndergraduate
+        ? `http://localhost:3663/api/department/projects/undergraduate/${project.id}`
+        : `http://localhost:3663/api/department/projects/mini/${project.id}`;
+
       const response = await axios.delete(endpoint, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`
-        }
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
       });
-      
+
       if (response.data.success) {
         toast.success("Project deleted successfully!");
         fetchProjects();
@@ -182,7 +183,7 @@ const ExtcProjects = () => {
     if (activeTab === "BE") {
       return undergraduateProjects;
     } else {
-      return miniProjects.filter(project => project.level === activeTab);
+      return miniProjects.filter((project) => project.level === activeTab);
     }
   };
 
@@ -201,8 +202,17 @@ const ExtcProjects = () => {
   };
 
   const formats = [
-    "header", "bold", "italic", "underline", "list", "bullet",
-    "indent", "size", "font", "align", "link",
+    "header",
+    "bold",
+    "italic",
+    "underline",
+    "list",
+    "bullet",
+    "indent",
+    "size",
+    "font",
+    "align",
+    "link",
   ];
 
   return (
@@ -245,9 +255,13 @@ const ExtcProjects = () => {
             </button>
           </div>
         ) : (
-          <div 
+          <div
             className="prose max-w-none"
-            dangerouslySetInnerHTML={{ __html: deptText || "No information available. Click Edit to add content." }}
+            dangerouslySetInnerHTML={{
+              __html:
+                deptText ||
+                "No information available. Click Edit to add content.",
+            }}
           />
         )}
       </div>
@@ -292,7 +306,8 @@ const ExtcProjects = () => {
                     {activeTab} Projects
                   </h4>
                   <p className="text-sm text-gray-500">
-                    Last updated: {new Date(project.updated_at).toLocaleDateString()}
+                    Last updated:{" "}
+                    {new Date(project.updated_at).toLocaleDateString()}
                   </p>
                 </div>
                 <div className="flex space-x-2">
@@ -343,10 +358,12 @@ const ExtcProjects = () => {
                   </div>
                 </div>
               ) : (
-                <div 
+                <div
                   className="prose max-w-none"
-                  dangerouslySetInnerHTML={{ 
-                    __html: project.projects || "No project details available. Click Edit to add content." 
+                  dangerouslySetInnerHTML={{
+                    __html:
+                      project.projects ||
+                      "No project details available. Click Edit to add content.",
                   }}
                 />
               )}
@@ -354,7 +371,8 @@ const ExtcProjects = () => {
           ))
         ) : (
           <div className="text-center py-8 text-gray-500">
-            No {activeTab} projects available. Click "Add New {activeTab} Project" to get started.
+            No {activeTab} projects available. Click "Add New {activeTab}{" "}
+            Project" to get started.
           </div>
         )}
       </div>

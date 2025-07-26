@@ -6,7 +6,12 @@ const ComputerTimetable = () => {
   const [pdfs, setPdfs] = useState([]);
   const [file, setFile] = useState(null);
   const [title, setTitle] = useState("");
+  const [year, setYear] = useState("");
+  const [type, setType] = useState("under-graduate"); // Default to 'under-graduate'
+  const [division, setDivision] = useState(""); // Division input
+  const [semester, setSemester] = useState(1); // Default semester to 1
   const [uploading, setUploading] = useState(false);
+  const departmentId = 2;
 
   useEffect(() => {
     fetchPdfs();
@@ -15,9 +20,13 @@ const ComputerTimetable = () => {
   const fetchPdfs = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:3663/api/department/computer-engineering/time-table"
+        `http://localhost:3663/api/department/timetables/${departmentId}`
       );
-      setPdfs(response.data);
+      if (response.data.success) {
+        setPdfs(response.data.data); // Store the PDF data
+      } else {
+        toast.error("No PDFs found");
+      }
     } catch (err) {
       console.error("Error loading PDFs:", err);
       toast.error("Error fetching PDFs");
@@ -30,19 +39,24 @@ const ComputerTimetable = () => {
 
   const handleUpload = async (e) => {
     e.preventDefault();
-    if (!file || !title) {
-      toast.error("Please select a PDF file and provide a title");
+    if (!file || !title || !year || !type || !semester) {
+      toast.error("Please fill in all fields");
       return;
     }
 
     const formData = new FormData();
-    formData.append("pdf", file);
+    formData.append("file", file);
     formData.append("title", title);
+    formData.append("year", year);
+    formData.append("type", type);
+    formData.append("division", division);
+    formData.append("semester", semester);
+    formData.append("departmentId", departmentId);
 
     setUploading(true);
     try {
       await axios.post(
-        "http://localhost:3663/api/department/computer-engineering/time-table",
+        "http://localhost:3663/api/department/timetables/create",
         formData,
         {
           headers: { "Content-Type": "multipart/form-data" },
@@ -51,6 +65,10 @@ const ComputerTimetable = () => {
       toast.success("PDF uploaded successfully");
       setFile(null);
       setTitle("");
+      setYear("");
+      setType("under-graduate");
+      setDivision("");
+      setSemester(1);
       fetchPdfs();
     } catch (err) {
       console.error("Upload error:", err);
@@ -65,7 +83,7 @@ const ComputerTimetable = () => {
 
     try {
       await axios.delete(
-        `http://localhost:3663/api/department/computer-engineering/time-table/${id}`
+        `http://localhost:3663/api/department/timetables/${id}`
       );
       toast.success("PDF deleted successfully");
       fetchPdfs();
@@ -77,9 +95,8 @@ const ComputerTimetable = () => {
 
   return (
     <div className="p-4">
-      <h2 className="text-2xl font-bold mb-4">
-        Computer - Time Table
-      </h2>
+      <h2 className="text-2xl font-bold mb-4">Computer - Time Table</h2>
+
       <form onSubmit={handleUpload} className="mb-8">
         <div className="mb-4">
           <label className="block text-gray-700 mb-2">PDF Title</label>
@@ -91,6 +108,55 @@ const ComputerTimetable = () => {
             placeholder="Enter PDF title"
           />
         </div>
+
+        <div className="mb-4">
+          <label className="block text-gray-700 mb-2">Year</label>
+          <input
+            type="text"
+            value={year}
+            onChange={(e) => setYear(e.target.value)}
+            className="w-full p-2 border rounded"
+            placeholder="Enter year (e.g., 2023-24)"
+          />
+        </div>
+
+        <div className="mb-4">
+          <label className="block text-gray-700 mb-2">Type</label>
+          <select
+            value={type}
+            onChange={(e) => setType(e.target.value)}
+            className="w-full p-2 border rounded"
+          >
+            <option value="under-graduate">Under-graduate</option>
+            <option value="post-graduate">Post-graduate</option>
+            <option value="phd">PhD</option>
+          </select>
+        </div>
+
+        <div className="mb-4">
+          <label className="block text-gray-700 mb-2">Division</label>
+          <input
+            type="text"
+            value={division}
+            onChange={(e) => setDivision(e.target.value)}
+            className="w-full p-2 border rounded"
+            placeholder="Enter division"
+          />
+        </div>
+
+        <div className="mb-4">
+          <label className="block text-gray-700 mb-2">Semester</label>
+          <input
+            type="number"
+            value={semester}
+            onChange={(e) => setSemester(Number(e.target.value))}
+            min="1"
+            max="8"
+            className="w-full p-2 border rounded"
+            placeholder="Enter semester (1-8)"
+          />
+        </div>
+
         <div className="mb-4">
           <label className="block text-gray-700 mb-2">Upload PDF</label>
           <input
@@ -100,6 +166,7 @@ const ComputerTimetable = () => {
             className="w-full p-2 border rounded"
           />
         </div>
+
         <button
           type="submit"
           disabled={uploading}
@@ -127,6 +194,13 @@ const ComputerTimetable = () => {
                 </a>
                 <p className="text-sm text-gray-500">
                   Uploaded: {new Date(pdf.created_at).toLocaleDateString()}
+                </p>
+                <p className="text-sm text-gray-500">Type: {pdf.type}</p>
+                <p className="text-sm text-gray-500">
+                  Division: {pdf.division}
+                </p>
+                <p className="text-sm text-gray-500">
+                  Semester: {pdf.semester}
                 </p>
               </div>
               <button

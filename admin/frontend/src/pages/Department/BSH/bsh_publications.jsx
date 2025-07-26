@@ -24,7 +24,7 @@ const BshPublications = () => {
   const fetchPublications = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3663/api/dept/publications/${departmentId}`
+        `http://localhost:3663/api/department/publications/${departmentId}`
       );
       if (response.data.success) {
         setPublications(response.data.data);
@@ -38,7 +38,7 @@ const BshPublications = () => {
   const fetchDeptText = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3663/api/dept/text/${departmentId}/publications`
+        `http://localhost:3663/api/department/text/${departmentId}/publications`
       );
       if (response.data.success && response.data.data) {
         setDeptText(response.data.data.content);
@@ -68,12 +68,12 @@ const BshPublications = () => {
     setUploading(true);
     try {
       const response = await axios.post(
-        "http://localhost:3663/api/dept/publications/create",
+        "http://localhost:3663/api/department/publications/create",
         formData,
         {
-          headers: { 
+          headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${localStorage.getItem('token')}`
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         }
       );
@@ -92,15 +92,16 @@ const BshPublications = () => {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this publication?")) return;
+    if (!window.confirm("Are you sure you want to delete this publication?"))
+      return;
 
     try {
       const response = await axios.delete(
-        `http://localhost:3663/api/dept/publications/${id}`,
+        `http://localhost:3663/api/department/publications/${id}`,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-          }
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         }
       );
       if (response.data.success) {
@@ -116,16 +117,16 @@ const BshPublications = () => {
   const handleTextUpdate = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:3663/api/dept/text/create",
+        "http://localhost:3663/api/department/text/create",
         {
           departmentId: departmentId,
           section: "publications",
-          content: textContent
+          content: textContent,
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-          }
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         }
       );
       if (response.data.success) {
@@ -140,11 +141,13 @@ const BshPublications = () => {
     }
   };
 
-  const filteredPublications = publications.filter(publication => {
+  const filteredPublications = publications.filter((publication) => {
     return !filterYear || publication.year.toString() === filterYear;
   });
 
-  const uniqueYears = [...new Set(publications.map(pub => pub.year))].sort((a, b) => b - a);
+  const uniqueYears = [...new Set(publications.map((pub) => pub.year))].sort(
+    (a, b) => b - a
+  );
 
   const modules = {
     toolbar: [
@@ -161,8 +164,17 @@ const BshPublications = () => {
   };
 
   const formats = [
-    "header", "bold", "italic", "underline", "list", "bullet",
-    "indent", "size", "font", "align", "link",
+    "header",
+    "bold",
+    "italic",
+    "underline",
+    "list",
+    "bullet",
+    "indent",
+    "size",
+    "font",
+    "align",
+    "link",
   ];
 
   return (
@@ -205,16 +217,22 @@ const BshPublications = () => {
             </button>
           </div>
         ) : (
-          <div 
+          <div
             className="prose max-w-none"
-            dangerouslySetInnerHTML={{ __html: deptText || "No information available. Click Edit to add content." }}
+            dangerouslySetInnerHTML={{
+              __html:
+                deptText ||
+                "No information available. Click Edit to add content.",
+            }}
           />
         )}
       </div>
 
       {/* Upload Form */}
       <div className="mb-8 p-4 border border-gray-200 rounded-lg">
-        <h3 className="text-lg font-semibold mb-4 text-gray-700">Upload New Publication</h3>
+        <h3 className="text-lg font-semibold mb-4 text-gray-700">
+          Upload New Publication
+        </h3>
         <form onSubmit={handleUpload} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
@@ -256,8 +274,10 @@ const BshPublications = () => {
 
       {/* Filter and List Section */}
       <div className="mb-6">
-        <h3 className="text-lg font-semibold mb-4 text-gray-700">Publications</h3>
-        
+        <h3 className="text-lg font-semibold mb-4 text-gray-700">
+          Publications
+        </h3>
+
         {/* Filter */}
         {uniqueYears.length > 0 && (
           <div className="mb-4">
@@ -286,8 +306,12 @@ const BshPublications = () => {
                 className="border p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow"
               >
                 <div className="mb-3">
-                  <h4 className="font-semibold text-gray-800">Publication {publication.year}</h4>
-                  <p className="text-sm text-gray-600">Year: {publication.year}</p>
+                  <h4 className="font-semibold text-gray-800">
+                    Publication {publication.year}
+                  </h4>
+                  <p className="text-sm text-gray-600">
+                    Year: {publication.year}
+                  </p>
                 </div>
                 <div className="mb-3">
                   <a
@@ -299,7 +323,8 @@ const BshPublications = () => {
                     View File
                   </a>
                   <p className="text-sm text-gray-500">
-                    Uploaded: {new Date(publication.created_at).toLocaleDateString()}
+                    Uploaded:{" "}
+                    {new Date(publication.created_at).toLocaleDateString()}
                   </p>
                 </div>
                 <button

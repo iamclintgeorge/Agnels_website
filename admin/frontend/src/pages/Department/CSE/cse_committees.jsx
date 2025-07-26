@@ -21,10 +21,10 @@ const CseCommittees = () => {
   const typeOptions = [
     "Board of Studies",
     "Department Committee",
-    "Academic Committee", 
+    "Academic Committee",
     "Research Committee",
     "Industry Advisory Committee",
-    "Student Committee"
+    "Student Committee",
   ];
 
   useEffect(() => {
@@ -35,7 +35,7 @@ const CseCommittees = () => {
   const fetchCommittees = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3663/api/dept/committees/${departmentId}`
+        `http://localhost:3663/api/department/committees/${departmentId}`
       );
       if (response.data.success) {
         setCommittees(response.data.data);
@@ -49,7 +49,7 @@ const CseCommittees = () => {
   const fetchDeptText = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3663/api/dept/text/${departmentId}/committees`
+        `http://localhost:3663/api/department/text/${departmentId}/committees`
       );
       if (response.data.success && response.data.data) {
         setDeptText(response.data.data.content);
@@ -80,12 +80,12 @@ const CseCommittees = () => {
     setUploading(true);
     try {
       const response = await axios.post(
-        "http://localhost:3663/api/dept/committees/create",
+        "http://localhost:3663/api/department/committees/create",
         formData,
         {
-          headers: { 
+          headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${localStorage.getItem('token')}`
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         }
       );
@@ -105,15 +105,16 @@ const CseCommittees = () => {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this committee?")) return;
+    if (!window.confirm("Are you sure you want to delete this committee?"))
+      return;
 
     try {
       const response = await axios.delete(
-        `http://localhost:3663/api/dept/committees/${id}`,
+        `http://localhost:3663/api/department/committees/${id}`,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-          }
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         }
       );
       if (response.data.success) {
@@ -129,16 +130,16 @@ const CseCommittees = () => {
   const handleTextUpdate = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:3663/api/dept/text/create",
+        "http://localhost:3663/api/department/text/create",
         {
           departmentId: departmentId,
           section: "committees",
-          content: textContent
+          content: textContent,
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-          }
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         }
       );
       if (response.data.success) {
@@ -153,13 +154,15 @@ const CseCommittees = () => {
     }
   };
 
-  const filteredCommittees = committees.filter(committee => {
+  const filteredCommittees = committees.filter((committee) => {
     const matchesType = !filterType || committee.type === filterType;
     const matchesYear = !filterYear || committee.year.toString() === filterYear;
     return matchesType && matchesYear;
   });
 
-  const uniqueYears = [...new Set(committees.map(comm => comm.year))].sort((a, b) => b - a);
+  const uniqueYears = [...new Set(committees.map((comm) => comm.year))].sort(
+    (a, b) => b - a
+  );
 
   const modules = {
     toolbar: [
@@ -176,8 +179,17 @@ const CseCommittees = () => {
   };
 
   const formats = [
-    "header", "bold", "italic", "underline", "list", "bullet",
-    "indent", "size", "font", "align", "link",
+    "header",
+    "bold",
+    "italic",
+    "underline",
+    "list",
+    "bullet",
+    "indent",
+    "size",
+    "font",
+    "align",
+    "link",
   ];
 
   return (
@@ -220,16 +232,22 @@ const CseCommittees = () => {
             </button>
           </div>
         ) : (
-          <div 
+          <div
             className="prose max-w-none"
-            dangerouslySetInnerHTML={{ __html: deptText || "No information available. Click Edit to add content." }}
+            dangerouslySetInnerHTML={{
+              __html:
+                deptText ||
+                "No information available. Click Edit to add content.",
+            }}
           />
         )}
       </div>
 
       {/* Upload Form */}
       <div className="mb-8 p-4 border border-gray-200 rounded-lg">
-        <h3 className="text-lg font-semibold mb-4 text-gray-700">Upload New Committee</h3>
+        <h3 className="text-lg font-semibold mb-4 text-gray-700">
+          Upload New Committee
+        </h3>
         <form onSubmit={handleUpload} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
@@ -287,8 +305,10 @@ const CseCommittees = () => {
 
       {/* Filter and List Section */}
       <div className="mb-6">
-        <h3 className="text-lg font-semibold mb-4 text-gray-700">Committees & Boards</h3>
-        
+        <h3 className="text-lg font-semibold mb-4 text-gray-700">
+          Committees & Boards
+        </h3>
+
         {/* Filters */}
         <div className="mb-4 grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
@@ -332,8 +352,12 @@ const CseCommittees = () => {
                 className="border p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow"
               >
                 <div className="mb-3">
-                  <h4 className="font-semibold text-gray-800">{committee.type}</h4>
-                  <p className="text-sm text-gray-600">Year: {committee.year}</p>
+                  <h4 className="font-semibold text-gray-800">
+                    {committee.type}
+                  </h4>
+                  <p className="text-sm text-gray-600">
+                    Year: {committee.year}
+                  </p>
                 </div>
                 <div className="mb-3">
                   <a
@@ -345,7 +369,8 @@ const CseCommittees = () => {
                     View Document
                   </a>
                   <p className="text-sm text-gray-500">
-                    Uploaded: {new Date(committee.created_at).toLocaleDateString()}
+                    Uploaded:{" "}
+                    {new Date(committee.created_at).toLocaleDateString()}
                   </p>
                 </div>
                 <button

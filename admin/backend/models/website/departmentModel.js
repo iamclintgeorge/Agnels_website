@@ -341,7 +341,7 @@ class DepartmentModel {
       const [result] = await db
         .promise()
         .query(
-          "INSERT INTO time_tables (department_id, type, division, semester, attachment, created_by) VALUES (?, ?, ?, ?, ?, ?)",
+          "INSERT INTO time_tables (department_id, type, division, semester, attachment) VALUES (?, ?, ?, ?, ?)",
           [departmentId, type, division, semester, attachment, createdBy]
         );
       return result;
@@ -365,7 +365,7 @@ class DepartmentModel {
         params.push(semester);
       }
 
-      query += " ORDER BY semester DESC, created_timestamp DESC";
+      // query += " ORDER BY semester DESC, created_timestamp DESC";
 
       const [rows] = await db.promise().query(query, params);
       return rows;

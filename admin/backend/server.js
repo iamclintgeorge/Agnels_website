@@ -103,13 +103,13 @@ app.get("/", (req, res) => {
 app.use("/", routes);
 app.use("/api/nirf", nirfRoutes);
 app.use("/api/nba-naac", nbaNaacRoutes);
-app.use("/api/department", deptHomeRoutes);
-app.use("/api/department", compActivityRoutes);
+app.use("/api/department", deptHomeRoutes); //Working
+app.use("/api/department", compActivityRoutes); //Not in Use But Clint had created this
 app.use("/api/profile", profileRoutes);
 app.use("/api/studentcorner", studentcornerRoutes);
 
 // New department routes
-app.use("/api/department/home", computerRoutes);
+app.use("/api/department/home", computerRoutes); //Wprking
 // app.use("/api/department/mechanical", mechanicalRoutes);
 // app.use("/api/department/electrical", electricalRoutes);
 // app.use("/api/department/extc", extcRoutes);
@@ -117,7 +117,7 @@ app.use("/api/department/home", computerRoutes);
 // app.use("/api/department/bsh", bshRoutes);
 
 // Department PDF routes (for all departments and sections)
-app.use("/api/department", deptPdfRoutes);
+// app.use("/api/department", deptPdfRoutes);
 
 // HOD desk routes
 app.use("/api/hod-desk", hodDeskRoutes);

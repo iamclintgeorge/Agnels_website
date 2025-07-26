@@ -25,7 +25,7 @@ const Activities = ({ departmentName }) => {
     try {
       const departmentSlug = departmentId[departmentName];
       const response = await axios.get(
-        `http://localhost:3663/api/dept/activities/${departmentSlug}`
+        `http://localhost:3663/api/department/activities/${departmentSlug}`
       );
       console.log(
         `Fetched ${departmentName} Department Content:`,

@@ -6,12 +6,7 @@ import { toast } from "react-toastify";
 
 const ComputerProjects = () => {
   const [undergraduateProjects, setUndergraduateProjects] = useState([]);
-  const [miniProjects, setMiniProjects] = useState([]);
   const [deptText, setDeptText] = useState("");
-  const [activeTab, setActiveTab] = useState("BE");
-  const [projects, setProjects] = useState("");
-  const [level, setLevel] = useState("BE");
-  const [uploading, setUploading] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [textContent, setTextContent] = useState("");
   const [editingProject, setEditingProject] = useState(null);
@@ -26,21 +21,12 @@ const ComputerProjects = () => {
 
   const fetchProjects = async () => {
     try {
-      const [undergraduateResponse, miniResponse] = await Promise.all([
-        axios.get(
-          `http://localhost:3663/api/department/projects/undergraduate/${departmentId}`
-        ),
-        axios.get(
-          `http://localhost:3663/api/department/projects/mini/${departmentId}`
-        ),
-      ]);
+      const undergraduateResponse = await axios.get(
+        `http://localhost:3663/api/department/projects/undergraduate/${departmentId}`
+      );
 
-      if (undergraduateResponse.data.success) {
-        setUndergraduateProjects(undergraduateResponse.data.data);
-      }
-      if (miniResponse.data.success) {
-        setMiniProjects(miniResponse.data.data);
-      }
+      setUndergraduateProjects(undergraduateResponse.data.data);
+      console.log(undergraduateResponse.data);
     } catch (err) {
       console.error("Error loading projects:", err);
       toast.error("Error fetching projects");
@@ -50,7 +36,7 @@ const ComputerProjects = () => {
   const fetchDeptText = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3663/api/dept/text/${departmentId}/projects`
+        `http://localhost:3663/api/department/text/${departmentId}/projects`
       );
       if (response.data.success && response.data.data) {
         setDeptText(response.data.data.content);
@@ -61,59 +47,7 @@ const ComputerProjects = () => {
     }
   };
 
-  const handleCreateProject = async (e) => {
-    e.preventDefault();
-    if (!projects.trim()) {
-      toast.error("Please enter project details");
-      return;
-    }
-
-    setUploading(true);
-    try {
-      let response;
-      if (level === "BE") {
-        response = await axios.post(
-          "http://localhost:3663/api/dept/projects/undergraduate/create",
-          {
-            departmentId: departmentId,
-            projects: projects,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
-      } else {
-        response = await axios.post(
-          "http://localhost:3663/api/dept/projects/mini/create",
-          {
-            departmentId: departmentId,
-            level: level,
-            projects: projects,
-          },
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
-      }
-
-      if (response.data.success) {
-        toast.success(`${level} project created successfully`);
-        setProjects("");
-        fetchProjects();
-      }
-    } catch (err) {
-      console.error("Create error:", err);
-      toast.error(err.response?.data?.message || "Error creating project");
-    } finally {
-      setUploading(false);
-    }
-  };
-
-  const handleUpdateProject = async (id, isUndergraduate = false) => {
+  const handleUpdateProject = async (id) => {
     if (!editProjectContent.trim()) {
       toast.error("Please enter project details");
       return;
@@ -121,27 +55,15 @@ const ComputerProjects = () => {
 
     try {
       let response;
-      if (isUndergraduate) {
-        response = await axios.put(
-          `http://localhost:3663/api/dept/projects/undergraduate/${id}`,
-          { projects: editProjectContent },
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
-      } else {
-        response = await axios.put(
-          `http://localhost:3663/api/dept/projects/mini/${id}`,
-          { projects: editProjectContent },
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
-      }
+      response = await axios.put(
+        `http://localhost:3663/api/department/projects/undergraduate/${id}`,
+        { projects: editProjectContent },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
 
       if (response.data.success) {
         toast.success("Project updated successfully");
@@ -155,46 +77,10 @@ const ComputerProjects = () => {
     }
   };
 
-  const handleDeleteProject = async (id, isUndergraduate = false) => {
-    if (!window.confirm("Are you sure you want to delete this project?"))
-      return;
-
-    try {
-      let response;
-      if (isUndergraduate) {
-        response = await axios.delete(
-          `http://localhost:3663/api/dept/projects/undergraduate/${id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
-      } else {
-        response = await axios.delete(
-          `http://localhost:3663/api/dept/projects/mini/${id}`,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
-      }
-
-      if (response.data.success) {
-        toast.success("Project deleted successfully");
-        fetchProjects();
-      }
-    } catch (err) {
-      console.error("Delete error:", err);
-      toast.error(err.response?.data?.message || "Error deleting project");
-    }
-  };
-
   const handleTextUpdate = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:3663/api/dept/text/create",
+        "http://localhost:3663/api/department/text/create",
         {
           departmentId: departmentId,
           section: "projects",
@@ -215,14 +101,6 @@ const ComputerProjects = () => {
     } catch (error) {
       console.error("Text update error:", error);
       toast.error("Error updating text content");
-    }
-  };
-
-  const getCurrentProjects = () => {
-    if (activeTab === "BE") {
-      return undergraduateProjects;
-    } else {
-      return miniProjects.filter((project) => project.level === activeTab);
     }
   };
 
@@ -305,147 +183,72 @@ const ComputerProjects = () => {
         )}
       </div>
 
-      {/* Add New Project Form */}
-      <div className="mb-8 p-4 border border-gray-200 rounded-lg">
-        <h3 className="text-lg font-semibold mb-4 text-gray-700">
-          Add New Project
-        </h3>
-        <form onSubmit={handleCreateProject} className="space-y-4">
-          <div>
-            <label className="block text-gray-700 mb-2">Level</label>
-            <select
-              value={level}
-              onChange={(e) => setLevel(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+      {/* Projects Section */}
+      <div className="space-y-4">
+        {undergraduateProjects.length > 0 ? (
+          undergraduateProjects.map((project) => (
+            <div
+              key={project.id}
+              className="border border-gray-200 p-4 rounded-lg hover:shadow-md transition-shadow"
             >
-              <option value="BE">BE (Final Year)</option>
-              <option value="TE">TE (Third Year)</option>
-              <option value="SE">SE (Second Year)</option>
-            </select>
-          </div>
-          <div>
-            <label className="block text-gray-700 mb-2">Project Details</label>
-            <ReactQuill
-              value={projects}
-              onChange={setProjects}
-              modules={modules}
-              formats={formats}
-              className="mb-4"
-              placeholder="Enter project details, guidelines, list of projects, etc..."
-            />
-          </div>
-          <button
-            type="submit"
-            disabled={uploading}
-            className="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600 disabled:bg-blue-300"
-          >
-            {uploading ? "Creating..." : `Add ${level} Project`}
-          </button>
-        </form>
-      </div>
+              <div className="flex justify-between items-start mb-2">
+                <span className="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
+                  {project.type} Project
+                </span>
+                <div className="flex space-x-2">
+                  <button
+                    onClick={() => {
+                      setEditingProject(project.id);
+                      setEditProjectContent(project.projects);
+                    }}
+                    className="text-blue-500 hover:text-blue-700"
+                    title="Edit"
+                  >
+                    ✏️
+                  </button>
+                </div>
+              </div>
 
-      {/* Projects Tabs */}
-      <div>
-        <div className="border-b border-gray-200 mb-6">
-          <nav className="-mb-px flex space-x-8">
-            {["BE", "TE", "SE"].map((tab) => (
-              <button
-                key={tab}
-                onClick={() => setActiveTab(tab)}
-                className={`py-2 px-1 border-b-2 font-medium text-sm ${
-                  activeTab === tab
-                    ? "border-blue-500 text-blue-600"
-                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
-                }`}
-              >
-                {tab} Projects
-              </button>
-            ))}
-          </nav>
-        </div>
-
-        <div className="space-y-4">
-          {getCurrentProjects().length > 0 ? (
-            getCurrentProjects().map((project) => (
-              <div
-                key={project.id}
-                className="border border-gray-200 p-4 rounded-lg hover:shadow-md transition-shadow"
-              >
-                <div className="flex justify-between items-start mb-2">
-                  <span className="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
-                    {activeTab} Project
-                  </span>
+              {editingProject === project.id ? (
+                <div>
+                  <ReactQuill
+                    value={editProjectContent}
+                    onChange={setEditProjectContent}
+                    modules={modules}
+                    formats={formats}
+                    className="mb-4"
+                  />
                   <div className="flex space-x-2">
                     <button
-                      onClick={() => {
-                        setEditingProject(project.id);
-                        setEditProjectContent(project.projects);
-                      }}
-                      className="text-blue-500 hover:text-blue-700"
-                      title="Edit"
+                      onClick={() => handleUpdateProject(project.id)}
+                      className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
                     >
-                      ✏️
+                      Save
                     </button>
                     <button
-                      onClick={() =>
-                        handleDeleteProject(project.id, activeTab === "BE")
-                      }
-                      className="text-red-500 hover:text-red-700"
-                      title="Delete"
+                      onClick={() => {
+                        setEditingProject(null);
+                        setEditProjectContent("");
+                      }}
+                      className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
                     >
-                      ×
+                      Cancel
                     </button>
                   </div>
                 </div>
-
-                {editingProject === project.id ? (
-                  <div>
-                    <ReactQuill
-                      value={editProjectContent}
-                      onChange={setEditProjectContent}
-                      modules={modules}
-                      formats={formats}
-                      className="mb-4"
-                    />
-                    <div className="flex space-x-2">
-                      <button
-                        onClick={() =>
-                          handleUpdateProject(project.id, activeTab === "BE")
-                        }
-                        className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
-                      >
-                        Save
-                      </button>
-                      <button
-                        onClick={() => {
-                          setEditingProject(null);
-                          setEditProjectContent("");
-                        }}
-                        className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
-                      >
-                        Cancel
-                      </button>
-                    </div>
-                  </div>
-                ) : (
-                  <div
-                    dangerouslySetInnerHTML={{ __html: project.projects }}
-                    className="prose max-w-none"
-                  />
-                )}
-
-                <p className="text-sm text-gray-500 mt-2">
-                  Created:{" "}
-                  {new Date(project.created_timestamp).toLocaleDateString()}
-                </p>
-              </div>
-            ))
-          ) : (
-            <div className="text-center py-8 text-gray-500">
-              No {activeTab} projects available.
+              ) : (
+                <div
+                  dangerouslySetInnerHTML={{ __html: project.projects }}
+                  className="prose max-w-none"
+                />
+              )}
             </div>
-          )}
-        </div>
+          ))
+        ) : (
+          <div className="text-center py-8 text-gray-500">
+            No projects available.
+          </div>
+        )}
       </div>
     </div>
   );
