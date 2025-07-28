@@ -1,120 +1,179 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 const Iic_policy = () => {
-  const [textContent, setTextContent] = useState("");  // Store the text content
-  const [pdfFile, setPdfFile] = useState(null);  // Store the selected PDF
-  const [message, setMessage] = useState("");  // Show success/error messages
-  const [displayPdfs, setDisplayPdfs] = useState([]);  // Store list of PDFs
+  const [content, setContent] = useState("");
+  const [textData, setTextData] = useState(null);
+  const [editMode, setEditMode] = useState(false);
+  const [message, setMessage] = useState("");
+  const [pdfFile, setPdfFile] = useState(null);
+  const [displayPdfs, setDisplayPdfs] = useState([]);
 
   useEffect(() => {
-    fetchText();  // Fetch the text content from the backend
-    fetchPdfs();  // Fetch PDFs from the backend
+    fetchText();
+    fetchPdfs();
   }, []);
 
-  // Fetch the text content for the Innovation and Startup Policy
-const fetchText = async () => {
-  try {
-    const section = 'iic_policy';  // Specify the section you need
-    const response = await axios.get(`http://localhost:3663/api/iic/text?section=${section}`);
-    setTextContent(response.data.content || "");  // Set the fetched content
-  } catch (err) {
-    setMessage("Error fetching text.");
-  }
-};
-
-  
-
-  // Fetch uploaded PDFs for the Innovation and Startup Policy
-  const fetchPdfs = async () => {
+  const fetchText = async () => {
     try {
-      const response = await axios.get("http://localhost:3663/api/iic/pdf");
-      setDisplayPdfs(response.data);  // Set PDFs in state
+      const res = await axios.get("http://localhost:3663/api/iic/text", {
+        params: { section: "iic_policy" },
+      });
+      setTextData(res.data);
+      setContent(res.data?.content || "");
     } catch (err) {
-      setMessage("Error fetching PDFs.");
+      setMessage("Error fetching text.");
     }
   };
 
-  // Handle text update
   const updateText = async () => {
+    if (!textData || !textData.id) {
+      setMessage("No valid text entry to update.");
+      return;
+    }
     try {
-      await axios.put("http://localhost:3663/api/iic/text/1", {
-        content: textContent,  // Send the updated text
+      await axios.put(`http://localhost:3663/api/iic/text/${textData.id}`, {
+        content,
       });
       setMessage("Text updated successfully!");
+      setEditMode(false);
+      fetchText();
     } catch (err) {
       setMessage("Error updating text.");
     }
   };
 
-  // Handle PDF upload
+  const fetchPdfs = async () => {
+    try {
+      const res = await axios.get("http://localhost:3663/api/iic/pdf");
+      setDisplayPdfs(res.data || []);
+    } catch (err) {
+      setMessage("Error fetching PDFs.");
+    }
+  };
+
+  const deletePdf = async (pdfId) => {
+    try {
+      await axios.delete(`http://localhost:3663/api/iic/pdf/${pdfId}`);
+      setMessage("PDF deleted successfully!");
+      fetchPdfs(); // Refresh the PDF list
+    } catch (err) {
+      setMessage("Error deleting PDF.");
+    }
+  };
+
   const handleSubmit = async (e) => {
-    e.preventDefault();  // Prevent form from refreshing
+    e.preventDefault();
     if (!pdfFile) {
       setMessage("Please select a PDF file.");
       return;
     }
+
     const formData = new FormData();
-    formData.append("file", pdfFile);  // Attach the selected file to formData
+    formData.append("file", pdfFile);
 
     try {
       await axios.post("http://localhost:3663/api/iic/pdf", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       setMessage("PDF uploaded successfully!");
-      fetchPdfs();  // Refresh the PDF list
-    } catch (error) {
+      setPdfFile(null);
+      fetchPdfs();
+    } catch (err) {
       setMessage("Error uploading PDF.");
     }
   };
 
+  const modules = {
+    toolbar: [
+      [{ header: [1, 2, 3, false] }],
+      ["bold", "italic", "underline"],
+      [{ size: ["small", false, "large", "huge"] }],
+      [{ font: [] }],
+      [{ align: [] }],
+      ["clean"],
+    ],
+  };
+
   return (
-    <div>
-      {/* Text Content Section */}
+    <div className="p-4 space-y-8">
       <div>
-        <h2>Innovation and Startup Policy Text</h2>
-        <textarea
-          value={textContent}  // Display the current text
-          onChange={(e) => setTextContent(e.target.value)}  // Update text on change
-          rows="10"
-          cols="80"
-          className="border p-2"
-        />
-        <button
-          onClick={updateText}  // Update the text when clicked
-          className="bg-blue-500 text-white px-4 py-2 rounded mt-2"
-        >
-          Save Text
-        </button>
+        <h2 className="text-xl font-semibold mb-2">
+          Innovation and Startup Policy Text
+        </h2>
+        {editMode ? (
+          <>
+            <ReactQuill
+              value={content}
+              onChange={setContent}
+              modules={modules}
+              className="mb-4"
+            />
+            <div className="flex gap-4">
+              <button
+                onClick={updateText}
+                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded"
+              >
+                Save
+              </button>
+              <button
+                onClick={() => {
+                  setEditMode(false);
+                  setContent(textData?.content || "");
+                }}
+                className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded"
+              >
+                Cancel
+              </button>
+            </div>
+          </>
+        ) : (
+          <>
+            <div
+              className="prose prose-blue mb-4"
+              dangerouslySetInnerHTML={{
+                __html: textData?.content || "<p>No content available.</p>",
+              }}
+            />
+            <button
+              onClick={() => setEditMode(true)}
+              className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded"
+            >
+              Edit
+            </button>
+          </>
+        )}
+        {message && <p className="mt-2 text-sm text-red-500">{message}</p>}
       </div>
 
-      {/* PDF Upload Section */}
       <div>
-        <p>Upload PDF</p>
-        <form className="flex gap-4 items-end" onSubmit={handleSubmit}>
-          <div>
-            <p>Choose a PDF:</p>
-            <input
-              type="file"
-              accept="application/pdf"
-              onChange={(e) => setPdfFile(e.target.files[0])}  // Set selected file
-              required
-            />
-          </div>
-          <button className="bg-black px-8 py-2 text-white rounded" type="submit">
+        <h2 className="text-xl font-semibold mb-2">
+          Upload Innovation Policy PDF
+        </h2>
+        <form onSubmit={handleSubmit} className="flex items-end gap-4">
+          <input
+            type="file"
+            accept="application/pdf"
+            onChange={(e) => setPdfFile(e.target.files[0])}
+            className="border p-2"
+          />
+          <button
+            type="submit"
+            className="bg-black px-6 py-2 text-white rounded hover:bg-gray-800"
+          >
             Upload
           </button>
         </form>
-        {message && <p className="mt-2">{message}</p>}
       </div>
 
-      {/* List of Uploaded PDFs */}
-      <div className="mt-8">
-        <h2>Uploaded PDFs</h2>
+      <div>
+        <h2 className="text-xl font-semibold mb-2">Uploaded PDFs</h2>
         {displayPdfs.length > 0 ? (
-          <ul>
+          <ul className="list-disc pl-5">
             {displayPdfs.map((pdf) => (
-              <li key={pdf.id} className="my-2">
+              <li key={pdf.id} className="flex justify-between items-center">
                 <a
                   href={`http://localhost:3663/uploads/IIC/${pdf.file_url}`}
                   target="_blank"
@@ -123,6 +182,12 @@ const fetchText = async () => {
                 >
                   {pdf.title}
                 </a>
+                <button
+                  onClick={() => deletePdf(pdf.id)}
+                  className="text-red-500 hover:text-red-700 ml-4"
+                >
+                  Delete
+                </button>
               </li>
             ))}
           </ul>

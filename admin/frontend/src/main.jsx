@@ -4,9 +4,9 @@ import "./index.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./pages/login";
 import Signup from "./pages/signup";
-import Error404 from "./pages/error404";
+import Error404 from "./pages/Error_Pages/error404";
+import Error403 from "./pages/Error_Pages/error403";
 import AdminLayout from "./layout/adminLayout";
-import Student from "./pages/student";
 import { AuthProvider } from "./services/useAuthCheck";
 import WhatsNew from "./pages/HomePage/whatsNew";
 import Profile from "./pages/profile";
@@ -18,7 +18,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import HodDesk from "./pages/rolebasedPages/hodDesk";
 import PrincipalDesk from "./pages/rolebasedPages/principalDesk";
-import AboutUsAdmin from "./pages/AboutUs/AboutUsAdmin";
+import AboutUsManager from "./pages/AboutUsManager/AboutUsManager";
 import ResearchAdmin from "./pages/research/ResearchAdmin";
 import AdminNIRF from "./pages/AdminNIRF";
 import AdminNBANAAC from "./pages/AdminNBANAAC";
@@ -26,7 +26,15 @@ import AcademicAdmin from "./pages/Academics/AcademicAdmin";
 import AcademicHandbook from "./pages/Academics/AcademicHandbook";
 import Teaching_staff from "./pages/HumanResources/teachingstaff";
 import Nonteaching_staff from "./pages/HumanResources/nonteachingstaff";
+import StudentsCorner from "./pages/StudentsCorner/StudentsCorner";
 import RolePermissionManager from "./pages/rolePermission";
+import ManageFacultyStaff from "./pages/manageFacultyStaff";
+
+// IIC
+import Iic_ambassador from "./pages/IIC/iic_ambassador";
+import Iic_council from "./pages/IIC/iic_council";
+import Iic_innovation from "./pages/IIC/iic_innovation";
+import Iic_policy from "./pages/IIC/iic_policy";
 
 // Import new department components
 import CompHome from "./pages/Department/Computer/Comp_home";
@@ -118,6 +126,7 @@ import ElectricalHod from "./pages/hodDesk/electricalHod";
 
 // Content Approval Components
 import ApprovalDashboard from "./pages/ContentApproval/ApprovalDashboard";
+import RoleHierarchy from "./pages/ContentApproval/roleHierarchy";
 
 // Activity Logs Components
 import ActivityLogs from "./pages/AuditLogs/ActivityLogs";
@@ -136,7 +145,18 @@ const App = () => {
           <Route path="/department/home" element={<DeptHome />} />
           <Route path="/academic/handbook" element={<AcademicHandbook />} />
           <Route path="/academics" element={<AcademicAdmin />} />
+          <Route path="/studentscorner" element={<StudentsCorner />} />
+          <Route path="/roleHierarchy" element={<RoleHierarchy />} />
+          <Route path="/ManageFacultyStaff" element={<ManageFacultyStaff />} />
 
+          {/* IIC Routes */}
+          <Route path="/iic-innovation-council" element={<Iic_council />} />
+          <Route path="/iic-innovation-policy" element={<Iic_policy />} />
+          <Route
+            path="/iic-innovation-ambassador"
+            element={<Iic_ambassador />}
+          />
+          <Route path="/iic-innovation-centre" element={<Iic_innovation />} />
           {/* Department Home Routes */}
           <Route
             path="/department/computer-engineering/home"
@@ -159,7 +179,6 @@ const App = () => {
             path="/department/basic-science-and-humanities/home"
             element={<BSHHome />}
           />
-
           {/* Computer Engineering Routes */}
           <Route
             path="/department/computer-engineering/activities"
@@ -201,7 +220,6 @@ const App = () => {
             path="/department/computer-engineering/committees-and-board-of-studies"
             element={<ComputerCommittees />}
           />
-
           {/* Mechanical Engineering Routes */}
           <Route
             path="/department/mechanical-engineering/activities"
@@ -243,7 +261,6 @@ const App = () => {
             path="/department/mechanical-engineering/committees-and-board-of-studies"
             element={<MechanicalCommittees />}
           />
-
           {/* Electrical Engineering Routes */}
           <Route
             path="/department/electrical-engineering/activities"
@@ -285,7 +302,6 @@ const App = () => {
             path="/department/electrical-engineering/committees-and-board-of-studies"
             element={<ElectricalCommittees />}
           />
-
           {/* EXTC Routes */}
           <Route
             path="/department/extc/activities"
@@ -321,7 +337,6 @@ const App = () => {
             path="/department/extc/committees-and-board-of-studies"
             element={<ExtcCommittees />}
           />
-
           {/* CSE Routes */}
           <Route
             path="/department/computer-science-and-engineering/activities"
@@ -363,7 +378,6 @@ const App = () => {
             path="/department/computer-science-and-engineering/committees-and-board-of-studies"
             element={<CseCommittees />}
           />
-
           {/* BSH Routes */}
           <Route
             path="/department/basic-science-and-humanities/activities"
@@ -405,7 +419,6 @@ const App = () => {
             path="/department/basic-science-and-humanities/committees-and-board-of-studies"
             element={<BshCommittees />}
           />
-
           {/* HOD Desk Routes */}
           <Route path="/hod-desk/computer" element={<ComHod />} />
           <Route path="/hod-desk/mechanical" element={<MechHod />} />
@@ -413,19 +426,15 @@ const App = () => {
           <Route path="/hod-desk/electrical" element={<ElectricalHod />} />
           <Route path="/hod-desk/it" element={<ItHod />} />
           <Route path="/hod-desk/bsh" element={<BshHod />} />
-
           {/* Content Approval Routes */}
           <Route path="/content-approval" element={<ApprovalDashboard />} />
-
           {/* Activity Logs Routes */}
           <Route path="/activity-logs" element={<ActivityLogs />} />
-
           <Route path="/profile" element={<Profile />} />
-          <Route path="/student" element={<Student />} />
           <Route path="/training-placement" element={<TrainingPlacement />} />
           <Route path="/hoddesk" element={<HodDesk />} />
           <Route path="/principaldesk" element={<PrincipalDesk />} />
-          <Route path="/about-us" element={<AboutUsAdmin />} />
+          <Route path="/about-us" element={<AboutUsManager />} />
           <Route path="/research/:section" element={<ResearchAdmin />} />
           <Route path="/research" element={<ResearchAdmin />} />
           <Route path="/admin/nirf" element={<AdminNIRF />} />
@@ -438,6 +447,7 @@ const App = () => {
           />
         </Route>
         <Route path="*" element={<Error404 />} />
+        <Route path="/error403" element={<Error403 />} />
       </Routes>
       <ToastContainer />
     </>

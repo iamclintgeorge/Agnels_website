@@ -1,10 +1,25 @@
 // AcademicHome.jsx - Enhanced Admin Component
 import React, { useState, useEffect } from "react";
-import { 
-  FaEdit, FaTrash, FaPlus, FaSave, FaTimes, FaChalkboardTeacher, 
-  FaUsers, FaEye, FaClipboardCheck, FaCheckCircle, FaUniversity,
-  FaImage, FaUpload, FaGraduationCap, FaBook, FaCertificate, 
-  FaAward, FaChartLine, FaCog
+import {
+  FaEdit,
+  FaTrash,
+  FaPlus,
+  FaSave,
+  FaTimes,
+  FaChalkboardTeacher,
+  FaUsers,
+  FaEye,
+  FaClipboardCheck,
+  FaCheckCircle,
+  FaUniversity,
+  FaImage,
+  FaUpload,
+  FaGraduationCap,
+  FaBook,
+  FaCertificate,
+  FaAward,
+  FaChartLine,
+  FaCog,
 } from "react-icons/fa";
 
 const AcademicHome = () => {
@@ -16,44 +31,53 @@ const AcademicHome = () => {
   const [isAddingCard, setIsAddingCard] = useState(false);
   const [selectedSectionForCard, setSelectedSectionForCard] = useState(null);
   const [loading, setLoading] = useState(false);
-  
+
   const [mainForm, setMainForm] = useState({
-    title: '',
-    description: '',
-    hero_image_url: '',
-    imageFile: null
+    title: "",
+    description: "",
+    hero_image_url: "",
+    imageFile: null,
   });
-  
+
   const [sectionForm, setSectionForm] = useState({
-    section_type: '',
-    title: '',
-    description: '',
-    icon: '',
+    section_type: "",
+    title: "",
+    description: "",
+    icon: "",
     order_index: 0,
-    is_active: '1'
+    is_active: "1",
   });
-  
+
   const [cardForm, setCardForm] = useState({
-    section_id: '',
-    title: '',
-    description: '',
-    icon: '',
+    section_id: "",
+    title: "",
+    description: "",
+    icon: "",
     order_index: 0,
-    is_active: '1'
+    is_active: "1",
   });
 
   const sectionTypes = [
-    { value: 'mission', label: 'Mission/Philosophy' },
-    { value: 'admin', label: 'Administration' },
-    { value: 'attendance', label: 'Attendance & Grievance' },
-    { value: 'audit', label: 'Audit & Appraisal' },
-    { value: 'custom', label: 'Custom Section' }
+    { value: "mission", label: "Mission/Philosophy" },
+    { value: "admin", label: "Administration" },
+    { value: "attendance", label: "Attendance & Grievance" },
+    { value: "audit", label: "Audit & Appraisal" },
+    { value: "custom", label: "Custom Section" },
   ];
 
   const iconOptions = [
-    'FaChalkboardTeacher', 'FaUsers', 'FaEye', 'FaClipboardCheck',
-    'FaCheckCircle', 'FaUniversity', 'FaGraduationCap', 'FaBook',
-    'FaCertificate', 'FaAward', 'FaChartLine', 'FaCog'
+    "FaChalkboardTeacher",
+    "FaUsers",
+    "FaEye",
+    "FaClipboardCheck",
+    "FaCheckCircle",
+    "FaUniversity",
+    "FaGraduationCap",
+    "FaBook",
+    "FaCertificate",
+    "FaAward",
+    "FaChartLine",
+    "FaCog",
   ];
 
   useEffect(() => {
@@ -63,20 +87,20 @@ const AcademicHome = () => {
   const fetchHomeData = async () => {
     setLoading(true);
     try {
-      const response = await fetch('http://localhost:3663/api/academic/home');
+      const response = await fetch("http://localhost:3663/api/academic/home");
       const data = await response.json();
       if (data.result && data.result.length > 0) {
         setHomeData(data.result[0]);
         setMainForm({
-          title: data.result[0].title || '',
-          description: data.result[0].description || '',
-          hero_image_url: data.result[0].hero_image_url || '',
-          imageFile: null
+          title: data.result[0].title || "",
+          description: data.result[0].description || "",
+          hero_image_url: data.result[0].hero_image_url || "",
+          imageFile: null,
         });
       }
     } catch (error) {
-      console.error('Error fetching home data:', error);
-      alert('Error fetching data. Please try again.');
+      console.error("Error fetching home data:", error);
+      alert("Error fetching data. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -90,34 +114,34 @@ const AcademicHome = () => {
     setLoading(true);
     try {
       const formData = new FormData();
-      formData.append('title', mainForm.title);
-      formData.append('description', mainForm.description);
-      formData.append('created_by', 'Admin');
-      
+      formData.append("title", mainForm.title);
+      formData.append("description", mainForm.description);
+      formData.append("created_by", 1);
+
       if (mainForm.imageFile) {
-        formData.append('pdf', mainForm.imageFile);
+        formData.append("pdf", mainForm.imageFile);
       }
 
-      const url = homeData ? 
-        `http://localhost:3663/api/academic/home/${homeData.id}` : 
-        'http://localhost:3663/api/academic/home-create';
-      const method = homeData ? 'PUT' : 'POST';
+      const url = homeData
+        ? `http://localhost:3663/api/academic/home/${homeData.id}`
+        : "http://localhost:3663/api/academic/home-create";
+      const method = homeData ? "PUT" : "POST";
 
       const response = await fetch(url, {
         method,
-        body: formData
+        body: formData,
       });
 
       if (response.ok) {
         await fetchHomeData();
         setIsEditingMain(false);
-        alert('Main content saved successfully!');
+        alert("Main content saved successfully!");
       } else {
-        throw new Error('Failed to save');
+        throw new Error("Failed to save");
       }
     } catch (error) {
-      console.error('Error saving home data:', error);
-      alert('Error saving data. Please try again.');
+      console.error("Error saving home data:", error);
+      alert("Error saving data. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -127,22 +151,22 @@ const AcademicHome = () => {
     setIsEditingMain(false);
     if (homeData) {
       setMainForm({
-        title: homeData.title || '',
-        description: homeData.description || '',
-        hero_image_url: homeData.hero_image_url || '',
-        imageFile: null
+        title: homeData.title || "",
+        description: homeData.description || "",
+        hero_image_url: homeData.hero_image_url || "",
+        imageFile: null,
       });
     }
   };
 
   const handleSectionEdit = (section) => {
     setSectionForm({
-      section_type: section.section_type || '',
-      title: section.title || '',
-      description: section.description || '',
-      icon: section.icon || '',
+      section_type: section.section_type || "",
+      title: section.title || "",
+      description: section.description || "",
+      icon: section.icon || "",
       order_index: section.order_index || 0,
-      is_active: section.is_active || '1'
+      is_active: section.is_active || "1",
     });
     setEditingSectionId(section.id);
   };
@@ -150,17 +174,19 @@ const AcademicHome = () => {
   const handleSectionSave = async () => {
     setLoading(true);
     try {
-      const url = editingSectionId ? 
-        `http://localhost:3663/api/academic/home-section/${editingSectionId}` : 
-        'http://localhost:3663/api/academic/home-section-create';
-      const method = editingSectionId ? 'PUT' : 'POST';
+      const url = editingSectionId
+        ? `http://localhost:3663/api/academic/home-section/${editingSectionId}`
+        : "http://localhost:3663/api/academic/home-section-create";
+      const method = editingSectionId ? "PUT" : "POST";
 
-      const payload = editingSectionId ? sectionForm : { ...sectionForm, home_id: homeData.id };
+      const payload = editingSectionId
+        ? sectionForm
+        : { ...sectionForm, home_id: homeData.id };
 
       const response = await fetch(url, {
         method,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
       });
 
       if (response.ok) {
@@ -168,20 +194,20 @@ const AcademicHome = () => {
         setEditingSectionId(null);
         setIsAddingSection(false);
         setSectionForm({
-          section_type: '',
-          title: '',
-          description: '',
-          icon: '',
+          section_type: "",
+          title: "",
+          description: "",
+          icon: "",
           order_index: 0,
-          is_active: '1'
+          is_active: "1",
         });
-        alert('Section saved successfully!');
+        alert("Section saved successfully!");
       } else {
-        throw new Error('Failed to save section');
+        throw new Error("Failed to save section");
       }
     } catch (error) {
-      console.error('Error saving section:', error);
-      alert('Error saving section. Please try again.');
+      console.error("Error saving section:", error);
+      alert("Error saving section. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -191,31 +217,34 @@ const AcademicHome = () => {
     setEditingSectionId(null);
     setIsAddingSection(false);
     setSectionForm({
-      section_type: '',
-      title: '',
-      description: '',
-      icon: '',
+      section_type: "",
+      title: "",
+      description: "",
+      icon: "",
       order_index: 0,
-      is_active: '1'
+      is_active: "1",
     });
   };
 
   const handleSectionDelete = async (id) => {
-    if (window.confirm('Are you sure you want to delete this section?')) {
+    if (window.confirm("Are you sure you want to delete this section?")) {
       setLoading(true);
       try {
-        const response = await fetch(`http://localhost:3663/api/academic/delete-home-section/${id}`, {
-          method: 'PUT'
-        });
+        const response = await fetch(
+          `http://localhost:3663/api/academic/delete-home-section/${id}`,
+          {
+            method: "PUT",
+          }
+        );
         if (response.ok) {
           await fetchHomeData();
-          alert('Section deleted successfully!');
+          alert("Section deleted successfully!");
         } else {
-          throw new Error('Failed to delete section');
+          throw new Error("Failed to delete section");
         }
       } catch (error) {
-        console.error('Error deleting section:', error);
-        alert('Error deleting section. Please try again.');
+        console.error("Error deleting section:", error);
+        alert("Error deleting section. Please try again.");
       } finally {
         setLoading(false);
       }
@@ -225,11 +254,11 @@ const AcademicHome = () => {
   const handleCardEdit = (card, sectionId) => {
     setCardForm({
       section_id: sectionId,
-      title: card.title || '',
-      description: card.description || '',
-      icon: card.icon || '',
+      title: card.title || "",
+      description: card.description || "",
+      icon: card.icon || "",
       order_index: card.order_index || 0,
-      is_active: card.is_active || '1'
+      is_active: card.is_active || "1",
     });
     setEditingCardId(card.id);
   };
@@ -237,15 +266,15 @@ const AcademicHome = () => {
   const handleCardSave = async () => {
     setLoading(true);
     try {
-      const url = editingCardId ? 
-        `http://localhost:3663/api/academic/admin-card/${editingCardId}` : 
-        'http://localhost:3663/api/academic/admin-card-create';
-      const method = editingCardId ? 'PUT' : 'POST';
+      const url = editingCardId
+        ? `http://localhost:3663/api/academic/admin-card/${editingCardId}`
+        : "http://localhost:3663/api/academic/admin-card-create";
+      const method = editingCardId ? "PUT" : "POST";
 
       const response = await fetch(url, {
         method,
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(cardForm)
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(cardForm),
       });
 
       if (response.ok) {
@@ -254,20 +283,20 @@ const AcademicHome = () => {
         setIsAddingCard(false);
         setSelectedSectionForCard(null);
         setCardForm({
-          section_id: '',
-          title: '',
-          description: '',
-          icon: '',
+          section_id: "",
+          title: "",
+          description: "",
+          icon: "",
           order_index: 0,
-          is_active: '1'
+          is_active: "1",
         });
-        alert('Card saved successfully!');
+        alert("Card saved successfully!");
       } else {
-        throw new Error('Failed to save card');
+        throw new Error("Failed to save card");
       }
     } catch (error) {
-      console.error('Error saving card:', error);
-      alert('Error saving card. Please try again.');
+      console.error("Error saving card:", error);
+      alert("Error saving card. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -278,31 +307,34 @@ const AcademicHome = () => {
     setIsAddingCard(false);
     setSelectedSectionForCard(null);
     setCardForm({
-      section_id: '',
-      title: '',
-      description: '',
-      icon: '',
+      section_id: "",
+      title: "",
+      description: "",
+      icon: "",
       order_index: 0,
-      is_active: '1'
+      is_active: "1",
     });
   };
 
   const handleCardDelete = async (id) => {
-    if (window.confirm('Are you sure you want to delete this card?')) {
+    if (window.confirm("Are you sure you want to delete this card?")) {
       setLoading(true);
       try {
-        const response = await fetch(`http://localhost:3663/api/academic/delete-admin-card/${id}`, {
-          method: 'PUT'
-        });
+        const response = await fetch(
+          `http://localhost:3663/api/academic/delete-admin-card/${id}`,
+          {
+            method: "PUT",
+          }
+        );
         if (response.ok) {
           await fetchHomeData();
-          alert('Card deleted successfully!');
+          alert("Card deleted successfully!");
         } else {
-          throw new Error('Failed to delete card');
+          throw new Error("Failed to delete card");
         }
       } catch (error) {
-        console.error('Error deleting card:', error);
-        alert('Error deleting card. Please try again.');
+        console.error("Error deleting card:", error);
+        alert("Error deleting card. Please try again.");
       } finally {
         setLoading(false);
       }
@@ -329,7 +361,7 @@ const AcademicHome = () => {
       FaCertificate: <FaCertificate />,
       FaAward: <FaAward />,
       FaChartLine: <FaChartLine />,
-      FaCog: <FaCog />
+      FaCog: <FaCog />,
     };
     return iconMap[iconName] || <FaUsers />;
   };
@@ -346,7 +378,9 @@ const AcademicHome = () => {
     <div className="p-6 space-y-6">
       {/* Header */}
       <div className="flex justify-between items-center">
-        <h1 className="text-3xl font-bold text-gray-800">Academic Home Management</h1>
+        <h1 className="text-3xl font-bold text-gray-800">
+          Academic Home Management
+        </h1>
         <div className="flex gap-2">
           <button
             onClick={() => setIsAddingSection(true)}
@@ -393,27 +427,37 @@ const AcademicHome = () => {
         {isEditingMain ? (
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Title</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Title
+              </label>
               <input
                 type="text"
                 value={mainForm.title}
-                onChange={(e) => setMainForm({ ...mainForm, title: e.target.value })}
+                onChange={(e) =>
+                  setMainForm({ ...mainForm, title: e.target.value })
+                }
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Enter title"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Description
+              </label>
               <textarea
                 value={mainForm.description}
-                onChange={(e) => setMainForm({ ...mainForm, description: e.target.value })}
+                onChange={(e) =>
+                  setMainForm({ ...mainForm, description: e.target.value })
+                }
                 rows={4}
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="Enter description"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">Hero Image</label>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Hero Image
+              </label>
               <input
                 type="file"
                 onChange={handleImageChange}
@@ -432,15 +476,18 @@ const AcademicHome = () => {
         ) : (
           <div className="space-y-4">
             <div>
-              <h3 className="text-lg font-medium text-gray-900">{homeData?.title || 'No title set'}</h3>
-              <p className="text-gray-600 mt-2">{homeData?.description || 'No description set'}</p>
+              <h3 className="text-lg font-medium text-gray-900">
+                {homeData?.title || "No title set"}
+              </h3>
+              <p className="text-gray-600 mt-2">
+                {homeData?.description || "No description set"}
+              </p>
             </div>
             {homeData?.hero_image_url && (
               <div>
                 <img
                   // src={homeData.hero_image_url}
                   src={`http://localhost:3663${homeData.hero_image_url?.trim()}`}
-
                   alt="Hero"
                   className="h-32 object-cover rounded-lg"
                 />
@@ -459,8 +506,12 @@ const AcademicHome = () => {
                 {renderIcon(section.icon)}
               </div>
               <div>
-                <h3 className="text-xl font-semibold text-gray-900">{section.title}</h3>
-                <span className="text-sm text-gray-500 capitalize">{section.section_type}</span>
+                <h3 className="text-xl font-semibold text-gray-900">
+                  {section.title}
+                </h3>
+                <span className="text-sm text-gray-500 capitalize">
+                  {section.section_type}
+                </span>
               </div>
             </div>
             <div className="flex gap-2">
@@ -498,13 +549,18 @@ const AcademicHome = () => {
           {section.cards && section.cards.length > 0 && (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
               {section.cards.map((card) => (
-                <div key={card.id} className="border border-gray-200 rounded-lg p-4">
+                <div
+                  key={card.id}
+                  className="border border-gray-200 rounded-lg p-4"
+                >
                   <div className="flex justify-between items-start mb-2">
                     <div className="flex items-center">
                       <div className="text-blue-600 mr-2">
                         {renderIcon(card.icon)}
                       </div>
-                      <h4 className="font-medium text-gray-900">{card.title}</h4>
+                      <h4 className="font-medium text-gray-900">
+                        {card.title}
+                      </h4>
                     </div>
                     <div className="flex gap-1">
                       <button
@@ -536,14 +592,21 @@ const AcademicHome = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-full max-w-md">
             <h3 className="text-xl font-semibold mb-4">
-              {editingSectionId ? 'Edit Section' : 'Add New Section'}
+              {editingSectionId ? "Edit Section" : "Add New Section"}
             </h3>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Section Type</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Section Type
+                </label>
                 <select
                   value={sectionForm.section_type}
-                  onChange={(e) => setSectionForm({ ...sectionForm, section_type: e.target.value })}
+                  onChange={(e) =>
+                    setSectionForm({
+                      ...sectionForm,
+                      section_type: e.target.value,
+                    })
+                  }
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="">Select Type</option>
@@ -555,30 +618,45 @@ const AcademicHome = () => {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Title</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Title
+                </label>
                 <input
                   type="text"
                   value={sectionForm.title}
-                  onChange={(e) => setSectionForm({ ...sectionForm, title: e.target.value })}
+                  onChange={(e) =>
+                    setSectionForm({ ...sectionForm, title: e.target.value })
+                  }
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Enter title"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Description
+                </label>
                 <textarea
                   value={sectionForm.description}
-                  onChange={(e) => setSectionForm({ ...sectionForm, description: e.target.value })}
+                  onChange={(e) =>
+                    setSectionForm({
+                      ...sectionForm,
+                      description: e.target.value,
+                    })
+                  }
                   rows={3}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Enter description"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Icon</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Icon
+                </label>
                 <select
                   value={sectionForm.icon}
-                  onChange={(e) => setSectionForm({ ...sectionForm, icon: e.target.value })}
+                  onChange={(e) =>
+                    setSectionForm({ ...sectionForm, icon: e.target.value })
+                  }
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="">Select Icon</option>
@@ -590,20 +668,34 @@ const AcademicHome = () => {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Order Index</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Order Index
+                </label>
                 <input
                   type="number"
                   value={sectionForm.order_index}
-                  onChange={(e) => setSectionForm({ ...sectionForm, order_index: parseInt(e.target.value) })}
+                  onChange={(e) =>
+                    setSectionForm({
+                      ...sectionForm,
+                      order_index: parseInt(e.target.value),
+                    })
+                  }
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   min="0"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Status
+                </label>
                 <select
                   value={sectionForm.is_active}
-                  onChange={(e) => setSectionForm({ ...sectionForm, is_active: e.target.value })}
+                  onChange={(e) =>
+                    setSectionForm({
+                      ...sectionForm,
+                      is_active: e.target.value,
+                    })
+                  }
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="1">Active</option>
@@ -624,7 +716,7 @@ const AcademicHome = () => {
                 className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
                 disabled={loading}
               >
-                {editingSectionId ? 'Update' : 'Save'}
+                {editingSectionId ? "Update" : "Save"}
               </button>
             </div>
           </div>
@@ -636,34 +728,46 @@ const AcademicHome = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-full max-w-md">
             <h3 className="text-xl font-semibold mb-4">
-              {editingCardId ? 'Edit Card' : 'Add New Card'}
+              {editingCardId ? "Edit Card" : "Add New Card"}
             </h3>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Title</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Title
+                </label>
                 <input
                   type="text"
                   value={cardForm.title}
-                  onChange={(e) => setCardForm({ ...cardForm, title: e.target.value })}
+                  onChange={(e) =>
+                    setCardForm({ ...cardForm, title: e.target.value })
+                  }
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Enter title"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Description</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Description
+                </label>
                 <textarea
                   value={cardForm.description}
-                  onChange={(e) => setCardForm({ ...cardForm, description: e.target.value })}
+                  onChange={(e) =>
+                    setCardForm({ ...cardForm, description: e.target.value })
+                  }
                   rows={3}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Enter description"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Icon</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Icon
+                </label>
                 <select
                   value={cardForm.icon}
-                  onChange={(e) => setCardForm({ ...cardForm, icon: e.target.value })}
+                  onChange={(e) =>
+                    setCardForm({ ...cardForm, icon: e.target.value })
+                  }
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="">Select Icon</option>
@@ -675,20 +779,31 @@ const AcademicHome = () => {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Order Index</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Order Index
+                </label>
                 <input
                   type="number"
                   value={cardForm.order_index}
-                  onChange={(e) => setCardForm({ ...cardForm, order_index: parseInt(e.target.value) })}
+                  onChange={(e) =>
+                    setCardForm({
+                      ...cardForm,
+                      order_index: parseInt(e.target.value),
+                    })
+                  }
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   min="0"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Status
+                </label>
                 <select
                   value={cardForm.is_active}
-                  onChange={(e) => setCardForm({ ...cardForm, is_active: e.target.value })}
+                  onChange={(e) =>
+                    setCardForm({ ...cardForm, is_active: e.target.value })
+                  }
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="1">Active</option>
@@ -709,7 +824,7 @@ const AcademicHome = () => {
                 className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
                 disabled={loading}
               >
-                {editingCardId ? 'Update' : 'Save'}
+                {editingCardId ? "Update" : "Save"}
               </button>
             </div>
           </div>

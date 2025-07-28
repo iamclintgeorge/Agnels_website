@@ -1,7 +1,12 @@
 import db from "../../config/db.js";
 
 // Academic Home Models
-export const academicHomeCreate = async (title, description, hero_image_url, created_by) => {
+export const academicHomeCreate = async (
+  title,
+  description,
+  hero_image_url,
+  created_by
+) => {
   const query = `
     INSERT INTO academic_home (title, description, hero_image_url, created_by) 
     VALUES (?, ?, ?, ?)
@@ -18,7 +23,7 @@ export const academicHomeCreate = async (title, description, hero_image_url, cre
 };
 // export const academicHomeFetch = async () => {
 //   const query = `
-//     SELECT 
+//     SELECT
 //       h.*,
 //       CONCAT('[', GROUP_CONCAT(
 //         CONCAT(
@@ -43,7 +48,7 @@ export const academicHomeCreate = async (title, description, hero_image_url, cre
 //                   '}'
 //                 )
 //               ), ']')
-//               FROM academic_admin_cards ac 
+//               FROM academic_admin_cards ac
 //               WHERE ac.section_id = s.id AND ac.deleted = '0'
 //             ),
 //           '}'
@@ -55,7 +60,6 @@ export const academicHomeCreate = async (title, description, hero_image_url, cre
 //     GROUP BY h.id
 //     ORDER BY h.created_at DESC
 //   `;
-
 
 //   try {
 //     const [rows] = await db.promise().query(query);
@@ -69,35 +73,31 @@ export const academicHomeFetch = async () => {
   const query = `
     SELECT 
       h.*,
-      CONCAT('[', GROUP_CONCAT(
-        CONCAT(
-          '{',
-            '"id":', IFNULL(s.id, 'null'), ',',
-            '"section_type":"', IFNULL(REPLACE(s.section_type, '"', '\\"'), ''), '",',
-            '"title":"', IFNULL(REPLACE(s.title, '"', '\\"'), ''), '",',
-            '"description":"', IFNULL(REPLACE(s.description, '"', '\\"'), ''), '",',
-            '"icon":"', IFNULL(s.icon, ''), '",',
-            '"order_index":', IFNULL(s.order_index, 0), ',',
-            '"is_active":', IFNULL(s.is_active, 0), ',',
-            '"admin_cards":', IFNULL((
-              SELECT CONCAT('[', GROUP_CONCAT(
-                CONCAT(
-                  '{',
-                    '"id":', IFNULL(ac.id, 'null'), ',',
-                    '"title":"', IFNULL(REPLACE(ac.title, '"', '\\"'), ''), '",',
-                    '"description":"', IFNULL(REPLACE(ac.description, '"', '\\"'), ''), '",',
-                    '"icon":"', IFNULL(ac.icon, ''), '",',
-                    '"order_index":', IFNULL(ac.order_index, 0), ',',
-                    '"is_active":', IFNULL(ac.is_active, 0),
-                  '}'
-                )
-              SEPARATOR ','), ']')
-              FROM academic_admin_cards ac 
-              WHERE ac.section_id = s.id AND ac.deleted = '0'
-            ), '[]'),
-          '}'
-        ) SEPARATOR ','
-      ), ']') AS sections
+      IFNULL(JSON_ARRAYAGG(
+        JSON_OBJECT(
+          'id', s.id,
+          'section_type', s.section_type,
+          'title', s.title,
+          'description', s.description,
+          'icon', s.icon,
+          'order_index', s.order_index,
+          'is_active', s.is_active,
+          'admin_cards', IFNULL((
+            SELECT JSON_ARRAYAGG(
+              JSON_OBJECT(
+                'id', ac.id,
+                'title', ac.title,
+                'description', ac.description,
+                'icon', ac.icon,
+                'order_index', ac.order_index,
+                'is_active', ac.is_active
+              )
+            )
+            FROM academic_admin_cards ac
+            WHERE ac.section_id = s.id AND ac.deleted = '0'
+          ), JSON_ARRAY())
+        )
+      ), JSON_ARRAY()) AS sections
     FROM academic_home h
     LEFT JOIN academic_home_sections s ON h.id = s.home_id AND s.deleted = '0'
     WHERE h.deleted = '0'
@@ -107,10 +107,12 @@ export const academicHomeFetch = async () => {
 
   try {
     const [rows] = await db.promise().query(query);
-    // Optionally parse the JSON string into objects
-    const parsedRows = rows.map(row => ({
+    const parsedRows = rows.map((row) => ({
       ...row,
-      sections: row.sections ? JSON.parse(row.sections) : []
+      sections:
+        typeof row.sections === "string"
+          ? JSON.parse(row.sections)
+          : row.sections,
     }));
     return parsedRows;
   } catch (error) {
@@ -121,7 +123,7 @@ export const academicHomeFetch = async () => {
 
 export const getAcademicHomeById = async (id) => {
   const query = `SELECT * FROM academic_home WHERE id = ? AND deleted = '0'`;
-  
+
   try {
     const [result] = await db.promise().query(query, [id]);
     return result[0];
@@ -131,7 +133,13 @@ export const getAcademicHomeById = async (id) => {
   }
 };
 
-export const academicHomeEdit = async (id, title, description, hero_image_url, created_by) => {
+export const academicHomeEdit = async (
+  id,
+  title,
+  description,
+  hero_image_url,
+  created_by
+) => {
   const query = `
     UPDATE academic_home 
     SET title = ?, description = ?, hero_image_url = ?, created_by = ? 
@@ -165,7 +173,14 @@ export const academicHomeDelete = async (id) => {
 };
 
 // Academic Home Section Models
-export const academicHomeSectionCreate = async (home_id, section_type, title, description, icon, order_index) => {
+export const academicHomeSectionCreate = async (
+  home_id,
+  section_type,
+  title,
+  description,
+  icon,
+  order_index
+) => {
   const query = `
     INSERT INTO academic_home_sections (home_id, section_type, title, description, icon, order_index) 
     VALUES (?, ?, ?, ?, ?, ?)
@@ -181,13 +196,29 @@ export const academicHomeSectionCreate = async (home_id, section_type, title, de
   }
 };
 
-export const academicHomeSectionEdit = async (id, section_type, title, description, icon, order_index, is_active) => {
+export const academicHomeSectionEdit = async (
+  id,
+  section_type,
+  title,
+  description,
+  icon,
+  order_index,
+  is_active
+) => {
   const query = `
     UPDATE academic_home_sections 
     SET section_type = ?, title = ?, description = ?, icon = ?, order_index = ?, is_active = ?
     WHERE id = ?
   `;
-  const values = [section_type, title, description, icon, order_index, is_active, id];
+  const values = [
+    section_type,
+    title,
+    description,
+    icon,
+    order_index,
+    is_active,
+    id,
+  ];
 
   try {
     const [result] = await db.promise().query(query, values);
@@ -215,7 +246,13 @@ export const academicHomeSectionDelete = async (id) => {
 };
 
 // Academic Admin Card Models
-export const academicHomeAdminCardCreate = async (section_id, title, description, icon, order_index) => {
+export const academicHomeAdminCardCreate = async (
+  section_id,
+  title,
+  description,
+  icon,
+  order_index
+) => {
   const query = `
     INSERT INTO academic_admin_cards (section_id, title, description, icon, order_index) 
     VALUES (?, ?, ?, ?, ?)
@@ -231,7 +268,14 @@ export const academicHomeAdminCardCreate = async (section_id, title, description
   }
 };
 
-export const academicHomeAdminCardEdit = async (id, title, description, icon, order_index, is_active) => {
+export const academicHomeAdminCardEdit = async (
+  id,
+  title,
+  description,
+  icon,
+  order_index,
+  is_active
+) => {
   const query = `
     UPDATE academic_admin_cards 
     SET title = ?, description = ?, icon = ?, order_index = ?, is_active = ?
@@ -265,7 +309,13 @@ export const academicHomeAdminCardDelete = async (id) => {
 };
 
 // Academic Handbook Models
-export const academicHandbookCreate = async (title, description, pdf_url, handbook_type, created_by) => {
+export const academicHandbookCreate = async (
+  title,
+  description,
+  pdf_url,
+  handbook_type,
+  created_by
+) => {
   const query = `
     INSERT INTO academic_handbooks (title, description, pdf_url, handbook_type, created_by)
     VALUES (?, ?, ?, ?, ?)
@@ -298,7 +348,7 @@ export const academicHandbookFetch = async () => {
 };
 export const getHandbookById = async (id) => {
   const query = `SELECT * FROM academic_handbooks WHERE id = ?`;
-  
+
   try {
     const [result] = await db.promise().query(query, [id]);
     return result[0];
@@ -308,7 +358,14 @@ export const getHandbookById = async (id) => {
   }
 };
 
-export const academicHandbookEdit = async (id, title, description, pdf_url, handbook_type, created_by) => {
+export const academicHandbookEdit = async (
+  id,
+  title,
+  description,
+  pdf_url,
+  handbook_type,
+  created_by
+) => {
   const query = `
     UPDATE academic_handbooks 
     SET title = ?, description = ?, pdf_url = ?, handbook_type = ?, created_by = ? 
@@ -342,7 +399,14 @@ export const academicHandbookDelete = async (id) => {
 };
 
 // Academic Calendar Models
-export const academicCalendarCreate = async (year, semester, issue_date, pdf_url, description, created_by) => {
+export const academicCalendarCreate = async (
+  year,
+  semester,
+  issue_date,
+  pdf_url,
+  description,
+  created_by
+) => {
   const query = `
     INSERT INTO academic_calendar (year, semester, issue_date, pdf_url, description, created_by)
     VALUES (?, ?, ?, ?, ?, ?)
@@ -375,7 +439,7 @@ export const academicCalendarFetch = async () => {
 };
 export const getCalendarById = async (id) => {
   const query = `SELECT * FROM academic_calendar WHERE id = ?`;
-  
+
   try {
     const [result] = await db.promise().query(query, [id]);
     return result[0];
@@ -385,13 +449,30 @@ export const getCalendarById = async (id) => {
   }
 };
 
-export const academicCalendarEdit = async (id, year, semester, issue_date, pdf_url, description, created_by) => {
+export const academicCalendarEdit = async (
+  id,
+  year,
+  semester,
+  issue_date,
+  pdf_url,
+  description,
+  created_by
+) => {
+  console.log("issue_date: ", issue_date);
   const query = `
     UPDATE academic_calendar 
     SET year = ?, semester = ?, issue_date = ?, pdf_url = ?, description = ?, created_by = ? 
     WHERE id = ?
   `;
-  const values = [year, semester, issue_date, pdf_url, description, created_by, id];
+  const values = [
+    year,
+    semester,
+    issue_date,
+    pdf_url,
+    description,
+    created_by,
+    id,
+  ];
 
   try {
     const [result] = await db.promise().query(query, values);
@@ -419,13 +500,29 @@ export const academicCalendarDelete = async (id) => {
 };
 
 // Examination Models
-export const examinationCreate = async (exam_type, semester, year, timetable_url, result_url, notification, created_by) => {
-  console.log(exam_type)
+export const examinationCreate = async (
+  exam_type,
+  semester,
+  year,
+  timetable_url,
+  result_url,
+  notification,
+  created_by
+) => {
+  console.log(exam_type, "created_by:", created_by);
   const query = `
     INSERT INTO examinations (exam_type, semester, year, timetable_url, result_url, notification, created_by)
     VALUES (?, ?, ?, ?, ?, ?, ?)
   `;
-  const values = [exam_type, semester, year, timetable_url, result_url, notification, created_by];
+  const values = [
+    exam_type,
+    semester,
+    year,
+    timetable_url,
+    result_url,
+    notification,
+    created_by,
+  ];
 
   try {
     const [result] = await db.promise().query(query, values);
@@ -453,7 +550,7 @@ export const examinationFetch = async () => {
 };
 export const getExaminationById = async (id) => {
   const query = `SELECT * FROM examinations WHERE id = ?`;
-  
+
   try {
     const [result] = await db.promise().query(query, [id]);
     return result[0];
@@ -463,14 +560,31 @@ export const getExaminationById = async (id) => {
   }
 };
 
-
-export const examinationEdit = async (id, exam_type, semester, year, timetable_url, result_url, notification, created_by) => {
+export const examinationEdit = async (
+  id,
+  exam_type,
+  semester,
+  year,
+  timetable_url,
+  result_url,
+  notification,
+  created_by
+) => {
   const query = `
     UPDATE examinations 
     SET exam_type = ?, semester = ?, year = ?, timetable_url = ?, result_url = ?, notification = ?, created_by = ? 
     WHERE id = ?
   `;
-  const values = [exam_type, semester, year, timetable_url, result_url, notification, created_by, id];
+  const values = [
+    exam_type,
+    semester,
+    year,
+    timetable_url,
+    result_url,
+    notification,
+    created_by,
+    id,
+  ];
 
   try {
     const [result] = await db.promise().query(query, values);
@@ -500,7 +614,7 @@ export const examinationDelete = async (id) => {
 // Academic Links Models
 export const getAcademicLinkById = async (id) => {
   const query = `SELECT * FROM academic_links WHERE id = ?`;
-  
+
   try {
     const [result] = await db.promise().query(query, [id]);
     return result[0];
@@ -509,7 +623,13 @@ export const getAcademicLinkById = async (id) => {
     throw error;
   }
 };
-export const academicLinksCreate = async (title, description, url, link_type, created_by) => {
+export const academicLinksCreate = async (
+  title,
+  description,
+  url,
+  link_type,
+  created_by
+) => {
   const query = `
     INSERT INTO academic_links (title, description, url, link_type, created_by)
     VALUES (?, ?, ?, ?, ?)
@@ -541,7 +661,14 @@ export const academicLinksFetch = async () => {
   }
 };
 
-export const academicLinksEdit = async (id, title, description, url, link_type, created_by) => {
+export const academicLinksEdit = async (
+  id,
+  title,
+  description,
+  url,
+  link_type,
+  created_by
+) => {
   const query = `
     UPDATE academic_links 
     SET title = ?, description = ?, url = ?, link_type = ?, created_by = ? 
@@ -575,10 +702,16 @@ export const academicLinksDelete = async (id) => {
 };
 
 // Stakeholder Feedback Models
-export const stakeholderFeedbackCreate = async (title, description, pdf_url, feedback_type, created_by) => {
+export const stakeholderFeedbackCreate = async (
+  title,
+  description,
+  pdf_url,
+  feedback_type,
+  created_by
+) => {
   const query = `
     INSERT INTO stakeholder_feedback (title, description, pdf_url, feedback_type, created_by)
-    VALUES (?, ?, ?, ?, ?)
+    VALUES (?, ?, ?, 'syllabus', '1')
   `;
   const values = [title, description, pdf_url, feedback_type, created_by];
 
@@ -608,7 +741,7 @@ export const stakeholderFeedbackFetch = async () => {
 };
 export const getFeedbackById = async (id) => {
   const query = `SELECT * FROM stakeholder_feedback WHERE id = ?`;
-  
+
   try {
     const [result] = await db.promise().query(query, [id]);
     return result[0];
@@ -618,7 +751,14 @@ export const getFeedbackById = async (id) => {
   }
 };
 
-export const stakeholderFeedbackEdit = async (id, title, description, pdf_url, feedback_type, created_by) => {
+export const stakeholderFeedbackEdit = async (
+  id,
+  title,
+  description,
+  pdf_url,
+  feedback_type,
+  created_by
+) => {
   const query = `
     UPDATE stakeholder_feedback 
     SET title = ?, description = ?, pdf_url = ?, feedback_type = ?, created_by = ? 

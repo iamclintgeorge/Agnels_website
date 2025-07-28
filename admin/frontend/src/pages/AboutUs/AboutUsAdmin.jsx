@@ -18,7 +18,7 @@ const AboutUsAdmin = () => {
   const [uploadedFiles, setUploadedFiles] = useState({});
   const [fileUploading, setFileUploading] = useState({});
   const [imageUploading, setImageUploading] = useState({});
-  const [uploadedImages, setUploadedImages] = useState({});
+  const [authError, setAuthError] = useState(null);
 
   // Section definitions with their structure
   const sectionStructures = {
@@ -210,20 +210,30 @@ const AboutUsAdmin = () => {
     }
   };
 
+  // Update fetchSections to handle 401/403
   const fetchSections = async () => {
     try {
       const response = await axios.get("/api/aboutus");
       setSections(response.data);
     } catch (error) {
-      setStatus("Error fetching sections: " + error.message);
+      if (
+        error.response &&
+        (error.response.status === 401 || error.response.status === 403)
+      ) {
+        setAuthError("forbidden");
+        setSections([]);
+        setEditContent({});
+        setSelectedSection(null);
+      } else {
+        setStatus("Error fetching sections: " + error.message);
+      }
     }
   };
 
+  // Update handleSectionSelect to handle 401/403
   const handleSectionSelect = async (sectionKey) => {
     setSelectedSection(sectionKey); // Set selected immediately for UI feedback
-
     try {
-      console.log("Loading section:", sectionKey);
       const response = await axios.get(`/api/aboutus/${sectionKey}`);
 
       // Get the default structure for this section
@@ -315,14 +325,28 @@ const AboutUsAdmin = () => {
       setEditContent(mergedContent);
       setStatus(""); // Clear any previous status messages
     } catch (error) {
-      console.error("Error fetching section:", error);
-      // Still set default structure if API call fails
-      setEditContent(
-        JSON.parse(JSON.stringify(sectionStructures[sectionKey])) || {}
-      );
-      setStatus("Error fetching section: " + error.message);
+      if (
+        error.response &&
+        (error.response.status === 401 || error.response.status === 403)
+      ) {
+        setAuthError("forbidden");
+        setEditContent({});
+      } else {
+        setEditContent(
+          JSON.parse(JSON.stringify(sectionStructures[sectionKey])) || {}
+        );
+        setStatus("Error fetching section: " + error.message);
+      }
     }
   };
+
+  // Redirect to error403 page if forbidden
+  useEffect(() => {
+    if (authError === "forbidden") {
+      navigate("/error403");
+    }
+    console.log(authError);
+  }, [authError, navigate]);
 
   // Handle changes to content data
   const handleContentChange = (field, key, value) => {

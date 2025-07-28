@@ -4,7 +4,8 @@ import Header from "./components/Header";
 import AboutUs from "./components/AboutUs";
 import WhatsNew from "./components/WhatsNew";
 import Footer from "./components/Footer";
-import Departments from "./pages/Departments/departments";
+import { Departments } from "./pages/Departments/Dept_sidebar.jsx";
+import DepartmentSection from "./pages/Departments/DepartmentSection";
 import Aboutus from "./pages/AboutUs/aboutus";
 import Research_Publications from "./pages/Research_Publications/Research_Publications";
 import Admissions from "./pages/admissions/admissions";
@@ -59,7 +60,23 @@ function App() {
           <Route path="/examinations-page" element={<ExaminationsPage />} />
 
           {/* Departments Pages */}
-          {/* <Route path="/departments" element={<Departments />} /> */}
+          <Route path="/departments" element={<Departments />} />
+
+          {/* Individual Department Section Pages */}
+          <Route
+            path="/department/:department/:section"
+            element={<DepartmentSection />}
+          />
+
+          {/* Existing Department Pages */}
+          <Route path="/computer_engineering" element={<Computer />} />
+          <Route path="/mechanical_engineering" element={<Mechanical />} />
+          <Route path="/extc" element={<Extc />} />
+          <Route path="/electrical_engineering" element={<Electrical />} />
+          <Route path="/it" element={<InformationTech />} />
+          <Route path="/humanities" element={<Humanities />} />
+
+          {/* Other Pages */}
           <Route path="/aboutus" element={<Aboutus />} />
           <Route
             path="/research_Publications"
@@ -67,20 +84,6 @@ function App() {
           />
           <Route path="/admissions" element={<Admissions />} />
           <Route path="/studentCorner" element={<StudentCorner />} />
-          {/* <Route path="/computer_engineering" element={<Computer />} />
-          <Route path="/electrical_engineering" element={<Electrical />} />
-          <Route path="/extc" element={<Extc />} />
-          <Route path="/humanities" element={<Humanities />} />
-          <Route path="/it" element={<InformationTech />} />
-          <Route path="/mechanical_engineering" element={<Mechanical />} /> */}
-
-          <Route path="/departments" element={<Departments />} />
-          <Route path="/computer_engineering" element={<Computer />} />
-          <Route path="/mechanical_engineering" element={<Mechanical />} />
-          <Route path="/extc" element={<Extc />} />
-          <Route path="/electrical_engineering" element={<Electrical />} />
-          <Route path="/it" element={<InformationTech />} />
-          <Route path="/humanities" element={<Humanities />} />
           <Route path="/Login" element={<Login />} />
           <Route path="/training-placement" element={<TrainingPlacement />} />
           <Route path="/iqac" element={<IQAC />} />

@@ -1,5 +1,10 @@
 import bcrypt from "bcrypt";
-import { signupUser, loginUser } from "../../models/admin/userModels.js";
+import {
+  signupUser,
+  loginUser,
+  fetchRoles,
+  fetchPermissions,
+} from "../../models/admin/userModels.js";
 
 export const signupController = async (req, res) => {
   try {
@@ -29,6 +34,7 @@ export const signupController = async (req, res) => {
       emailId: user.emailId,
       userName: user.userName,
       role: user.role,
+      permissions: user.permissions,
     };
 
     console.log("req.session.user", req.session.user);
@@ -52,12 +58,7 @@ export const loginController = async (req, res) => {
 
     const user = await loginUser(emailId, password);
     if (!user) {
-      return res.status(401).json({ message: "Invalid username or password" });
-    }
-
-    const match = await bcrypt.compare(password, user.password);
-    if (!match) {
-      return res.status(401).json({ message: "Invalid username or password" });
+      return res.status(401).json({ message: "Invalid credentials" });
     }
 
     req.session.user = {
@@ -65,9 +66,19 @@ export const loginController = async (req, res) => {
       emailId: user.emailId,
       userName: user.userName,
       role: user.role,
+      permissions: user.permissions,
     };
 
-    res.status(200).json({ message: "User successfully logged in", user });
+    res.status(200).json({
+      message: "Login successful",
+      user: {
+        id: user.id,
+        emailId: user.emailId,
+        userName: user.userName,
+        role: user.role,
+        permissions: user.permissions,
+      },
+    });
   } catch (err) {
     console.error(err);
     res
@@ -98,5 +109,23 @@ export const logoutController = async (req, res) => {
     res
       .status(500)
       .json({ message: "Internal Server Error", error: err.message });
+  }
+};
+
+export const fetchrolesController = async (req, res) => {
+  try {
+    const roles = await fetchRoles();
+    res.status(200).json(roles);
+  } catch (err) {
+    res.status(500).json({ message: "Failed to fetch roles" });
+  }
+};
+
+export const fetchpermissionsController = async (req, res) => {
+  try {
+    const permissions = await fetchPermissions();
+    res.status(200).json(permissions);
+  } catch (err) {
+    res.status(500).json({ message: "Failed to fetch Permissions" });
   }
 };

@@ -18,10 +18,10 @@ export const saveIICText = async (section, content) => {
 
 // Get IIC text
 export const getIICText = async (section) => {
-  const query = `SELECT * FROM iic_text WHERE section = ?`;  
+  const query = `SELECT * FROM iic_text WHERE section = ?`;
   try {
     const [rows] = await db.promise().query(query, [section]);
-    return rows.length ? rows[0] : null;  
+    return rows.length ? rows[0] : null;
   } catch (error) {
     console.error("Database fetch error:", error);
     throw error;
@@ -62,6 +62,33 @@ export const getIICPDFs = async () => {
     return rows;
   } catch (error) {
     console.error("Database fetch error:", error);
+    throw error;
+  }
+};
+
+// Get list of PDFs
+export const getIICPDFbyId = async (id) => {
+  const query = `SELECT file_url FROM iic_pdf WHERE id = ?`;
+  const values = id;
+  try {
+    const [rows] = await db.promise().query(query, values);
+    console.log(rows);
+    return rows;
+  } catch (error) {
+    console.error("Database fetch error:", error);
+    throw error;
+  }
+};
+
+//Delete IIC Pdfs
+export const deleteIICPdfs = async (id) => {
+  const query = "DELETE FROM iic_pdf WHERE id = ?";
+  const values = id;
+  try {
+    const [rows] = await db.promise().query(query, values);
+    return rows;
+  } catch (error) {
+    console.error("Error Deleting Pdf:", error);
     throw error;
   }
 };

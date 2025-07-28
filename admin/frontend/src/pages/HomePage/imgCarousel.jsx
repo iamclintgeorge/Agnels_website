@@ -23,6 +23,37 @@ const ImgCarousel = () => {
     }
   };
 
+  // const handleSubmit = async (e) => {
+  //   e.preventDefault();
+  //   if (!altText || !image) {
+  //     setMessage("Please enter both alt text and select an image.");
+  //     return;
+  //   }
+
+  //   const formData = new FormData();
+  //   formData.append("altText", altText);
+  //   formData.append("image", image);
+
+  //   try {
+  //     await axios.post("http://localhost:3663/api/home/carousel", formData, {
+  //       headers: { "Content-Type": "multipart/form-data" },
+  //       maxContentLength: Infinity,
+  //       maxBodyLength: Infinity,
+  //     });
+
+  //     console.log("POST Request for Carousel SUCCESS");
+  //     setMessage("Image uploaded successfully!");
+  //     setAltText("");
+  //     setImage(null);
+  //     e.target.reset();
+  //     fetchImages(); // Refresh images
+  //   } catch (error) {
+  //     console.log("Error Message: ", error);
+  //     setMessage("Error uploading image.");
+  //   }
+  // };
+
+  //Using Content Approval System
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!altText || !image) {
@@ -31,15 +62,32 @@ const ImgCarousel = () => {
     }
 
     const formData = new FormData();
-    formData.append("altText", altText);
-    formData.append("image", image);
+    formData.append("file", image); // File object
+    formData.append("method", "POST");
+    formData.append("section", "homepage");
+    formData.append("title", "Upload Homepage Image Carousel");
+    formData.append("change_summary", "Added Image to Carousel");
+    formData.append("current_content", "");
+    formData.append(
+      "proposed_content",
+      JSON.stringify({
+        altText: altText,
+        imageFilename: image.name,
+      })
+    );
+    formData.append("endpoint_url", "api/home/carousel");
+    formData.append("id", 0);
 
     try {
-      await axios.post("http://localhost:3663/api/home/carousel", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-        maxContentLength: Infinity,
-        maxBodyLength: Infinity,
-      });
+      const response = await axios.post(
+        "http://localhost:3663/api/content-approval/request",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
       console.log("POST Request for Carousel SUCCESS");
       setMessage("Image uploaded successfully!");
@@ -53,20 +101,47 @@ const ImgCarousel = () => {
     }
   };
 
-  const handleDelete = async (id) => {
-    if (!id) {
+  const handleDelete = async (img) => {
+    if (!img?.Id) {
       console.error("No valid Id provided for deletion");
       setMessage("Cannot delete: No valid ID found.");
       return;
     }
+
+    const currentContent = {
+      altText: img.altText,
+      imageFilename: img.imageFilename || img.imageUrl?.split("/").pop(), // fallback if filename missing
+      imageUrl: img.imageUrl,
+    };
+
     try {
-      console.log(`Attempting to delete image with Id: ${id}`);
-      await axios.delete(`http://localhost:3663/api/home/carousel/${id}`);
-      setMessage("Image deleted successfully!");
+      console.log(`Attempting to delete image with Id: ${img.Id}`);
+
+      const formData = new FormData();
+      formData.append("method", "DELETE");
+      formData.append("section", "homepage");
+      formData.append("title", "Delete Carousel Image");
+      formData.append("change_summary", "Deleted Image from homepage Carousel");
+      formData.append("current_content", JSON.stringify(currentContent));
+      formData.append("proposed_content", "");
+      formData.append("endpoint_url", "api/home/carousel");
+      formData.append("id", img.Id);
+
+      const response = await axios.post(
+        "http://localhost:3663/api/content-approval/request",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      setMessage("Image delete request submitted for approval!");
       fetchImages(); // Refresh images
     } catch (error) {
       console.error("Delete error:", error);
-      setMessage("Error deleting image.");
+      setMessage("Error submitting delete request.");
     }
   };
 
@@ -128,7 +203,7 @@ const ImgCarousel = () => {
                 <p className="mt-2 text-sm">{img.altText}</p>
                 <button
                   className="mt-2 bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600"
-                  onClick={() => handleDelete(img.Id)}
+                  onClick={() => handleDelete(img)}
                 >
                   Delete
                 </button>

@@ -208,14 +208,16 @@ const ProfilePage = () => {
         <img
           src={
             profile.photo
-              ? typeof profile.photo === "string"
-                ? `http://localhost:3663${profile.photo}`
-                : URL.createObjectURL(profile.photo)
-              : "https://via.placeholder.com/150"
+              ? typeof profile.photo === "string" &&
+                profile.photo.startsWith("http")
+                ? profile.photo
+                : `http://localhost:3663${profile.photo}`
+              : undefined
           }
           alt="Profile"
           className="w-32 h-32 rounded-full object-cover mr-6 bg-black"
         />
+
         <div className="flex flex-col">
           <h2 className="text-3xl font-semibold">{profile.name}</h2>
         </div>

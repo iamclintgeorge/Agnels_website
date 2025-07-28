@@ -16,9 +16,11 @@ const News = () => {
     ]);
   }, []);
 
+  // bg-[#102239]
+
   return (
     <div className="flex items-center space-x-4 w-full">
-      <div className="w-full h-10 bg-[#102239] text-white overflow-hidden font-librefranklin text-sm md:text-sm lg:text-sm">
+      <div className="w-full h-12 pt-2 bg-[#102239] text-white overflow-hidden font-librefranklin text-base md:text-base lg:text-base">
         <div className="marquee flex animate-marquee whitespace-nowrap">
           {/* Render the news items with dots separating them */}
           {newsItems.map((item, index) => (

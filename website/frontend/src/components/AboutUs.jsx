@@ -94,11 +94,11 @@ function AboutUs() {
   const settings = {
     dots: true,
     infinite: true,
-    speed: 500,
+    speed: 700,
     slidesToShow: slidesToShow,
     slidesToScroll: 1,
     autoplay: true,
-    autoplaySpeed: 3000,
+    autoplaySpeed: 5000,
     pauseOnHover: false,
     nextArrow: <CustomNextArrow />,
     prevArrow: <CustomPrevArrow />,
@@ -122,7 +122,7 @@ function AboutUs() {
       </div>
 
       <div
-        className="flex gap-[100px] justify-evenly w-full h-[658px] mt-0 pt-16 bg-cover bg-center bg-no-repeat"
+        className={`flex gap-[100px] justify-evenly w-full h-[658px] mt-0 pt-16 bg-cover bg-center bg-no-repeat flex-col items-center md:flex-row md:items-start`}
         style={{
           background:
             'linear-gradient(rgba(241, 241, 241, 0.9), rgba(241, 241, 241, 2)), url("/src/assets/imgs/campus2.png")',
@@ -130,23 +130,23 @@ function AboutUs() {
           backgroundPosition: "center",
         }}
       >
-        <div className="about-content flex-1.2 ">
-          <h2 className="font-medium italic text-2xl pl-[90px] text-[#0C2340] w-[316px] h-[29px] mt-[75px]">
+        <div className="about-content flex-1.2 w-full md:w-auto px-8 md:px-0 pb-32 md:pb-0">
+          <h2 className="font-medium italic text-2xl text-[#0C2340] w-full md:w-[316px] h-[29px] mt-[40px] md:mt-[75px] text-center md:text-left pl-0 md:pl-[90px]">
             ABOUT US
           </h2>
-          <div className="w-32 h-[4px] bg-[#AE9142] mt-[10px] mb-[20px] ml-10 top-[66px] left-[874px]"></div>
+          <div className="w-32 h-[4px] bg-[#AE9142] mt-[10px] mb-[20px] mx-auto md:ml-10 md:mx-0"></div>
           <p
-            className="text-base leading-8 tracking-wider text-justify font-librefranklin text-[#000000] pt-[30px] pl-[90px] w-[755px] mt-[25px]"
+            className="text-base leading-8 tracking-wider font-librefranklin text-[#000000] pt-[30px] w-full md:w-[755px] mt-[25px] text-center md:text-justify pl-0 md:pl-[90px] px-4 md:px-0 pb-8 xs:pb-0"
             dangerouslySetInnerHTML={{
               __html: introText.length > 0 ? introText[0].Content : "",
             }}
           />
         </div>
-        <div className="flex justify-center items-center flex-1 w-[320px] h-[494px]">
+        <div className="hidden md:flex justify-center items-center flex-1 w-[320px] h-[494px]">
           <img
             src="/src/assets/imgs/campus.png"
             alt="Campus"
-            className=" relative max-w-[300px] h-[460px] mt-[0px] ml-0 border-[3px] shadow-[inset_0_0_0_5px #AE9142]"
+            className="relative max-w-[300px] h-[460px] mt-[0px] ml-0 border-[3px] shadow-[inset_0_0_0_5px #AE9142]"
           />
           <div className="absolute border-[#AE9142] border-2 w-[270px] h-[430px] bg-transparent"></div>
         </div>

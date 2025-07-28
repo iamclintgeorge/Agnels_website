@@ -17,6 +17,10 @@ import {
   updateSectionContent,
   getAllSections,
 } from "../../../controllers/website/aboutusController.js";
+import {
+  authMiddleware,
+  checkPermission,
+} from "../../../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
@@ -92,14 +96,29 @@ const imageUpload = multer({
 });
 
 // Principal's desk route
-router.get("/principaldesk", principalDisplayController);
+router.get(
+  "/principaldesk",
+  authMiddleware,
+  checkPermission("about_us"),
+  principalDisplayController
+);
 
 // Get all sections
-router.get("/", getAllSections);
+router.get("/", authMiddleware, checkPermission("about_us"), getAllSections);
 
 // Get and update specific sections (excluding principaldesk)
-router.get("/:sectionKey", getSectionContent);
-router.put("/:sectionKey", updateSectionContent);
+router.get(
+  "/:sectionKey",
+  authMiddleware,
+  checkPermission("about_us"),
+  getSectionContent
+);
+router.put(
+  "/:sectionKey",
+  authMiddleware,
+  checkPermission("about_us"),
+  updateSectionContent
+);
 
 // Get specific section - handle special characters in section key properly
 router.get("/section/:encodedSectionKey", (req, res) => {

@@ -11,6 +11,9 @@ import nbaNaacRoutes from "./routes/website/nbaNaacRoutes.js";
 import deptHomeRoutes from "./routes/website/department/deptHomeRoutes.js";
 import compActivityRoutes from "./routes/website/homepage/compActivityRoutes.js";
 import profileRoutes from "./routes/website/profileRoutes.js";
+import studentcornerRoutes from "./routes/website/studentcorner/studentcornerRoutes.js";
+import { roleHierarchyController } from "./controllers/website/contentApprovalController.js";
+import facultyStaffRoute from "./routes/website/facultyStaffRoutes.js";
 
 // Import new department routes
 import computerRoutes from "./routes/website/department/computerRoutes.js";
@@ -35,7 +38,7 @@ import activityLogsRoutes from "./routes/admin/activityLogsRoutes.js";
 // Import logging middleware
 import adminActivityLogger from "./middlewares/loggingMiddleware.js";
 
-// import iicRoutes from "./routes/website/iicRoutes.js";
+import iicRoutes from "./routes/website/iicRoutes.js";
 
 dotenv.config();
 
@@ -46,7 +49,11 @@ const app = express();
 app.use(
   cors({
     origin: function (origin, callback) {
-      const allowedOrigins = ["http://localhost:5173", "http://localhost:5174"];
+      const allowedOrigins = [
+        "http://localhost:5173",
+        "http://localhost:5174",
+        "http://localhost:3663",
+      ];
       if (allowedOrigins.includes(origin) || !origin) {
         callback(null, true);
       } else {
@@ -94,11 +101,12 @@ app.get("/", (req, res) => {
 
 // Routes
 app.use("/", routes);
- app.use("/api/nirf", nirfRoutes);
- app.use("/api/nba-naac", nbaNaacRoutes);
+app.use("/api/nirf", nirfRoutes);
+app.use("/api/nba-naac", nbaNaacRoutes);
 app.use("/api/department", deptHomeRoutes);
 app.use("/api/department", compActivityRoutes);
 app.use("/api/profile", profileRoutes);
+app.use("/api/studentcorner", studentcornerRoutes);
 
 // New department routes
 app.use("/api/department/computer", computerRoutes);
@@ -115,7 +123,15 @@ app.use("/api/department", deptPdfRoutes);
 app.use("/api/hod-desk", hodDeskRoutes);
 
 // Content approval routes
+// app.use("/api/content-approval", contentApprovalRoutes);
+app.use("/api/role-hierarchy", roleHierarchyController);
 app.use("/api/content-approval", contentApprovalRoutes);
+
+// Integrate IIC routes
+app.use("/api/iic", iicRoutes);
+
+//Manage Faculty Staff Routes
+app.use("/api/faculties", facultyStaffRoute);
 
 // Activity logs routes
 app.use("/api/activity-logs", activityLogsRoutes);

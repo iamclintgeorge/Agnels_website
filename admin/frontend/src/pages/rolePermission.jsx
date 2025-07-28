@@ -9,168 +9,66 @@ import {
   Shield,
   Settings,
 } from "lucide-react";
-
-// Mock data - replace with actual API calls
-const mockRoles = [
-  {
-    id: 1,
-    name: "superAdmin",
-    displayName: "Super Admin",
-    permissions: ["all"],
-  },
-  {
-    id: 2,
-    name: "compHod",
-    displayName: "HOD (Computer)",
-    permissions: [
-      "dashboard",
-      "home_page",
-      "departments.computer-engineering",
-      "manage_users",
-    ],
-  },
-  {
-    id: 3,
-    name: "mechHod",
-    displayName: "HOD (Mechanical)",
-    permissions: [
-      "dashboard",
-      "home_page",
-      "departments.mechanical-engineering",
-    ],
-  },
-  {
-    id: 4,
-    name: "extcHod",
-    displayName: "HOD (EXTC)",
-    permissions: ["dashboard", "home_page", "departments.extc"],
-  },
-  {
-    id: 5,
-    name: "bshHod",
-    displayName: "HOD (BSH)",
-    permissions: [
-      "dashboard",
-      "home_page",
-      "departments.basic-science-and-humanities",
-    ],
-  },
-  {
-    id: 6,
-    name: "cseHod",
-    displayName: "HOD (CSE)",
-    permissions: [
-      "dashboard",
-      "home_page",
-      "departments.information-technology",
-    ],
-  },
-  {
-    id: 7,
-    name: "electricalHod",
-    displayName: "HOD (Electrical)",
-    permissions: [
-      "dashboard",
-      "home_page",
-      "departments.electrical-engineering",
-    ],
-  },
-  {
-    id: 8,
-    name: "teach_staff",
-    displayName: "Teaching Staff",
-    permissions: ["dashboard", "home_page", "students_corner"],
-  },
-  {
-    id: 9,
-    name: "non_teach_staff",
-    displayName: "Non-Teaching Staff",
-    permissions: ["dashboard", "home_page"],
-  },
-  {
-    id: 10,
-    name: "principal",
-    displayName: "Principal",
-    permissions: [
-      "dashboard",
-      "home_page",
-      "about_us",
-      "academics",
-      "research",
-    ],
-  },
-];
-
-const availablePermissions = [
-  { id: "dashboard", name: "Dashboard", category: "core" },
-  { id: "home_page", name: "Home Page Management", category: "content" },
-  { id: "about_us", name: "About Us", category: "content" },
-  {
-    id: "departments.computer-engineering",
-    name: "Computer Engineering Dept",
-    category: "departments",
-  },
-  {
-    id: "departments.mechanical-engineering",
-    name: "Mechanical Engineering Dept",
-    category: "departments",
-  },
-  { id: "departments.extc", name: "EXTC Dept", category: "departments" },
-  {
-    id: "departments.electrical-engineering",
-    name: "Electrical Engineering Dept",
-    category: "departments",
-  },
-  {
-    id: "departments.computer-science-and-engineering",
-    name: "CSE Dept",
-    category: "departments",
-  },
-  {
-    id: "departments.basic-science-and-humanities",
-    name: "BSH Dept",
-    category: "departments",
-  },
-  { id: "admission", name: "Admission", category: "content" },
-  { id: "academics", name: "Academics", category: "content" },
-  {
-    id: "training_placement",
-    name: "Training & Placement",
-    category: "content",
-  },
-  { id: "students_corner", name: "Students Corner", category: "content" },
-  { id: "research", name: "Research & Publication", category: "content" },
-  { id: "human_resource", name: "Human Resource", category: "content" },
-  { id: "alumni", name: "Alumni Page", category: "content" },
-  { id: "downloads", name: "Downloads Page", category: "content" },
-  { id: "nirf", name: "NIRF", category: "content" },
-  { id: "nba_naac", name: "NBA/NAAC", category: "content" },
-  { id: "manage_users", name: "Manage Users", category: "admin" },
-  { id: "logs", name: "Logs", category: "admin" },
-];
+import axios from "axios";
 
 const RolePermissionManager = () => {
-  const [roles, setRoles] = useState(mockRoles);
+  const [roles, setRoles] = useState([]);
   const [editingRole, setEditingRole] = useState(null);
   const [isCreateMode, setIsCreateMode] = useState(false);
   const [selectedTab, setSelectedTab] = useState("roles");
+  const [userRoles, setUserRoles] = useState([]);
+  const [availablePermissions, setAvailablePermissions] = useState([]);
   const [newRole, setNewRole] = useState({
     name: "",
     displayName: "",
     permissions: [],
   });
 
-  const handleCreateRole = () => {
+  useEffect(() => {
+    fetchPermissions();
+    fetchRoles();
+  }, []);
+
+  const fetchRoles = async () => {
+    try {
+      const rolesRes = await axios.get("http://localhost:3663/api/fetchroles");
+      setUserRoles(rolesRes.data);
+      setRoles(rolesRes.data);
+      console.log(rolesRes.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchPermissions = async () => {
+    try {
+      const permissionRes = await axios.get(
+        "http://localhost:3663/api/fetchpermissions"
+      );
+      setAvailablePermissions(permissionRes.data);
+      console.log(permissionRes.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // CREATE ROLE
+  const handleCreateRole = async () => {
     if (newRole.name && newRole.displayName) {
-      const newRoleData = {
-        id: Date.now(),
-        name: newRole.name.toLowerCase().replace(/\s+/g, "_"),
-        displayName: newRole.displayName,
-        permissions: newRole.permissions,
-      };
-      setRoles([...roles, newRoleData]);
-      setNewRole({ name: "", displayName: "", permissions: [] });
-      setIsCreateMode(false);
+      try {
+        const response = await axios.post("http://localhost:3663/api/role", {
+          name: newRole.name.toLowerCase().replace(/\s+/g, "_"),
+          displayName: newRole.displayName,
+          permissions: newRole.permissions,
+        });
+        if (response.status !== 201) throw new Error("Failed to create role");
+        fetchRoles();
+        setNewRole({ name: "", displayName: "", permissions: [] });
+        setIsCreateMode(false);
+      } catch (error) {
+        console.error("Error creating role:", error);
+        alert("Failed to create role. Please try again.");
+      }
     }
   };
 
@@ -178,16 +76,87 @@ const RolePermissionManager = () => {
     setEditingRole({ ...role });
   };
 
-  const handleSaveEdit = () => {
-    setRoles(
-      roles.map((role) => (role.id === editingRole.id ? editingRole : role))
-    );
-    setEditingRole(null);
+  // UPDATE ROLE
+  const handleSaveEdit = async () => {
+    try {
+      const response = await axios.put("http://localhost:3663/api/role", {
+        id: editingRole.id,
+        name: editingRole.name,
+        displayName: editingRole.displayName,
+        permissions: editingRole.permissions,
+      });
+      if (response.status !== 200) throw new Error("Failed to update role");
+      // Refetch roles to get updated data from backend
+      await fetchRoles();
+      setEditingRole(null);
+    } catch (error) {
+      console.error("Error updating roles:", error);
+      alert("Failed to update roles. Please try again.");
+    }
   };
 
-  const handleDeleteRole = (roleId) => {
+  // DELETE ROLE
+  const handleDeleteRole = async (roleId) => {
     if (window.confirm("Are you sure you want to delete this role?")) {
-      setRoles(roles.filter((role) => role.id !== roleId));
+      try {
+        const response = await axios.delete(
+          `http://localhost:3663/api/role/${roleId}`
+        );
+        if (response.status !== 200) throw new Error("Failed to delete role");
+        fetchRoles();
+      } catch (error) {
+        console.error("Error deleting role:", error);
+        alert("Failed to delete role. Please try again.");
+      }
+    }
+  };
+
+  // CREATE PERMISSION
+  const handleCreatePermission = async (permission) => {
+    try {
+      const response = await axios.post(
+        "http://localhost:3663/api/permission",
+        permission
+      );
+      if (response.status !== 201)
+        throw new Error("Failed to create permission");
+      fetchPermissions();
+    } catch (error) {
+      console.error("Error creating permission:", error);
+      alert("Failed to create permission. Please try again.");
+    }
+  };
+
+  // UPDATE PERMISSION
+  const handleUpdatePermission = async (permission) => {
+    try {
+      const response = await axios.put(
+        "http://localhost:3663/api/permission",
+        permission
+      );
+      if (response.status !== 200)
+        throw new Error("Failed to update permission");
+      fetchPermissions();
+    } catch (error) {
+      console.error("Error updating permission:", error);
+      alert("Failed to update permission. Please try again.");
+    }
+  };
+
+  // DELETE PERMISSION
+  const handleDeletePermission = async (permissionId) => {
+    if (window.confirm("Are you sure you want to delete this permission?")) {
+      try {
+        const response = await axios.delete(
+          `http://localhost:3663/api/permission/${permissionId}`
+        );
+        if (response.status !== 200)
+          throw new Error("Failed to delete permission");
+        fetchPermissions();
+      } catch (error) {
+        console.error("Error deleting permission:", error);
+        alert("Failed to delete permission. Please try again.");
+      }
     }
   };
 
