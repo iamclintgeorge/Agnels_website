@@ -18,7 +18,7 @@ const __dirname = path.dirname(__filename);
 // Configure Multer for PDF uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "public/cdn/IIC"); // Store PDFs in 'uploads' folder
+    cb(null, "public/cdn/IIC");
   },
   filename: (req, file, cb) => {
     const uniqueName =

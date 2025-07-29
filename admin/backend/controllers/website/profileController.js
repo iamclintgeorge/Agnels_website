@@ -56,7 +56,7 @@ export const updateProfileController = async (req, res) => {
       photo: files?.photo ? `/cdn/${files.photo[0].filename}` : null,
       bioData: files?.bioData ? `/cdn/${files.bioData[0].filename}` : null,
       publications: files?.publications
-        ? `/Uploads/${files.publications[0].filename}`
+        ? `/cdn/${files.publications[0].filename}`
         : null,
     };
 

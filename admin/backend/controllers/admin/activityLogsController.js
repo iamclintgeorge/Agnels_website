@@ -1,4 +1,4 @@
-import { getActivityLogs, getActivityStats } from '../../services/logger.js';
+import { getActivityLogs, getActivityStats } from "../../services/logger.js";
 
 // Get activity logs with filtering and pagination
 export const getActivities = async (req, res) => {
@@ -12,7 +12,7 @@ export const getActivities = async (req, res) => {
       action,
       resource,
       startDate,
-      endDate
+      endDate,
     } = req.query;
 
     const offset = (parseInt(page) - 1) * parseInt(limit);
@@ -26,12 +26,12 @@ export const getActivities = async (req, res) => {
       startDate: startDate || null,
       endDate: endDate || null,
       limit: parseInt(limit),
-      offset: offset
+      offset: offset,
     };
 
     // Remove null values
-    Object.keys(filters).forEach(key => {
-      if (filters[key] === null || filters[key] === '') {
+    Object.keys(filters).forEach((key) => {
+      if (filters[key] === null || filters[key] === "") {
         delete filters[key];
       }
     });
@@ -53,14 +53,13 @@ export const getActivities = async (req, res) => {
         totalCount,
         totalPages: Math.ceil(totalCount / parseInt(limit)),
         hasNext: offset + parseInt(limit) < totalCount,
-        hasPrev: parseInt(page) > 1
+        hasPrev: parseInt(page) > 1,
       },
-      filters: req.query
+      filters: req.query,
     });
-
   } catch (error) {
-    console.error('Error fetching activity logs:', error);
-    res.status(500).json({ error: 'Failed to fetch activity logs' });
+    console.error("Error fetching activity logs:", error);
+    res.status(500).json({ error: "Failed to fetch activity logs" });
   }
 };
 
@@ -68,24 +67,23 @@ export const getActivities = async (req, res) => {
 export const getStats = async (req, res) => {
   try {
     const { startDate, endDate } = req.query;
-    
+
     const filters = {};
     if (startDate) filters.startDate = startDate;
     if (endDate) filters.endDate = endDate;
 
     const stats = await getActivityStats(filters);
-    
+
     res.json({
       stats,
       dateRange: {
-        startDate: startDate || 'Last 30 days',
-        endDate: endDate || 'Today'
-      }
+        startDate: startDate || "Last 30 days",
+        endDate: endDate || "Today",
+      },
     });
-
   } catch (error) {
-    console.error('Error fetching activity statistics:', error);
-    res.status(500).json({ error: 'Failed to fetch activity statistics' });
+    console.error("Error fetching activity statistics:", error);
+    res.status(500).json({ error: "Failed to fetch activity statistics" });
   }
 };
 
@@ -93,19 +91,18 @@ export const getStats = async (req, res) => {
 export const getActivityById = async (req, res) => {
   try {
     const { id } = req.params;
-    
+
     const activities = await getActivityLogs({ limit: 1, offset: 0 });
-    const activity = activities.find(a => a.id === parseInt(id));
-    
+    const activity = activities.find((a) => a.id === parseInt(id));
+
     if (!activity) {
-      return res.status(404).json({ error: 'Activity log not found' });
+      return res.status(404).json({ error: "Activity log not found" });
     }
 
     res.json(activity);
-
   } catch (error) {
-    console.error('Error fetching activity log:', error);
-    res.status(500).json({ error: 'Failed to fetch activity log' });
+    console.error("Error fetching activity log:", error);
+    res.status(500).json({ error: "Failed to fetch activity log" });
   }
 };
 
@@ -118,7 +115,7 @@ export const getMyActivities = async (req, res) => {
       action,
       resource,
       startDate,
-      endDate
+      endDate,
     } = req.query;
 
     const offset = (parseInt(page) - 1) * parseInt(limit);
@@ -130,12 +127,12 @@ export const getMyActivities = async (req, res) => {
       startDate: startDate || null,
       endDate: endDate || null,
       limit: parseInt(limit),
-      offset: offset
+      offset: offset,
     };
 
     // Remove null values
-    Object.keys(filters).forEach(key => {
-      if (filters[key] === null || filters[key] === '') {
+    Object.keys(filters).forEach((key) => {
+      if (filters[key] === null || filters[key] === "") {
         delete filters[key];
       }
     });
@@ -147,17 +144,16 @@ export const getMyActivities = async (req, res) => {
       user: {
         id: req.user.id,
         username: req.user.username,
-        role: req.user.role
+        role: req.user.role,
       },
       pagination: {
         page: parseInt(page),
-        limit: parseInt(limit)
-      }
+        limit: parseInt(limit),
+      },
     });
-
   } catch (error) {
-    console.error('Error fetching user activities:', error);
-    res.status(500).json({ error: 'Failed to fetch your activities' });
+    console.error("Error fetching user activities:", error);
+    res.status(500).json({ error: "Failed to fetch your activities" });
   }
 };
 
@@ -165,13 +161,7 @@ export const getMyActivities = async (req, res) => {
 export const getResourceActivities = async (req, res) => {
   try {
     const { resource } = req.params;
-    const {
-      page = 1,
-      limit = 30,
-      action,
-      startDate,
-      endDate
-    } = req.query;
+    const { page = 1, limit = 30, action, startDate, endDate } = req.query;
 
     const offset = (parseInt(page) - 1) * parseInt(limit);
 
@@ -181,12 +171,12 @@ export const getResourceActivities = async (req, res) => {
       startDate: startDate || null,
       endDate: endDate || null,
       limit: parseInt(limit),
-      offset: offset
+      offset: offset,
     };
 
     // Remove null values
-    Object.keys(filters).forEach(key => {
-      if (filters[key] === null || filters[key] === '') {
+    Object.keys(filters).forEach((key) => {
+      if (filters[key] === null || filters[key] === "") {
         delete filters[key];
       }
     });
@@ -198,13 +188,12 @@ export const getResourceActivities = async (req, res) => {
       resource,
       pagination: {
         page: parseInt(page),
-        limit: parseInt(limit)
-      }
+        limit: parseInt(limit),
+      },
     });
-
   } catch (error) {
-    console.error('Error fetching resource activities:', error);
-    res.status(500).json({ error: 'Failed to fetch resource activities' });
+    console.error("Error fetching resource activities:", error);
+    res.status(500).json({ error: "Failed to fetch resource activities" });
   }
 };
 
@@ -213,38 +202,38 @@ export const getFilterOptions = async (req, res) => {
   try {
     // Get all activities to extract unique values
     const allActivities = await getActivityLogs({ limit: 10000, offset: 0 });
-    
+
     const filterOptions = {
-      userRoles: [...new Set(allActivities.map(a => a.user_role))].filter(Boolean),
-      actions: [...new Set(allActivities.map(a => a.action))].filter(Boolean),
-      resources: [...new Set(allActivities.map(a => a.resource))].filter(Boolean),
-      users: [...new Set(allActivities.map(a => ({
-        id: a.user_id,
-        username: a.username,
-        role: a.user_role
-      })))].filter(Boolean)
+      userRoles: [...new Set(allActivities.map((a) => a.user_role))].filter(
+        Boolean
+      ),
+      actions: [...new Set(allActivities.map((a) => a.action))].filter(Boolean),
+      resources: [...new Set(allActivities.map((a) => a.resource))].filter(
+        Boolean
+      ),
+      users: [
+        ...new Set(
+          allActivities.map((a) => ({
+            id: a.user_id,
+            username: a.username,
+            role: a.user_role,
+          }))
+        ),
+      ].filter(Boolean),
     };
 
     res.json(filterOptions);
-
   } catch (error) {
-    console.error('Error fetching filter options:', error);
-    res.status(500).json({ error: 'Failed to fetch filter options' });
+    console.error("Error fetching filter options:", error);
+    res.status(500).json({ error: "Failed to fetch filter options" });
   }
 };
 
 // Export activity logs to CSV format
 export const exportActivities = async (req, res) => {
   try {
-    const {
-      userId,
-      username,
-      userRole,
-      action,
-      resource,
-      startDate,
-      endDate
-    } = req.query;
+    const { userId, username, userRole, action, resource, startDate, endDate } =
+      req.query;
 
     const filters = {
       userId: userId || null,
@@ -255,12 +244,12 @@ export const exportActivities = async (req, res) => {
       startDate: startDate || null,
       endDate: endDate || null,
       limit: 10000, // Large limit for export
-      offset: 0
+      offset: 0,
     };
 
     // Remove null values
-    Object.keys(filters).forEach(key => {
-      if (filters[key] === null || filters[key] === '') {
+    Object.keys(filters).forEach((key) => {
+      if (filters[key] === null || filters[key] === "") {
         delete filters[key];
       }
     });
@@ -269,32 +258,47 @@ export const exportActivities = async (req, res) => {
 
     // Convert to CSV
     const csvHeader = [
-      'ID', 'Timestamp', 'Username', 'User Role', 'Action', 'Resource', 
-      'Resource ID', 'Method', 'Endpoint', 'IP Address', 'Description'
-    ].join(',');
+      "ID",
+      "Timestamp",
+      "Username",
+      "User Role",
+      "Action",
+      "Resource",
+      "Resource ID",
+      "Method",
+      "Endpoint",
+      "IP Address",
+      "Description",
+    ].join(",");
 
-    const csvRows = activities.map(activity => [
-      activity.id,
-      activity.timestamp,
-      activity.username,
-      activity.user_role,
-      activity.action,
-      activity.resource,
-      activity.resource_id || '',
-      activity.method,
-      activity.endpoint,
-      activity.ip_address || '',
-      `"${activity.description || ''}"`
-    ].join(','));
+    const csvRows = activities.map((activity) =>
+      [
+        activity.id,
+        activity.timestamp,
+        activity.username,
+        activity.user_role,
+        activity.action,
+        activity.resource,
+        activity.resource_id || "",
+        activity.method,
+        activity.endpoint,
+        activity.ip_address || "",
+        `"${activity.description || ""}"`,
+      ].join(",")
+    );
 
-    const csv = [csvHeader, ...csvRows].join('\n');
+    const csv = [csvHeader, ...csvRows].join("\n");
 
-    res.setHeader('Content-Type', 'text/csv');
-    res.setHeader('Content-Disposition', `attachment; filename="activity_logs_${new Date().toISOString().split('T')[0]}.csv"`);
+    res.setHeader("Content-Type", "text/csv");
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename="activity_logs_${
+        new Date().toISOString().split("T")[0]
+      }.csv"`
+    );
     res.send(csv);
-
   } catch (error) {
-    console.error('Error exporting activity logs:', error);
-    res.status(500).json({ error: 'Failed to export activity logs' });
+    console.error("Error exporting activity logs:", error);
+    res.status(500).json({ error: "Failed to export activity logs" });
   }
-}; 
+};

@@ -5,7 +5,6 @@ import {
   deleteHodTextById,
   getAllHodText,
 } from "../../models/website/hodDeskModel.js";
-import { logCustomActivity } from "../../middlewares/loggingMiddleware.js";
 import db from "../../config/db.js";
 
 // Get HOD text for a specific department
@@ -119,16 +118,6 @@ export const updateHodText = async (req, res) => {
     if (result.affectedRows === 0) {
       return res.status(404).json({ error: "HOD text not found" });
     }
-
-    // Log the update with old and new data
-    await logCustomActivity(req, {
-      action: "UPDATE",
-      resource: "hod_desk",
-      resourceId: id,
-      oldData: oldDataQuery,
-      newData: { content },
-      description: `Updated HOD desk content for ${department} department`,
-    });
 
     res.json({ message: "HOD text updated successfully" });
   } catch (error) {
