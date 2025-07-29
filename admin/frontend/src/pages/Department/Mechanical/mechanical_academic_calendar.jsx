@@ -316,7 +316,7 @@ const MechanicalAcademicCalendar = () => {
                 </div>
                 <div>
                   <a
-                    href={`http://localhost:3663/uploads/department/${calendar.attachment}`}
+                    href={`http://localhost:3663/cdn/department/${calendar.attachment}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-500 hover:underline font-medium"

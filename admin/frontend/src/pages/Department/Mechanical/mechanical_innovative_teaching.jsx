@@ -290,7 +290,7 @@ const MechanicalInnovativeTeaching = () => {
                 </div>
                 <div>
                   <a
-                    href={`http://localhost:3663/uploads/department/${activity.attachment}`}
+                    href={`http://localhost:3663/cdn/department/${activity.attachment}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-500 hover:underline font-medium"

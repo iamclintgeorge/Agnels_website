@@ -18,7 +18,7 @@ const __dirname = path.dirname(__filename);
 // Configure Multer for PDF uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "public/uploads/IIC"); // Store PDFs in 'uploads' folder
+    cb(null, "public/cdn/IIC"); // Store PDFs in 'uploads' folder
   },
   filename: (req, file, cb) => {
     const uniqueName =
@@ -146,7 +146,7 @@ export const deletePdf = async (req, res) => {
     }
 
     const file_url = pdf[0].file_url;
-    const filePath = path.join(__dirname, "../../public/uploads/IIC", file_url);
+    const filePath = path.join(__dirname, "../../public/cdn/IIC", file_url);
     console.log("Deleting file at path:", filePath); // Log file path
 
     fs.unlink(filePath, async (err) => {

@@ -281,7 +281,7 @@ const MechanicalMagazine = () => {
                 </div>
                 <div>
                   <a
-                    href={`http://localhost:3663/uploads/department/${magazine.attachment}`}
+                    href={`http://localhost:3663/cdn/department/${magazine.attachment}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-500 hover:underline font-medium"

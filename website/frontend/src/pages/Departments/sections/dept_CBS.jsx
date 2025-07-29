@@ -57,7 +57,7 @@ const CommitteesBoardOfStudy = ({ departmentName }) => {
         <div>
           <h1>{committee.type}</h1>
           <a
-            href={`http://localhost:3663/uploads/department/${committee.attachment}`}
+            href={`http://localhost:3663/cdn/department/${committee.attachment}`}
             target="_blank"
             rel="noopener noreferrer"
             className="text-blue-500 hover:underline font-medium"

@@ -1,6 +1,3 @@
-
-
-
 import express from "express";
 import {
   researchHomeController,
@@ -11,7 +8,10 @@ import {
   researchPdfDeleteController,
 } from "../../../../controllers/website/researchController.js";
 import multer from "multer";
-import { authMiddleware, checkRole } from "../../../../middlewares/authMiddleware.js";
+import {
+  authMiddleware,
+  checkRole,
+} from "../../../../middlewares/authMiddleware.js";
 
 const router = express.Router();
 
@@ -26,7 +26,7 @@ adminRouter.use(checkRole(["superAdmin", "hod"]));
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "public/uploads/");
+    cb(null, "public/cdn/");
   },
   filename: (req, file, cb) => {
     cb(null, Date.now() + "-" + file.originalname);

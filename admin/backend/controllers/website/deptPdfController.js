@@ -13,7 +13,7 @@ const storage = multer.diskStorage({
     const { department, section } = req.params;
     const uploadPath = path.join(
       __dirname,
-      "../../public/uploads/department",
+      "../../public/cdn/department",
       department,
       section
     );
@@ -83,7 +83,7 @@ export const uploadPdf = async (req, res) => {
       message: "PDF uploaded successfully",
       pdf: {
         ...newPdf,
-        pdfUrl: `/uploads/department/${department}/${section}/${filename}`,
+        pdfUrl: `/cdn/department/${department}/${section}/${filename}`,
       },
     });
   } catch (error) {
@@ -109,7 +109,7 @@ export const deletePdf = async (req, res) => {
     // Delete file from filesystem
     const filePath = path.join(
       __dirname,
-      "../../public/uploads/department",
+      "../../public/cdn/department",
       pdf.department,
       pdf.section,
       pdf.filename
@@ -159,7 +159,7 @@ export const uploadMiddleware = upload.single("pdf");
 // const storage = multer.diskStorage({
 //   destination: (req, file, cb) => {
 //     const { department, section } = req.params;
-//     const uploadPath = path.join(__dirname, '../../public/uploads/department', department, section);
+//     const uploadPath = path.join(__dirname, '../../public/cdn/department', department, section);
 
 //     // Create directory if it doesn't exist
 //     fs.mkdirSync(uploadPath, { recursive: true });
@@ -219,7 +219,7 @@ export const uploadMiddleware = upload.single("pdf");
 //         message: 'PDF uploaded successfully',
 //         pdf: {
 //           ...newPdf,
-//           pdfUrl: `/uploads/department/${department}/${section}/${filename}`
+//           pdfUrl: `/cdn/department/${department}/${section}/${filename}`
 //         }
 //       });
 //     } catch (error) {
@@ -243,7 +243,7 @@ export const uploadMiddleware = upload.single("pdf");
 //       await DeptPdfModel.deleteById(id);
 
 //       // Delete file from filesystem
-//       const filePath = path.join(__dirname, '../../public/uploads/department', pdf.department, pdf.section, pdf.filename);
+//       const filePath = path.join(__dirname, '../../public/cdn/department', pdf.department, pdf.section, pdf.filename);
 //       if (fs.existsSync(filePath)) {
 //         fs.unlinkSync(filePath);
 //       }

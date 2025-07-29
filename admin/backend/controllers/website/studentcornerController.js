@@ -14,7 +14,6 @@ import {
   getCouncilMemberById,
   councilMemberEdit,
   councilMemberDelete,
-
   councilReportCreate,
   councilReportsFetch,
   getCouncilReportById,
@@ -63,8 +62,8 @@ import {
   surveysFetch,
   getSurveyById,
   surveyEdit,
-  surveyDelete
-} from "../../models/website/studentcornerModel.js";   // adjust path if needed
+  surveyDelete,
+} from "../../models/website/studentcornerModel.js"; // adjust path if needed
 
 /* ============================================================
    0.  ——— Helper wrapper for uniform error handling ———
@@ -85,9 +84,9 @@ const handle = async (req, res, fn) => {
 export const codeOfConductCreateController = (req, res) =>
   handle(req, res, async () => {
     const { title } = req.body;
-       const fileObj   = req.file || (req.files && req.files[0]);   // ✅
-     const file_path = fileObj ? `/uploads/${fileObj.filename}` : null;
-     console.log("DEBUG create payload:", { title, file_path });
+    const fileObj = req.file || (req.files && req.files[0]); // ✅
+    const file_path = fileObj ? `/cdn/${fileObj.filename}` : null;
+    console.log("DEBUG create payload:", { title, file_path });
     const r = await codeOfConductCreate(title, file_path);
 
     return { message: "Document added", id: r.insertId };
@@ -100,13 +99,14 @@ export const codeOfConductFetchController = (req, res) =>
     return { result };
   });
 
-
 export const codeOfConductEditController = (req, res) =>
   handle(req, res, async () => {
     const { id } = req.params;
     const { title } = req.body;
     const existing = await getCodeOfConductById(id);
-    const file_path = req.file ? `/uploads/${req.file.filename}` : existing.file_path;
+    const file_path = req.file
+      ? `/cdn/${req.file.filename}`
+      : existing.file_path;
     await codeOfConductEdit(id, title, file_path);
     return { message: "Document updated" };
   });
@@ -148,7 +148,7 @@ export const councilMemberDeleteController = (req, res) =>
 export const councilReportCreateController = (req, res) =>
   handle(req, res, async () => {
     const { event_name, council_year } = req.body;
-    const file_path = req.file ? `/uploads/${req.file.filename}` : null;
+    const file_path = req.file ? `/cdn/${req.file.filename}` : null;
     const r = await councilReportCreate(event_name, council_year, file_path);
     return { message: "Report added", id: r.insertId };
   });
@@ -161,7 +161,9 @@ export const councilReportEditController = (req, res) =>
     const { id } = req.params;
     const { event_name, council_year } = req.body;
     const existing = await getCouncilReportById(id);
-    const file_path = req.file ? `/uploads/${req.file.filename}` : existing.file_path;
+    const file_path = req.file
+      ? `/cdn/${req.file.filename}`
+      : existing.file_path;
     await councilReportEdit(id, event_name, council_year, file_path);
     return { message: "Report updated" };
   });
@@ -178,8 +180,14 @@ export const councilReportDeleteController = (req, res) =>
 export const professionalBodyCreateController = (req, res) =>
   handle(req, res, async () => {
     const { short_name, full_name, description, website } = req.body;
-    const logo_path = req.file ? `/uploads/${req.file.filename}` : null;
-    const r = await professionalBodyCreate(short_name, full_name, logo_path, description, website);
+    const logo_path = req.file ? `/cdn/${req.file.filename}` : null;
+    const r = await professionalBodyCreate(
+      short_name,
+      full_name,
+      logo_path,
+      description,
+      website
+    );
     return { message: "Body added", id: r.insertId };
   });
 
@@ -191,8 +199,17 @@ export const professionalBodyEditController = (req, res) =>
     const { id } = req.params;
     const { short_name, full_name, description, website } = req.body;
     const existing = await getProfessionalBodyById(id);
-    const logo_path = req.file ? `/uploads/${req.file.filename}` : existing.logo_path;
-    await professionalBodyEdit(id, short_name, full_name, logo_path, description, website);
+    const logo_path = req.file
+      ? `/cdn/${req.file.filename}`
+      : existing.logo_path;
+    await professionalBodyEdit(
+      id,
+      short_name,
+      full_name,
+      logo_path,
+      description,
+      website
+    );
     return { message: "Body updated" };
   });
 
@@ -220,7 +237,7 @@ export const nssOfficersFetchController = (req, res) =>
 export const nssActivityReportCreateController = (req, res) =>
   handle(req, res, async () => {
     const { year_label, label } = req.body;
-    const file_path = req.file ? `/uploads/${req.file.filename}` : null;
+    const file_path = req.file ? `/cdn/${req.file.filename}` : null;
     const r = await nssActivityReportCreate(year_label, label, file_path);
     return { message: "Report added", id: r.insertId };
   });
@@ -234,7 +251,7 @@ export const nssActivityReportsFetchController = (req, res) =>
 export const studentClubCreateController = (req, res) =>
   handle(req, res, async () => {
     const { name, description, website } = req.body;
-    const logo_path = req.file ? `/uploads/${req.file.filename}` : null;
+    const logo_path = req.file ? `/cdn/${req.file.filename}` : null;
     const r = await studentClubCreate(name, logo_path, description, website);
     return { message: "Club added", id: r.insertId };
   });
@@ -247,7 +264,9 @@ export const studentClubEditController = (req, res) =>
     const { id } = req.params;
     const { name, description, website } = req.body;
     const existing = await getStudentClubById(id);
-    const logo_path = req.file ? `/uploads/${req.file.filename}` : existing.logo_path;
+    const logo_path = req.file
+      ? `/cdn/${req.file.filename}`
+      : existing.logo_path;
     await studentClubEdit(id, name, logo_path, description, website);
     return { message: "Club updated" };
   });
@@ -264,7 +283,7 @@ export const studentClubDeleteController = (req, res) =>
 export const facilityCreateController = (req, res) =>
   handle(req, res, async () => {
     const { name, short_desc, long_desc } = req.body;
-    const image_path = req.file ? `/uploads/${req.file.filename}` : null;
+    const image_path = req.file ? `/cdn/${req.file.filename}` : null;
     const r = await facilityCreate(name, image_path, short_desc, long_desc);
     return { message: "Facility added", id: r.insertId };
   });
@@ -277,7 +296,9 @@ export const facilityEditController = (req, res) =>
     const { id } = req.params;
     const { name, short_desc, long_desc } = req.body;
     const existing = await getFacilityById(id);
-    const image_path = req.file ? `/uploads/${req.file.filename}` : existing.image_path;
+    const image_path = req.file
+      ? `/cdn/${req.file.filename}`
+      : existing.image_path;
     await facilityEdit(id, name, image_path, short_desc, long_desc);
     return { message: "Facility updated" };
   });
@@ -294,8 +315,13 @@ export const facilityDeleteController = (req, res) =>
 export const culturalActivityCreateController = (req, res) =>
   handle(req, res, async () => {
     const { title, event_date, description } = req.body;
-    const gallery_path = req.file ? `/uploads/${req.file.filename}` : null;
-    const r = await culturalActivityCreate(title, event_date, description, gallery_path);
+    const gallery_path = req.file ? `/cdn/${req.file.filename}` : null;
+    const r = await culturalActivityCreate(
+      title,
+      event_date,
+      description,
+      gallery_path
+    );
     return { message: "Activity added", id: r.insertId };
   });
 
@@ -309,7 +335,12 @@ export const culturalActivitiesFetchController = (req, res) =>
 export const antiRaggingContactCreateController = (req, res) =>
   handle(req, res, async () => {
     const { full_name, designation, phone, email } = req.body;
-    const r = await antiRaggingContactCreate(full_name, designation, phone, email);
+    const r = await antiRaggingContactCreate(
+      full_name,
+      designation,
+      phone,
+      email
+    );
     return { message: "Contact added", id: r.insertId };
   });
 
@@ -320,7 +351,7 @@ export const antiRaggingContactsFetchController = (req, res) =>
 export const antiRaggingNoticeCreateController = (req, res) =>
   handle(req, res, async () => {
     const { title } = req.body;
-    const file_path = req.file ? `/uploads/${req.file.filename}` : null;
+    const file_path = req.file ? `/cdn/${req.file.filename}` : null;
     const r = await antiRaggingNoticeCreate(title, file_path);
     return { message: "Notice added", id: r.insertId };
   });
@@ -334,7 +365,13 @@ export const antiRaggingNoticesFetchController = (req, res) =>
 export const surveyCreateController = (req, res) =>
   handle(req, res, async () => {
     const { title, survey_year, form_url, results_file, active } = req.body;
-    const r = await surveyCreate(title, survey_year, form_url, results_file, active);
+    const r = await surveyCreate(
+      title,
+      survey_year,
+      form_url,
+      results_file,
+      active
+    );
     return { message: "Survey added", id: r.insertId };
   });
 

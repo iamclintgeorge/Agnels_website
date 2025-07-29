@@ -330,7 +330,7 @@ const ElectricalAchievements = () => {
                 </div>
                 <div>
                   <a
-                    href={`http://localhost:3663/uploads/department/${achievement.attachment}`}
+                    href={`http://localhost:3663/cdn/department/${achievement.attachment}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-500 hover:underline font-medium"

@@ -226,13 +226,13 @@ export const rejectRequest = async (req, res) => {
       });
     }
 
-    // Attempt to delete the file from /uploads/pending if it exists
+    // Attempt to delete the file from /cdn/pending if it exists
     try {
       const { imageFilename } = JSON.parse(
         requestData.proposed_content || "{}"
       );
       if (imageFilename) {
-        const pendingPath = path.join("public/uploads/pending", imageFilename);
+        const pendingPath = path.join("public/cdn/pending", imageFilename);
         if (fs.existsSync(pendingPath)) {
           fs.unlinkSync(pendingPath);
         }

@@ -63,7 +63,7 @@ const Projects = ({ departmentName }) => {
         <div>
           <h1>{content.heading}</h1> {/* If there's a heading */}
           <a
-            href={`http://localhost:3663/uploads/department/${content.attachment}`}
+            href={`http://localhost:3663/cdn/department/${content.attachment}`}
             target="_blank"
             rel="noopener noreferrer"
             className="text-blue-500 hover:underline font-medium"

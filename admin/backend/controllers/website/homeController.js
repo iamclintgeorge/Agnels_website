@@ -19,7 +19,7 @@ import fs from "fs";
 //       return res.status(400).json({ message: "No image uploaded" });
 //     }
 
-//     const imageUrl = `/uploads/${image.filename}`;
+//     const imageUrl = `/cdn/${image.filename}`;
 //     await carouselUpload(altText, imageUrl);
 
 //     res.json({
@@ -39,15 +39,15 @@ export const carouselUploadController = async (req, res) => {
     const parsed = JSON.parse(content);
     const { altText, imageFilename } = parsed;
 
-    const pendingPath = path.join("public/uploads/pending", imageFilename);
-    const finalPath = path.join("public/uploads", imageFilename);
+    const pendingPath = path.join("public/cdn/pending", imageFilename);
+    const finalPath = path.join("public/cdn", imageFilename);
 
     // Move image if it exists
     if (fs.existsSync(pendingPath)) {
       fs.renameSync(pendingPath, finalPath);
     }
 
-    const imageUrl = `/uploads/${imageFilename}`;
+    const imageUrl = `/cdn/${imageFilename}`;
     await carouselUpload(altText, imageUrl);
 
     res.json({
