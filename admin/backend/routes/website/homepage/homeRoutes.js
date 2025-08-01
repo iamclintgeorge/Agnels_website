@@ -41,9 +41,16 @@ const upload = multer({
 
 const router = express.Router();
 
-router.post("/carousel", upload.single("image"), carouselUploadController);
-router.get("/carousel", carouselDisplayController);
+//Carousel and Home_Modal
+router.post(
+  "/carousel/:section",
+  upload.single("image"),
+  carouselUploadController
+);
+router.get("/carousel/:section", carouselDisplayController);
 router.delete("/carousel/:id", carouselDeleteController);
+
+//IntroText
 router.get("/introtext", introTextController);
 router.put("/introtext/:id", introTextUpdateController);
 router.post("/announcements", announcementsCreateController);

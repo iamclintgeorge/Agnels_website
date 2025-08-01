@@ -1,8 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
-import AboutUs from "./components/AboutUs";
-import WhatsNew from "./components/WhatsNew";
+import HomePage from "./pages/HomePage/homePage.jsx";
 import Footer from "./components/Footer";
 import { Departments } from "./pages/Departments/Dept_sidebar.jsx";
 import DepartmentSection from "./pages/Departments/DepartmentSection";
@@ -28,8 +27,6 @@ import IIC from "./pages/IIC/IIC";
 import NIRF from "./pages/NIRF/NIRF";
 import HumanResource from "./pages/HumanResource/HumanResource";
 import NbaNaaC from "./pages/NBA/NBA.jsx";
-import Widgets from "./components/Widgets.jsx";
-import News from "./components/News.jsx";
 
 function App() {
   // Fix: Redirect /pdfs/... requests directly to the browser
@@ -44,17 +41,7 @@ function App() {
         <Header />
         <Routes>
           {/* Default Home Page */}
-          <Route
-            path="/"
-            element={
-              <>
-                <News />
-                <AboutUs />
-                <WhatsNew />
-                {/* <Widgets /> */}
-              </>
-            }
-          />
+          <Route path="/" element={<HomePage />} />
           {/* Academics Page */}
           <Route path="/academics" element={<Academics />} />
           <Route path="/examinations-page" element={<ExaminationsPage />} />

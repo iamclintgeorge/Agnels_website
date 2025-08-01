@@ -12,6 +12,7 @@ import WhatsNew from "./pages/HomePage/whatsNew";
 import Profile from "./pages/profile";
 import ImgCarousel from "./pages/HomePage/imgCarousel";
 import IntroText from "./pages/HomePage/introText";
+import ImgModal from "./pages/HomePage/home_Modal";
 import DeptHome from "./pages/Department/dept_home";
 import TrainingPlacement from "./pages/Training-Placement/training-placement";
 import { ToastContainer } from "react-toastify";
@@ -142,6 +143,7 @@ const App = () => {
           <Route path="/home/carousel" element={<ImgCarousel />} />
           <Route path="/home/whatsNew" element={<WhatsNew />} />
           <Route path="/home/introtext" element={<IntroText />} />
+          <Route path="/home/modal" element={<ImgModal />} />
           <Route path="/department/home" element={<DeptHome />} />
           <Route path="/academic/handbook" element={<AcademicHandbook />} />
           <Route path="/academics" element={<AcademicAdmin />} />

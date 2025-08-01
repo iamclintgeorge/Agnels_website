@@ -1,11 +1,11 @@
 import db from "../../config/db.js";
 
-export const carouselUpload = async (altText, imageUrl) => {
+export const carouselUpload = async (altText, imageUrl, section) => {
   const query = `
-    INSERT INTO carousel (Alt_text, filename)
-    VALUES (?, ?)
+    INSERT INTO carousel (section, Alt_text, filename)
+    VALUES (?, ?, ?)
   `;
-  const values = [altText, imageUrl];
+  const values = [section, altText, imageUrl];
 
   try {
     const [result] = await db.promise().query(query, values);
@@ -16,14 +16,15 @@ export const carouselUpload = async (altText, imageUrl) => {
   }
 };
 
-export const carouselDisplay = async () => {
+export const carouselDisplay = async (section) => {
   const query = `
       SELECT Id, Alt_text AS altText, filename AS imageUrl 
-    FROM carousel
+    FROM carousel WHERE section = ? ORDER BY Id DESC
     `;
+  const value = section;
 
   try {
-    const [rows] = await db.promise().query(query);
+    const [rows] = await db.promise().query(query, value);
     return rows;
   } catch (error) {
     console.error("Database fetch error:", error);

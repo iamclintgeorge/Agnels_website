@@ -385,7 +385,7 @@ const DynamicSideBar = () => {
                 <Link to="/home/whatsNew">
                   <p>Announcements</p>
                 </Link>
-                <Link to="/">
+                <Link to="/home/modal">
                   <p>Set Modal</p>
                 </Link>
               </div>

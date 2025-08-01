@@ -92,9 +92,10 @@ export const getPendingApprovals = async (req, res) => {
     // Get all pending requests from these slaves
     const [requests] = await db
       .promise()
-      .query(`SELECT * FROM approval_requests WHERE req_roleID IN (?)`, [
-        slaveIds,
-      ]);
+      .query(
+        `SELECT * FROM approval_requests WHERE req_roleID IN (?) ORDER BY id DESC`,
+        [slaveIds]
+      );
     res.json({
       success: true,
       requests,
