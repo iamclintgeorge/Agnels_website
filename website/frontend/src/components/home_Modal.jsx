@@ -9,12 +9,20 @@ const HomeModal = () => {
     const lastShown = localStorage.getItem("homeModalLastShown");
     const now = Date.now();
 
-    //If not shown before or more than 30 minutes ago
+    // If not shown before or more than 30 minutes ago
     if (!lastShown || now - parseInt(lastShown) > 30 * 60 * 1000) {
       fetchImages();
       setShowModal(true);
       localStorage.setItem("homeModalLastShown", now.toString());
     }
+
+    // Escape key handler
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") setShowModal(false);
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
   const fetchImages = async () => {
@@ -28,10 +36,20 @@ const HomeModal = () => {
     }
   };
 
+  const handleOverlayClick = (e) => {
+    // Close only if clicked on the overlay itself
+    if (e.target === e.currentTarget) {
+      setShowModal(false);
+    }
+  };
+
   return (
     <div>
       {showModal && displayImg.length > 0 && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+        <div
+          onClick={handleOverlayClick}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50"
+        >
           <div className="bg-white rounded-lg shadow-lg max-w-3xl w-[60vw] h-auto relative">
             <button
               onClick={() => setShowModal(false)}
