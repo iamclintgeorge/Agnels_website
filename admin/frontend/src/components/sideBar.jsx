@@ -276,6 +276,7 @@ const DynamicSideBar = () => {
   };
 
   const departmentSections = [
+    "Carousel",
     "Committees and Board of Studies",
     "Activities",
     "Infrastructure",

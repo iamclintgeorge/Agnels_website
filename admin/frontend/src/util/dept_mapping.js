@@ -15,3 +15,12 @@ export const deptname = {
   "mechanical-engineering": "Mechanical Engineering",
   "computer-science-and-engineering": "Computer Science and Engineering",
 };
+
+export const deptFirst = {
+  extc: 1,
+  "computer-engineering": "comp",
+  "basic-science-and-humanities": "bsh",
+  "electrical-engineering": "elect",
+  "mechanical-engineering": "mech",
+  "computer-science-and-engineering": "cse",
+};

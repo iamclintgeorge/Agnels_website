@@ -6,12 +6,12 @@ const About = ({ departmentName }) => {
   const [message, setMessage] = useState("");
   console.log("About", departmentName);
   const dept_url = {
-    "Computer Engineering": "computer",
-    "Mechanical Engineering": "mechanical",
-    "Electronics and Telecommunication Engineering": "extc",
-    "Electrical Engineering": "electrical",
-    "Information Technology": "cse",
-    "Basic Science and Humanities": "bsh",
+    "Computer Engineering": 2,
+    "Mechanical Engineering": 5,
+    "Electronics and Telecommunication Engineering": 1,
+    "Electrical Engineering": 4,
+    "Information Technology": 6,
+    "Basic Science and Humanities": 3,
   };
 
   useEffect(() => {
@@ -22,12 +22,12 @@ const About = ({ departmentName }) => {
     try {
       const departmentSlug = dept_url[departmentName];
       const response = await axios.get(
-        `http://localhost:3663/api/department/${departmentSlug}/home`
+        `http://localhost:3663/api/department/home/${departmentSlug}`
       );
       console.log(`Fetched ${departmentName} Department Text:`, response.data);
 
       if (response.data.length > 0 && response.data[0].id) {
-        setContent(response.data[0].Content); // Set the content if fetched successfully
+        setContent(response.data[0].paragraph1); // Set the content if fetched successfully
         setMessage(""); // Clear any previous error messages
       } else {
         console.warn("No valid id or content in fetched data:", response.data);
