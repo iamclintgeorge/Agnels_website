@@ -14,6 +14,7 @@ import profileRoutes from "./routes/website/profileRoutes.js";
 import studentcornerRoutes from "./routes/website/studentcorner/studentcornerRoutes.js";
 import { roleHierarchyController } from "./controllers/website/contentApprovalController.js";
 import facultyStaffRoute from "./routes/website/facultyStaffRoutes.js";
+import researchRoutes from "./routes/website/homepage/research/researchRoutes.js";
 
 // Import new department routes
 import computerRoutes from "./routes/website/department/computerRoutes.js";
@@ -107,6 +108,7 @@ app.use("/api/department", deptHomeRoutes); //Working
 app.use("/api/department", compActivityRoutes); //Not in Use But Clint had created this
 app.use("/api/profile", profileRoutes);
 app.use("/api/studentcorner", studentcornerRoutes);
+app.use("/api/department/research", researchRoutes);
 
 // New department routes
 app.use("/api/department/home", computerRoutes); //Wprking

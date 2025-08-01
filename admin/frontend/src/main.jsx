@@ -159,7 +159,7 @@ const App = () => {
           <Route path="/iic-innovation-centre" element={<Iic_innovation />} />
           {/* Department Home Routes */}
           <Route
-            path="/department/computer-engineering/home"
+            path="/department/:departmentName/home"
             element={<CompHome />}
           />
           <Route
