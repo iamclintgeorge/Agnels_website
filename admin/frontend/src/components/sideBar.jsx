@@ -238,7 +238,7 @@ const DynamicSideBar = () => {
   };
 
   const handleDepartmentSectionSelect = (deptName, section) => {
-    localStorage.setItem("departmentSection", `${deptName}/${section}`);
+    // localStorage.setItem("departmentSection", `${deptName}/${section}`);
     navigate(
       `/department/${deptName}/${section.toLowerCase().replace(/ /g, "-")}`
     );

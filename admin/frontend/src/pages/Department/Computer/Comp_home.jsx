@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -9,6 +10,8 @@ const CompHome = () => {
   const [content, setContent] = useState("");
   const [message, setMessage] = useState("");
   const quillRef = useRef(null);
+  const { departmentName } = useParams();
+  console.log("departmentName", departmentName);
   const departmentId = 2;
 
   useEffect(() => {
