@@ -1,153 +1,214 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
-import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 import { deptId, deptname } from "../../../util/dept_mapping.js";
 
-const DeptInnovativeteaching = () => {
-  const [pdfs, setPdfs] = useState([]);
-  const [file, setFile] = useState(null);
-  const [title, setTitle] = useState("");
-  const [uploading, setUploading] = useState(false);
+const DeptInnovativeTeaching = () => {
+  const [textData, setTextData] = useState([]);
+  const [editMode, setEditMode] = useState(false);
+  const [content, setContent] = useState("");
+  const [message, setMessage] = useState("");
+  const quillRef = useRef(null);
+
   const { departmentName } = useParams();
   const departmentId = deptId[departmentName];
   const deptName = deptname[departmentName];
 
   useEffect(() => {
-    fetchPdfs();
-  }, []);
+    fetchText();
+  }, [departmentId]);
 
-  const fetchPdfs = async () => {
+  // Custom tab handling: inserts 4 non-breaking spaces instead of tabs
+  useEffect(() => {
+    if (!editMode || !quillRef.current) return;
+
+    const handleTab = (e) => {
+      if (e.key === "Tab") {
+        e.preventDefault();
+        const quill = quillRef.current.getEditor();
+        const range = quill.getSelection();
+        if (range) {
+          const tabSpaces = "\u00A0\u00A0\u00A0\u00A0";
+          quill.insertText(range.index, tabSpaces);
+          quill.setSelection(range.index + 4);
+        }
+      }
+    };
+
+    // Add listener after small delay to ensure editor ready
+    const timer = setTimeout(() => {
+      const quillEditor = quillRef.current?.getEditor();
+      if (quillEditor) {
+        quillEditor.container.addEventListener("keydown", handleTab);
+      }
+    }, 100);
+
+    return () => {
+      clearTimeout(timer);
+      const quillEditor = quillRef.current?.getEditor();
+      if (quillEditor) {
+        quillEditor.container.removeEventListener("keydown", handleTab);
+      }
+    };
+  }, [editMode]);
+
+  // On entering edit mode, convert tabs to 4 non-breaking spaces for consistent display
+  useEffect(() => {
+    if (editMode && textData.length > 0 && textData[0].methods) {
+      const contentWithSpaces = textData[0].methods.replace(
+        /\t/g,
+        "\u00A0\u00A0\u00A0\u00A0"
+      );
+      setContent(contentWithSpaces);
+    }
+  }, [editMode, textData]);
+
+  const fetchText = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:3663/api/department/computer-engineering/innovative-teaching"
+        `http://localhost:3663/api/department/innovative/${departmentId}`
       );
-      setPdfs(response.data);
-    } catch (err) {
-      console.error("Error loading PDFs:", err);
-      toast.error("Error fetching PDFs");
+      console.log(response.data);
+
+      const fetched = response.data?.data || [];
+      setTextData(fetched);
+
+      if (fetched.length > 0 && fetched[0].methods) {
+        setContent(fetched[0].methods);
+      } else {
+        setMessage("No valid text entry found.");
+      }
+    } catch (error) {
+      console.error(error);
+      setMessage(`Error fetching ${deptName} text.`);
     }
   };
 
-  const handleFileChange = (e) => {
-    setFile(e.target.files[0]);
-  };
-
-  const handleUpload = async (e) => {
-    e.preventDefault();
-    if (!file || !title) {
-      toast.error("Please select a PDF file and provide a title");
+  const handleUpdate = async () => {
+    if (!textData.length || !textData[0]?.id) {
+      setMessage("No valid text entry to update.");
       return;
     }
 
-    const formData = new FormData();
-    formData.append("pdf", file);
-    formData.append("title", title);
+    const id = textData[0].id;
+    // Convert non-breaking spaces back to tabs for storage
+    const contentForStorage = content.replace(/\u00A0{4}/g, "\t");
 
-    setUploading(true);
     try {
-      await axios.post(
-        "http://localhost:3663/api/department/computer-engineering/innovative-teaching",
-        formData,
-        {
-          headers: { "Content-Type": "multipart/form-data" },
-        }
+      await axios.put(
+        `http://localhost:3663/api/department/innovative-teaching/${departmentId}/${id}`,
+        { content: contentForStorage }
       );
-      toast.success("PDF uploaded successfully");
-      setFile(null);
-      setTitle("");
-      fetchPdfs();
-    } catch (err) {
-      console.error("Upload error:", err);
-      toast.error("Error uploading PDF");
-    } finally {
-      setUploading(false);
+      setMessage(`${deptName} text updated successfully!`);
+      setEditMode(false);
+      fetchText();
+    } catch (error) {
+      setMessage(`Error updating ${deptName} text.`);
     }
   };
 
-  const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this PDF?")) return;
-
-    try {
-      await axios.delete(
-        `http://localhost:3663/api/department/computer-engineering/innovative-teaching/${id}`
-      );
-      toast.success("PDF deleted successfully");
-      fetchPdfs();
-    } catch (err) {
-      console.error("Delete error:", err);
-      toast.error("Error deleting PDF");
-    }
+  const modules = {
+    toolbar: [
+      [{ header: [1, 2, 3, false] }],
+      ["bold", "italic", "underline"],
+      [{ list: "ordered" }, { list: "bullet" }],
+      [{ indent: "-1" }, { indent: "+1" }],
+      [{ size: ["small", false, "large", "huge"] }],
+      [{ font: [] }],
+      [{ align: [] }],
+      ["link"],
+      ["clean"],
+    ],
   };
+
+  const formats = [
+    "header",
+    "bold",
+    "italic",
+    "underline",
+    "list",
+    "bullet",
+    "indent",
+    "size",
+    "font",
+    "align",
+    "link",
+  ];
 
   return (
     <div className="p-4">
+      <style jsx>{`
+        .ql-editor {
+          font-family: "Courier New", monospace;
+          line-height: 1.6;
+        }
+        .preview-content {
+          white-space: pre-wrap;
+          font-family: "Courier New", monospace;
+          line-height: 1.6;
+        }
+        .ql-editor,
+        .preview-content {
+          word-spacing: normal;
+        }
+      `}</style>
+
       <h2 className="text-2xl font-bold mb-4">
         {deptName} - Innovative Teaching
       </h2>
-      <form onSubmit={handleUpload} className="mb-8">
-        <div className="mb-4">
-          <label className="block text-gray-700 mb-2">PDF Title</label>
-          <input
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="w-full p-2 border rounded"
-            placeholder="Enter PDF title"
-          />
-        </div>
-        <div className="mb-4">
-          <label className="block text-gray-700 mb-2">Upload PDF</label>
-          <input
-            type="file"
-            accept="application/pdf"
-            onChange={handleFileChange}
-            className="w-full p-2 border rounded"
-          />
-        </div>
-        <button
-          type="submit"
-          disabled={uploading}
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 disabled:bg-blue-300"
-        >
-          {uploading ? "Uploading..." : "Upload PDF"}
-        </button>
-      </form>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {pdfs.length > 0 ? (
-          pdfs.map((pdf) => (
-            <div
-              key={pdf.id}
-              className="border p-4 rounded flex justify-between items-center"
-            >
-              <div>
-                <a
-                  href={`http://localhost:3663${pdf.pdfUrl}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-500 hover:underline"
-                >
-                  {pdf.title}
-                </a>
-                <p className="text-sm text-gray-500">
-                  Uploaded: {new Date(pdf.created_at).toLocaleDateString()}
-                </p>
-              </div>
+      {textData.length > 0 ? (
+        editMode ? (
+          <>
+            <ReactQuill
+              ref={quillRef}
+              value={content}
+              onChange={setContent}
+              modules={modules}
+              formats={formats}
+              className="mb-4"
+            />
+            <div className="flex gap-4">
               <button
-                onClick={() => handleDelete(pdf.id)}
-                className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
+                onClick={handleUpdate}
+                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
               >
-                Delete
+                Save
+              </button>
+              <button
+                onClick={() => {
+                  setEditMode(false);
+                  setContent(textData[0]?.methods || "");
+                  setMessage("");
+                }}
+                className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
+              >
+                Cancel
               </button>
             </div>
-          ))
+            {message && <p className="mt-2">{message}</p>}
+          </>
         ) : (
-          <p>No PDFs available.</p>
-        )}
-      </div>
+          <>
+            <div
+              className="mb-4 preview-content"
+              dangerouslySetInnerHTML={{ __html: textData[0].methods }}
+            />
+            <button
+              onClick={() => setEditMode(true)}
+              className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+            >
+              Edit
+            </button>
+          </>
+        )
+      ) : (
+        <p>No {deptName} text available.</p>
+      )}
     </div>
   );
 };
 
-export default DeptInnovativeteaching;
+export default DeptInnovativeTeaching;

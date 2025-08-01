@@ -283,7 +283,7 @@ const DynamicSideBar = () => {
     "Student Association",
     "Magazine",
     "Syllabus",
-    "Result Analysis",
+    // "Result Analysis",
     "Time Table",
     "Achievements",
     "Academic Calendar",

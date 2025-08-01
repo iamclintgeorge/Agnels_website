@@ -335,14 +335,13 @@ router.delete(
   DepartmentController.deleteMiniProject
 );
 
-// UTILITY ROUTES
-router.get("/data/:departmentId", DepartmentController.getAllDepartmentData);
+// Infrastructure Routes
+router.get("/infrastructure/:departmentId", DepartmentController.getInfra);
 
-router.get(
-  "/statistics/:departmentId?",
-  authMiddleware,
-  checkPermission("department_management"),
-  DepartmentController.getDepartmentStatistics
-);
+// Syllabus Routes
+router.get("/syllabus/:departmentId", DepartmentController.getSyllabus);
+
+// Innovative Teaching Method Routes
+router.get("/innovative/:departmentId", DepartmentController.getITM);
 
 export default router;
