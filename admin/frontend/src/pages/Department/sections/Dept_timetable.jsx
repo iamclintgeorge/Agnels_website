@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useParams } from "react-router-dom";
+import { deptId, deptname } from "../../../util/dept_mapping.js";
 
-const ComputerTimetable = () => {
+const DeptTimetable = () => {
   const [pdfs, setPdfs] = useState([]);
   const [file, setFile] = useState(null);
   const [title, setTitle] = useState("");
@@ -11,7 +13,9 @@ const ComputerTimetable = () => {
   const [division, setDivision] = useState(""); // Division input
   const [semester, setSemester] = useState(1); // Default semester to 1
   const [uploading, setUploading] = useState(false);
-  const departmentId = 2;
+  const { departmentName } = useParams();
+  const departmentId = deptId[departmentName];
+  const deptName = deptname[departmentName];
 
   useEffect(() => {
     fetchPdfs();
@@ -95,7 +99,7 @@ const ComputerTimetable = () => {
 
   return (
     <div className="p-4">
-      <h2 className="text-2xl font-bold mb-4">Computer - Time Table</h2>
+      <h2 className="text-2xl font-bold mb-4">{deptName} - Time Table</h2>
 
       <form onSubmit={handleUpload} className="mb-8">
         <div className="mb-4">
@@ -219,4 +223,4 @@ const ComputerTimetable = () => {
   );
 };
 
-export default ComputerTimetable;
+export default DeptTimetable;

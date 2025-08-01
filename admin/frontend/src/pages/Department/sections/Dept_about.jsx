@@ -1,15 +1,19 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
+import { useParams } from "react-router-dom";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import { deptId, deptname } from "../../../util/dept_mapping.js";
 
-const CompHome = () => {
+const DeptAbout = () => {
   const [deptText, setDeptText] = useState([]);
   const [editMode, setEditMode] = useState(false);
   const [content, setContent] = useState("");
   const [message, setMessage] = useState("");
   const quillRef = useRef(null);
-  const departmentId = 2;
+  const { departmentName } = useParams();
+  const departmentId = deptId[departmentName];
+  const deptName = deptname[departmentName];
 
   useEffect(() => {
     fetchText();
@@ -69,7 +73,7 @@ const CompHome = () => {
       const response = await axios.get(
         `http://localhost:3663/api/department/home/${departmentId}`
       );
-      console.log("Fetched Computer Department Text:", response.data);
+      console.log(`Fetched ${deptName} Department Text:`, response.data);
       setDeptText(response.data);
       if (response.data.length > 0 && response.data[0].id) {
         setContent(response.data[0].paragraph1);
@@ -78,8 +82,8 @@ const CompHome = () => {
         setMessage("No valid text entry found.");
       }
     } catch (err) {
-      console.error("Error loading computer department text:", err);
-      setMessage("Error fetching computer department text.");
+      console.error(`Error loading ${deptName} department text:`, err);
+      setMessage(`Error fetching ${deptName} department text.`);
     }
   };
 
@@ -103,12 +107,12 @@ const CompHome = () => {
           content: contentForStorage,
         }
       );
-      setMessage("Computer department text updated successfully!");
+      setMessage(`${deptName} department text updated successfully!`);
       setEditMode(false);
       fetchText();
     } catch (error) {
       console.error("Update error:", error);
-      setMessage("Error updating computer department text.");
+      setMessage(`Error updating ${deptName} department text.`);
     }
   };
 
@@ -162,7 +166,7 @@ const CompHome = () => {
         }
       `}</style>
 
-      <h2 className="text-2xl font-bold mb-4">Computer Engineering - Home</h2>
+      <h2 className="text-2xl font-bold mb-4">{deptName} - Home</h2>
 
       {deptText.length > 0 ? (
         editMode ? (
@@ -211,10 +215,10 @@ const CompHome = () => {
           </div>
         )
       ) : (
-        <p>No computer department home text available.</p>
+        <p>No {deptName} department home text available.</p>
       )}
     </div>
   );
 };
 
-export default CompHome;
+export default DeptAbout;

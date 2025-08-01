@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useParams } from "react-router-dom";
+import { deptId, deptname } from "../../../util/dept_mapping.js";
 
-const ComputerAssociation = () => {
+const DeptAssociation = () => {
   const [pdfs, setPdfs] = useState([]);
   const [file, setFile] = useState(null);
   const [title, setTitle] = useState("");
   const [year, setYear] = useState(""); // New state for the year
   const [uploading, setUploading] = useState(false);
-  const departmentId = 2;
+  const { departmentName } = useParams();
+  const departmentId = deptId[departmentName];
+  const deptName = deptname[departmentName];
 
   // Fetch PDFs when the component mounts
   useEffect(() => {
@@ -109,7 +113,7 @@ const ComputerAssociation = () => {
 
   return (
     <div className="p-4">
-      <h2 className="text-2xl font-bold mb-4">Computer - Association</h2>
+      <h2 className="text-2xl font-bold mb-4">{deptName} - Association</h2>
 
       {/* Upload Form */}
       <form onSubmit={handleUpload} className="mb-8">
@@ -191,4 +195,4 @@ const ComputerAssociation = () => {
   );
 };
 
-export default ComputerAssociation;
+export default DeptAssociation;

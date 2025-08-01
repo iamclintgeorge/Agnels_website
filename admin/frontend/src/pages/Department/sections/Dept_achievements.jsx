@@ -1,15 +1,19 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useParams } from "react-router-dom";
+import { deptId, deptname } from "../../../util/dept_mapping.js";
 
-const ComputerAchievements = () => {
+const DeptAchievements = () => {
   const [pdfs, setPdfs] = useState([]);
   const [file, setFile] = useState(null);
   const [title, setTitle] = useState("");
   const [year, setYear] = useState(""); // For Year field
   const [type, setType] = useState(""); // For Type dropdown
   const [uploading, setUploading] = useState(false);
-  const departmentId = 2;
+  const { departmentName } = useParams();
+  const departmentId = deptId[departmentName];
+  const deptName = deptname[departmentName];
 
   // Fetch data when the component mounts
   useEffect(() => {
@@ -90,7 +94,7 @@ const ComputerAchievements = () => {
 
   return (
     <div className="p-4">
-      <h2 className="text-2xl font-bold mb-4">Computer - Achievements</h2>
+      <h2 className="text-2xl font-bold mb-4">{deptName} - Achievements</h2>
       <form onSubmit={handleUpload} className="mb-8">
         {/* Title Input */}
         <div className="mb-4">
@@ -191,4 +195,4 @@ const ComputerAchievements = () => {
   );
 };
 
-export default ComputerAchievements;
+export default DeptAchievements;

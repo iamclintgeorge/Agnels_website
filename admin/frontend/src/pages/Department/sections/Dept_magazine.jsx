@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { useParams } from "react-router-dom";
+import { deptId, deptname } from "../../../util/dept_mapping.js";
 
-const ComputerMagazine = () => {
+const DeptMagazine = () => {
   const [pdfs, setPdfs] = useState([]);
   const [file, setFile] = useState(null);
   const [title, setTitle] = useState("");
   const [year, setYear] = useState(""); // Add state for year
   const [uploading, setUploading] = useState(false);
-  const departmentId = 2;
+  const { departmentName } = useParams();
+  const departmentId = deptId[departmentName];
+  const deptName = deptname[departmentName];
 
   useEffect(() => {
     fetchPdfs();
@@ -87,7 +91,7 @@ const ComputerMagazine = () => {
 
   return (
     <div className="p-4">
-      <h2 className="text-2xl font-bold mb-4">Computer - Magazine</h2>
+      <h2 className="text-2xl font-bold mb-4">{deptName} - Magazine</h2>
       <form onSubmit={handleUpload} className="mb-8">
         <div className="mb-4">
           <label className="block text-gray-700 mb-2">PDF Title</label>
@@ -163,4 +167,4 @@ const ComputerMagazine = () => {
   );
 };
 
-export default ComputerMagazine;
+export default DeptMagazine;
