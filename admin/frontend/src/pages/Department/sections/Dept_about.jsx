@@ -230,41 +230,82 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { deptId, deptname } from "../../../util/dept_mapping.js";
 
-const SectionEditor = ({ title, fetchUrl, updateUrl }) => {
+// Optional: use environment variable for backend base URL
+const API_BASE = "http://localhost:3663";
+
+const SectionEditor = ({ title, fetchUrl, updateUrl, contentKey }) => {
   const [text, setText] = useState("");
   const [editMode, setEditMode] = useState(false);
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
   const quillRef = useRef(null);
   const [id, setId] = useState(null);
 
   useEffect(() => {
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchData = async () => {
     try {
+      setLoading(true);
       const res = await axios.get(fetchUrl);
-      setText(res.data[0]?.text || res.data[0]?.paragraph1 || "");
-      setId(res.data[0]?.id);
+      const data = res.data.data || res.data[0] || res.data; // handle various response structures
+
+      console.log(`${title} fetch response:`, res.data); // Debug log
+
+      setText(data ? data[contentKey] || "" : "");
+      setId(data?.id);
     } catch (err) {
       console.error(`${title} fetch error:`, err);
       setMessage(`Error fetching ${title.toLowerCase()}`);
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleUpdate = async () => {
-    if (!id) return;
+    if (!id) {
+      setMessage("No ID found for update");
+      return;
+    }
 
-    const cleaned = text.replace(/\u00A0{4}/g, "\t");
     try {
-      await axios.put(`${updateUrl}/${id}`, { content: cleaned });
+      setLoading(true);
+      setMessage("Updating...");
+
+      const updatePayload = {
+        [contentKey]: text,
+      };
+
+      console.log(`${title} update payload:`, updatePayload); // Debug log
+
+      const response = await axios.put(`${updateUrl}/${id}`, updatePayload);
+
+      console.log(`${title} update response:`, response.data); // Debug log
+
       setMessage(`${title} updated successfully.`);
       setEditMode(false);
-      fetchData();
+
+      // Force a fresh fetch after successful update
+      await new Promise((resolve) => setTimeout(resolve, 500)); // Increased delay
+      await fetchData();
     } catch (err) {
       console.error(`${title} update error:`, err);
-      setMessage(`Error updating ${title.toLowerCase()}`);
+      setMessage(
+        `Error updating ${title.toLowerCase()}: ${
+          err.response?.data?.message || err.message
+        }`
+      );
+    } finally {
+      setLoading(false);
     }
+  };
+
+  const handleCancel = () => {
+    setEditMode(false);
+    fetchData(); // Refresh to original state
+    setMessage("");
   };
 
   const modules = {
@@ -295,6 +336,15 @@ const SectionEditor = ({ title, fetchUrl, updateUrl }) => {
     "link",
   ];
 
+  if (loading && !editMode) {
+    return (
+      <div className="mb-10">
+        <h2 className="text-xl font-semibold mb-2">{title}</h2>
+        <p>Loading...</p>
+      </div>
+    );
+  }
+
   return (
     <div className="mb-10">
       <h2 className="text-xl font-semibold mb-2">{title}</h2>
@@ -311,17 +361,15 @@ const SectionEditor = ({ title, fetchUrl, updateUrl }) => {
           <div className="flex gap-4">
             <button
               onClick={handleUpdate}
-              className="bg-blue-500 text-white px-4 py-2 rounded"
+              disabled={loading}
+              className="bg-blue-500 text-white px-4 py-2 rounded disabled:opacity-50"
             >
-              Save
+              {loading ? "Saving..." : "Save"}
             </button>
             <button
-              onClick={() => {
-                setEditMode(false);
-                fetchData();
-                setMessage("");
-              }}
-              className="bg-gray-500 text-white px-4 py-2 rounded"
+              onClick={handleCancel}
+              disabled={loading}
+              className="bg-gray-500 text-white px-4 py-2 rounded disabled:opacity-50"
             >
               Cancel
             </button>
@@ -331,17 +379,26 @@ const SectionEditor = ({ title, fetchUrl, updateUrl }) => {
         <>
           <div
             dangerouslySetInnerHTML={{ __html: text }}
-            className="preview-content mb-4"
+            className="preview-content mb-4 min-h-[50px] border border-gray-200 p-3 rounded"
           />
           <button
             onClick={() => setEditMode(true)}
-            className="bg-green-500 text-white px-4 py-2 rounded"
+            disabled={loading}
+            className="bg-green-500 text-white px-4 py-2 rounded disabled:opacity-50"
           >
             Edit
           </button>
         </>
       )}
-      {message && <p className="mt-2 text-sm text-gray-700">{message}</p>}
+      {message && (
+        <p
+          className={`mt-2 text-sm ${
+            message.includes("Error") ? "text-red-600" : "text-green-600"
+          }`}
+        >
+          {message}
+        </p>
+      )}
     </div>
   );
 };
@@ -355,22 +412,44 @@ const DeptAbout = () => {
     <div className="p-6">
       <h1 className="text-3xl font-bold mb-6">{deptName} Department</h1>
 
+      {/* About Section */}
       <SectionEditor
         title="About"
-        fetchUrl={`http://localhost:3663/api/department/home/${departmentId}`}
-        updateUrl={`http://localhost:3663/api/department/home/${departmentId}`}
+        fetchUrl={`${API_BASE}/api/department/home/${departmentId}`}
+        updateUrl={`${API_BASE}/api/department/home`} // Note: removed departmentId from update URL
+        contentKey="paragraph1"
       />
 
+      {/* Vision Section */}
       <SectionEditor
-        title="Vision"
-        fetchUrl={`http://localhost:3663/api/department/vision/${departmentId}`}
-        updateUrl={`http://localhost:3663/api/department/vision/${departmentId}`}
+        title="Department Vision"
+        fetchUrl={`${API_BASE}/api/department/vision/${departmentId}`}
+        updateUrl={`${API_BASE}/api/department/vision`}
+        contentKey="vision"
       />
 
+      {/* Mission Section */}
       <SectionEditor
-        title="Mission"
-        fetchUrl={`http://localhost:3663/api/department/mission/${departmentId}`}
-        updateUrl={`http://localhost:3663/api/department/mission/${departmentId}`}
+        title="Department Mission"
+        fetchUrl={`${API_BASE}/api/department/mission/${departmentId}`}
+        updateUrl={`${API_BASE}/api/department/mission`}
+        contentKey="mission"
+      />
+
+      {/* Objective Section */}
+      <SectionEditor
+        title="Department Objective"
+        fetchUrl={`${API_BASE}/api/department/objectives/${departmentId}`}
+        updateUrl={`${API_BASE}/api/department/objectives`}
+        contentKey="objective"
+      />
+
+      {/* Outcome Section */}
+      <SectionEditor
+        title="Department Outcome"
+        fetchUrl={`${API_BASE}/api/department/outcomes/${departmentId}`}
+        updateUrl={`${API_BASE}/api/department/outcomes`}
+        contentKey="outcome"
       />
     </div>
   );

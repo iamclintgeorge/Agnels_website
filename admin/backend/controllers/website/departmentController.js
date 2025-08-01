@@ -1,4 +1,4 @@
-import DepartmentModel from '../../models/website/departmentModel.js';
+import DepartmentModel from "../../models/website/departmentModel.js";
 
 class DepartmentController {
   // DEPT_TEXT CONTROLLERS
@@ -10,33 +10,43 @@ class DepartmentController {
       if (!departmentId || !section || !content) {
         return res.status(400).json({
           success: false,
-          message: 'Department ID, section, and content are required'
+          message: "Department ID, section, and content are required",
         });
       }
 
       // Check if text already exists for this department and section
-      const existingText = await DepartmentModel.getDeptText(departmentId, section);
-      
+      const existingText = await DepartmentModel.getDeptText(
+        departmentId,
+        section
+      );
+
       let result;
       if (existingText) {
         // Update existing text
         result = await DepartmentModel.updateDeptText(existingText.id, content);
       } else {
         // Create new text
-        result = await DepartmentModel.createDeptText(departmentId, section, content, createdBy);
+        result = await DepartmentModel.createDeptText(
+          departmentId,
+          section,
+          content,
+          createdBy
+        );
       }
 
       res.status(200).json({
         success: true,
-        message: existingText ? 'Text updated successfully' : 'Text created successfully',
-        data: result
+        message: existingText
+          ? "Text updated successfully"
+          : "Text created successfully",
+        data: result,
       });
     } catch (error) {
-      console.error('Error in createDeptText:', error);
+      console.error("Error in createDeptText:", error);
       res.status(500).json({
         success: false,
-        message: 'Internal server error',
-        error: error.message
+        message: "Internal server error",
+        error: error.message,
       });
     }
   }
@@ -48,7 +58,7 @@ class DepartmentController {
       if (!departmentId || !section) {
         return res.status(400).json({
           success: false,
-          message: 'Department ID and section are required'
+          message: "Department ID and section are required",
         });
       }
 
@@ -56,14 +66,14 @@ class DepartmentController {
 
       res.status(200).json({
         success: true,
-        data: text
+        data: text,
       });
     } catch (error) {
-      console.error('Error in getDeptText:', error);
+      console.error("Error in getDeptText:", error);
       res.status(500).json({
         success: false,
-        message: 'Internal server error',
-        error: error.message
+        message: "Internal server error",
+        error: error.message,
       });
     }
   }
@@ -75,7 +85,7 @@ class DepartmentController {
       if (!id) {
         return res.status(400).json({
           success: false,
-          message: 'ID is required'
+          message: "ID is required",
         });
       }
 
@@ -84,20 +94,196 @@ class DepartmentController {
       if (result.affectedRows === 0) {
         return res.status(404).json({
           success: false,
-          message: 'Text not found'
+          message: "Text not found",
         });
       }
 
       res.status(200).json({
         success: true,
-        message: 'Text deleted successfully'
+        message: "Text deleted successfully",
       });
     } catch (error) {
-      console.error('Error in deleteDeptText:', error);
+      console.error("Error in deleteDeptText:", error);
       res.status(500).json({
         success: false,
-        message: 'Internal server error',
-        error: error.message
+        message: "Internal server error",
+        error: error.message,
+      });
+    }
+  }
+
+  //Dept Vision and Mission Controllers
+  static async updateDeptVisionText(req, res) {
+    try {
+      const { vision } = req.body;
+      const { id } = req.params;
+      console.log("id, vision", id, vision);
+
+      if (!id || !vision) {
+        return res.status(400).json({
+          success: false,
+          message: "ID, and vision are required",
+        });
+      }
+
+      const result = await DepartmentModel.updateDeptVisionText(id, vision);
+
+      res.status(200).json({
+        success: true,
+        message: "Text updated successfully",
+        data: result,
+      });
+    } catch (error) {
+      console.error("Error in updateDeptVisionText:", error);
+      res.status(500).json({
+        success: false,
+        message: "Internal server error",
+        error: error.message,
+      });
+    }
+  }
+
+  static async updateDeptMissionText(req, res) {
+    try {
+      const { mission } = req.body;
+      const { id } = req.params;
+      console.log("id, mission", id, mission);
+
+      if (!id || !mission) {
+        return res.status(400).json({
+          success: false,
+          message: "ID, and mission are required",
+        });
+      }
+
+      const result = await DepartmentModel.updateDeptMissionText(id, mission);
+
+      res.status(200).json({
+        success: true,
+        message: "Text updated successfully",
+        data: result,
+      });
+    } catch (error) {
+      console.error("Error in updateDeptVisionText:", error);
+      res.status(500).json({
+        success: false,
+        message: "Internal server error",
+        error: error.message,
+      });
+    }
+  }
+
+  static async updateDeptObjectivesText(req, res) {
+    try {
+      const { objective } = req.body;
+      const { id } = req.params;
+
+      if (!id || !objective) {
+        return res.status(400).json({
+          success: false,
+          message: "ID, and objective are required",
+        });
+      }
+
+      const result = await DepartmentModel.updateDeptObjectiveText(
+        id,
+        objective
+      );
+
+      res.status(200).json({
+        success: true,
+        message: "Text updated successfully",
+        data: result,
+      });
+    } catch (error) {
+      console.error("Error in updateDeptVisionText:", error);
+      res.status(500).json({
+        success: false,
+        message: "Internal server error",
+        error: error.message,
+      });
+    }
+  }
+
+  static async updateDeptOutcomesText(req, res) {
+    try {
+      const { outcome } = req.body;
+      const { id } = req.params;
+
+      if (!id || !outcome) {
+        return res.status(400).json({
+          success: false,
+          message: "ID, and outcome are required",
+        });
+      }
+
+      const result = await DepartmentModel.updateDeptOutcomesText(id, outcome);
+
+      res.status(200).json({
+        success: true,
+        message: "Text updated successfully",
+        data: result,
+      });
+    } catch (error) {
+      console.error("Error in updateDeptVisionText:", error);
+      res.status(500).json({
+        success: false,
+        message: "Internal server error",
+        error: error.message,
+      });
+    }
+  }
+
+  static async getDeptVisionText(req, res) {
+    try {
+      const { departmentId } = req.params;
+
+      if (!departmentId) {
+        return res.status(400).json({
+          success: false,
+          message: "Department ID is required",
+        });
+      }
+
+      const text = await DepartmentModel.getDeptVisionText(departmentId);
+
+      res.status(200).json({
+        success: true,
+        data: text,
+      });
+    } catch (error) {
+      console.error("Error in getDeptVisionText:", error);
+      res.status(500).json({
+        success: false,
+        message: "Internal server error",
+        error: error.message,
+      });
+    }
+  }
+
+  static async getDeptObjectiveText(req, res) {
+    try {
+      const { departmentId } = req.params;
+
+      if (!departmentId) {
+        return res.status(400).json({
+          success: false,
+          message: "Department ID is required",
+        });
+      }
+
+      const text = await DepartmentModel.getDeptObjectiveText(departmentId);
+
+      res.status(200).json({
+        success: true,
+        data: text,
+      });
+    } catch (error) {
+      console.error("Error in getDeptVisionText:", error);
+      res.status(500).json({
+        success: false,
+        message: "Internal server error",
+        error: error.message,
       });
     }
   }
@@ -111,24 +297,30 @@ class DepartmentController {
       if (!type || !departmentId || !year || !req.file) {
         return res.status(400).json({
           success: false,
-          message: 'Type, department ID, year, and file are required'
+          message: "Type, department ID, year, and file are required",
         });
       }
 
       const attachment = req.file.filename;
-      const result = await DepartmentModel.createCommittee(type, departmentId, year, attachment, createdBy);
+      const result = await DepartmentModel.createCommittee(
+        type,
+        departmentId,
+        year,
+        attachment,
+        createdBy
+      );
 
       res.status(201).json({
         success: true,
-        message: 'Committee document created successfully',
-        data: { id: result.insertId, attachment }
+        message: "Committee document created successfully",
+        data: { id: result.insertId, attachment },
       });
     } catch (error) {
-      console.error('Error in createCommittee:', error);
+      console.error("Error in createCommittee:", error);
       res.status(500).json({
         success: false,
-        message: 'Internal server error',
-        error: error.message
+        message: "Internal server error",
+        error: error.message,
       });
     }
   }
@@ -141,22 +333,25 @@ class DepartmentController {
       if (!departmentId) {
         return res.status(400).json({
           success: false,
-          message: 'Department ID is required'
+          message: "Department ID is required",
         });
       }
 
-      const committees = await DepartmentModel.getCommittees(departmentId, type);
+      const committees = await DepartmentModel.getCommittees(
+        departmentId,
+        type
+      );
 
       res.status(200).json({
         success: true,
-        data: committees
+        data: committees,
       });
     } catch (error) {
-      console.error('Error in getCommittees:', error);
+      console.error("Error in getCommittees:", error);
       res.status(500).json({
         success: false,
-        message: 'Internal server error',
-        error: error.message
+        message: "Internal server error",
+        error: error.message,
       });
     }
   }
@@ -170,29 +365,33 @@ class DepartmentController {
       if (!id || !year) {
         return res.status(400).json({
           success: false,
-          message: 'ID and year are required'
+          message: "ID and year are required",
         });
       }
 
-      const result = await DepartmentModel.updateCommittee(id, year, attachment);
+      const result = await DepartmentModel.updateCommittee(
+        id,
+        year,
+        attachment
+      );
 
       if (result.affectedRows === 0) {
         return res.status(404).json({
           success: false,
-          message: 'Committee document not found'
+          message: "Committee document not found",
         });
       }
 
       res.status(200).json({
         success: true,
-        message: 'Committee document updated successfully'
+        message: "Committee document updated successfully",
       });
     } catch (error) {
-      console.error('Error in updateCommittee:', error);
+      console.error("Error in updateCommittee:", error);
       res.status(500).json({
         success: false,
-        message: 'Internal server error',
-        error: error.message
+        message: "Internal server error",
+        error: error.message,
       });
     }
   }
@@ -204,7 +403,7 @@ class DepartmentController {
       if (!id) {
         return res.status(400).json({
           success: false,
-          message: 'ID is required'
+          message: "ID is required",
         });
       }
 
@@ -213,20 +412,20 @@ class DepartmentController {
       if (result.affectedRows === 0) {
         return res.status(404).json({
           success: false,
-          message: 'Committee document not found'
+          message: "Committee document not found",
         });
       }
 
       res.status(200).json({
         success: true,
-        message: 'Committee document deleted successfully'
+        message: "Committee document deleted successfully",
       });
     } catch (error) {
-      console.error('Error in deleteCommittee:', error);
+      console.error("Error in deleteCommittee:", error);
       res.status(500).json({
         success: false,
-        message: 'Internal server error',
-        error: error.message
+        message: "Internal server error",
+        error: error.message,
       });
     }
   }
@@ -240,24 +439,29 @@ class DepartmentController {
       if (!departmentId || !year || !req.file) {
         return res.status(400).json({
           success: false,
-          message: 'Department ID, year, and file are required'
+          message: "Department ID, year, and file are required",
         });
       }
 
       const attachment = req.file.filename;
-      const result = await DepartmentModel.createPublication(departmentId, year, attachment, createdBy);
+      const result = await DepartmentModel.createPublication(
+        departmentId,
+        year,
+        attachment,
+        createdBy
+      );
 
       res.status(201).json({
         success: true,
-        message: 'Publication created successfully',
-        data: { id: result.insertId, attachment }
+        message: "Publication created successfully",
+        data: { id: result.insertId, attachment },
       });
     } catch (error) {
-      console.error('Error in createPublication:', error);
+      console.error("Error in createPublication:", error);
       res.status(500).json({
         success: false,
-        message: 'Internal server error',
-        error: error.message
+        message: "Internal server error",
+        error: error.message,
       });
     }
   }
@@ -269,7 +473,7 @@ class DepartmentController {
       if (!departmentId) {
         return res.status(400).json({
           success: false,
-          message: 'Department ID is required'
+          message: "Department ID is required",
         });
       }
 
@@ -277,14 +481,14 @@ class DepartmentController {
 
       res.status(200).json({
         success: true,
-        data: publications
+        data: publications,
       });
     } catch (error) {
-      console.error('Error in getPublications:', error);
+      console.error("Error in getPublications:", error);
       res.status(500).json({
         success: false,
-        message: 'Internal server error',
-        error: error.message
+        message: "Internal server error",
+        error: error.message,
       });
     }
   }
@@ -298,29 +502,33 @@ class DepartmentController {
       if (!id || !year) {
         return res.status(400).json({
           success: false,
-          message: 'ID and year are required'
+          message: "ID and year are required",
         });
       }
 
-      const result = await DepartmentModel.updatePublication(id, year, attachment);
+      const result = await DepartmentModel.updatePublication(
+        id,
+        year,
+        attachment
+      );
 
       if (result.affectedRows === 0) {
         return res.status(404).json({
           success: false,
-          message: 'Publication not found'
+          message: "Publication not found",
         });
       }
 
       res.status(200).json({
         success: true,
-        message: 'Publication updated successfully'
+        message: "Publication updated successfully",
       });
     } catch (error) {
-      console.error('Error in updatePublication:', error);
+      console.error("Error in updatePublication:", error);
       res.status(500).json({
         success: false,
-        message: 'Internal server error',
-        error: error.message
+        message: "Internal server error",
+        error: error.message,
       });
     }
   }
@@ -332,7 +540,7 @@ class DepartmentController {
       if (!id) {
         return res.status(400).json({
           success: false,
-          message: 'ID is required'
+          message: "ID is required",
         });
       }
 
@@ -341,20 +549,20 @@ class DepartmentController {
       if (result.affectedRows === 0) {
         return res.status(404).json({
           success: false,
-          message: 'Publication not found'
+          message: "Publication not found",
         });
       }
 
       res.status(200).json({
         success: true,
-        message: 'Publication deleted successfully'
+        message: "Publication deleted successfully",
       });
     } catch (error) {
-      console.error('Error in deletePublication:', error);
+      console.error("Error in deletePublication:", error);
       res.status(500).json({
         success: false,
-        message: 'Internal server error',
-        error: error.message
+        message: "Internal server error",
+        error: error.message,
       });
     }
   }
@@ -368,24 +576,29 @@ class DepartmentController {
       if (!departmentId || !year || !req.file) {
         return res.status(400).json({
           success: false,
-          message: 'Department ID, year, and file are required'
+          message: "Department ID, year, and file are required",
         });
       }
 
       const attachment = req.file.filename;
-      const result = await DepartmentModel.createMagazine(departmentId, year, attachment, createdBy);
+      const result = await DepartmentModel.createMagazine(
+        departmentId,
+        year,
+        attachment,
+        createdBy
+      );
 
       res.status(201).json({
         success: true,
-        message: 'Magazine created successfully',
-        data: { id: result.insertId, attachment }
+        message: "Magazine created successfully",
+        data: { id: result.insertId, attachment },
       });
     } catch (error) {
-      console.error('Error in createMagazine:', error);
+      console.error("Error in createMagazine:", error);
       res.status(500).json({
         success: false,
-        message: 'Internal server error',
-        error: error.message
+        message: "Internal server error",
+        error: error.message,
       });
     }
   }
@@ -397,7 +610,7 @@ class DepartmentController {
       if (!departmentId) {
         return res.status(400).json({
           success: false,
-          message: 'Department ID is required'
+          message: "Department ID is required",
         });
       }
 
@@ -405,14 +618,14 @@ class DepartmentController {
 
       res.status(200).json({
         success: true,
-        data: magazines
+        data: magazines,
       });
     } catch (error) {
-      console.error('Error in getMagazines:', error);
+      console.error("Error in getMagazines:", error);
       res.status(500).json({
         success: false,
-        message: 'Internal server error',
-        error: error.message
+        message: "Internal server error",
+        error: error.message,
       });
     }
   }
@@ -426,7 +639,7 @@ class DepartmentController {
       if (!id || !year) {
         return res.status(400).json({
           success: false,
-          message: 'ID and year are required'
+          message: "ID and year are required",
         });
       }
 
@@ -435,20 +648,20 @@ class DepartmentController {
       if (result.affectedRows === 0) {
         return res.status(404).json({
           success: false,
-          message: 'Magazine not found'
+          message: "Magazine not found",
         });
       }
 
       res.status(200).json({
         success: true,
-        message: 'Magazine updated successfully'
+        message: "Magazine updated successfully",
       });
     } catch (error) {
-      console.error('Error in updateMagazine:', error);
+      console.error("Error in updateMagazine:", error);
       res.status(500).json({
         success: false,
-        message: 'Internal server error',
-        error: error.message
+        message: "Internal server error",
+        error: error.message,
       });
     }
   }
@@ -460,7 +673,7 @@ class DepartmentController {
       if (!id) {
         return res.status(400).json({
           success: false,
-          message: 'ID is required'
+          message: "ID is required",
         });
       }
 
@@ -469,20 +682,20 @@ class DepartmentController {
       if (result.affectedRows === 0) {
         return res.status(404).json({
           success: false,
-          message: 'Magazine not found'
+          message: "Magazine not found",
         });
       }
 
       res.status(200).json({
         success: true,
-        message: 'Magazine deleted successfully'
+        message: "Magazine deleted successfully",
       });
     } catch (error) {
-      console.error('Error in deleteMagazine:', error);
+      console.error("Error in deleteMagazine:", error);
       res.status(500).json({
         success: false,
-        message: 'Internal server error',
-        error: error.message
+        message: "Internal server error",
+        error: error.message,
       });
     }
   }
@@ -496,24 +709,31 @@ class DepartmentController {
       if (!departmentId || !type || !semester || !req.file) {
         return res.status(400).json({
           success: false,
-          message: 'Department ID, type, semester, and file are required'
+          message: "Department ID, type, semester, and file are required",
         });
       }
 
       const attachment = req.file.filename;
-      const result = await DepartmentModel.createTimeTable(departmentId, type, division, semester, attachment, createdBy);
+      const result = await DepartmentModel.createTimeTable(
+        departmentId,
+        type,
+        division,
+        semester,
+        attachment,
+        createdBy
+      );
 
       res.status(201).json({
         success: true,
-        message: 'Time table created successfully',
-        data: { id: result.insertId, attachment }
+        message: "Time table created successfully",
+        data: { id: result.insertId, attachment },
       });
     } catch (error) {
-      console.error('Error in createTimeTable:', error);
+      console.error("Error in createTimeTable:", error);
       res.status(500).json({
         success: false,
-        message: 'Internal server error',
-        error: error.message
+        message: "Internal server error",
+        error: error.message,
       });
     }
   }
@@ -526,22 +746,26 @@ class DepartmentController {
       if (!departmentId) {
         return res.status(400).json({
           success: false,
-          message: 'Department ID is required'
+          message: "Department ID is required",
         });
       }
 
-      const timeTables = await DepartmentModel.getTimeTables(departmentId, type, semester);
+      const timeTables = await DepartmentModel.getTimeTables(
+        departmentId,
+        type,
+        semester
+      );
 
       res.status(200).json({
         success: true,
-        data: timeTables
+        data: timeTables,
       });
     } catch (error) {
-      console.error('Error in getTimeTables:', error);
+      console.error("Error in getTimeTables:", error);
       res.status(500).json({
         success: false,
-        message: 'Internal server error',
-        error: error.message
+        message: "Internal server error",
+        error: error.message,
       });
     }
   }
@@ -555,29 +779,35 @@ class DepartmentController {
       if (!id || !type || !semester) {
         return res.status(400).json({
           success: false,
-          message: 'ID, type, and semester are required'
+          message: "ID, type, and semester are required",
         });
       }
 
-      const result = await DepartmentModel.updateTimeTable(id, type, division, semester, attachment);
+      const result = await DepartmentModel.updateTimeTable(
+        id,
+        type,
+        division,
+        semester,
+        attachment
+      );
 
       if (result.affectedRows === 0) {
         return res.status(404).json({
           success: false,
-          message: 'Time table not found'
+          message: "Time table not found",
         });
       }
 
       res.status(200).json({
         success: true,
-        message: 'Time table updated successfully'
+        message: "Time table updated successfully",
       });
     } catch (error) {
-      console.error('Error in updateTimeTable:', error);
+      console.error("Error in updateTimeTable:", error);
       res.status(500).json({
         success: false,
-        message: 'Internal server error',
-        error: error.message
+        message: "Internal server error",
+        error: error.message,
       });
     }
   }
@@ -589,7 +819,7 @@ class DepartmentController {
       if (!id) {
         return res.status(400).json({
           success: false,
-          message: 'ID is required'
+          message: "ID is required",
         });
       }
 
@@ -598,20 +828,20 @@ class DepartmentController {
       if (result.affectedRows === 0) {
         return res.status(404).json({
           success: false,
-          message: 'Time table not found'
+          message: "Time table not found",
         });
       }
 
       res.status(200).json({
         success: true,
-        message: 'Time table deleted successfully'
+        message: "Time table deleted successfully",
       });
     } catch (error) {
-      console.error('Error in deleteTimeTable:', error);
+      console.error("Error in deleteTimeTable:", error);
       res.status(500).json({
         success: false,
-        message: 'Internal server error',
-        error: error.message
+        message: "Internal server error",
+        error: error.message,
       });
     }
   }
@@ -625,24 +855,30 @@ class DepartmentController {
       if (!type || !departmentId || !year || !req.file) {
         return res.status(400).json({
           success: false,
-          message: 'Type, department ID, year, and file are required'
+          message: "Type, department ID, year, and file are required",
         });
       }
 
       const attachment = req.file.filename;
-      const result = await DepartmentModel.createAchievement(type, departmentId, year, attachment, createdBy);
+      const result = await DepartmentModel.createAchievement(
+        type,
+        departmentId,
+        year,
+        attachment,
+        createdBy
+      );
 
       res.status(201).json({
         success: true,
-        message: 'Achievement created successfully',
-        data: { id: result.insertId, attachment }
+        message: "Achievement created successfully",
+        data: { id: result.insertId, attachment },
       });
     } catch (error) {
-      console.error('Error in createAchievement:', error);
+      console.error("Error in createAchievement:", error);
       res.status(500).json({
         success: false,
-        message: 'Internal server error',
-        error: error.message
+        message: "Internal server error",
+        error: error.message,
       });
     }
   }
@@ -655,22 +891,25 @@ class DepartmentController {
       if (!departmentId) {
         return res.status(400).json({
           success: false,
-          message: 'Department ID is required'
+          message: "Department ID is required",
         });
       }
 
-      const achievements = await DepartmentModel.getAchievements(departmentId, type);
+      const achievements = await DepartmentModel.getAchievements(
+        departmentId,
+        type
+      );
 
       res.status(200).json({
         success: true,
-        data: achievements
+        data: achievements,
       });
     } catch (error) {
-      console.error('Error in getAchievements:', error);
+      console.error("Error in getAchievements:", error);
       res.status(500).json({
         success: false,
-        message: 'Internal server error',
-        error: error.message
+        message: "Internal server error",
+        error: error.message,
       });
     }
   }
@@ -684,29 +923,33 @@ class DepartmentController {
       if (!id || !year) {
         return res.status(400).json({
           success: false,
-          message: 'ID and year are required'
+          message: "ID and year are required",
         });
       }
 
-      const result = await DepartmentModel.updateAchievement(id, year, attachment);
+      const result = await DepartmentModel.updateAchievement(
+        id,
+        year,
+        attachment
+      );
 
       if (result.affectedRows === 0) {
         return res.status(404).json({
           success: false,
-          message: 'Achievement not found'
+          message: "Achievement not found",
         });
       }
 
       res.status(200).json({
         success: true,
-        message: 'Achievement updated successfully'
+        message: "Achievement updated successfully",
       });
     } catch (error) {
-      console.error('Error in updateAchievement:', error);
+      console.error("Error in updateAchievement:", error);
       res.status(500).json({
         success: false,
-        message: 'Internal server error',
-        error: error.message
+        message: "Internal server error",
+        error: error.message,
       });
     }
   }
@@ -718,7 +961,7 @@ class DepartmentController {
       if (!id) {
         return res.status(400).json({
           success: false,
-          message: 'ID is required'
+          message: "ID is required",
         });
       }
 
@@ -727,20 +970,20 @@ class DepartmentController {
       if (result.affectedRows === 0) {
         return res.status(404).json({
           success: false,
-          message: 'Achievement not found'
+          message: "Achievement not found",
         });
       }
 
       res.status(200).json({
         success: true,
-        message: 'Achievement deleted successfully'
+        message: "Achievement deleted successfully",
       });
     } catch (error) {
-      console.error('Error in deleteAchievement:', error);
+      console.error("Error in deleteAchievement:", error);
       res.status(500).json({
         success: false,
-        message: 'Internal server error',
-        error: error.message
+        message: "Internal server error",
+        error: error.message,
       });
     }
   }
@@ -754,24 +997,29 @@ class DepartmentController {
       if (!type || !departmentId || !req.file) {
         return res.status(400).json({
           success: false,
-          message: 'Type, department ID, and file are required'
+          message: "Type, department ID, and file are required",
         });
       }
 
       const attachment = req.file.filename;
-      const result = await DepartmentModel.createAcademicCalendar(type, departmentId, attachment, createdBy);
+      const result = await DepartmentModel.createAcademicCalendar(
+        type,
+        departmentId,
+        attachment,
+        createdBy
+      );
 
       res.status(201).json({
         success: true,
-        message: 'Academic calendar created successfully',
-        data: { id: result.insertId, attachment }
+        message: "Academic calendar created successfully",
+        data: { id: result.insertId, attachment },
       });
     } catch (error) {
-      console.error('Error in createAcademicCalendar:', error);
+      console.error("Error in createAcademicCalendar:", error);
       res.status(500).json({
         success: false,
-        message: 'Internal server error',
-        error: error.message
+        message: "Internal server error",
+        error: error.message,
       });
     }
   }
@@ -784,22 +1032,25 @@ class DepartmentController {
       if (!departmentId) {
         return res.status(400).json({
           success: false,
-          message: 'Department ID is required'
+          message: "Department ID is required",
         });
       }
 
-      const calendars = await DepartmentModel.getAcademicCalendars(departmentId, type);
+      const calendars = await DepartmentModel.getAcademicCalendars(
+        departmentId,
+        type
+      );
 
       res.status(200).json({
         success: true,
-        data: calendars
+        data: calendars,
       });
     } catch (error) {
-      console.error('Error in getAcademicCalendars:', error);
+      console.error("Error in getAcademicCalendars:", error);
       res.status(500).json({
         success: false,
-        message: 'Internal server error',
-        error: error.message
+        message: "Internal server error",
+        error: error.message,
       });
     }
   }
@@ -811,30 +1062,33 @@ class DepartmentController {
       if (!id || !req.file) {
         return res.status(400).json({
           success: false,
-          message: 'ID and file are required'
+          message: "ID and file are required",
         });
       }
 
       const attachment = req.file.filename;
-      const result = await DepartmentModel.updateAcademicCalendar(id, attachment);
+      const result = await DepartmentModel.updateAcademicCalendar(
+        id,
+        attachment
+      );
 
       if (result.affectedRows === 0) {
         return res.status(404).json({
           success: false,
-          message: 'Academic calendar not found'
+          message: "Academic calendar not found",
         });
       }
 
       res.status(200).json({
         success: true,
-        message: 'Academic calendar updated successfully'
+        message: "Academic calendar updated successfully",
       });
     } catch (error) {
-      console.error('Error in updateAcademicCalendar:', error);
+      console.error("Error in updateAcademicCalendar:", error);
       res.status(500).json({
         success: false,
-        message: 'Internal server error',
-        error: error.message
+        message: "Internal server error",
+        error: error.message,
       });
     }
   }
@@ -846,7 +1100,7 @@ class DepartmentController {
       if (!id) {
         return res.status(400).json({
           success: false,
-          message: 'ID is required'
+          message: "ID is required",
         });
       }
 
@@ -855,20 +1109,20 @@ class DepartmentController {
       if (result.affectedRows === 0) {
         return res.status(404).json({
           success: false,
-          message: 'Academic calendar not found'
+          message: "Academic calendar not found",
         });
       }
 
       res.status(200).json({
         success: true,
-        message: 'Academic calendar deleted successfully'
+        message: "Academic calendar deleted successfully",
       });
     } catch (error) {
-      console.error('Error in deleteAcademicCalendar:', error);
+      console.error("Error in deleteAcademicCalendar:", error);
       res.status(500).json({
         success: false,
-        message: 'Internal server error',
-        error: error.message
+        message: "Internal server error",
+        error: error.message,
       });
     }
   }
@@ -882,24 +1136,29 @@ class DepartmentController {
       if (!departmentId || !heading || !req.file) {
         return res.status(400).json({
           success: false,
-          message: 'Department ID, heading, and file are required'
+          message: "Department ID, heading, and file are required",
         });
       }
 
       const attachment = req.file.filename;
-      const result = await DepartmentModel.createActivity(departmentId, heading, attachment, createdBy);
+      const result = await DepartmentModel.createActivity(
+        departmentId,
+        heading,
+        attachment,
+        createdBy
+      );
 
       res.status(201).json({
         success: true,
-        message: 'Activity created successfully',
-        data: { id: result.insertId, attachment }
+        message: "Activity created successfully",
+        data: { id: result.insertId, attachment },
       });
     } catch (error) {
-      console.error('Error in createActivity:', error);
+      console.error("Error in createActivity:", error);
       res.status(500).json({
         success: false,
-        message: 'Internal server error',
-        error: error.message
+        message: "Internal server error",
+        error: error.message,
       });
     }
   }
@@ -911,7 +1170,7 @@ class DepartmentController {
       if (!departmentId) {
         return res.status(400).json({
           success: false,
-          message: 'Department ID is required'
+          message: "Department ID is required",
         });
       }
 
@@ -919,14 +1178,14 @@ class DepartmentController {
 
       res.status(200).json({
         success: true,
-        data: activities
+        data: activities,
       });
     } catch (error) {
-      console.error('Error in getActivities:', error);
+      console.error("Error in getActivities:", error);
       res.status(500).json({
         success: false,
-        message: 'Internal server error',
-        error: error.message
+        message: "Internal server error",
+        error: error.message,
       });
     }
   }
@@ -940,29 +1199,33 @@ class DepartmentController {
       if (!id || !heading) {
         return res.status(400).json({
           success: false,
-          message: 'ID and heading are required'
+          message: "ID and heading are required",
         });
       }
 
-      const result = await DepartmentModel.updateActivity(id, heading, attachment);
+      const result = await DepartmentModel.updateActivity(
+        id,
+        heading,
+        attachment
+      );
 
       if (result.affectedRows === 0) {
         return res.status(404).json({
           success: false,
-          message: 'Activity not found'
+          message: "Activity not found",
         });
       }
 
       res.status(200).json({
         success: true,
-        message: 'Activity updated successfully'
+        message: "Activity updated successfully",
       });
     } catch (error) {
-      console.error('Error in updateActivity:', error);
+      console.error("Error in updateActivity:", error);
       res.status(500).json({
         success: false,
-        message: 'Internal server error',
-        error: error.message
+        message: "Internal server error",
+        error: error.message,
       });
     }
   }
@@ -974,7 +1237,7 @@ class DepartmentController {
       if (!id) {
         return res.status(400).json({
           success: false,
-          message: 'ID is required'
+          message: "ID is required",
         });
       }
 
@@ -983,20 +1246,20 @@ class DepartmentController {
       if (result.affectedRows === 0) {
         return res.status(404).json({
           success: false,
-          message: 'Activity not found'
+          message: "Activity not found",
         });
       }
 
       res.status(200).json({
         success: true,
-        message: 'Activity deleted successfully'
+        message: "Activity deleted successfully",
       });
     } catch (error) {
-      console.error('Error in deleteActivity:', error);
+      console.error("Error in deleteActivity:", error);
       res.status(500).json({
         success: false,
-        message: 'Internal server error',
-        error: error.message
+        message: "Internal server error",
+        error: error.message,
       });
     }
   }
@@ -1010,24 +1273,29 @@ class DepartmentController {
       if (!departmentId || !year || !req.file) {
         return res.status(400).json({
           success: false,
-          message: 'Department ID, year, and file are required'
+          message: "Department ID, year, and file are required",
         });
       }
 
       const attachment = req.file.filename;
-      const result = await DepartmentModel.createAssociation(departmentId, year, attachment, createdBy);
+      const result = await DepartmentModel.createAssociation(
+        departmentId,
+        year,
+        attachment,
+        createdBy
+      );
 
       res.status(201).json({
         success: true,
-        message: 'Association created successfully',
-        data: { id: result.insertId, attachment }
+        message: "Association created successfully",
+        data: { id: result.insertId, attachment },
       });
     } catch (error) {
-      console.error('Error in createAssociation:', error);
+      console.error("Error in createAssociation:", error);
       res.status(500).json({
         success: false,
-        message: 'Internal server error',
-        error: error.message
+        message: "Internal server error",
+        error: error.message,
       });
     }
   }
@@ -1039,7 +1307,7 @@ class DepartmentController {
       if (!departmentId) {
         return res.status(400).json({
           success: false,
-          message: 'Department ID is required'
+          message: "Department ID is required",
         });
       }
 
@@ -1047,14 +1315,14 @@ class DepartmentController {
 
       res.status(200).json({
         success: true,
-        data: associations
+        data: associations,
       });
     } catch (error) {
-      console.error('Error in getAssociations:', error);
+      console.error("Error in getAssociations:", error);
       res.status(500).json({
         success: false,
-        message: 'Internal server error',
-        error: error.message
+        message: "Internal server error",
+        error: error.message,
       });
     }
   }
@@ -1068,29 +1336,33 @@ class DepartmentController {
       if (!id || !year) {
         return res.status(400).json({
           success: false,
-          message: 'ID and year are required'
+          message: "ID and year are required",
         });
       }
 
-      const result = await DepartmentModel.updateAssociation(id, year, attachment);
+      const result = await DepartmentModel.updateAssociation(
+        id,
+        year,
+        attachment
+      );
 
       if (result.affectedRows === 0) {
         return res.status(404).json({
           success: false,
-          message: 'Association not found'
+          message: "Association not found",
         });
       }
 
       res.status(200).json({
         success: true,
-        message: 'Association updated successfully'
+        message: "Association updated successfully",
       });
     } catch (error) {
-      console.error('Error in updateAssociation:', error);
+      console.error("Error in updateAssociation:", error);
       res.status(500).json({
         success: false,
-        message: 'Internal server error',
-        error: error.message
+        message: "Internal server error",
+        error: error.message,
       });
     }
   }
@@ -1102,7 +1374,7 @@ class DepartmentController {
       if (!id) {
         return res.status(400).json({
           success: false,
-          message: 'ID is required'
+          message: "ID is required",
         });
       }
 
@@ -1111,20 +1383,20 @@ class DepartmentController {
       if (result.affectedRows === 0) {
         return res.status(404).json({
           success: false,
-          message: 'Association not found'
+          message: "Association not found",
         });
       }
 
       res.status(200).json({
         success: true,
-        message: 'Association deleted successfully'
+        message: "Association deleted successfully",
       });
     } catch (error) {
-      console.error('Error in deleteAssociation:', error);
+      console.error("Error in deleteAssociation:", error);
       res.status(500).json({
         success: false,
-        message: 'Internal server error',
-        error: error.message
+        message: "Internal server error",
+        error: error.message,
       });
     }
   }
@@ -1138,23 +1410,27 @@ class DepartmentController {
       if (!departmentId || !projects) {
         return res.status(400).json({
           success: false,
-          message: 'Department ID and projects are required'
+          message: "Department ID and projects are required",
         });
       }
 
-      const result = await DepartmentModel.createUndergraduateProject(departmentId, projects, createdBy);
+      const result = await DepartmentModel.createUndergraduateProject(
+        departmentId,
+        projects,
+        createdBy
+      );
 
       res.status(201).json({
         success: true,
-        message: 'BE project created successfully',
-        data: { id: result.insertId }
+        message: "BE project created successfully",
+        data: { id: result.insertId },
       });
     } catch (error) {
-      console.error('Error in createUndergraduateProject:', error);
+      console.error("Error in createUndergraduateProject:", error);
       res.status(500).json({
         success: false,
-        message: 'Internal server error',
-        error: error.message
+        message: "Internal server error",
+        error: error.message,
       });
     }
   }
@@ -1166,22 +1442,24 @@ class DepartmentController {
       if (!departmentId) {
         return res.status(400).json({
           success: false,
-          message: 'Department ID is required'
+          message: "Department ID is required",
         });
       }
 
-      const projects = await DepartmentModel.getUndergraduateProjects(departmentId);
+      const projects = await DepartmentModel.getUndergraduateProjects(
+        departmentId
+      );
 
       res.status(200).json({
         success: true,
-        data: projects
+        data: projects,
       });
     } catch (error) {
-      console.error('Error in getUndergraduateProjects:', error);
+      console.error("Error in getUndergraduateProjects:", error);
       res.status(500).json({
         success: false,
-        message: 'Internal server error',
-        error: error.message
+        message: "Internal server error",
+        error: error.message,
       });
     }
   }
@@ -1194,29 +1472,32 @@ class DepartmentController {
       if (!id || !projects) {
         return res.status(400).json({
           success: false,
-          message: 'ID and projects are required'
+          message: "ID and projects are required",
         });
       }
 
-      const result = await DepartmentModel.updateUndergraduateProject(id, projects);
+      const result = await DepartmentModel.updateUndergraduateProject(
+        id,
+        projects
+      );
 
       if (result.affectedRows === 0) {
         return res.status(404).json({
           success: false,
-          message: 'BE project not found'
+          message: "BE project not found",
         });
       }
 
       res.status(200).json({
         success: true,
-        message: 'BE project updated successfully'
+        message: "BE project updated successfully",
       });
     } catch (error) {
-      console.error('Error in updateUndergraduateProject:', error);
+      console.error("Error in updateUndergraduateProject:", error);
       res.status(500).json({
         success: false,
-        message: 'Internal server error',
-        error: error.message
+        message: "Internal server error",
+        error: error.message,
       });
     }
   }
@@ -1228,7 +1509,7 @@ class DepartmentController {
       if (!id) {
         return res.status(400).json({
           success: false,
-          message: 'ID is required'
+          message: "ID is required",
         });
       }
 
@@ -1237,20 +1518,20 @@ class DepartmentController {
       if (result.affectedRows === 0) {
         return res.status(404).json({
           success: false,
-          message: 'BE project not found'
+          message: "BE project not found",
         });
       }
 
       res.status(200).json({
         success: true,
-        message: 'BE project deleted successfully'
+        message: "BE project deleted successfully",
       });
     } catch (error) {
-      console.error('Error in deleteUndergraduateProject:', error);
+      console.error("Error in deleteUndergraduateProject:", error);
       res.status(500).json({
         success: false,
-        message: 'Internal server error',
-        error: error.message
+        message: "Internal server error",
+        error: error.message,
       });
     }
   }
@@ -1263,30 +1544,35 @@ class DepartmentController {
       if (!departmentId || !level || !projects) {
         return res.status(400).json({
           success: false,
-          message: 'Department ID, level, and projects are required'
+          message: "Department ID, level, and projects are required",
         });
       }
 
-      if (!['TE', 'SE'].includes(level)) {
+      if (!["TE", "SE"].includes(level)) {
         return res.status(400).json({
           success: false,
-          message: 'Level must be either TE or SE'
+          message: "Level must be either TE or SE",
         });
       }
 
-      const result = await DepartmentModel.createMiniProject(departmentId, level, projects, createdBy);
+      const result = await DepartmentModel.createMiniProject(
+        departmentId,
+        level,
+        projects,
+        createdBy
+      );
 
       res.status(201).json({
         success: true,
         message: `${level} project created successfully`,
-        data: { id: result.insertId }
+        data: { id: result.insertId },
       });
     } catch (error) {
-      console.error('Error in createMiniProject:', error);
+      console.error("Error in createMiniProject:", error);
       res.status(500).json({
         success: false,
-        message: 'Internal server error',
-        error: error.message
+        message: "Internal server error",
+        error: error.message,
       });
     }
   }
@@ -1299,22 +1585,25 @@ class DepartmentController {
       if (!departmentId) {
         return res.status(400).json({
           success: false,
-          message: 'Department ID is required'
+          message: "Department ID is required",
         });
       }
 
-      const projects = await DepartmentModel.getMiniProjects(departmentId, level);
+      const projects = await DepartmentModel.getMiniProjects(
+        departmentId,
+        level
+      );
 
       res.status(200).json({
         success: true,
-        data: projects
+        data: projects,
       });
     } catch (error) {
-      console.error('Error in getMiniProjects:', error);
+      console.error("Error in getMiniProjects:", error);
       res.status(500).json({
         success: false,
-        message: 'Internal server error',
-        error: error.message
+        message: "Internal server error",
+        error: error.message,
       });
     }
   }
@@ -1327,7 +1616,7 @@ class DepartmentController {
       if (!id || !projects) {
         return res.status(400).json({
           success: false,
-          message: 'ID and projects are required'
+          message: "ID and projects are required",
         });
       }
 
@@ -1336,20 +1625,20 @@ class DepartmentController {
       if (result.affectedRows === 0) {
         return res.status(404).json({
           success: false,
-          message: 'Mini project not found'
+          message: "Mini project not found",
         });
       }
 
       res.status(200).json({
         success: true,
-        message: 'Mini project updated successfully'
+        message: "Mini project updated successfully",
       });
     } catch (error) {
-      console.error('Error in updateMiniProject:', error);
+      console.error("Error in updateMiniProject:", error);
       res.status(500).json({
         success: false,
-        message: 'Internal server error',
-        error: error.message
+        message: "Internal server error",
+        error: error.message,
       });
     }
   }
@@ -1361,7 +1650,7 @@ class DepartmentController {
       if (!id) {
         return res.status(400).json({
           success: false,
-          message: 'ID is required'
+          message: "ID is required",
         });
       }
 
@@ -1370,20 +1659,20 @@ class DepartmentController {
       if (result.affectedRows === 0) {
         return res.status(404).json({
           success: false,
-          message: 'Mini project not found'
+          message: "Mini project not found",
         });
       }
 
       res.status(200).json({
         success: true,
-        message: 'Mini project deleted successfully'
+        message: "Mini project deleted successfully",
       });
     } catch (error) {
-      console.error('Error in deleteMiniProject:', error);
+      console.error("Error in deleteMiniProject:", error);
       res.status(500).json({
         success: false,
-        message: 'Internal server error',
-        error: error.message
+        message: "Internal server error",
+        error: error.message,
       });
     }
   }
@@ -1396,7 +1685,7 @@ class DepartmentController {
       if (!departmentId) {
         return res.status(400).json({
           success: false,
-          message: 'Department ID is required'
+          message: "Department ID is required",
         });
       }
 
@@ -1404,14 +1693,14 @@ class DepartmentController {
 
       res.status(200).json({
         success: true,
-        data
+        data,
       });
     } catch (error) {
-      console.error('Error in getAllDepartmentData:', error);
+      console.error("Error in getAllDepartmentData:", error);
       res.status(500).json({
         success: false,
-        message: 'Internal server error',
-        error: error.message
+        message: "Internal server error",
+        error: error.message,
       });
     }
   }
@@ -1424,17 +1713,17 @@ class DepartmentController {
 
       res.status(200).json({
         success: true,
-        data: stats
+        data: stats,
       });
     } catch (error) {
-      console.error('Error in getDepartmentStatistics:', error);
+      console.error("Error in getDepartmentStatistics:", error);
       res.status(500).json({
         success: false,
-        message: 'Internal server error',
-        error: error.message
+        message: "Internal server error",
+        error: error.message,
       });
     }
   }
 }
 
-export default DepartmentController; 
+export default DepartmentController;

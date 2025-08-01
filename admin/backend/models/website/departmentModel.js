@@ -87,6 +87,89 @@ class DepartmentModel {
     }
   }
 
+  //Dept Vision and Mission Route
+  static async updateDeptVisionText(id, content) {
+    try {
+      const [result] = await db
+        .promise()
+        .query("UPDATE dept_visions SET vision = ? WHERE id = ?", [
+          content,
+          id,
+        ]);
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async updateDeptMissionText(id, content) {
+    try {
+      const [result] = await db
+        .promise()
+        .query("UPDATE dept_visions SET mission = ? WHERE id = ?", [
+          content,
+          id,
+        ]);
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async updateDeptObjectiveText(id, content) {
+    try {
+      const [result] = await db
+        .promise()
+        .query("UPDATE dept_objectives SET objective = ? WHERE id = ?", [
+          content,
+          id,
+        ]);
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async updateDeptOutcomesText(id, content) {
+    try {
+      const [result] = await db
+        .promise()
+        .query("UPDATE dept_objectives SET outcome = ? WHERE id = ?", [
+          content,
+          id,
+        ]);
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async getDeptVisionText(departmentId) {
+    try {
+      const [rows] = await db
+        .promise()
+        .query("SELECT * FROM dept_visions WHERE department_id = ?", [
+          departmentId,
+        ]);
+      return rows[0] || null;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async getDeptObjectiveText(departmentId) {
+    try {
+      const [rows] = await db
+        .promise()
+        .query("SELECT * FROM dept_objectives WHERE department_id = ?", [
+          departmentId,
+        ]);
+      return rows[0] || null;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   // DEPT_COMMITTEES OPERATIONS
   static async createCommittee(
     type,
