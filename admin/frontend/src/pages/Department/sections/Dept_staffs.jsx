@@ -3,7 +3,7 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
-const ComputerStaffs = () => {
+const DeptStaffs = () => {
   const [faculties, setFaculties] = useState([]);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -48,7 +48,7 @@ const ComputerStaffs = () => {
       <h2 className="text-2xl font-bold mb-6 text-center">
         Computer Engineering - Faculty & Supporting Staff
       </h2>
-      
+
       {faculties.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {faculties.map((faculty) => (
@@ -61,14 +61,15 @@ const ComputerStaffs = () => {
                 {/* Faculty Image */}
                 <div className="flex justify-center mb-4">
                   <img
-                    src={faculty.image && faculty.image !== '/img/no_user.jpg' 
-                      ? `http://localhost:3663${faculty.image}` 
-                      : '/default-avatar.png'
+                    src={
+                      faculty.image && faculty.image !== "/img/no_user.jpg"
+                        ? `http://localhost:3663${faculty.image}`
+                        : "/default-avatar.png"
                     }
                     alt={faculty.name}
                     className="w-24 h-24 rounded-full object-cover border-2 border-gray-300"
                     onError={(e) => {
-                      e.target.src = '/default-avatar.png';
+                      e.target.src = "/default-avatar.png";
                     }}
                   />
                 </div>
@@ -79,23 +80,29 @@ const ComputerStaffs = () => {
                     {faculty.name}
                   </h3>
                   <p className="text-sm text-gray-600 mb-1">
-                    <span className="font-medium">Qualification:</span> {faculty.qualification}
+                    <span className="font-medium">Qualification:</span>{" "}
+                    {faculty.qualification}
                   </p>
                   <p className="text-sm text-gray-600 mb-1">
-                    <span className="font-medium">Designation:</span> {faculty.designation}
+                    <span className="font-medium">Designation:</span>{" "}
+                    {faculty.designation}
                   </p>
                   <p className="text-sm text-blue-600 hover:text-blue-800 mb-2">
                     {faculty.email_address}
                   </p>
-                  
+
                   {/* Staff Type Badge */}
                   <div className="mt-3">
-                    <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${
-                      faculty.teaching_staff 
-                        ? 'bg-blue-100 text-blue-800' 
-                        : 'bg-green-100 text-green-800'
-                    }`}>
-                      {faculty.teaching_staff ? 'Teaching Staff' : 'Supporting Staff'}
+                    <span
+                      className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${
+                        faculty.teaching_staff
+                          ? "bg-blue-100 text-blue-800"
+                          : "bg-green-100 text-green-800"
+                      }`}
+                    >
+                      {faculty.teaching_staff
+                        ? "Teaching Staff"
+                        : "Supporting Staff"}
                     </span>
                   </div>
                 </div>
@@ -103,7 +110,9 @@ const ComputerStaffs = () => {
 
               {/* Click to view more info */}
               <div className="bg-gray-50 px-4 py-3 text-center">
-                <p className="text-xs text-gray-500">Click to view full profile</p>
+                <p className="text-xs text-gray-500">
+                  Click to view full profile
+                </p>
               </div>
             </div>
           ))}
@@ -117,4 +126,4 @@ const ComputerStaffs = () => {
   );
 };
 
-export default ComputerStaffs; 
+export default DeptStaffs;

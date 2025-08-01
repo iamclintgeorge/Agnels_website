@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { 
-  Plus, 
-  Edit, 
-  Trash2, 
-  Upload, 
-  Building, 
+import {
+  Plus,
+  Edit,
+  Trash2,
+  Upload,
+  Building,
   Image as ImageIcon,
   X,
-  Save
+  Save,
 } from "lucide-react";
 
-const ComputerInfrastructure = () => {
+const DeptInfrastructure = () => {
   const navigate = useNavigate();
   const [infrastructures, setInfrastructures] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -20,13 +20,13 @@ const ComputerInfrastructure = () => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [selectedInfra, setSelectedInfra] = useState(null);
   const [uploading, setUploading] = useState(false);
-  
+
   // Form state
   const [formData, setFormData] = useState({
     name: "",
     description1: "",
     image: null,
-    imagePreview: ""
+    imagePreview: "",
   });
 
   // Department ID for Computer Engineering
@@ -39,14 +39,17 @@ const ComputerInfrastructure = () => {
   const fetchInfrastructures = async () => {
     try {
       setLoading(true);
-      const response = await fetch(`http://localhost:3663/api/infrastructure/department/${DEPARTMENT_ID}`, {
-        credentials: "include"
-      });
-      
+      const response = await fetch(
+        `http://localhost:3663/api/infrastructure/department/${DEPARTMENT_ID}`,
+        {
+          credentials: "include",
+        }
+      );
+
       if (!response.ok) {
         throw new Error("Failed to fetch infrastructures");
       }
-      
+
       const data = await response.json();
       setInfrastructures(data.data || []);
     } catch (error) {
@@ -59,7 +62,7 @@ const ComputerInfrastructure = () => {
 
   const handleAddInfrastructure = async (e) => {
     e.preventDefault();
-    
+
     if (!formData.name || !formData.description1 || !formData.image) {
       toast.error("Please fill all fields and select an image");
       return;
@@ -73,11 +76,14 @@ const ComputerInfrastructure = () => {
       formDataToSend.append("department_id", DEPARTMENT_ID);
       formDataToSend.append("image", formData.image);
 
-      const response = await fetch("http://localhost:3663/api/infrastructure/admin/create", {
-        method: "POST",
-        credentials: "include",
-        body: formDataToSend
-      });
+      const response = await fetch(
+        "http://localhost:3663/api/infrastructure/admin/create",
+        {
+          method: "POST",
+          credentials: "include",
+          body: formDataToSend,
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Failed to create infrastructure");
@@ -85,16 +91,16 @@ const ComputerInfrastructure = () => {
 
       const data = await response.json();
       toast.success("Infrastructure added successfully!");
-      
+
       // Reset form and close modal
       setFormData({
         name: "",
         description1: "",
         image: null,
-        imagePreview: ""
+        imagePreview: "",
       });
       setShowAddModal(false);
-      
+
       // Refresh the list
       fetchInfrastructures();
     } catch (error) {
@@ -107,7 +113,7 @@ const ComputerInfrastructure = () => {
 
   const handleEditInfrastructure = async (e) => {
     e.preventDefault();
-    
+
     if (!formData.name || !formData.description1) {
       toast.error("Please fill all required fields");
       return;
@@ -115,34 +121,37 @@ const ComputerInfrastructure = () => {
 
     try {
       setUploading(true);
-      const response = await fetch(`http://localhost:3663/api/infrastructure/admin/update/${selectedInfra.id}`, {
-        method: "PUT",
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          name: formData.name,
-          description1: formData.description1
-        })
-      });
+      const response = await fetch(
+        `http://localhost:3663/api/infrastructure/admin/update/${selectedInfra.id}`,
+        {
+          method: "PUT",
+          credentials: "include",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: formData.name,
+            description1: formData.description1,
+          }),
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Failed to update infrastructure");
       }
 
       toast.success("Infrastructure updated successfully!");
-      
+
       // Reset form and close modal
       setFormData({
         name: "",
         description1: "",
         image: null,
-        imagePreview: ""
+        imagePreview: "",
       });
       setShowEditModal(false);
       setSelectedInfra(null);
-      
+
       // Refresh the list
       fetchInfrastructures();
     } catch (error) {
@@ -154,15 +163,22 @@ const ComputerInfrastructure = () => {
   };
 
   const handleDeleteInfrastructure = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this infrastructure item?")) {
+    if (
+      !window.confirm(
+        "Are you sure you want to delete this infrastructure item?"
+      )
+    ) {
       return;
     }
 
     try {
-      const response = await fetch(`http://localhost:3663/api/infrastructure/admin/delete/${id}`, {
-        method: "DELETE",
-        credentials: "include"
-      });
+      const response = await fetch(
+        `http://localhost:3663/api/infrastructure/admin/delete/${id}`,
+        {
+          method: "DELETE",
+          credentials: "include",
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Failed to delete infrastructure");
@@ -179,17 +195,18 @@ const ComputerInfrastructure = () => {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      if (file.size > 5 * 1024 * 1024) { // 5MB limit
+      if (file.size > 5 * 1024 * 1024) {
+        // 5MB limit
         toast.error("Image size should be less than 5MB");
         return;
       }
-      
+
       const reader = new FileReader();
       reader.onload = (e) => {
-        setFormData(prev => ({
+        setFormData((prev) => ({
           ...prev,
           image: file,
-          imagePreview: e.target.result
+          imagePreview: e.target.result,
         }));
       };
       reader.readAsDataURL(file);
@@ -201,7 +218,7 @@ const ComputerInfrastructure = () => {
       name: "",
       description1: "",
       image: null,
-      imagePreview: ""
+      imagePreview: "",
     });
     setShowAddModal(true);
   };
@@ -212,7 +229,7 @@ const ComputerInfrastructure = () => {
       name: infra.name,
       description1: infra.description1,
       image: null,
-      imagePreview: ""
+      imagePreview: "",
     });
     setShowEditModal(true);
   };
@@ -225,7 +242,7 @@ const ComputerInfrastructure = () => {
       name: "",
       description1: "",
       image: null,
-      imagePreview: ""
+      imagePreview: "",
     });
   };
 
@@ -252,7 +269,8 @@ const ComputerInfrastructure = () => {
                 Computer Engineering Infrastructure
               </h1>
               <p className="text-gray-600 mt-2">
-                Manage infrastructure facilities for the Computer Engineering department
+                Manage infrastructure facilities for the Computer Engineering
+                department
               </p>
             </div>
             <button
@@ -269,8 +287,12 @@ const ComputerInfrastructure = () => {
         {infrastructures.length === 0 ? (
           <div className="text-center py-12">
             <Building className="mx-auto h-16 w-16 text-gray-400 mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">No Infrastructure Found</h3>
-            <p className="text-gray-600 mb-4">Get started by adding your first infrastructure item.</p>
+            <h3 className="text-lg font-medium text-gray-900 mb-2">
+              No Infrastructure Found
+            </h3>
+            <p className="text-gray-600 mb-4">
+              Get started by adding your first infrastructure item.
+            </p>
             <button
               onClick={openAddModal}
               className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg"
@@ -281,7 +303,10 @@ const ComputerInfrastructure = () => {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {infrastructures.map((infra) => (
-              <div key={infra.id} className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+              <div
+                key={infra.id}
+                className="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow"
+              >
                 <div className="aspect-w-16 aspect-h-9 bg-gray-200">
                   <img
                     src={infra.image || "/api/placeholder/400/300"}
@@ -293,12 +318,17 @@ const ComputerInfrastructure = () => {
                   />
                 </div>
                 <div className="p-6">
-                  <h3 className="text-xl font-semibold text-gray-900 mb-2">{infra.name}</h3>
-                  <p className="text-gray-600 text-sm mb-4 line-clamp-3">{infra.description1}</p>
-                  
+                  <h3 className="text-xl font-semibold text-gray-900 mb-2">
+                    {infra.name}
+                  </h3>
+                  <p className="text-gray-600 text-sm mb-4 line-clamp-3">
+                    {infra.description1}
+                  </p>
+
                   <div className="flex justify-between items-center">
                     <span className="text-xs text-gray-500">
-                      Added: {new Date(infra.created_timestamp).toLocaleDateString()}
+                      Added:{" "}
+                      {new Date(infra.created_timestamp).toLocaleDateString()}
                     </span>
                     <div className="flex space-x-2">
                       <button
@@ -328,7 +358,9 @@ const ComputerInfrastructure = () => {
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-white rounded-lg p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
               <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl font-bold text-gray-900">Add New Infrastructure</h2>
+                <h2 className="text-xl font-bold text-gray-900">
+                  Add New Infrastructure
+                </h2>
                 <button
                   onClick={closeModals}
                   className="text-gray-400 hover:text-gray-600"
@@ -345,7 +377,9 @@ const ComputerInfrastructure = () => {
                   <input
                     type="text"
                     value={formData.name}
-                    onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+                    onChange={(e) =>
+                      setFormData((prev) => ({ ...prev, name: e.target.value }))
+                    }
                     className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="Enter infrastructure name"
                     required
@@ -358,7 +392,12 @@ const ComputerInfrastructure = () => {
                   </label>
                   <textarea
                     value={formData.description1}
-                    onChange={(e) => setFormData(prev => ({ ...prev, description1: e.target.value }))}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        description1: e.target.value,
+                      }))
+                    }
                     className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     rows="4"
                     placeholder="Enter infrastructure description"
@@ -422,7 +461,9 @@ const ComputerInfrastructure = () => {
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-white rounded-lg p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
               <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl font-bold text-gray-900">Edit Infrastructure</h2>
+                <h2 className="text-xl font-bold text-gray-900">
+                  Edit Infrastructure
+                </h2>
                 <button
                   onClick={closeModals}
                   className="text-gray-400 hover:text-gray-600"
@@ -439,7 +480,9 @@ const ComputerInfrastructure = () => {
                   <input
                     type="text"
                     value={formData.name}
-                    onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+                    onChange={(e) =>
+                      setFormData((prev) => ({ ...prev, name: e.target.value }))
+                    }
                     className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     placeholder="Enter infrastructure name"
                     required
@@ -452,7 +495,12 @@ const ComputerInfrastructure = () => {
                   </label>
                   <textarea
                     value={formData.description1}
-                    onChange={(e) => setFormData(prev => ({ ...prev, description1: e.target.value }))}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        description1: e.target.value,
+                      }))
+                    }
                     className="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                     rows="4"
                     placeholder="Enter infrastructure description"
@@ -471,7 +519,8 @@ const ComputerInfrastructure = () => {
                     }}
                   />
                   <p className="text-xs text-gray-500 mt-1">
-                    Note: To change the image, you'll need to delete and recreate the infrastructure item.
+                    Note: To change the image, you'll need to delete and
+                    recreate the infrastructure item.
                   </p>
                 </div>
 
@@ -510,4 +559,4 @@ const ComputerInfrastructure = () => {
   );
 };
 
-export default ComputerInfrastructure; 
+export default DeptInfrastructure;

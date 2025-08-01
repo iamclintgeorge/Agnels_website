@@ -3,8 +3,10 @@ import axios from "axios";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { toast } from "react-toastify";
+import { useParams } from "react-router-dom";
+import { deptId, deptname } from "../../../util/dept_mapping.js";
 
-const ComputerCommittees = () => {
+const DeptCommittees = () => {
   const [committees, setCommittees] = useState([]);
   const [deptText, setDeptText] = useState("");
   const [file, setFile] = useState(null);
@@ -14,7 +16,9 @@ const ComputerCommittees = () => {
   const [editMode, setEditMode] = useState(false);
   const [textContent, setTextContent] = useState("");
   const quillRef = useRef(null);
-  const departmentId = 2; // Computer Engineering department ID
+  const { departmentName } = useParams();
+  const departmentId = deptId[departmentName];
+  const deptName = deptname[departmentName];
 
   useEffect(() => {
     fetchCommittees();
@@ -191,7 +195,7 @@ const ComputerCommittees = () => {
   return (
     <div className="p-6 bg-white">
       <h2 className="text-2xl font-bold mb-6 text-gray-800">
-        Computer Engineering - Committees and Board of Studies
+        {deptName} - Committees and Board of Studies
       </h2>
 
       {/* Text Content Section */}
@@ -363,4 +367,4 @@ const ComputerCommittees = () => {
   );
 };
 
-export default ComputerCommittees;
+export default DeptCommittees;
