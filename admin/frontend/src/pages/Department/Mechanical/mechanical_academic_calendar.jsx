@@ -23,7 +23,7 @@ const MechanicalAcademicCalendar = () => {
   const fetchCalendars = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3663/api/dept/calendars/${departmentId}`
+        `http://localhost:3663/api/department/calendars/${departmentId}`
       );
       if (response.data.success) {
         setCalendars(response.data.data);
@@ -37,7 +37,7 @@ const MechanicalAcademicCalendar = () => {
   const fetchDeptText = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3663/api/dept/text/${departmentId}/academic_calendar`
+        `http://localhost:3663/api/department/text/${departmentId}/academic_calendar`
       );
       if (response.data.success && response.data.data) {
         setDeptText(response.data.data.content);
@@ -67,12 +67,12 @@ const MechanicalAcademicCalendar = () => {
     setUploading(true);
     try {
       const response = await axios.post(
-        "http://localhost:3663/api/dept/calendars/create",
+        "http://localhost:3663/api/department/calendars/create",
         formData,
         {
-          headers: { 
+          headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${localStorage.getItem('token')}`
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         }
       );
@@ -91,15 +91,18 @@ const MechanicalAcademicCalendar = () => {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this academic calendar?")) return;
+    if (
+      !window.confirm("Are you sure you want to delete this academic calendar?")
+    )
+      return;
 
     try {
       const response = await axios.delete(
-        `http://localhost:3663/api/dept/calendars/${id}`,
+        `http://localhost:3663/api/department/calendars/${id}`,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-          }
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         }
       );
       if (response.data.success) {
@@ -108,23 +111,25 @@ const MechanicalAcademicCalendar = () => {
       }
     } catch (err) {
       console.error("Delete error:", err);
-      toast.error(err.response?.data?.message || "Error deleting academic calendar");
+      toast.error(
+        err.response?.data?.message || "Error deleting academic calendar"
+      );
     }
   };
 
   const handleTextUpdate = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:3663/api/dept/text/create",
+        "http://localhost:3663/api/department/text/create",
         {
           departmentId: departmentId,
           section: "academic_calendar",
-          content: textContent
+          content: textContent,
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-          }
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         }
       );
       if (response.data.success) {
@@ -154,8 +159,17 @@ const MechanicalAcademicCalendar = () => {
   };
 
   const formats = [
-    "header", "bold", "italic", "underline", "list", "bullet",
-    "indent", "size", "font", "align", "link",
+    "header",
+    "bold",
+    "italic",
+    "underline",
+    "list",
+    "bullet",
+    "indent",
+    "size",
+    "font",
+    "align",
+    "link",
   ];
 
   return (
@@ -199,7 +213,11 @@ const MechanicalAcademicCalendar = () => {
           </div>
         ) : (
           <div
-            dangerouslySetInnerHTML={{ __html: deptText || "No information available. Click Edit to add content." }}
+            dangerouslySetInnerHTML={{
+              __html:
+                deptText ||
+                "No information available. Click Edit to add content.",
+            }}
             className="prose max-w-none"
           />
         )}
@@ -207,7 +225,9 @@ const MechanicalAcademicCalendar = () => {
 
       {/* Upload Form */}
       <div className="mb-8 p-4 border border-gray-200 rounded-lg">
-        <h3 className="text-lg font-semibold mb-4 text-gray-700">Upload New Academic Calendar</h3>
+        <h3 className="text-lg font-semibold mb-4 text-gray-700">
+          Upload New Academic Calendar
+        </h3>
         <form onSubmit={handleUpload} className="space-y-4">
           <div>
             <label className="block text-gray-700 mb-2">Type</label>
@@ -242,7 +262,9 @@ const MechanicalAcademicCalendar = () => {
 
       {/* Academic Calendars List */}
       <div>
-        <h3 className="text-lg font-semibold mb-4 text-gray-700">Academic Calendars</h3>
+        <h3 className="text-lg font-semibold mb-4 text-gray-700">
+          Academic Calendars
+        </h3>
         {/* Filter by Type */}
         <div className="mb-4">
           <label className="block text-gray-700 mb-2">Filter by Type:</label>
@@ -251,7 +273,9 @@ const MechanicalAcademicCalendar = () => {
             onChange={(e) => {
               const filterType = e.target.value;
               if (filterType) {
-                setCalendars(prev => prev.filter(cal => cal.type === filterType));
+                setCalendars((prev) =>
+                  prev.filter((cal) => cal.type === filterType)
+                );
               } else {
                 fetchCalendars(); // Reload all
               }
@@ -292,7 +316,7 @@ const MechanicalAcademicCalendar = () => {
                 </div>
                 <div>
                   <a
-                    href={`http://localhost:3663/uploads/department/${calendar.attachment}`}
+                    href={`http://localhost:3663/cdn/department/${calendar.attachment}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-500 hover:underline font-medium"
@@ -300,7 +324,8 @@ const MechanicalAcademicCalendar = () => {
                     {calendar.attachment}
                   </a>
                   <p className="text-sm text-gray-500 mt-1">
-                    Uploaded: {new Date(calendar.created_timestamp).toLocaleDateString()}
+                    Uploaded:{" "}
+                    {new Date(calendar.created_timestamp).toLocaleDateString()}
                   </p>
                 </div>
               </div>

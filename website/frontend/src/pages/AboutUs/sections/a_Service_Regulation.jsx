@@ -2,14 +2,33 @@ import React from "react";
 import { SectionContainer } from "./SectionContainer";
 
 export const Service_Regulation = () => {
-  const pdfUrl = "src/assets/Documents/service.pdf";
+  const pdfUrl = "src/assets/Documents/service.pdf"; // Adjust your PDF path here
 
   return (
     <SectionContainer
       title="Service Regulations"
       subtitle="Information on policies and standards"
     >
-      <div className="flex flex-col gap-10">{/* Content for PDF viewer */}</div>
+      <div className="flex flex-col gap-10">
+        <div className="rounded-md shadow-sm p-5 hover:shadow-md transition-shadow">
+          <div className="w-full h-[600px] border border-gray-300 rounded-lg overflow-hidden shadow-sm ">
+            <object
+              data={pdfUrl}
+              type="application/pdf"
+              width="100%"
+              height="100%"
+            >
+              <p className="p-4 text-gray-700">
+                It appears you don't have a PDF plugin for this browser. No
+                worries though, you can{" "}
+                <a href={pdfUrl} className="text-blue-500 underline">
+                  click here to download the PDF file.
+                </a>
+              </p>
+            </object>
+          </div>
+        </div>
+      </div>
     </SectionContainer>
   );
 };

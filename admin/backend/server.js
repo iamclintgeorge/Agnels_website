@@ -87,7 +87,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Serve static files from the 'public' folder
-app.use("/uploads", express.static(path.join(__dirname, "public", "uploads")));
+app.use("/cdn", express.static(path.join(__dirname, "public", "cdn")));
 
 // Add admin activity logging middleware (after session, before routes)
 app.use(adminActivityLogger);
@@ -103,21 +103,21 @@ app.get("/", (req, res) => {
 app.use("/", routes);
 app.use("/api/nirf", nirfRoutes);
 app.use("/api/nba-naac", nbaNaacRoutes);
-app.use("/api/department", deptHomeRoutes);
-app.use("/api/department", compActivityRoutes);
+app.use("/api/department", deptHomeRoutes); //Working
+app.use("/api/department", compActivityRoutes); //Not in Use But Clint had created this
 app.use("/api/profile", profileRoutes);
 app.use("/api/studentcorner", studentcornerRoutes);
 
 // New department routes
-app.use("/api/department/computer", computerRoutes);
-app.use("/api/department/mechanical", mechanicalRoutes);
-app.use("/api/department/electrical", electricalRoutes);
-app.use("/api/department/extc", extcRoutes);
-app.use("/api/department/cse", cseRoutes);
-app.use("/api/department/bsh", bshRoutes);
+app.use("/api/department/home", computerRoutes); //Wprking
+// app.use("/api/department/mechanical", mechanicalRoutes);
+// app.use("/api/department/electrical", electricalRoutes);
+// app.use("/api/department/extc", extcRoutes);
+// app.use("/api/department/cse", cseRoutes);
+// app.use("/api/department/bsh", bshRoutes);
 
 // Department PDF routes (for all departments and sections)
-app.use("/api/department", deptPdfRoutes);
+// app.use("/api/department", deptPdfRoutes);
 
 // HOD desk routes
 app.use("/api/hod-desk", hodDeskRoutes);

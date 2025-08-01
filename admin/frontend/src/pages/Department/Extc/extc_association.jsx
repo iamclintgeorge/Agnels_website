@@ -24,7 +24,7 @@ const ExtcAssociation = () => {
   const fetchAssociations = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3663/api/dept/associations/${departmentId}`
+        `http://localhost:3663/api/department/associations/${departmentId}`
       );
       if (response.data.success) {
         setAssociations(response.data.data);
@@ -38,7 +38,7 @@ const ExtcAssociation = () => {
   const fetchDeptText = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3663/api/dept/text/${departmentId}/associations`
+        `http://localhost:3663/api/department/text/${departmentId}/associations`
       );
       if (response.data.success && response.data.data) {
         setDeptText(response.data.data.content);
@@ -68,12 +68,12 @@ const ExtcAssociation = () => {
     setUploading(true);
     try {
       const response = await axios.post(
-        "http://localhost:3663/api/dept/associations/create",
+        "http://localhost:3663/api/department/associations/create",
         formData,
         {
-          headers: { 
+          headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${localStorage.getItem('token')}`
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         }
       );
@@ -92,15 +92,16 @@ const ExtcAssociation = () => {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this association?")) return;
+    if (!window.confirm("Are you sure you want to delete this association?"))
+      return;
 
     try {
       const response = await axios.delete(
-        `http://localhost:3663/api/dept/associations/${id}`,
+        `http://localhost:3663/api/department/associations/${id}`,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-          }
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         }
       );
       if (response.data.success) {
@@ -116,16 +117,16 @@ const ExtcAssociation = () => {
   const handleTextUpdate = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:3663/api/dept/text/create",
+        "http://localhost:3663/api/department/text/create",
         {
           departmentId: departmentId,
           section: "associations",
-          content: textContent
+          content: textContent,
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-          }
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         }
       );
       if (response.data.success) {
@@ -140,11 +141,13 @@ const ExtcAssociation = () => {
     }
   };
 
-  const filteredAssociations = associations.filter(association => {
+  const filteredAssociations = associations.filter((association) => {
     return !filterYear || association.year.toString() === filterYear;
   });
 
-  const uniqueYears = [...new Set(associations.map(assoc => assoc.year))].sort((a, b) => b - a);
+  const uniqueYears = [
+    ...new Set(associations.map((assoc) => assoc.year)),
+  ].sort((a, b) => b - a);
 
   const modules = {
     toolbar: [
@@ -161,8 +164,17 @@ const ExtcAssociation = () => {
   };
 
   const formats = [
-    "header", "bold", "italic", "underline", "list", "bullet",
-    "indent", "size", "font", "align", "link",
+    "header",
+    "bold",
+    "italic",
+    "underline",
+    "list",
+    "bullet",
+    "indent",
+    "size",
+    "font",
+    "align",
+    "link",
   ];
 
   return (
@@ -205,16 +217,22 @@ const ExtcAssociation = () => {
             </button>
           </div>
         ) : (
-          <div 
+          <div
             className="prose max-w-none"
-            dangerouslySetInnerHTML={{ __html: deptText || "No information available. Click Edit to add content." }}
+            dangerouslySetInnerHTML={{
+              __html:
+                deptText ||
+                "No information available. Click Edit to add content.",
+            }}
           />
         )}
       </div>
 
       {/* Upload Form */}
       <div className="mb-8 p-4 border border-gray-200 rounded-lg">
-        <h3 className="text-lg font-semibold mb-4 text-gray-700">Upload New Association</h3>
+        <h3 className="text-lg font-semibold mb-4 text-gray-700">
+          Upload New Association
+        </h3>
         <form onSubmit={handleUpload} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
@@ -256,8 +274,10 @@ const ExtcAssociation = () => {
 
       {/* Filter and List Section */}
       <div className="mb-6">
-        <h3 className="text-lg font-semibold mb-4 text-gray-700">Associations</h3>
-        
+        <h3 className="text-lg font-semibold mb-4 text-gray-700">
+          Associations
+        </h3>
+
         {/* Filter */}
         {uniqueYears.length > 0 && (
           <div className="mb-4">
@@ -286,8 +306,12 @@ const ExtcAssociation = () => {
                 className="border p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow"
               >
                 <div className="mb-3">
-                  <h4 className="font-semibold text-gray-800">Association {association.year}</h4>
-                  <p className="text-sm text-gray-600">Year: {association.year}</p>
+                  <h4 className="font-semibold text-gray-800">
+                    Association {association.year}
+                  </h4>
+                  <p className="text-sm text-gray-600">
+                    Year: {association.year}
+                  </p>
                 </div>
                 <div className="mb-3">
                   <a
@@ -299,7 +323,8 @@ const ExtcAssociation = () => {
                     View File
                   </a>
                   <p className="text-sm text-gray-500">
-                    Uploaded: {new Date(association.created_at).toLocaleDateString()}
+                    Uploaded:{" "}
+                    {new Date(association.created_at).toLocaleDateString()}
                   </p>
                 </div>
                 <button

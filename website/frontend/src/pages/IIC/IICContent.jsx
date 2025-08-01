@@ -86,7 +86,7 @@ export const Innovation_and_Startup_Policy = () => {
             </h2>
             <div className="border-t-2 border-blue-500 my-2"></div>
             <iframe
-              src={`http://localhost:3663/uploads/IIC/${pdf.file_url}`}
+              src={`http://localhost:3663/cdn/IIC/${pdf.file_url}`}
               width="100%"
               height="700px"
               title={pdf.title}

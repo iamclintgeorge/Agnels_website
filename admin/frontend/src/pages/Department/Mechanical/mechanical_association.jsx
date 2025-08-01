@@ -23,7 +23,7 @@ const MechanicalAssociation = () => {
   const fetchAssociations = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3663/api/dept/associations/${departmentId}`
+        `http://localhost:3663/api/department/associations/${departmentId}`
       );
       if (response.data.success) {
         setAssociations(response.data.data);
@@ -37,7 +37,7 @@ const MechanicalAssociation = () => {
   const fetchDeptText = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3663/api/dept/text/${departmentId}/association`
+        `http://localhost:3663/api/department/text/${departmentId}/association`
       );
       if (response.data.success && response.data.data) {
         setDeptText(response.data.data.content);
@@ -67,12 +67,12 @@ const MechanicalAssociation = () => {
     setUploading(true);
     try {
       const response = await axios.post(
-        "http://localhost:3663/api/dept/associations/create",
+        "http://localhost:3663/api/department/associations/create",
         formData,
         {
-          headers: { 
+          headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${localStorage.getItem('token')}`
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         }
       );
@@ -91,15 +91,20 @@ const MechanicalAssociation = () => {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this association document?")) return;
+    if (
+      !window.confirm(
+        "Are you sure you want to delete this association document?"
+      )
+    )
+      return;
 
     try {
       const response = await axios.delete(
-        `http://localhost:3663/api/dept/associations/${id}`,
+        `http://localhost:3663/api/department/associations/${id}`,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-          }
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         }
       );
       if (response.data.success) {
@@ -108,23 +113,25 @@ const MechanicalAssociation = () => {
       }
     } catch (err) {
       console.error("Delete error:", err);
-      toast.error(err.response?.data?.message || "Error deleting association document");
+      toast.error(
+        err.response?.data?.message || "Error deleting association document"
+      );
     }
   };
 
   const handleTextUpdate = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:3663/api/dept/text/create",
+        "http://localhost:3663/api/department/text/create",
         {
           departmentId: departmentId,
           section: "association",
-          content: textContent
+          content: textContent,
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-          }
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         }
       );
       if (response.data.success) {
@@ -154,8 +161,17 @@ const MechanicalAssociation = () => {
   };
 
   const formats = [
-    "header", "bold", "italic", "underline", "list", "bullet",
-    "indent", "size", "font", "align", "link",
+    "header",
+    "bold",
+    "italic",
+    "underline",
+    "list",
+    "bullet",
+    "indent",
+    "size",
+    "font",
+    "align",
+    "link",
   ];
 
   return (
@@ -199,7 +215,11 @@ const MechanicalAssociation = () => {
           </div>
         ) : (
           <div
-            dangerouslySetInnerHTML={{ __html: deptText || "No information available. Click Edit to add content." }}
+            dangerouslySetInnerHTML={{
+              __html:
+                deptText ||
+                "No information available. Click Edit to add content.",
+            }}
             className="prose max-w-none"
           />
         )}
@@ -207,7 +227,9 @@ const MechanicalAssociation = () => {
 
       {/* Upload Form */}
       <div className="mb-8 p-4 border border-gray-200 rounded-lg">
-        <h3 className="text-lg font-semibold mb-4 text-gray-700">Upload New Association Document</h3>
+        <h3 className="text-lg font-semibold mb-4 text-gray-700">
+          Upload New Association Document
+        </h3>
         <form onSubmit={handleUpload} className="space-y-4">
           <div>
             <label className="block text-gray-700 mb-2">Year</label>
@@ -240,8 +262,10 @@ const MechanicalAssociation = () => {
 
       {/* Associations List */}
       <div>
-        <h3 className="text-lg font-semibold mb-4 text-gray-700">Association Documents</h3>
-        
+        <h3 className="text-lg font-semibold mb-4 text-gray-700">
+          Association Documents
+        </h3>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {associations.length > 0 ? (
             associations.map((association) => (
@@ -263,7 +287,7 @@ const MechanicalAssociation = () => {
                 </div>
                 <div>
                   <a
-                    href={`http://localhost:3663/uploads/department/${association.attachment}`}
+                    href={`http://localhost:3663/cdn/department/${association.attachment}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-500 hover:underline font-medium"
@@ -271,7 +295,10 @@ const MechanicalAssociation = () => {
                     {association.attachment}
                   </a>
                   <p className="text-sm text-gray-500 mt-1">
-                    Uploaded: {new Date(association.created_timestamp).toLocaleDateString()}
+                    Uploaded:{" "}
+                    {new Date(
+                      association.created_timestamp
+                    ).toLocaleDateString()}
                   </p>
                 </div>
               </div>

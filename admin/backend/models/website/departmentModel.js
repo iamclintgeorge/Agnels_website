@@ -10,7 +10,7 @@ const __dirname = path.dirname(__filename);
 // Configure multer for file uploads
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    const uploadPath = path.join(__dirname, "../../public/uploads/department");
+    const uploadPath = path.join(__dirname, "../../public/cdn/department");
     if (!fs.existsSync(uploadPath)) {
       fs.mkdirSync(uploadPath, { recursive: true });
     }
@@ -162,7 +162,7 @@ class DepartmentModel {
       if (rows[0]?.attachment && !rows[0].attachment.startsWith("http")) {
         const filePath = path.join(
           __dirname,
-          "../../public/uploads/department",
+          "../../public/cdn/department",
           rows[0].attachment
         );
         if (fs.existsSync(filePath)) {
@@ -238,7 +238,7 @@ class DepartmentModel {
       if (rows[0]?.attachment && !rows[0].attachment.startsWith("http")) {
         const filePath = path.join(
           __dirname,
-          "../../public/uploads/department",
+          "../../public/cdn/department",
           rows[0].attachment
         );
         if (fs.existsSync(filePath)) {
@@ -314,7 +314,7 @@ class DepartmentModel {
       if (rows[0]?.attachment && !rows[0].attachment.startsWith("http")) {
         const filePath = path.join(
           __dirname,
-          "../../public/uploads/department",
+          "../../public/cdn/department",
           rows[0].attachment
         );
         if (fs.existsSync(filePath)) {
@@ -341,7 +341,7 @@ class DepartmentModel {
       const [result] = await db
         .promise()
         .query(
-          "INSERT INTO time_tables (department_id, type, division, semester, attachment, created_by) VALUES (?, ?, ?, ?, ?, ?)",
+          "INSERT INTO time_tables (department_id, type, division, semester, attachment) VALUES (?, ?, ?, ?, ?)",
           [departmentId, type, division, semester, attachment, createdBy]
         );
       return result;
@@ -365,7 +365,7 @@ class DepartmentModel {
         params.push(semester);
       }
 
-      query += " ORDER BY semester DESC, created_timestamp DESC";
+      // query += " ORDER BY semester DESC, created_timestamp DESC";
 
       const [rows] = await db.promise().query(query, params);
       return rows;
@@ -413,7 +413,7 @@ class DepartmentModel {
       if (rows[0]?.attachment && !rows[0].attachment.startsWith("http")) {
         const filePath = path.join(
           __dirname,
-          "../../public/uploads/department",
+          "../../public/cdn/department",
           rows[0].attachment
         );
         if (fs.existsSync(filePath)) {
@@ -500,7 +500,7 @@ class DepartmentModel {
       if (rows[0]?.attachment && !rows[0].attachment.startsWith("http")) {
         const filePath = path.join(
           __dirname,
-          "../../public/uploads/department",
+          "../../public/cdn/department",
           rows[0].attachment
         );
         if (fs.existsSync(filePath)) {
@@ -580,7 +580,7 @@ class DepartmentModel {
       if (rows[0]?.attachment && !rows[0].attachment.startsWith("http")) {
         const filePath = path.join(
           __dirname,
-          "../../public/uploads/department",
+          "../../public/cdn/department",
           rows[0].attachment
         );
         if (fs.existsSync(filePath)) {
@@ -656,7 +656,7 @@ class DepartmentModel {
       if (rows[0]?.attachment && !rows[0].attachment.startsWith("http")) {
         const filePath = path.join(
           __dirname,
-          "../../public/uploads/department",
+          "../../public/cdn/department",
           rows[0].attachment
         );
         if (fs.existsSync(filePath)) {
@@ -732,7 +732,7 @@ class DepartmentModel {
       if (rows[0]?.attachment && !rows[0].attachment.startsWith("http")) {
         const filePath = path.join(
           __dirname,
-          "../../public/uploads/department",
+          "../../public/cdn/department",
           rows[0].attachment
         );
         if (fs.existsSync(filePath)) {

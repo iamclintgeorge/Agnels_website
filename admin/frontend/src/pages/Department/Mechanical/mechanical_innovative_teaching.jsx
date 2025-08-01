@@ -23,14 +23,19 @@ const MechanicalInnovativeTeaching = () => {
   const fetchActivities = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3663/api/dept/activities/${departmentId}`
+        `http://localhost:3663/api/department/activities/${departmentId}`
       );
       if (response.data.success) {
         // Filter for innovative teaching activities if needed
-        setActivities(response.data.data.filter(activity => 
-          activity.heading && activity.heading.toLowerCase().includes('innovative') ||
-          activity.heading && activity.heading.toLowerCase().includes('teaching')
-        ));
+        setActivities(
+          response.data.data.filter(
+            (activity) =>
+              (activity.heading &&
+                activity.heading.toLowerCase().includes("innovative")) ||
+              (activity.heading &&
+                activity.heading.toLowerCase().includes("teaching"))
+          )
+        );
       }
     } catch (err) {
       console.error("Error loading activities:", err);
@@ -41,7 +46,7 @@ const MechanicalInnovativeTeaching = () => {
   const fetchDeptText = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3663/api/dept/text/${departmentId}/innovative_teaching`
+        `http://localhost:3663/api/department/text/${departmentId}/innovative_teaching`
       );
       if (response.data.success && response.data.data) {
         setDeptText(response.data.data.content);
@@ -71,12 +76,12 @@ const MechanicalInnovativeTeaching = () => {
     setUploading(true);
     try {
       const response = await axios.post(
-        "http://localhost:3663/api/dept/activities/create",
+        "http://localhost:3663/api/department/activities/create",
         formData,
         {
-          headers: { 
+          headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${localStorage.getItem('token')}`
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         }
       );
@@ -95,15 +100,16 @@ const MechanicalInnovativeTeaching = () => {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this document?")) return;
+    if (!window.confirm("Are you sure you want to delete this document?"))
+      return;
 
     try {
       const response = await axios.delete(
-        `http://localhost:3663/api/dept/activities/${id}`,
+        `http://localhost:3663/api/department/activities/${id}`,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-          }
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         }
       );
       if (response.data.success) {
@@ -119,16 +125,16 @@ const MechanicalInnovativeTeaching = () => {
   const handleTextUpdate = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:3663/api/dept/text/create",
+        "http://localhost:3663/api/department/text/create",
         {
           departmentId: departmentId,
           section: "innovative_teaching",
-          content: textContent
+          content: textContent,
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-          }
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         }
       );
       if (response.data.success) {
@@ -158,8 +164,17 @@ const MechanicalInnovativeTeaching = () => {
   };
 
   const formats = [
-    "header", "bold", "italic", "underline", "list", "bullet",
-    "indent", "size", "font", "align", "link",
+    "header",
+    "bold",
+    "italic",
+    "underline",
+    "list",
+    "bullet",
+    "indent",
+    "size",
+    "font",
+    "align",
+    "link",
   ];
 
   return (
@@ -203,7 +218,11 @@ const MechanicalInnovativeTeaching = () => {
           </div>
         ) : (
           <div
-            dangerouslySetInnerHTML={{ __html: deptText || "No information available. Click Edit to add content." }}
+            dangerouslySetInnerHTML={{
+              __html:
+                deptText ||
+                "No information available. Click Edit to add content.",
+            }}
             className="prose max-w-none"
           />
         )}
@@ -211,7 +230,9 @@ const MechanicalInnovativeTeaching = () => {
 
       {/* Upload Form */}
       <div className="mb-8 p-4 border border-gray-200 rounded-lg">
-        <h3 className="text-lg font-semibold mb-4 text-gray-700">Upload Innovative Teaching Document</h3>
+        <h3 className="text-lg font-semibold mb-4 text-gray-700">
+          Upload Innovative Teaching Document
+        </h3>
         <form onSubmit={handleUpload} className="space-y-4">
           <div>
             <label className="block text-gray-700 mb-2">Document Heading</label>
@@ -244,8 +265,10 @@ const MechanicalInnovativeTeaching = () => {
 
       {/* Documents List */}
       <div>
-        <h3 className="text-lg font-semibold mb-4 text-gray-700">Innovative Teaching Documents</h3>
-        
+        <h3 className="text-lg font-semibold mb-4 text-gray-700">
+          Innovative Teaching Documents
+        </h3>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {activities.length > 0 ? (
             activities.map((activity) => (
@@ -254,7 +277,9 @@ const MechanicalInnovativeTeaching = () => {
                 className="border border-gray-200 p-4 rounded-lg hover:shadow-md transition-shadow"
               >
                 <div className="flex justify-between items-start mb-2">
-                  <h4 className="font-semibold text-gray-800 mb-2">{activity.heading}</h4>
+                  <h4 className="font-semibold text-gray-800 mb-2">
+                    {activity.heading}
+                  </h4>
                   <button
                     onClick={() => handleDelete(activity.id)}
                     className="text-red-500 hover:text-red-700"
@@ -265,7 +290,7 @@ const MechanicalInnovativeTeaching = () => {
                 </div>
                 <div>
                   <a
-                    href={`http://localhost:3663/uploads/department/${activity.attachment}`}
+                    href={`http://localhost:3663/cdn/department/${activity.attachment}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-500 hover:underline font-medium"
@@ -273,7 +298,8 @@ const MechanicalInnovativeTeaching = () => {
                     {activity.attachment}
                   </a>
                   <p className="text-sm text-gray-500 mt-1">
-                    Uploaded: {new Date(activity.created_timestamp).toLocaleDateString()}
+                    Uploaded:{" "}
+                    {new Date(activity.created_timestamp).toLocaleDateString()}
                   </p>
                 </div>
               </div>

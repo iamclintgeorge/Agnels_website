@@ -41,12 +41,10 @@ export const updateProfileController = async (req, res) => {
 
     // Validate required fields
     if (!name || !qualification || !designation || !email || !dateOfJoining) {
-      return res
-        .status(400)
-        .json({
-          message:
-            "All required fields (name, qualification, designation, email, dateOfJoining) must be provided",
-        });
+      return res.status(400).json({
+        message:
+          "All required fields (name, qualification, designation, email, dateOfJoining) must be provided",
+      });
     }
 
     const updateData = {
@@ -55,10 +53,10 @@ export const updateProfileController = async (req, res) => {
       designation,
       email,
       dateOfJoining,
-      photo: files?.photo ? `/uploads/${files.photo[0].filename}` : null,
-      bioData: files?.bioData ? `/uploads/${files.bioData[0].filename}` : null,
+      photo: files?.photo ? `/cdn/${files.photo[0].filename}` : null,
+      bioData: files?.bioData ? `/cdn/${files.bioData[0].filename}` : null,
       publications: files?.publications
-        ? `/Uploads/${files.publications[0].filename}`
+        ? `/cdn/${files.publications[0].filename}`
         : null,
     };
 

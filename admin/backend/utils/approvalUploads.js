@@ -3,7 +3,7 @@ import path from "path";
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.join("public", "uploads", "pending"));
+    cb(null, path.join("public", "cdn", "pending"));
   },
   filename: (req, file, cb) => {
     const uniqueName = Date.now() + "-" + file.originalname;

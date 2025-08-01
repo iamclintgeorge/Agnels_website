@@ -40,7 +40,7 @@ import {
 // Academic Home Controllers
 export const academicHomeCreateController = async (req, res) => {
   const { title, description, created_by } = req.body;
-  const hero_image_url = req.file ? `/uploads/${req.file.filename}` : null;
+  const hero_image_url = req.file ? `/cdn/${req.file.filename}` : null;
 
   try {
     const result = await academicHomeCreate(
@@ -81,7 +81,7 @@ export const academicHomeEditController = async (req, res) => {
 
     // Only update image if a new file was uploaded
     if (req.file) {
-      hero_image_url = `/uploads/${req.file.filename}`;
+      hero_image_url = `/cdn/${req.file.filename}`;
     }
 
     const result = await academicHomeEdit(
@@ -243,7 +243,7 @@ export const academicHandbookCreateController = async (req, res) => {
   const { title, description, handbook_type, created_by } = req.body;
   console.log("Uploaded File:", req.file);
 
-  const pdf_url = req.file ? `/uploads/${req.file.filename}` : null;
+  const pdf_url = req.file ? `/cdn/${req.file.filename}` : null;
   console.log("PDF URL:", pdf_url); // Debugging line to check the PDF URL
   // Optional: If pdf is mandatory, validate
   console.log("Received Handbook Data:", {
@@ -322,7 +322,7 @@ export const academicHandbookDeleteController = async (req, res) => {
 export const academicCalendarCreateController = async (req, res) => {
   const { year, semester, issue_date, description, created_by } = req.body;
   console.log(req.body);
-  const pdf_url = req.file ? `/uploads/${req.file.filename}` : null;
+  const pdf_url = req.file ? `/cdn/${req.file.filename}` : null;
   try {
     const result = await academicCalendarCreate(
       year,
@@ -407,10 +407,10 @@ export const academicCalendarDeleteController = async (req, res) => {
 // export const examinationCreateController = async (req, res) => {
 //   const { exam_type, semester, year,   notification, created_by } = req.body;
 //   const timetable_url = req.files?.pdf?.[0]?.filename
-//   ? `/uploads/${req.files.pdf[0].filename}`
+//   ? `/cdn/${req.files.pdf[0].filename}`
 //   : null;
 // const result_url = req.files?.result_pdf?.[0]?.filename
-//   ? `/uploads/${req.files.result_pdf[0].filename}`
+//   ? `/cdn/${req.files.result_pdf[0].filename}`
 //   : null
 //   try {
 //     const result = await examinationCreate(exam_type, semester, year, timetable_url, result_url, notification, created_by);
@@ -428,11 +428,11 @@ export const examinationCreateController = async (req, res) => {
   console.log("Exam Type:", exam_type); // Debug log
   // Fix the file path extraction - check for timetable_pdf instead of pdf
   const timetable_url = req.files?.timetable_pdf?.[0]?.filename
-    ? `/uploads/${req.files.timetable_pdf[0].filename}`
+    ? `/cdn/${req.files.timetable_pdf[0].filename}`
     : null;
 
   const result_url = req.files?.result_pdf?.[0]?.filename
-    ? `/uploads/${req.files.result_pdf[0].filename}`
+    ? `/cdn/${req.files.result_pdf[0].filename}`
     : null;
 
   // Add validation to ensure required fields are present
@@ -580,7 +580,7 @@ export const academicLinksDeleteController = async (req, res) => {
 // Stakeholder Feedback Controllers
 export const stakeholderFeedbackCreateController = async (req, res) => {
   const { title, description, feedback_type, created_by } = req.body;
-  const pdf_url = req.file ? `/uploads/${req.file.filename}` : null;
+  const pdf_url = req.file ? `/cdn/${req.file.filename}` : null;
   try {
     const result = await stakeholderFeedbackCreate(
       title,

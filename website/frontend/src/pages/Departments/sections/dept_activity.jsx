@@ -25,7 +25,7 @@ const Activities = ({ departmentName }) => {
     try {
       const departmentSlug = departmentId[departmentName];
       const response = await axios.get(
-        `http://localhost:3663/api/dept/activities/${departmentSlug}`
+        `http://localhost:3663/api/department/activities/${departmentSlug}`
       );
       console.log(
         `Fetched ${departmentName} Department Content:`,
@@ -63,7 +63,7 @@ const Activities = ({ departmentName }) => {
         <div>
           <h1>{content.heading}</h1> {/* If there's a heading */}
           <a
-            href={`http://localhost:3663/uploads/department/${content.attachment}`}
+            href={`http://localhost:3663/cdn/department/${content.attachment}`}
             target="_blank"
             rel="noopener noreferrer"
             className="text-blue-500 hover:underline font-medium"

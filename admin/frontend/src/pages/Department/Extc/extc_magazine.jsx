@@ -24,7 +24,7 @@ const ExtcMagazine = () => {
   const fetchMagazines = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3663/api/dept/magazines/${departmentId}`
+        `http://localhost:3663/api/department/magazines/${departmentId}`
       );
       if (response.data.success) {
         setMagazines(response.data.data);
@@ -38,7 +38,7 @@ const ExtcMagazine = () => {
   const fetchDeptText = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3663/api/dept/text/${departmentId}/magazines`
+        `http://localhost:3663/api/department/text/${departmentId}/magazines`
       );
       if (response.data.success && response.data.data) {
         setDeptText(response.data.data.content);
@@ -68,12 +68,12 @@ const ExtcMagazine = () => {
     setUploading(true);
     try {
       const response = await axios.post(
-        "http://localhost:3663/api/dept/magazines/create",
+        "http://localhost:3663/api/department/magazines/create",
         formData,
         {
-          headers: { 
+          headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${localStorage.getItem('token')}`
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         }
       );
@@ -92,15 +92,16 @@ const ExtcMagazine = () => {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this magazine?")) return;
+    if (!window.confirm("Are you sure you want to delete this magazine?"))
+      return;
 
     try {
       const response = await axios.delete(
-        `http://localhost:3663/api/dept/magazines/${id}`,
+        `http://localhost:3663/api/department/magazines/${id}`,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-          }
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         }
       );
       if (response.data.success) {
@@ -116,16 +117,16 @@ const ExtcMagazine = () => {
   const handleTextUpdate = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:3663/api/dept/text/create",
+        "http://localhost:3663/api/department/text/create",
         {
           departmentId: departmentId,
           section: "magazines",
-          content: textContent
+          content: textContent,
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-          }
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         }
       );
       if (response.data.success) {
@@ -140,11 +141,13 @@ const ExtcMagazine = () => {
     }
   };
 
-  const filteredMagazines = magazines.filter(magazine => {
+  const filteredMagazines = magazines.filter((magazine) => {
     return !filterYear || magazine.year.toString() === filterYear;
   });
 
-  const uniqueYears = [...new Set(magazines.map(mag => mag.year))].sort((a, b) => b - a);
+  const uniqueYears = [...new Set(magazines.map((mag) => mag.year))].sort(
+    (a, b) => b - a
+  );
 
   const modules = {
     toolbar: [
@@ -161,8 +164,17 @@ const ExtcMagazine = () => {
   };
 
   const formats = [
-    "header", "bold", "italic", "underline", "list", "bullet",
-    "indent", "size", "font", "align", "link",
+    "header",
+    "bold",
+    "italic",
+    "underline",
+    "list",
+    "bullet",
+    "indent",
+    "size",
+    "font",
+    "align",
+    "link",
   ];
 
   return (
@@ -205,16 +217,22 @@ const ExtcMagazine = () => {
             </button>
           </div>
         ) : (
-          <div 
+          <div
             className="prose max-w-none"
-            dangerouslySetInnerHTML={{ __html: deptText || "No information available. Click Edit to add content." }}
+            dangerouslySetInnerHTML={{
+              __html:
+                deptText ||
+                "No information available. Click Edit to add content.",
+            }}
           />
         )}
       </div>
 
       {/* Upload Form */}
       <div className="mb-8 p-4 border border-gray-200 rounded-lg">
-        <h3 className="text-lg font-semibold mb-4 text-gray-700">Upload New Magazine</h3>
+        <h3 className="text-lg font-semibold mb-4 text-gray-700">
+          Upload New Magazine
+        </h3>
         <form onSubmit={handleUpload} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
@@ -257,7 +275,7 @@ const ExtcMagazine = () => {
       {/* Filter and List Section */}
       <div className="mb-6">
         <h3 className="text-lg font-semibold mb-4 text-gray-700">Magazines</h3>
-        
+
         {/* Filter */}
         {uniqueYears.length > 0 && (
           <div className="mb-4">
@@ -286,7 +304,9 @@ const ExtcMagazine = () => {
                 className="border p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow"
               >
                 <div className="mb-3">
-                  <h4 className="font-semibold text-gray-800">Magazine {magazine.year}</h4>
+                  <h4 className="font-semibold text-gray-800">
+                    Magazine {magazine.year}
+                  </h4>
                   <p className="text-sm text-gray-600">Year: {magazine.year}</p>
                 </div>
                 <div className="mb-3">
@@ -299,7 +319,8 @@ const ExtcMagazine = () => {
                     View Magazine
                   </a>
                   <p className="text-sm text-gray-500">
-                    Uploaded: {new Date(magazine.created_at).toLocaleDateString()}
+                    Uploaded:{" "}
+                    {new Date(magazine.created_at).toLocaleDateString()}
                   </p>
                 </div>
                 <button

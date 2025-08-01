@@ -25,7 +25,7 @@ const MechanicalTimetable = () => {
   const fetchTimetables = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3663/api/dept/timetables/${departmentId}`
+        `http://localhost:3663/api/department/timetables/${departmentId}`
       );
       if (response.data.success) {
         setTimetables(response.data.data);
@@ -39,7 +39,7 @@ const MechanicalTimetable = () => {
   const fetchDeptText = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:3663/api/dept/text/${departmentId}/timetable`
+        `http://localhost:3663/api/department/text/${departmentId}/timetable`
       );
       if (response.data.success && response.data.data) {
         setDeptText(response.data.data.content);
@@ -71,12 +71,12 @@ const MechanicalTimetable = () => {
     setUploading(true);
     try {
       const response = await axios.post(
-        "http://localhost:3663/api/dept/timetables/create",
+        "http://localhost:3663/api/department/timetables/create",
         formData,
         {
-          headers: { 
+          headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${localStorage.getItem('token')}`
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         }
       );
@@ -97,15 +97,16 @@ const MechanicalTimetable = () => {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this timetable?")) return;
+    if (!window.confirm("Are you sure you want to delete this timetable?"))
+      return;
 
     try {
       const response = await axios.delete(
-        `http://localhost:3663/api/dept/timetables/${id}`,
+        `http://localhost:3663/api/department/timetables/${id}`,
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-          }
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         }
       );
       if (response.data.success) {
@@ -121,16 +122,16 @@ const MechanicalTimetable = () => {
   const handleTextUpdate = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:3663/api/dept/text/create",
+        "http://localhost:3663/api/department/text/create",
         {
           departmentId: departmentId,
           section: "timetable",
-          content: textContent
+          content: textContent,
         },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem('token')}`
-          }
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         }
       );
       if (response.data.success) {
@@ -160,8 +161,17 @@ const MechanicalTimetable = () => {
   };
 
   const formats = [
-    "header", "bold", "italic", "underline", "list", "bullet",
-    "indent", "size", "font", "align", "link",
+    "header",
+    "bold",
+    "italic",
+    "underline",
+    "list",
+    "bullet",
+    "indent",
+    "size",
+    "font",
+    "align",
+    "link",
   ];
 
   return (
@@ -205,7 +215,11 @@ const MechanicalTimetable = () => {
           </div>
         ) : (
           <div
-            dangerouslySetInnerHTML={{ __html: deptText || "No information available. Click Edit to add content." }}
+            dangerouslySetInnerHTML={{
+              __html:
+                deptText ||
+                "No information available. Click Edit to add content.",
+            }}
             className="prose max-w-none"
           />
         )}
@@ -213,7 +227,9 @@ const MechanicalTimetable = () => {
 
       {/* Upload Form */}
       <div className="mb-8 p-4 border border-gray-200 rounded-lg">
-        <h3 className="text-lg font-semibold mb-4 text-gray-700">Upload New Timetable</h3>
+        <h3 className="text-lg font-semibold mb-4 text-gray-700">
+          Upload New Timetable
+        </h3>
         <form onSubmit={handleUpload} className="space-y-4">
           <div>
             <label className="block text-gray-700 mb-2">Type</label>
@@ -228,7 +244,9 @@ const MechanicalTimetable = () => {
             </select>
           </div>
           <div>
-            <label className="block text-gray-700 mb-2">Division (Optional)</label>
+            <label className="block text-gray-700 mb-2">
+              Division (Optional)
+            </label>
             <input
               type="text"
               value={division}
@@ -238,7 +256,9 @@ const MechanicalTimetable = () => {
             />
           </div>
           <div>
-            <label className="block text-gray-700 mb-2">Semester (Optional)</label>
+            <label className="block text-gray-700 mb-2">
+              Semester (Optional)
+            </label>
             <input
               type="text"
               value={semester}
@@ -268,8 +288,10 @@ const MechanicalTimetable = () => {
 
       {/* Timetables List */}
       <div>
-        <h3 className="text-lg font-semibold mb-4 text-gray-700">Time Tables</h3>
-        
+        <h3 className="text-lg font-semibold mb-4 text-gray-700">
+          Time Tables
+        </h3>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {timetables.length > 0 ? (
             timetables.map((timetable) => (
@@ -303,7 +325,7 @@ const MechanicalTimetable = () => {
                 </div>
                 <div>
                   <a
-                    href={`http://localhost:3663/uploads/department/${timetable.attachment}`}
+                    href={`http://localhost:3663/cdn/department/${timetable.attachment}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-500 hover:underline font-medium"
@@ -311,7 +333,8 @@ const MechanicalTimetable = () => {
                     {timetable.attachment}
                   </a>
                   <p className="text-sm text-gray-500 mt-1">
-                    Uploaded: {new Date(timetable.created_timestamp).toLocaleDateString()}
+                    Uploaded:{" "}
+                    {new Date(timetable.created_timestamp).toLocaleDateString()}
                   </p>
                 </div>
               </div>

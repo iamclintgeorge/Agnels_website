@@ -10,7 +10,7 @@ import path from "path";
 // Configure multer for PDF uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "public/uploads"); // Folder to save PDFs
+    cb(null, "public/cdn"); // Folder to save PDFs
   },
   filename: (req, file, cb) => {
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);

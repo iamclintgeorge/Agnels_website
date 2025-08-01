@@ -1,7 +1,7 @@
 import express from "express";
 import multer from "multer";
 import path from "path";
-import { fileURLToPath } from "url";  // Import fileURLToPath to handle __dirname in ES Modules
+import { fileURLToPath } from "url"; // Import fileURLToPath to handle __dirname in ES Modules
 import * as PlacementController from "../../../controllers/website/placementController.js";
 
 // Manually set __dirname equivalent in ES Modules
@@ -14,7 +14,7 @@ const router = express.Router();
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     // Use __dirname to construct the correct path for file uploads
-    cb(null, path.join(__dirname, "../../../public/uploads/recruiters/"));
+    cb(null, path.join(__dirname, "../../../public/cdn/recruiters/"));
   },
   filename: (req, file, cb) => {
     cb(null, Date.now() + path.extname(file.originalname)); // File naming strategy
@@ -35,8 +35,16 @@ router.put("/statistics/:id", PlacementController.updateStatistics);
 
 // Recruiters Routes
 router.get("/recruiters", PlacementController.getRecruiters);
-router.post("/recruiters", upload.single("logo"), PlacementController.addRecruiter);
+router.post(
+  "/recruiters",
+  upload.single("logo"),
+  PlacementController.addRecruiter
+);
 router.delete("/recruiters/:id", PlacementController.deleteRecruiter);
-router.put("/recruiters/:id", upload.single("logo"), PlacementController.updateRecruiter);
+router.put(
+  "/recruiters/:id",
+  upload.single("logo"),
+  PlacementController.updateRecruiter
+);
 
 export default router;

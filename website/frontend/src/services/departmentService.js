@@ -356,7 +356,7 @@ const formatSpecialContent = (sectionName, data) => {
           <h4 style="margin: 0 0 10px 0; color: #2c3e50;">Year: ${pub.year}</h4>
           ${
             pub.attachment
-              ? `<a href="http://localhost:3663/uploads/department/${pub.attachment}" target="_blank" style="color: #3498db; text-decoration: none; font-weight: 500;">📄 View Publication</a>`
+              ? `<a href="http://localhost:3663/cdn/department/${pub.attachment}" target="_blank" style="color: #3498db; text-decoration: none; font-weight: 500;">📄 View Publication</a>`
               : ""
           }
         </div>`;
@@ -371,7 +371,7 @@ const formatSpecialContent = (sectionName, data) => {
           <h4 style="margin: 0 0 10px 0; color: #2c3e50;">Year: ${mag.year}</h4>
           ${
             mag.attachment
-              ? `<a href="http://localhost:3663/uploads/department/${mag.attachment}" target="_blank" style="color: #3498db; text-decoration: none; font-weight: 500;">📖 View Magazine</a>`
+              ? `<a href="http://localhost:3663/cdn/department/${mag.attachment}" target="_blank" style="color: #3498db; text-decoration: none; font-weight: 500;">📖 View Magazine</a>`
               : ""
           }
         </div>`;
@@ -388,7 +388,7 @@ const formatSpecialContent = (sectionName, data) => {
           }</h4>
           ${
             activity.attachment
-              ? `<a href="http://localhost:3663/uploads/department/${activity.attachment}" target="_blank" style="color: #3498db; text-decoration: none; font-weight: 500;">📋 View Details</a>`
+              ? `<a href="http://localhost:3663/cdn/department/${activity.attachment}" target="_blank" style="color: #3498db; text-decoration: none; font-weight: 500;">📋 View Details</a>`
               : ""
           }
         </div>`;
@@ -405,7 +405,7 @@ const formatSpecialContent = (sectionName, data) => {
           }</h4>
           ${
             assoc.attachment
-              ? `<a href="http://localhost:3663/uploads/department/${assoc.attachment}" target="_blank" style="color: #3498db; text-decoration: none; font-weight: 500;">👥 View Association Details</a>`
+              ? `<a href="http://localhost:3663/cdn/department/${assoc.attachment}" target="_blank" style="color: #3498db; text-decoration: none; font-weight: 500;">👥 View Association Details</a>`
               : ""
           }
         </div>`;
@@ -423,7 +423,7 @@ const formatSpecialContent = (sectionName, data) => {
           } - Year: ${committee.year}</h4>
           ${
             committee.attachment
-              ? `<a href="http://localhost:3663/uploads/department/${committee.attachment}" target="_blank" style="color: #3498db; text-decoration: none; font-weight: 500;">📋 View Committee Details</a>`
+              ? `<a href="http://localhost:3663/cdn/department/${committee.attachment}" target="_blank" style="color: #3498db; text-decoration: none; font-weight: 500;">📋 View Committee Details</a>`
               : ""
           }
         </div>`;
@@ -441,7 +441,7 @@ const formatSpecialContent = (sectionName, data) => {
           } Academic Calendar</h4>
           ${
             calendar.attachment
-              ? `<a href="http://localhost:3663/uploads/department/${calendar.attachment}" target="_blank" style="color: #3498db; text-decoration: none; font-weight: 500;">📅 View Calendar</a>`
+              ? `<a href="http://localhost:3663/cdn/department/${calendar.attachment}" target="_blank" style="color: #3498db; text-decoration: none; font-weight: 500;">📅 View Calendar</a>`
               : ""
           }
         </div>`;
@@ -459,7 +459,7 @@ const formatSpecialContent = (sectionName, data) => {
           }</h4>
           ${
             method.attachment
-              ? `<a href="http://localhost:3663/uploads/department/${method.attachment}" target="_blank" style="color: #3498db; text-decoration: none; font-weight: 500;">💡 View Method Details</a>`
+              ? `<a href="http://localhost:3663/cdn/department/${method.attachment}" target="_blank" style="color: #3498db; text-decoration: none; font-weight: 500;">💡 View Method Details</a>`
               : ""
           }
           ${
@@ -481,7 +481,7 @@ const formatSpecialContent = (sectionName, data) => {
         }</h4>
           ${
             ach.attachment
-              ? `<a href="http://localhost:3663/uploads/department/${ach.attachment}" target="_blank" style="color: #3498db; text-decoration: none; font-weight: 500;">🏆 View Achievement</a>`
+              ? `<a href="http://localhost:3663/cdn/department/${ach.attachment}" target="_blank" style="color: #3498db; text-decoration: none; font-weight: 500;">🏆 View Achievement</a>`
               : ""
           }
         </div>`;
@@ -503,7 +503,7 @@ const formatSpecialContent = (sectionName, data) => {
           }
           ${
             tt.attachment
-              ? `<a href="http://localhost:3663/uploads/department/${tt.attachment}" target="_blank" style="color: #3498db; text-decoration: none; font-weight: 500;">📅 View Timetable</a>`
+              ? `<a href="http://localhost:3663/cdn/department/${tt.attachment}" target="_blank" style="color: #3498db; text-decoration: none; font-weight: 500;">📅 View Timetable</a>`
               : ""
           }
         </div>`;
@@ -529,7 +529,7 @@ const formatSpecialContent = (sectionName, data) => {
           }
           ${
             faculty.image
-              ? `<img src="http://localhost:3663/uploads/${faculty.image}" alt="${faculty.name}" style="max-width: 120px; height: auto; margin-top: 10px; border-radius: 4px;">`
+              ? `<img src="http://localhost:3663/cdn/${faculty.image}" alt="${faculty.name}" style="max-width: 120px; height: auto; margin-top: 10px; border-radius: 4px;">`
               : ""
           }
         </div>`;
@@ -547,7 +547,7 @@ const formatSpecialContent = (sectionName, data) => {
           }</p>
           ${
             infra.image
-              ? `<img src="http://localhost:3663/uploads/${infra.image}" alt="${infra.name}" style="max-width: 300px; height: auto; margin-top: 10px; border-radius: 4px;">`
+              ? `<img src="http://localhost:3663/cdn/${infra.image}" alt="${infra.name}" style="max-width: 300px; height: auto; margin-top: 10px; border-radius: 4px;">`
               : ""
           }
         </div>`;
