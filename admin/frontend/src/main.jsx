@@ -39,6 +39,7 @@ import Iic_policy from "./pages/IIC/iic_policy";
 
 // New Department Dynamic Render: Delete the comment lateron
 import DeptAbout from "./pages/Department/sections/Dept_about";
+import DeptCarousel from "./pages/Department/sections/Dept_carousel";
 import DeptActivities from "./pages/Department/sections/Dept_activities";
 import DeptAssociation from "./pages/Department/sections/Dept_association";
 import DeptMagazine from "./pages/Department/sections/Dept_magazine";
@@ -95,6 +96,10 @@ const App = () => {
           <Route
             path="/department/:departmentName/home"
             element={<DeptAbout />}
+          />
+          <Route
+            path="/department/:departmentName/carousel"
+            element={<DeptCarousel />}
           />
           <Route
             path="/department/:departmentName/activities"
