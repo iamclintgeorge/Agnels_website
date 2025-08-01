@@ -939,93 +939,39 @@ class DepartmentModel {
     }
   }
 
-  // UTILITY METHODS
-  static async getAllDepartmentData(departmentId) {
+  // Infrastructure Models
+  static async getInfraModel(id) {
     try {
-      const [
-        committees,
-        publications,
-        magazines,
-        timeTables,
-        achievements,
-        academicCalendars,
-        activities,
-        associations,
-        undergraduateProjects,
-        miniProjects,
-        deptTexts,
-      ] = await Promise.all([
-        this.getCommittees(departmentId),
-        this.getPublications(departmentId),
-        this.getMagazines(departmentId),
-        this.getTimeTables(departmentId),
-        this.getAchievements(departmentId),
-        this.getAcademicCalendars(departmentId),
-        this.getActivities(departmentId),
-        this.getAssociations(departmentId),
-        this.getUndergraduateProjects(departmentId),
-        this.getMiniProjects(departmentId),
-        db
-          .promise()
-          .query("SELECT * FROM dept_text WHERE department_id = ?", [
-            departmentId,
-          ]),
-      ]);
-
-      return {
-        committees,
-        publications,
-        magazines,
-        timeTables,
-        achievements,
-        academicCalendars,
-        activities,
-        associations,
-        undergraduateProjects,
-        miniProjects,
-        deptTexts: deptTexts[0],
-      };
+      const [rows] = await db
+        .promise()
+        .query("SELECT * FROM infrastructures WHERE department_id = ?", [id]);
+      return rows;
     } catch (error) {
       throw error;
     }
   }
 
-  static async getStatistics(departmentId = null) {
+  // Syllabus Models
+  static async getSyllabusModel(id) {
     try {
-      let whereClause = departmentId ? "WHERE department_id = ?" : "";
-      let params = departmentId ? [departmentId] : [];
+      const [rows] = await db
+        .promise()
+        .query("SELECT * FROM syllabi WHERE department_id = ?", [id]);
+      return rows;
+    } catch (error) {
+      throw error;
+    }
+  }
 
-      const queries = [
-        `SELECT COUNT(*) as count FROM dept_committees ${whereClause}`,
-        `SELECT COUNT(*) as count FROM dept_publications ${whereClause}`,
-        `SELECT COUNT(*) as count FROM magzines ${whereClause}`,
-        `SELECT COUNT(*) as count FROM time_tables ${whereClause}`,
-        `SELECT COUNT(*) as count FROM achievements ${whereClause}`,
-        `SELECT COUNT(*) as count FROM academic_calendars ${whereClause}`,
-        `SELECT COUNT(*) as count FROM activities ${whereClause}`,
-        `SELECT COUNT(*) as count FROM associations ${whereClause}`,
-        `SELECT COUNT(*) as count FROM undergraduate_projects ${whereClause}`,
-        `SELECT COUNT(*) as count FROM mini_projects ${whereClause}`,
-        `SELECT COUNT(*) as count FROM dept_text ${whereClause}`,
-      ];
-
-      const results = await Promise.all(
-        queries.map((query) => db.promise().query(query, params))
-      );
-
-      return {
-        committees: results[0][0][0].count,
-        publications: results[1][0][0].count,
-        magazines: results[2][0][0].count,
-        timeTables: results[3][0][0].count,
-        achievements: results[4][0][0].count,
-        academicCalendars: results[5][0][0].count,
-        activities: results[6][0][0].count,
-        associations: results[7][0][0].count,
-        undergraduateProjects: results[8][0][0].count,
-        miniProjects: results[9][0][0].count,
-        deptTexts: results[10][0][0].count,
-      };
+  //Innovative Teaching Method
+  static async getITMModel(id) {
+    try {
+      const [rows] = await db
+        .promise()
+        .query("SELECT * FROM innovative_methods WHERE department_id = ?", [
+          id,
+        ]);
+      return rows;
     } catch (error) {
       throw error;
     }

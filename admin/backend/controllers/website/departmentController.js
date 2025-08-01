@@ -1677,49 +1677,109 @@ class DepartmentController {
     }
   }
 
-  // UTILITY CONTROLLERS
-  static async getAllDepartmentData(req, res) {
+  // Infrastructure Controller
+  static async getInfra(req, res) {
     try {
       const { departmentId } = req.params;
 
       if (!departmentId) {
         return res.status(400).json({
           success: false,
-          message: "Department ID is required",
+          message: "Infrastructure ID is required",
         });
       }
 
-      const data = await DepartmentModel.getAllDepartmentData(departmentId);
+      const infrastructure = await DepartmentModel.getInfraModel(departmentId);
 
-      res.status(200).json({
+      if (!infrastructure) {
+        return res.status(404).json({
+          success: false,
+          message: "Infrastructure not found",
+        });
+      }
+
+      res.json({
         success: true,
-        data,
+        data: infrastructure,
+        message: "Infrastructure retrieved successfully",
       });
     } catch (error) {
-      console.error("Error in getAllDepartmentData:", error);
+      console.error("Error getting infrastructure by ID:", error);
       res.status(500).json({
         success: false,
-        message: "Internal server error",
+        message: "Failed to retrieve infrastructure",
         error: error.message,
       });
     }
   }
 
-  static async getDepartmentStatistics(req, res) {
+  // Syllabus Controller
+  static async getSyllabus(req, res) {
     try {
       const { departmentId } = req.params;
 
-      const stats = await DepartmentModel.getStatistics(departmentId);
+      if (!departmentId) {
+        return res.status(400).json({
+          success: false,
+          message: "Syllabus ID is required",
+        });
+      }
 
-      res.status(200).json({
+      const Syllabus = await DepartmentModel.getSyllabusModel(departmentId);
+
+      if (!Syllabus) {
+        return res.status(404).json({
+          success: false,
+          message: "Syllabus not found",
+        });
+      }
+
+      res.json({
         success: true,
-        data: stats,
+        data: Syllabus,
+        message: "Syllabus retrieved successfully",
       });
     } catch (error) {
-      console.error("Error in getDepartmentStatistics:", error);
+      console.error("Error getting Syllabus by ID:", error);
       res.status(500).json({
         success: false,
-        message: "Internal server error",
+        message: "Failed to retrieve Syllabus",
+        error: error.message,
+      });
+    }
+  }
+
+  // Innovative Teaching Method Controller
+  static async getITM(req, res) {
+    try {
+      const { departmentId } = req.params;
+
+      if (!departmentId) {
+        return res.status(400).json({
+          success: false,
+          message: "ITM ID is required",
+        });
+      }
+
+      const ITM = await DepartmentModel.getITMModel(departmentId);
+
+      if (!ITM) {
+        return res.status(404).json({
+          success: false,
+          message: "ITM not found",
+        });
+      }
+
+      res.json({
+        success: true,
+        data: ITM,
+        message: "ITM retrieved successfully",
+      });
+    } catch (error) {
+      console.error("Error getting ITM by ID:", error);
+      res.status(500).json({
+        success: false,
+        message: "Failed to retrieve ITM",
         error: error.message,
       });
     }

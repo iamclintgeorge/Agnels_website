@@ -50,6 +50,8 @@ import DeptAcademicCalendar from "./pages/Department/sections/Dept_academic_cale
 import DeptPublications from "./pages/Department/sections/Dept_publications";
 import DeptProjects from "./pages/Department/sections/Dept_projects";
 import DeptCommittees from "./pages/Department/sections/Dept_committees";
+import DeptInfrastructure from "./pages/Department/sections/Dept_infra";
+import DeptSyllabus from "./pages/Department/sections/Dept_syllabus";
 
 // HOD Desk Components
 import ComHod from "./pages/hodDesk/comHod";
@@ -140,6 +142,14 @@ const App = () => {
           <Route
             path="/department/:departmentName/committees-and-board-of-studies"
             element={<DeptCommittees />}
+          />
+          <Route
+            path="/department/:departmentName/infrastructure"
+            element={<DeptInfrastructure />}
+          />
+          <Route
+            path="/department/:departmentName/syllabus"
+            element={<DeptSyllabus />}
           />
 
           {/* HOD Desk Routes */}
