@@ -10,31 +10,9 @@ import path from "path";
 import db from "../../config/db.js";
 import fs from "fs";
 
-// export const carouselUploadController = async (req, res) => {
-//   try {
-//     const { altText } = req.body;
-//     const image = req.file;
-
-//     if (!image) {
-//       return res.status(400).json({ message: "No image uploaded" });
-//     }
-
-//     const imageUrl = `/cdn/${image.filename}`;
-//     await carouselUpload(altText, imageUrl);
-
-//     res.json({
-//       message: "Upload successful",
-//       imageUrl: imageUrl,
-//       altText: altText,
-//     });
-//   } catch (error) {
-//     console.error("Upload error:", error);
-//     res.status(500).json({ message: "Error uploading image" });
-//   }
-// };
-
 export const carouselUploadController = async (req, res) => {
   try {
+    const section = req.params.section;
     const { content } = req.body;
     const parsed = JSON.parse(content);
     const { altText, imageFilename } = parsed;
@@ -48,7 +26,7 @@ export const carouselUploadController = async (req, res) => {
     }
 
     const imageUrl = `/cdn/${imageFilename}`;
-    await carouselUpload(altText, imageUrl);
+    await carouselUpload(altText, imageUrl, section);
 
     res.json({
       message: "Upload successful",
@@ -62,8 +40,10 @@ export const carouselUploadController = async (req, res) => {
 };
 
 export const carouselDisplayController = async (req, res) => {
+  const section = req.params.section;
+  console.log("carouselDisplayController", section);
   try {
-    const images = await carouselDisplay();
+    const images = await carouselDisplay(section);
     res.json(images);
   } catch (error) {
     console.error("Display error:", error);

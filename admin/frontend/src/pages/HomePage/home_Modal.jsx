@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const ImgCarousel = () => {
+const ImgModal = () => {
   const [altText, setAltText] = useState("");
   const [image, setImage] = useState(null);
   const [message, setMessage] = useState("");
   const [displayImg, setDisplayImg] = useState([]);
-  const section = "home_carousel";
+  const section = "home_modal";
 
   useEffect(() => {
     fetchImages();
@@ -23,36 +23,6 @@ const ImgCarousel = () => {
       console.error("Error loading images:", err);
     }
   };
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   if (!altText || !image) {
-  //     setMessage("Please enter both alt text and select an image.");
-  //     return;
-  //   }
-
-  //   const formData = new FormData();
-  //   formData.append("altText", altText);
-  //   formData.append("image", image);
-
-  //   try {
-  //     await axios.post("http://localhost:3663/api/home/carousel", formData, {
-  //       headers: { "Content-Type": "multipart/form-data" },
-  //       maxContentLength: Infinity,
-  //       maxBodyLength: Infinity,
-  //     });
-
-  //     console.log("POST Request for Carousel SUCCESS");
-  //     setMessage("Image uploaded successfully!");
-  //     setAltText("");
-  //     setImage(null);
-  //     e.target.reset();
-  //     fetchImages(); // Refresh images
-  //   } catch (error) {
-  //     console.log("Error Message: ", error);
-  //     setMessage("Error uploading image.");
-  //   }
-  // };
 
   //Using Content Approval System
   const handleSubmit = async (e) => {
@@ -219,4 +189,4 @@ const ImgCarousel = () => {
   );
 };
 
-export default ImgCarousel;
+export default ImgModal;
