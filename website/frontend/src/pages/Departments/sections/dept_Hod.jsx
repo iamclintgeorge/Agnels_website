@@ -10,7 +10,7 @@ const HeadOfDepartment = ({ departmentName }) => {
     "Mechanical Engineering": "mechanical",
     "Electronics and Telecommunication Engineering": "extc",
     "Electrical Engineering": "electrical",
-    "Information Technology": "it",
+    "Computer Science and Engineering (Prev. IT)": "it",
     "Basic Science and Humanities": "bsh",
   };
 

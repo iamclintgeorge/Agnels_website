@@ -536,7 +536,7 @@ const DynamicSideBar = () => {
                 )}
                 {(user.role === "itHod" || user.role === "superAdmin") && (
                   <Link to="/hod-desk/it" className="block">
-                    <p>Information Technology</p>
+                    <p>Computer Science and Engineering (Prev. IT)</p>
                   </Link>
                 )}
                 {(user.role === "bshHod" || user.role === "superAdmin") && (

@@ -11,7 +11,7 @@ const Projects = ({ departmentName }) => {
     "Basic Science and Humanities": 3,
     "Electrical Engineering": 4,
     "Mechanical Engineering": 5,
-    "Information Technology": 6,
+    "Computer Science and Engineering (Prev. IT)": 6,
     Home: "general", // For general department home
   };
 

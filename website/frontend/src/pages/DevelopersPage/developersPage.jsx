@@ -242,7 +242,7 @@ const Developers = () => {
     },
     {
       name: "Mr. Suraj Khandare",
-      department: "Department of Information Technology",
+      department: "Department of Computer Science and Engineering (Prev. IT)",
       position: "Asst. Professor",
       // You might want to include other relevant fields here if needed for display
     },

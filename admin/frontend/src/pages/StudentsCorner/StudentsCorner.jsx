@@ -1,107 +1,111 @@
 // src/pages/StudentsCorner.jsx
 //------------------------------------------------------------
 import React, { useState, useEffect } from "react";
-import api from "../../services/api";      // your configured axios instance
+import api from "../../services/api"; // your configured axios instance
 import { toast } from "react-toastify";
 
 /* ---------- Tab definitions ---------- */
 const tabs = [
-  { key: "sc_home",       label: "SC_Home" },               // Code‑of‑Conduct docs
-  { key: "council",       label: "Student Council" },       // Council members
-  { key: "reports",       label: "Reports" },               // Council reports (FACES / ETAMAX)
-  { key: "clubs",         label: "Student Clubs" },
-  { key: "infrastructure",label: "Infrastructure" },
-  { key: "antiRagging",   label: "Anti Ragging" },          // Notices only here
-  { key: "survey",        label: "Student Satisfaction Survey" },
+  { key: "Home", label: "Home" }, // Code‑of‑Conduct docs
+  { key: "council", label: "Student Council" }, // Council members
+  { key: "reports", label: "Reports" }, // Council reports (FACES / ETAMAX)
+  { key: "clubs", label: "Student Clubs" },
+  { key: "infrastructure", label: "Infrastructure" },
+  { key: "antiRagging", label: "Anti Ragging" }, // Notices only here
+  { key: "survey", label: "Student Satisfaction Survey" },
 ];
 
 /* ---------- Routes / field config per tab ---------- */
 const tabConfig = {
-  sc_home: {
-    fetch  : "/codeofconduct",
-    create : "/codeofconduct-create",
-    edit   : (id) => `/codeofconduct/${id}`,
-    del    : (id) => `/delete-codeofconduct/${id}`,
-    fileKey: "file",                        // PDF upload
+  Home: {
+    fetch: "/codeofconduct",
+    create: "/codeofconduct-create",
+    edit: (id) => `/codeofconduct/${id}`,
+    del: (id) => `/delete-codeofconduct/${id}`,
+    fileKey: "file", // PDF upload
   },
   council: {
-    fetch  : "/council-members",
-    create : "/council-member-create",
-    edit   : (id) => `/council-member/${id}`,
-    del    : (id) => `/delete-council-member/${id}`,
+    fetch: "/council-members",
+    create: "/council-member-create",
+    edit: (id) => `/council-member/${id}`,
+    del: (id) => `/delete-council-member/${id}`,
   },
   reports: {
-    fetch  : "/council-reports",
-    create : "/council-report-create",
-    edit   : (id) => `/council-report/${id}`,
-    del    : (id) => `/delete-council-report/${id}`,
-    fileKey: "file",                        // PDF upload
+    fetch: "/council-reports",
+    create: "/council-report-create",
+    edit: (id) => `/council-report/${id}`,
+    del: (id) => `/delete-council-report/${id}`,
+    fileKey: "file", // PDF upload
   },
   clubs: {
-    fetch  : "/clubs",
-    create : "/club-create",
-    edit   : (id) => `/club/${id}`,
-    del    : (id) => `/delete-club/${id}`,
-    fileKey: "logo",                        // image upload
+    fetch: "/clubs",
+    create: "/club-create",
+    edit: (id) => `/club/${id}`,
+    del: (id) => `/delete-club/${id}`,
+    fileKey: "logo", // image upload
   },
   infrastructure: {
-    fetch  : "/facilities",
-    create : "/facility-create",
-    edit   : (id) => `/facility/${id}`,
-    del    : (id) => `/delete-facility/${id}`,
-    fileKey: "image",                       // image upload
+    fetch: "/facilities",
+    create: "/facility-create",
+    edit: (id) => `/facility/${id}`,
+    del: (id) => `/delete-facility/${id}`,
+    fileKey: "image", // image upload
   },
   antiRagging: {
-    fetch  : "/anti-ragging-notices",
-    create : "/anti-ragging-notice-create",
-    del    : (id) => null,                  // no update/delete for notices
+    fetch: "/anti-ragging-notices",
+    create: "/anti-ragging-notice-create",
+    del: (id) => null, // no update/delete for notices
     fileKey: "file",
   },
   survey: {
-    fetch  : "/surveys",
-    create : "/survey-create",
-    edit   : (id) => `/survey/${id}`,
-    del    : (id) => `/delete-survey/${id}`,
+    fetch: "/surveys",
+    create: "/survey-create",
+    edit: (id) => `/survey/${id}`,
+    del: (id) => `/delete-survey/${id}`,
   },
 };
 
 /* ---------- Empty‑row factories ---------- */
 const emptyRow = {
-  sc_home        : { title: "", file: null },
-  council        : { full_name: "", position: "" },
-  reports        : { event_name: "", council_year: "", file: null },
-  clubs          : { name: "", description: "", logo: null },
-  infrastructure : { name: "", short_desc: "", long_desc: "", image: null },
-  antiRagging    : { title: "", file: null },
-  survey         : { title: "", survey_year: "", form_url: "", results_file: "" },
+  Home: { title: "", file: null },
+  council: { full_name: "", position: "" },
+  reports: { event_name: "", council_year: "", file: null },
+  clubs: { name: "", description: "", logo: null },
+  infrastructure: { name: "", short_desc: "", long_desc: "", image: null },
+  antiRagging: { title: "", file: null },
+  survey: { title: "", survey_year: "", form_url: "", results_file: "" },
 };
 
 /* ============================================================
    MAIN COMPONENT
 ============================================================ */
 const StudentsCorner = () => {
-  const [activeTab, setActiveTab] = useState("sc_home");
-  const [rows, setRows]           = useState([]);
-  const [loading, setLoading]     = useState(false);
+  const [activeTab, setActiveTab] = useState("Home");
+  const [rows, setRows] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   /* --- fetch on tab change --- */
   useEffect(() => {
     const load = async () => {
       setLoading(true);
       try {
-        const { data } = await api.get(`/api/students-corner${tabConfig[activeTab].fetch}`);
-        setRows(data.result || data || []);      // controllers return {result:[…]}
+        const { data } = await api.get(
+          `/api/students-corner${tabConfig[activeTab].fetch}`
+        );
+        setRows(data.result || data || []); // controllers return {result:[…]}
       } catch (err) {
         toast.error("Fetch failed");
         setRows([]);
-      } finally { setLoading(false); }
+      } finally {
+        setLoading(false);
+      }
     };
     load();
   }, [activeTab]);
 
   /* ---------- handlers ---------- */
-  const handleAdd    = () => openModal(null);
-  const handleEdit   = (idx) => openModal(idx);
+  const handleAdd = () => openModal(null);
+  const handleEdit = (idx) => openModal(idx);
 
   const handleDelete = async (id) => {
     const delURL = tabConfig[activeTab].del?.(id);
@@ -112,18 +116,25 @@ const StudentsCorner = () => {
       await api.put(`/api/students-corner${delURL}`);
       setRows((r) => r.filter((item) => item.id !== id));
       toast.success("Deleted");
-    } catch { toast.error("Delete failed"); }
+    } catch {
+      toast.error("Delete failed");
+    }
     setLoading(false);
   };
 
   /* ---------- modal helpers ---------- */
   const [modalOpen, setModalOpen] = useState(false);
-  const [draft, setDraft]         = useState({});
-  const [editId, setEditId]       = useState(null);
+  const [draft, setDraft] = useState({});
+  const [editId, setEditId] = useState(null);
 
   const openModal = (idx) => {
-    if (idx === null) { setEditId(null); setDraft({ ...emptyRow[activeTab] }); }
-    else              { setEditId(rows[idx].id); setDraft({ ...rows[idx] }); }
+    if (idx === null) {
+      setEditId(null);
+      setDraft({ ...emptyRow[activeTab] });
+    } else {
+      setEditId(rows[idx].id);
+      setDraft({ ...rows[idx] });
+    }
     setModalOpen(true);
   };
 
@@ -134,17 +145,19 @@ const StudentsCorner = () => {
       let payload, url, method;
       if (cfg.fileKey) {
         const fd = new FormData();
-        Object.entries(draft).forEach(([k,v]) => fd.append(k, v));
+        Object.entries(draft).forEach(([k, v]) => fd.append(k, v));
         payload = fd;
         // axios will set correct headers
       } else {
         payload = draft;
       }
-      if (editId) {          // update
-        url    = `/api/students-corner${cfg.edit(editId)}`;
+      if (editId) {
+        // update
+        url = `/api/students-corner${cfg.edit(editId)}`;
         method = "put";
-      } else {               // create
-        url    = `/api/students-corner${cfg.create}`;
+      } else {
+        // create
+        url = `/api/students-corner${cfg.create}`;
         method = "post";
       }
       await api[method](url, payload);
@@ -168,31 +181,42 @@ const StudentsCorner = () => {
       <div className="mb-6 border-b">
         <nav className="flex -mb-px space-x-8">
           {tabs.map((t) => (
-            <button key={t.key}
+            <button
+              key={t.key}
               className={`py-4 px-1 border-b-2 font-medium text-sm
-                ${activeTab===t.key
-                  ? "border-blue-500 text-blue-600"
-                  : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"}`}
-              onClick={()=>setActiveTab(t.key)}
-            >{t.label}</button>
+                ${
+                  activeTab === t.key
+                    ? "border-blue-500 text-blue-600"
+                    : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+                }`}
+              onClick={() => setActiveTab(t.key)}
+            >
+              {t.label}
+            </button>
           ))}
         </nav>
       </div>
 
       {/* table + add */}
       <div className="bg-white rounded-lg shadow p-6">
-        {loading ? "Loading…" :
+        {loading ? (
+          "Loading…"
+        ) : (
           <SectionTable
             tab={activeTab}
             rows={rows}
-            onEdit={(idx)=>handleEdit(idx)}
-            onDelete={(idx)=>handleDelete(rows[idx].id)}
+            onEdit={(idx) => handleEdit(idx)}
+            onDelete={(idx) => handleDelete(rows[idx].id)}
           />
-        }
-        {!!tabConfig[activeTab].create &&
-          <button className="mt-6 px-4 py-2 bg-blue-600 text-white rounded" onClick={handleAdd}>
+        )}
+        {!!tabConfig[activeTab].create && (
+          <button
+            className="mt-6 px-4 py-2 bg-blue-600 text-white rounded"
+            onClick={handleAdd}
+          >
             Add New
-          </button>}
+          </button>
+        )}
       </div>
 
       {/* modal */}
@@ -202,7 +226,7 @@ const StudentsCorner = () => {
           draft={draft}
           setDraft={setDraft}
           fileKey={tabConfig[activeTab].fileKey}
-          onClose={()=>setModalOpen(false)}
+          onClose={() => setModalOpen(false)}
           onSave={saveDraft}
         />
       )}
@@ -221,27 +245,56 @@ function SectionTable({ tab, rows, onEdit, onDelete }) {
       <div className="overflow-x-auto">
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
-            <tr>{columns.map(c=>(
-              <th key={c.key} className="px-6 py-3 text-xs font-medium text-left text-gray-500 uppercase">{c.label}</th>
-            ))}
-              <th className="px-6 py-3 text-xs font-medium text-left text-gray-500 uppercase">Actions</th>
+            <tr>
+              {columns.map((c) => (
+                <th
+                  key={c.key}
+                  className="px-6 py-3 text-xs font-medium text-left text-gray-500 uppercase"
+                >
+                  {c.label}
+                </th>
+              ))}
+              <th className="px-6 py-3 text-xs font-medium text-left text-gray-500 uppercase">
+                Actions
+              </th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {rows.map((row,i)=>(
+            {rows.map((row, i) => (
               <tr key={row.id || i}>
-                {columns.map(c=>(
-                  <td key={c.key} className="px-6 py-4 whitespace-nowrap">{row[c.key]}</td>
+                {columns.map((c) => (
+                  <td key={c.key} className="px-6 py-4 whitespace-nowrap">
+                    {row[c.key]}
+                  </td>
                 ))}
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <button onClick={()=>onEdit(i)} className="mr-3 text-blue-600">Edit</button>
-                  {onDelete &&
-                    <button onClick={()=>onDelete(i)} className="text-red-600">Delete</button>}
+                  <button
+                    onClick={() => onEdit(i)}
+                    className="mr-3 text-blue-600"
+                  >
+                    Edit
+                  </button>
+                  {onDelete && (
+                    <button
+                      onClick={() => onDelete(i)}
+                      className="text-red-600"
+                    >
+                      Delete
+                    </button>
+                  )}
                 </td>
               </tr>
             ))}
-            {rows.length===0 &&
-              <tr><td colSpan={columns.length+1} className="p-4 text-center text-gray-400">No records</td></tr>}
+            {rows.length === 0 && (
+              <tr>
+                <td
+                  colSpan={columns.length + 1}
+                  className="p-4 text-center text-gray-400"
+                >
+                  No records
+                </td>
+              </tr>
+            )}
           </tbody>
         </table>
       </div>
@@ -258,14 +311,22 @@ function ModalForm({ tab, draft, setDraft, fileKey, onClose, onSave }) {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
       <div className="bg-white rounded-lg p-6 w-full max-w-lg">
         <h2 className="mb-4 text-xl font-bold">Edit</h2>
-        <form onSubmit={(e)=>{e.preventDefault();onSave();}} className="space-y-4">
-          {columns.map(col=>(
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            onSave();
+          }}
+          className="space-y-4"
+        >
+          {columns.map((col) => (
             <div key={col.key}>
               <label className="block mb-1 font-medium">{col.label}</label>
               <input
-                type={col.type||"text"}
-                value={draft[col.key]||""}
-                onChange={e=>setDraft(d=>({...d,[col.key]:e.target.value}))}
+                type={col.type || "text"}
+                value={draft[col.key] || ""}
+                onChange={(e) =>
+                  setDraft((d) => ({ ...d, [col.key]: e.target.value }))
+                }
                 className="w-full p-2 border rounded"
                 required
               />
@@ -274,15 +335,29 @@ function ModalForm({ tab, draft, setDraft, fileKey, onClose, onSave }) {
           {fileKey && (
             <div>
               <label className="block mb-1 font-medium">Upload file</label>
-              <input type="file" accept=".pdf,.png,.jpg,.jpeg"
-                     onChange={e=>setDraft(d=>({...d,[fileKey]:e.target.files[0]}))}/>
+              <input
+                type="file"
+                accept=".pdf,.png,.jpg,.jpeg"
+                onChange={(e) =>
+                  setDraft((d) => ({ ...d, [fileKey]: e.target.files[0] }))
+                }
+              />
             </div>
           )}
           <div className="flex justify-end gap-3">
-            <button type="button" onClick={onClose}
-              className="px-4 py-2 border rounded">Cancel</button>
-            <button type="submit"
-              className="px-4 py-2 bg-blue-600 text-white rounded">Save</button>
+            <button
+              type="button"
+              onClick={onClose}
+              className="px-4 py-2 border rounded"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="px-4 py-2 bg-blue-600 text-white rounded"
+            >
+              Save
+            </button>
           </div>
         </form>
       </div>
@@ -294,46 +369,46 @@ function ModalForm({ tab, draft, setDraft, fileKey, onClose, onSave }) {
    Column definitions & titles
 ============================================================ */
 const tabTitles = {
-  sc_home: "Code of Conduct",
+  Home: "Code of Conduct",
   council: "Student Council Members",
   reports: "Council Event Reports",
-  clubs  : "Student Clubs",
+  clubs: "Student Clubs",
   infrastructure: "Infrastructure Facilities",
-  antiRagging   : "Anti‑Ragging Notices",
-  survey        : "Student Satisfaction Survey",
+  antiRagging: "Anti‑Ragging Notices",
+  survey: "Student Satisfaction Survey",
 };
 
 const columnDefs = {
-  sc_home: [
-    { key:"title", label:"Title" },
-    { key:"file_path", label:"File" },
+  Home: [
+    { key: "title", label: "Title" },
+    { key: "file_path", label: "File" },
   ],
   council: [
-    { key:"full_name", label:"Name" },
-    { key:"position",  label:"Position" },
-    { key:"council_year", label:"Year"},
+    { key: "full_name", label: "Name" },
+    { key: "position", label: "Position" },
+    { key: "council_year", label: "Year" },
   ],
-  reports:[
-    { key:"event_name", label:"Event" },
-    { key:"council_year", label:"Year" },
-    { key:"file_path", label:"Report" },
+  reports: [
+    { key: "event_name", label: "Event" },
+    { key: "council_year", label: "Year" },
+    { key: "file_path", label: "Report" },
   ],
-  clubs:[
-    { key:"name", label:"Club" },
-    { key:"description", label:"Description" },
+  clubs: [
+    { key: "name", label: "Club" },
+    { key: "description", label: "Description" },
   ],
-  infrastructure:[
-    { key:"name", label:"Facility" },
-    { key:"short_desc", label:"Short desc" },
+  infrastructure: [
+    { key: "name", label: "Facility" },
+    { key: "short_desc", label: "Short desc" },
   ],
-  antiRagging:[
-    { key:"title", label:"Title" },
-    { key:"file_path", label:"Notice" },
+  antiRagging: [
+    { key: "title", label: "Title" },
+    { key: "file_path", label: "Notice" },
   ],
-  survey:[
-    { key:"title", label:"Title" },
-    { key:"survey_year", label:"Year" },
-    { key:"form_url", label:"Form URL" },
+  survey: [
+    { key: "title", label: "Title" },
+    { key: "survey_year", label: "Year" },
+    { key: "form_url", label: "Form URL" },
   ],
 };
 

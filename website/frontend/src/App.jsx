@@ -4,7 +4,7 @@ import Header from "./components/Header";
 import HomePage from "./pages/HomePage/homePage.jsx";
 import Footer from "./components/Footer";
 import { Departments } from "./pages/Departments/Dept_sidebar.jsx";
-import DepartmentSection from "./pages/Departments/DepartmentSection";
+// import DepartmentSection from "./pages/Departments/DepartmentSection";
 import Aboutus from "./pages/AboutUs/aboutus";
 import Research_Publications from "./pages/Research_Publications/Research_Publications";
 import Admissions from "./pages/admissions/admissions";
@@ -50,10 +50,10 @@ function App() {
           <Route path="/departments" element={<Departments />} />
 
           {/* Individual Department Section Pages */}
-          <Route
+          {/* <Route
             path="/department/:department/:section"
             element={<DepartmentSection />}
-          />
+          /> */}
 
           {/* Existing Department Pages */}
           <Route path="/computer_engineering" element={<Computer />} />
