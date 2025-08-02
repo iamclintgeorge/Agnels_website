@@ -6,7 +6,7 @@ import React from "react";
       return (
         <div className="p-8 bg-gray-50 min-h-screen font-sans">
           <div className="mb-8">
-            <h1 className="text-5xl font-light text-black mb-3">Admission Process</h1>
+            <h1 className="text-5xl font-light text-black mb-3 heading-premium">Admission Process</h1>
             <p className="text-lg text-gray-700">
               <strong>Admission Enquiry call Mobile No:</strong> 
               <span className="text-blue-600"> +91 9769764884</span>
@@ -15,7 +15,7 @@ import React from "react";
     
           {/* Registration Forms Section */}
           <div className="mb-6">
-            <h2 className="text-2xl font-semibold text-gray-800 mb-4">Registration Forms</h2>
+            <h2 className="text-2xl font-semibold text-gray-800 mb-4 heading-premium">Registration Forms</h2>
             <div className="bg-white p-6 rounded-lg shadow-lg">
               <ul className="space-y-4 text-lg text-gray-700">
                 <li>
@@ -54,7 +54,7 @@ import React from "react";
     
           {/* Programs Section */}
           <div className="mb-8">
-            <h2 className="text-3xl font-semibold  mb-6">Programs and Intake Capacity</h2>
+            <h2 className="text-3xl font-semibold  mb-6 heading-premium">Programs and Intake Capacity</h2>
           </div>
     
           {/* Undergraduate Programs */}
@@ -101,7 +101,7 @@ export const UnderG = () => {
   return (
     <div className="p-8 bg-gray-50 min-h-screen font-sans">
       <div className="text-center mb-12">
-        <h1 className="text-5xl font-extralight text-black mb-3">Undergraduate Admissions</h1>
+        <h1 className="text-5xl font-extralight text-black mb-3 heading-premium">Undergraduate Admissions</h1>
       </div>
 
       {/* First Year Admissions */}
@@ -138,7 +138,7 @@ export const UnderG = () => {
         <div className="mt-8 flex justify-center">
           <a 
             href="https://link-to-centralized-docs" 
-            className="inline-block bg-blue-600 text-white py-2 px-6 rounded-full text-xl font-medium hover:bg-blue-700 transition duration-300 transform hover:scale-105 shadow-lg"
+                            className="btn-primary py-2 px-6 rounded-full text-xl font-medium shadow-lg"
           >
             Centralized
           </a>
@@ -171,7 +171,7 @@ export const UnderG = () => {
         <div className="mt-8 flex justify-center">
           <a 
             href="https://link-to-institute-docs" 
-            className="inline-block bg-green-600 text-white py-2 px-6 rounded-full text-xl font-medium hover:bg-green-700 transition duration-300 transform hover:scale-105 shadow-lg"
+                            className="btn-primary py-2 px-6 rounded-full text-xl font-medium shadow-lg"
           >
             Institute
           </a>
@@ -192,7 +192,7 @@ export const UnderG = () => {
        <div className="mt-8 flex justify-center">
           <a 
             href="https://link-to-institute-docs" 
-            className="inline-block bg-red-600 text-white py-2 px-6 rounded-full text-xl font-medium hover:bg-green-700 transition duration-300 transform hover:scale-105 shadow-lg"
+                            className="btn-primary py-2 px-6 rounded-full text-xl font-medium shadow-lg"
           >
             DSE Centralized
           </a>
@@ -210,7 +210,7 @@ export const PostG = () => {
   return (
     <div className="p-8 bg-gray-50 min-h-screen font-sans">
       <div className="text-center mb-12">
-        <h1 className="text-5xl font-extralight text-black mb-3">Post Graduate Admissions</h1>
+        <h1 className="text-5xl font-extralight text-black mb-3 heading-premium">Post Graduate Admissions</h1>
       </div>
 
       {/* Masters of Technology (M.Tech) */}
@@ -240,7 +240,7 @@ export const PostG = () => {
       <div className="mt-8 flex justify-center">
         <a 
           href="https://link-to-centralized-admission" 
-          className="inline-block bg-blue-600 text-white py-2 px-6 rounded-full text-xl font-medium hover:bg-blue-700 transition duration-300 transform hover:scale-105 shadow-lg"
+                          className="btn-primary py-2 px-6 rounded-full text-xl font-medium shadow-lg"
         >
           Centralized
         </a>
@@ -255,7 +255,7 @@ export const PhD = () => {
   return (
     <div className="p-8 bg-gray-50 min-h-screen font-sans">
       <div className="text-center mb-12">
-        <h1 className="text-5xl font-extralight text-black mb-3">PhD Admissions</h1>
+        <h1 className="text-5xl font-extralight text-black mb-3 heading-premium">PhD Admissions</h1>
       </div>
 
       {/* PhD Admission Details */}
@@ -293,7 +293,7 @@ export const PhD = () => {
       <div className="mt-8 flex justify-center">
         <a 
           href="https://link-to-phd-admission" 
-          className="inline-block bg-blue-600 text-white py-2 px-6 rounded-full text-xl font-medium hover:bg-blue-700 transition duration-300 transform hover:scale-105 shadow-lg"
+                          className="btn-primary py-2 px-6 rounded-full text-xl font-medium shadow-lg"
         >
           Proposed Fee
         </a>
@@ -307,7 +307,7 @@ export const Fees = () => {
   return (
     <div className="p-8 bg-gray-50 min-h-screen flex flex-col items-center justify-center font-sans">
       <div className="text-center mb-12">
-        <h1 className="text-5xl font-extralight text-gray-900 mb-6">Fee Payment</h1>
+        <h1 className="text-5xl font-extralight text-gray-900 mb-6 heading-premium">Fee Payment</h1>
         <p className="text-xl text-gray-700 mb-6">Please proceed with the fee payment by clicking the button below:</p>
       </div>
 
@@ -315,7 +315,7 @@ export const Fees = () => {
       <div className="flex justify-center items-center">
         <a 
           href="https://www.eduqfix.com/PayDirect/#/student/pay/XxoRsO6mfiXGAnQY1R64lGgQcWtw4tYKPWYLPO8nzoGBvtL6DIe+F9YjQMK1keFr/254" 
-          className="inline-block bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-4 px-8 rounded-xl text-2xl font-semibold hover:from-blue-700 hover:to-indigo-700 transition-all duration-500 transform hover:scale-105 shadow-lg shadow-blue-500/50"
+          className="btn-primary py-4 px-8 rounded-xl text-2xl font-semibold shadow-lg"
         >
           Pay Fees
         </a>
