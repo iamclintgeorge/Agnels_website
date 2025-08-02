@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { useAuth } from '../../services/useAuthCheck';
+import React, { useState, useEffect } from "react";
+import { useAuth } from "../../services/useAuthCheck";
 
 const ActivityLogs = () => {
   const { user } = useAuth();
@@ -9,73 +9,96 @@ const ActivityLogs = () => {
   const [filters, setFilters] = useState({
     page: 1,
     limit: 50,
-    username: '',
-    userRole: '',
-    action: '',
-    resource: '',
-    startDate: '',
-    endDate: ''
+    username: "",
+    userRole: "",
+    action: "",
+    resource: "",
+    startDate: "",
+    endDate: "",
   });
   const [pagination, setPagination] = useState({});
   const [filterOptions, setFilterOptions] = useState({
     userRoles: [],
     actions: [],
     resources: [],
-    users: []
+    users: [],
   });
   const [stats, setStats] = useState(null);
 
   // Check if user can view all logs (superAdmin or principal)
-  const canViewAllLogs = user && ['superAdmin', 'principal'].includes(user.role);
+  const canViewAllLogs =
+    user && ["superAdmin", "principal"].includes(user.role);
 
   useEffect(() => {
-    fetchFilterOptions();
-    fetchStats();
     fetchLogs();
+    if (canViewAllLogs) {
+      fetchFilterOptions();
+      fetchStats();
+    }
   }, [filters]);
 
   const fetchFilterOptions = async () => {
-    if (!canViewAllLogs) return;
-    
     try {
-      const response = await fetch('/api/activity-logs/filter-options', {
-        credentials: 'include'
+      const response = await fetch("/api/activity-logs/filter-options", {
+        credentials: "include",
       });
-      
+
       if (response.ok) {
-        const data = await response.json();
-        setFilterOptions(data);
+        const contentType = response.headers.get("Content-Type");
+        if (contentType && contentType.includes("application/json")) {
+          const data = await response.json();
+          setFilterOptions(data);
+        } else {
+          console.warn("Filter options endpoint returned non-JSON response");
+          // Set default filter options based on the data we have
+          setFilterOptions({
+            userRoles: ["superAdmin", "principal", "admin", "user"],
+            actions: ["CREATE", "READ", "UPDATE", "DELETE", "ERROR"],
+            resources: ["users", "logs", "system"],
+            users: [],
+          });
+        }
       }
     } catch (error) {
-      console.error('Error fetching filter options:', error);
+      console.error("Error fetching filter options:", error);
+      // Set default filter options on error
+      setFilterOptions({
+        userRoles: ["superAdmin", "principal", "admin", "user"],
+        actions: ["CREATE", "READ", "UPDATE", "DELETE", "ERROR"],
+        resources: ["users", "logs", "system"],
+        users: [],
+      });
     }
   };
 
   const fetchStats = async () => {
-    if (!canViewAllLogs) return;
-    
     try {
       const queryParams = new URLSearchParams();
-      if (filters.startDate) queryParams.append('startDate', filters.startDate);
-      if (filters.endDate) queryParams.append('endDate', filters.endDate);
-      
+      if (filters.startDate) queryParams.append("startDate", filters.startDate);
+      if (filters.endDate) queryParams.append("endDate", filters.endDate);
+
       const response = await fetch(`/api/activity-logs/stats?${queryParams}`, {
-        credentials: 'include'
+        credentials: "include",
       });
-      
+
       if (response.ok) {
-        const data = await response.json();
-        setStats(data);
+        const contentType = response.headers.get("Content-Type");
+        if (contentType && contentType.includes("application/json")) {
+          const data = await response.json();
+          setStats(data);
+        } else {
+          console.warn("Stats endpoint returned non-JSON response");
+        }
       }
     } catch (error) {
-      console.error('Error fetching statistics:', error);
+      console.error("Error fetching statistics:", error);
     }
   };
 
   const fetchLogs = async () => {
     setLoading(true);
     setError(null);
-    
+
     try {
       // Build query parameters
       const queryParams = new URLSearchParams();
@@ -83,23 +106,56 @@ const ActivityLogs = () => {
         if (value) queryParams.append(key, value);
       });
 
-      // Use appropriate endpoint based on user role
-      const endpoint = canViewAllLogs 
-        ? `/api/activity-logs?${queryParams}`
-        : `/api/activity-logs/my-activities?${queryParams}`;
-      
+      // Use the new endpoint
+      const endpoint = canViewAllLogs
+        ? `http://localhost:3663/api/logs/?${queryParams}`
+        : `http://localhost:3663/api/logs/my-activities/?${queryParams}`;
+
       const response = await fetch(endpoint, {
-        credentials: 'include'
+        credentials: "include",
       });
-      
-      if (response.ok) {
+
+      console.log("Logs response:", response);
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(
+          `Failed to fetch logs. Status: ${response.status}. Response: ${errorText}`
+        );
+      }
+
+      const contentType = response.headers.get("Content-Type");
+      if (contentType && contentType.includes("application/json")) {
         const data = await response.json();
-        setLogs(data.activities || []);
+        console.log("Fetched data:", data);
+
+        // Process the logs to ensure unique keys and map the data structure
+        const processedLogs = (data.activities || []).map((log, index) => ({
+          ...log,
+          // Create a unique key using id and index to handle duplicates
+          uniqueKey: `${log.id}-${index}`,
+          // Map the API response fields to what the component expects
+          username: log.created_by || log.username || "system",
+          user_role: log.user_role || "system",
+          level: log.level || "info",
+          title: log.title || "No title",
+          service: log.service || "system",
+          description: log.description || "No description",
+          ip_address: log.ip_address || log.source_ip || "N/A",
+          timestamp:
+            log.created_at ||
+            log.created_on ||
+            log.timestamp ||
+            new Date().toISOString(),
+        }));
+
+        setLogs(processedLogs);
         setPagination(data.pagination || {});
       } else {
-        throw new Error('Failed to fetch activity logs');
+        throw new Error(`Expected JSON, but received: ${contentType}`);
       }
     } catch (error) {
+      console.error("Error fetching logs:", error);
       setError(error.message);
     } finally {
       setLoading(false);
@@ -107,17 +163,37 @@ const ActivityLogs = () => {
   };
 
   const handleFilterChange = (key, value) => {
-    setFilters(prev => ({
+    setFilters((prev) => ({
       ...prev,
       [key]: value,
-      page: 1 // Reset to first page when filters change
+      page: 1, // Reset to first page when filters change
     }));
   };
 
+  const getLevelBadgeColor = (level) => {
+    switch (level?.toLowerCase()) {
+      case "error":
+        return "bg-red-100 text-red-800";
+      case "warn":
+      case "warning":
+        return "bg-yellow-100 text-yellow-800";
+      case "info":
+        return "bg-gray-200 text-gray-700";
+      case "debug":
+        return "bg-purple-100 text-purple-800";
+      case "success":
+        return "bg-green-100 text-green-800";
+      case "trace":
+        return "bg-indigo-100 text-indigo-800";
+      default:
+        return "bg-blue-100 text-blue-800";
+    }
+  };
+
   const handlePageChange = (newPage) => {
-    setFilters(prev => ({
+    setFilters((prev) => ({
       ...prev,
-      page: newPage
+      page: newPage,
     }));
   };
 
@@ -125,59 +201,74 @@ const ActivityLogs = () => {
     setFilters({
       page: 1,
       limit: 50,
-      username: '',
-      userRole: '',
-      action: '',
-      resource: '',
-      startDate: '',
-      endDate: ''
+      username: "",
+      userRole: "",
+      action: "",
+      resource: "",
+      startDate: "",
+      endDate: "",
     });
   };
 
   const exportLogs = async () => {
     if (!canViewAllLogs) return;
-    
+
     try {
       const queryParams = new URLSearchParams();
       Object.entries(filters).forEach(([key, value]) => {
-        if (value && key !== 'page' && key !== 'limit') {
+        if (value && key !== "page" && key !== "limit") {
           queryParams.append(key, value);
         }
       });
 
-      const response = await fetch(`/api/activity-logs/export?${queryParams}`, {
-        credentials: 'include'
-      });
-      
+      const response = await fetch(
+        `http://localhost:3663/api/logs/export?${queryParams}`,
+        {
+          credentials: "include",
+        }
+      );
+
       if (response.ok) {
         const blob = await response.blob();
         const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
+        const a = document.createElement("a");
         a.href = url;
-        a.download = `activity_logs_${new Date().toISOString().split('T')[0]}.csv`;
+        a.download = `activity_logs_${
+          new Date().toISOString().split("T")[0]
+        }.csv`;
         document.body.appendChild(a);
         a.click();
         window.URL.revokeObjectURL(url);
         document.body.removeChild(a);
       }
     } catch (error) {
-      console.error('Error exporting logs:', error);
+      console.error("Error exporting logs:", error);
     }
   };
 
   const getActionBadgeColor = (action) => {
     switch (action) {
-      case 'CREATE': return 'bg-green-100 text-green-800';
-      case 'UPDATE': return 'bg-blue-100 text-blue-800';
-      case 'DELETE': return 'bg-red-100 text-red-800';
-      case 'READ': return 'bg-gray-100 text-gray-800';
-      case 'ERROR': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case "CREATE":
+        return "bg-green-100 text-green-800";
+      case "UPDATE":
+        return "bg-blue-100 text-blue-800";
+      case "DELETE":
+        return "bg-red-100 text-red-800";
+      case "READ":
+        return "bg-gray-100 text-gray-800";
+      case "ERROR":
+        return "bg-red-100 text-red-800";
+      default:
+        return "bg-gray-100 text-gray-800";
     }
   };
 
   const formatTimestamp = (timestamp) => {
-    return new Date(timestamp).toLocaleString();
+    try {
+      return new Date(timestamp).toLocaleString();
+    } catch (error) {
+      return timestamp || "Invalid date";
+    }
   };
 
   if (loading && logs.length === 0) {
@@ -192,13 +283,12 @@ const ActivityLogs = () => {
     <div className="p-6">
       <div className="mb-6">
         <h1 className="text-3xl font-bold text-gray-900 mb-2">
-          {canViewAllLogs ? 'Activity Logs' : 'My Activity Logs'}
+          {canViewAllLogs ? "Activity Logs" : "My Activity Logs"}
         </h1>
         <p className="text-gray-600">
-          {canViewAllLogs 
-            ? 'Monitor all admin panel activities across the system' 
-            : 'View your activity history in the admin panel'
-          }
+          {canViewAllLogs
+            ? "Monitor all admin panel activities across the system"
+            : "View your activity history in the admin panel"}
         </p>
       </div>
 
@@ -206,27 +296,31 @@ const ActivityLogs = () => {
       {canViewAllLogs && stats && (
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
           <div className="bg-white p-4 rounded-lg shadow border">
-            <h3 className="text-sm font-medium text-gray-500">Total Activities</h3>
+            <h3 className="text-sm font-medium text-gray-500">
+              Total Activities
+            </h3>
             <p className="text-2xl font-bold text-blue-600">
-              {stats.stats.totalActivities[0]?.count || 0}
+              {stats.stats?.totalActivities?.[0]?.count || logs.length || 0}
             </p>
           </div>
           <div className="bg-white p-4 rounded-lg shadow border">
-            <h3 className="text-sm font-medium text-gray-500">Most Active User</h3>
+            <h3 className="text-sm font-medium text-gray-500">
+              Most Active User
+            </h3>
             <p className="text-lg font-semibold text-green-600">
-              {stats.stats.activitiesByUser[0]?.username || 'N/A'}
+              {stats.stats?.activitiesByUser?.[0]?.username || "System"}
             </p>
           </div>
           <div className="bg-white p-4 rounded-lg shadow border">
             <h3 className="text-sm font-medium text-gray-500">Top Action</h3>
             <p className="text-lg font-semibold text-purple-600">
-              {stats.stats.activitiesByAction[0]?.action || 'N/A'}
+              {stats.stats?.activitiesByAction?.[0]?.action || "READ"}
             </p>
           </div>
           <div className="bg-white p-4 rounded-lg shadow border">
             <h3 className="text-sm font-medium text-gray-500">Top Resource</h3>
             <p className="text-lg font-semibold text-orange-600">
-              {stats.stats.activitiesByResource[0]?.resource || 'N/A'}
+              {stats.stats?.activitiesByResource?.[0]?.resource || "System"}
             </p>
           </div>
         </div>
@@ -238,76 +332,98 @@ const ActivityLogs = () => {
           {canViewAllLogs && (
             <>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">Username</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Username
+                </label>
                 <input
                   type="text"
                   value={filters.username}
-                  onChange={(e) => handleFilterChange('username', e.target.value)}
+                  onChange={(e) =>
+                    handleFilterChange("username", e.target.value)
+                  }
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Filter by username"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">User Role</label>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  User Role
+                </label>
                 <select
                   value={filters.userRole}
-                  onChange={(e) => handleFilterChange('userRole', e.target.value)}
+                  onChange={(e) =>
+                    handleFilterChange("userRole", e.target.value)
+                  }
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
                   <option value="">All Roles</option>
-                  {filterOptions.userRoles.map(role => (
-                    <option key={role} value={role}>{role}</option>
+                  {filterOptions.userRoles.map((role) => (
+                    <option key={role} value={role}>
+                      {role}
+                    </option>
                   ))}
                 </select>
               </div>
             </>
           )}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Action</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Action
+            </label>
             <select
               value={filters.action}
-              onChange={(e) => handleFilterChange('action', e.target.value)}
+              onChange={(e) => handleFilterChange("action", e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="">All Actions</option>
-              {filterOptions.actions.map(action => (
-                <option key={action} value={action}>{action}</option>
+              {filterOptions.actions.map((action) => (
+                <option key={action} value={action}>
+                  {action}
+                </option>
               ))}
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Resource</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Resource
+            </label>
             <select
               value={filters.resource}
-              onChange={(e) => handleFilterChange('resource', e.target.value)}
+              onChange={(e) => handleFilterChange("resource", e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="">All Resources</option>
-              {filterOptions.resources.map(resource => (
-                <option key={resource} value={resource}>{resource}</option>
+              {filterOptions.resources.map((resource) => (
+                <option key={resource} value={resource}>
+                  {resource}
+                </option>
               ))}
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Start Date
+            </label>
             <input
               type="date"
               value={filters.startDate}
-              onChange={(e) => handleFilterChange('startDate', e.target.value)}
+              onChange={(e) => handleFilterChange("startDate", e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">End Date</label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              End Date
+            </label>
             <input
               type="date"
               value={filters.endDate}
-              onChange={(e) => handleFilterChange('endDate', e.target.value)}
+              onChange={(e) => handleFilterChange("endDate", e.target.value)}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
         </div>
-        
+
         <div className="flex justify-between items-center">
           <button
             onClick={clearFilters}
@@ -340,72 +456,63 @@ const ActivityLogs = () => {
             <thead className="bg-gray-50">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Level
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Timestamp
                 </th>
-                {canViewAllLogs && (
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    User
-                  </th>
-                )}
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Action
+                  Title
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Resource
+                  Service
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Description
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Method
+                  User
                 </th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {logs.map((log) => (
-                <tr key={log.id} className="hover:bg-gray-50">
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {formatTimestamp(log.timestamp)}
-                  </td>
-                  {canViewAllLogs && (
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                      <div>
-                        <div className="font-medium">{log.username}</div>
-                        <div className="text-gray-500">{log.user_role}</div>
-                      </div>
-                    </td>
-                  )}
+                <tr key={log.uniqueKey || log.id} className="hover:bg-gray-50">
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getActionBadgeColor(log.action)}`}>
-                      {log.action}
+                    <span
+                      className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getLevelBadgeColor(
+                        log.level
+                      )}`}
+                    >
+                      {log.level?.toUpperCase() || "INFO"}
                     </span>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {log.resource}
-                    {log.resource_id && (
-                      <span className="text-gray-500 ml-1">#{log.resource_id}</span>
-                    )}
+                    {formatTimestamp(log.timestamp)}
+                  </td>
+                  <td className="px-6 py-4 text-sm text-gray-900">
+                    {log.title}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    {log.service}
                   </td>
                   <td className="px-6 py-4 text-sm text-gray-900">
                     {log.description}
                   </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                    <span className={`px-2 py-1 text-xs rounded ${
-                      log.method === 'GET' ? 'bg-blue-100 text-blue-800' :
-                      log.method === 'POST' ? 'bg-green-100 text-green-800' :
-                      log.method === 'PUT' ? 'bg-yellow-100 text-yellow-800' :
-                      log.method === 'DELETE' ? 'bg-red-100 text-red-800' :
-                      'bg-gray-100 text-gray-800'
-                    }`}>
-                      {log.method}
-                    </span>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    <div>
+                      <div className="font-medium">{log.username}</div>
+                      <div className="text-gray-500 text-xs">
+                        {log.ip_address}
+                      </div>
+                    </div>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-        
+
         {logs.length === 0 && !loading && (
           <div className="text-center py-12">
             <p className="text-gray-500">No activity logs found.</p>
@@ -417,8 +524,8 @@ const ActivityLogs = () => {
       {pagination.totalPages > 1 && (
         <div className="flex justify-between items-center mt-6">
           <div className="text-sm text-gray-700">
-            Showing page {pagination.page} of {pagination.totalPages} 
-            ({pagination.totalCount} total records)
+            Showing page {pagination.page} of {pagination.totalPages} (
+            {pagination.totalCount} total records)
           </div>
           <div className="flex space-x-2">
             <button
@@ -442,4 +549,4 @@ const ActivityLogs = () => {
   );
 };
 
-export default ActivityLogs; 
+export default ActivityLogs;
