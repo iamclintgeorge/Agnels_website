@@ -53,7 +53,7 @@ export const History = () => {
 
         {/* An Endeavor called Fr. CRIT Card */}
         <div className=" rounded-md shadow-sm p-5 hover:shadow-md transition-shadow">
-          <h3 className="text-2xl md:text-3xl font-semibold text-gray-800 mb-4 border-b pb-2">
+          <h3 className="text-2xl md:text-3xl font-semibold text-gray-800 mb-4 border-b pb-2 font-playfair">
             An Endeavor called Fr. CRIT
           </h3>
           <p className="text-base md:text-lg text-gray-700 leading-relaxed">
@@ -134,9 +134,9 @@ export const Vision_and_Mission = () => {
 
           {/* Mission */}
           <div className="flex-1  rounded-md shadow-sm hover:shadow-md transition-shadow p-5">
-                      <h3 className="text-2xl md:text-3xl font-bold text-gray-800 mb-4 border-b pb-2 heading-premium">
-            Mission
-          </h3>
+            <h3 className="text-2xl md:text-3xl font-bold text-gray-800 mb-4 border-b pb-2 heading-premium">
+              Mission
+            </h3>
             <ul className="list-disc list-inside text-base md:text-lg text-gray-700 leading-relaxed space-y-1">
               <li>To provide industry oriented quality education.</li>
               <li>

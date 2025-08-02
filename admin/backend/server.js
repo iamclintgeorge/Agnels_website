@@ -3,6 +3,8 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import session from "express-session";
+import logger from "./services/logger.js";
+import { v4 as uuidv4 } from "uuid";
 import path from "path";
 import { fileURLToPath } from "url";
 import routes from "./routes/routes.js";
@@ -37,7 +39,7 @@ import contentApprovalRoutes from "./routes/website/contentApprovalRoutes.js";
 import activityLogsRoutes from "./routes/admin/activityLogsRoutes.js";
 
 // Import logging middleware
-import adminActivityLogger from "./middlewares/loggingMiddleware.js";
+// import adminActivityLogger from "./middlewares/loggingMiddleware.js";
 
 import iicRoutes from "./routes/website/iicRoutes.js";
 
@@ -91,7 +93,7 @@ const __dirname = path.dirname(__filename);
 app.use("/cdn", express.static(path.join(__dirname, "public", "cdn")));
 
 // Add admin activity logging middleware (after session, before routes)
-app.use(adminActivityLogger);
+// app.use(adminActivityLogger);
 
 // Integrate IIC routes
 // app.use("/api/iic", iicRoutes);
@@ -136,8 +138,18 @@ app.use("/api/iic", iicRoutes);
 app.use("/api/faculties", facultyStaffRoute);
 
 // Activity logs routes
-app.use("/api/activity-logs", activityLogsRoutes);
+app.use("/api/logs", activityLogsRoutes);
 
 app.listen(port, () => {
   console.log(`Server Started at URI http://localhost:${port}/`);
+  logger.info("Server started", {
+    id: uuidv4(), // Use a UUID or other method to generate an ID
+    title: `Server started at http://localhost:${port}/`,
+    service: "fcrit backend server",
+    description: "No additional info",
+    level: "INFO",
+    created_by: "system",
+    source_ip: "N/A", // You can fetch the IP dynamically if needed
+    created_on: new Date().toISOString(),
+  });
 });
