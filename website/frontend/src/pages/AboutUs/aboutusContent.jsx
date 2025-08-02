@@ -10,7 +10,7 @@ const SectionContainer = ({ title, subtitle, children }) => {
         {/* Title & Subtitle */}
         {title && (
           <div className="mb-8 text-center">
-            <h2 className="text-3xl md:text-4xl font-extrabold text-gray-800">
+            <h2 className="text-3xl md:text-4xl font-extrabold text-gray-800 heading-premium">
               {title}
             </h2>
             {subtitle && (
@@ -38,7 +38,7 @@ export const History = () => {
       <div className="flex flex-col gap-10">
         {/* Establishment Card */}
         <div className=" rounded-md shadow-sm p-5 hover:shadow-md transition-shadow">
-          <h3 className="text-2xl md:text-3xl font-semibold text-gray-800 mb-4 border-b pb-2">
+          <h3 className="text-2xl md:text-3xl font-semibold text-gray-800 mb-4 border-b pb-2 heading-premium">
             Establishment
           </h3>
           <div className="overflow-hidden rounded-md mb-4">
@@ -67,7 +67,7 @@ export const History = () => {
 
         {/* History Card */}
         <div className=" rounded-md shadow-sm p-5 hover:shadow-md transition-shadow">
-          <h3 className="text-2xl md:text-3xl font-semibold text-gray-800 mb-4 border-b pb-2">
+          <h3 className="text-2xl md:text-3xl font-semibold text-gray-800 mb-4 border-b pb-2 heading-premium">
             History
           </h3>
           <p className="text-base md:text-lg text-gray-700 leading-relaxed">
@@ -134,9 +134,9 @@ export const Vision_and_Mission = () => {
 
           {/* Mission */}
           <div className="flex-1  rounded-md shadow-sm hover:shadow-md transition-shadow p-5">
-            <h3 className="text-2xl md:text-3xl font-bold text-gray-800 mb-4 border-b pb-2">
-              Mission
-            </h3>
+                      <h3 className="text-2xl md:text-3xl font-bold text-gray-800 mb-4 border-b pb-2 heading-premium">
+            Mission
+          </h3>
             <ul className="list-disc list-inside text-base md:text-lg text-gray-700 leading-relaxed space-y-1">
               <li>To provide industry oriented quality education.</li>
               <li>
@@ -153,7 +153,7 @@ export const Vision_and_Mission = () => {
 
         {/* Message Section (Row 3) */}
         <div className=" rounded-md shadow-sm p-5 hover:shadow-md transition-shadow">
-          <h3 className="text-2xl md:text-3xl font-bold text-gray-800 mb-4 border-b pb-2">
+          <h3 className="text-2xl md:text-3xl font-bold text-gray-800 mb-4 border-b pb-2 heading-premium">
             Message from Rev. Dr. Ivon Almeida
           </h3>
           <div className="border border-gray-300 p-4 rounded-md shadow-sm ">

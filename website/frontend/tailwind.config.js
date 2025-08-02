@@ -4,9 +4,14 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        inter: ["Inter"],
-        playfair: ["Playfair Display"],
-        librefranklin: ["Libre Franklin"],
+        sans: ["Inter", "sans-serif"], // Set Inter as default font
+        inter: ["Inter", "sans-serif"],
+        playfair: ["Playfair Display", "serif"],
+        librefranklin: ["Libre Franklin", "sans-serif"],
+      },
+      colors: {
+        primary: "#0c2340",
+        accent: "#AE9142",
       },
       animation: {
         marquee: "marquee 15s linear infinite", // Add the marquee animation

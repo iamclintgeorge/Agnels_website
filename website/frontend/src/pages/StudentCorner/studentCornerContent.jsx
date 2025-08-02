@@ -3,25 +3,23 @@ import React from "react";
 // Home Component
 export const SC_Home = () => {
   return (
-    <div className="p-8 bg-white min-h-screen font-sans text-gray-900">
-      <div className="max-w-4xl mx-auto">
-        <h1 className="text-4xl font-bold text-black mb-6">Student's Corner</h1>
-        
-        <p className="text-md text-gray-700 mb-6 leading-relaxed">
-          Graduate school can be one of the most exciting, challenging, and enriching experiences in a student’s life. Whether you're pursuing a Master's, Doctoral, or Graduate professional degree, it’s essential to have a one-point contact that helps you navigate through your years in the institute.
-        </p>
-        
-        <p className="text-md text-gray-700 mb-6 leading-relaxed">
-          The Students’ Corner provides you with tools, resources, clubs, and programs that will not only help you become an integral part of the institute but also ensure you have a great and holistic experience during your time here.
-        </p>
+    <>
+      <h1 className="text-4xl font-bold text-black mb-6 heading-premium">Student's Corner</h1>
+      
+      <p className="text-md text-gray-700 mb-6 leading-relaxed">
+        Graduate school can be one of the most exciting, challenging, and enriching experiences in a student's life. Whether you're pursuing a Master's, Doctoral, or Graduate professional degree, it's essential to have a one-point contact that helps you navigate through your years in the institute.
+      </p>
+      
+      <p className="text-md text-gray-700 mb-6 leading-relaxed">
+        The Students' Corner provides you with tools, resources, clubs, and programs that will not only help you become an integral part of the institute but also ensure you have a great and holistic experience during your time here.
+      </p>
 
-        <div className="mt-8">
-          <button className="px-6 py-3 bg-indigo-600 text-white font-semibold rounded-lg shadow-lg hover:bg-indigo-700 transition-colors duration-300">
-            Learn More
-          </button>
-        </div>
+      <div className="mt-8">
+        <button className="btn-primary px-6 py-3 font-semibold rounded-lg shadow-lg">
+          Learn More
+        </button>
       </div>
-    </div>
+    </>
   );
 };
 
@@ -133,8 +131,8 @@ export const StudentCouncil = () => {
 // Professional Bodies Component
 export const ProfessionalBodies = () => {
   return (
-    <div className="p-8 bg-gray-50 min-h-screen font-sans">
-      <h2 className="text-3xl font-semibold mb-8 text-center">Professional Bodies</h2>
+    <>
+      <h2 className="text-3xl font-semibold mb-8 text-center heading-premium">Professional Bodies</h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {/* First body */}
@@ -146,7 +144,7 @@ export const ProfessionalBodies = () => {
           <p className="text-sm text-gray-600 mb-4">Computer Society of India</p>
           <p className="text-sm text-gray-600 mb-4">Department of Computer Engineering</p>
           <div className="mt-auto">
-            <button className="w-full px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors duration-300">
+            <button className="btn-primary w-full px-4 py-2 rounded">
               Read More
             </button>
           </div>
@@ -160,7 +158,7 @@ export const ProfessionalBodies = () => {
           </div>
           <p className="text-sm text-gray-600 mb-4">Society of Automotive Engineers India</p>
           <div className="mt-auto">
-            <button className="w-full px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors duration-300">
+            <button className="btn-primary w-full px-4 py-2 rounded">
               Read More
             </button>
           </div>
@@ -174,7 +172,7 @@ export const ProfessionalBodies = () => {
           </div>
           <p className="text-sm text-gray-600 mb-4">The Institute of Electrical and Electronics Engineers</p>
           <div className="mt-auto">
-            <button className="w-full px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors duration-300">
+            <button className="btn-primary w-full px-4 py-2 rounded">
               Read More
             </button>
           </div>
@@ -188,7 +186,7 @@ export const ProfessionalBodies = () => {
           </div>
           <p className="text-sm text-gray-600 mb-4">The Institution of Engineers (India)</p>
           <div className="mt-auto">
-            <button className="w-full px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors duration-300">
+            <button className="btn-primary w-full px-4 py-2 rounded">
               Read More
             </button>
           </div>
@@ -203,7 +201,7 @@ export const ProfessionalBodies = () => {
           <p className="text-sm text-gray-600 mb-4">Computer Society of India</p>
           <p className="text-sm text-gray-600 mb-4">Department of Information Technology</p>
           <div className="mt-auto">
-            <button className="w-full px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors duration-300">
+            <button className="btn-primary w-full px-4 py-2 rounded">
               Read More
             </button>
           </div>
@@ -217,7 +215,7 @@ export const ProfessionalBodies = () => {
           </div>
           <p className="text-sm text-gray-600 mb-4">The Indian Society of Heating, Refrigerating and Air Conditioning Engineers</p>
           <div className="mt-auto">
-            <button className="w-full px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors duration-300">
+            <button className="btn-primary w-full px-4 py-2 rounded">
               Read More
             </button>
           </div>
@@ -231,13 +229,13 @@ export const ProfessionalBodies = () => {
           </div>
           <p className="text-sm text-gray-600 mb-4">The Institution of Electronics and Telecommunication Engineers</p>
           <div className="mt-auto">
-            <button className="w-full px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors duration-300">
+            <button className="btn-primary w-full px-4 py-2 rounded">
               Read More
             </button>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
@@ -321,9 +319,8 @@ export const NSS = () => {
 // Student Clubs Component
 export const StudentClubs = () => {
   return (
-    <div className="p-8 bg-white min-h-screen font-sans text-gray-900">
-      <div className="max-w-4xl mx-auto">
-      <h2 className="text-3xl font-extrabold text-black mb-8 text-center">Student Clubs</h2>
+    <>
+      <h2 className="text-3xl font-extrabold text-black mb-8 text-center heading-premium">Student Clubs</h2>
 
 
         <div className="space-y-6">
@@ -333,7 +330,7 @@ export const StudentClubs = () => {
               <img src="src/assets/imgs/agnels-robotic-club.png" alt="Agnel Robotics Club Logo" className="w-16 h-16 rounded-full" />
               <p className="text-lg font-medium">Agnel Robotics Club</p>
             </div>
-            <button className="px-6 py-2 bg-blue-500 text-white rounded-lg shadow-lg hover:bg-blue-600 transition-colors duration-300">
+            <button className="btn-primary px-6 py-2 rounded-lg shadow-lg">
               Read More
             </button>
           </div>
@@ -344,7 +341,7 @@ export const StudentClubs = () => {
               <img src="src/assets/imgs/sports-club.jpeg" alt="Agnel Sports Club Logo" className="w-16 h-16 rounded-full" />
               <p className="text-lg font-medium">Agnel Sports Club</p>
             </div>
-            <button className="px-6 py-2 bg-blue-500 text-white rounded-lg shadow-lg hover:bg-blue-600 transition-colors duration-300">
+            <button className="btn-primary px-6 py-2 rounded-lg shadow-lg">
               Read More
             </button>
           </div>
@@ -355,7 +352,7 @@ export const StudentClubs = () => {
               <img src="src/assets/imgs/drama-club.jpeg" alt="Drama Club Logo" className="w-16 h-16 rounded-full" />
               <p className="text-lg font-medium">Drama Club</p>
             </div>
-            <button className="px-6 py-2 bg-blue-500 text-white rounded-lg shadow-lg hover:bg-blue-600 transition-colors duration-300">
+            <button className="btn-primary px-6 py-2 rounded-lg shadow-lg">
               Read More
             </button>
           </div>
@@ -366,7 +363,7 @@ export const StudentClubs = () => {
               <img src="src/assets/imgs/artificial-intelligence-and-deep-learning-club.jpeg" alt="AI and Deep Learning Club Logo" className="w-16 h-16 rounded-full" />
               <p className="text-lg font-medium">AI and Deep Learning Club</p>
             </div>
-            <button className="px-6 py-2 bg-blue-500 text-white rounded-lg shadow-lg hover:bg-blue-600 transition-colors duration-300">
+            <button className="btn-primary px-6 py-2 rounded-lg shadow-lg">
               Read More
             </button>
           </div>
@@ -377,7 +374,7 @@ export const StudentClubs = () => {
               <img src="src/assets/imgs/music-club.jpeg" alt="Music Club Logo" className="w-16 h-16 rounded-full" />
               <p className="text-lg font-medium">Music Club</p>
             </div>
-            <button className="px-6 py-2 bg-blue-500 text-white rounded-lg shadow-lg hover:bg-blue-600 transition-colors duration-300">
+            <button className="btn-primary px-6 py-2 rounded-lg shadow-lg">
               Read More
             </button>
           </div>
@@ -388,7 +385,7 @@ export const StudentClubs = () => {
               <img src="src/assets/imgs/college-magazine.jpeg" alt="College Magazine Logo" className="w-16 h-16 rounded-full" />
               <p className="text-lg font-medium">College Magazine</p>
             </div>
-            <button className="px-6 py-2 bg-blue-500 text-white rounded-lg shadow-lg hover:bg-blue-600 transition-colors duration-300">
+            <button className="btn-primary px-6 py-2 rounded-lg shadow-lg">
               Read More
             </button>
           </div>
@@ -399,13 +396,12 @@ export const StudentClubs = () => {
               <img src="src/assets/imgs/coders-club.jpeg" alt="Coders' Club Logo" className="w-16 h-16 rounded-full" />
               <p className="text-lg font-medium">Coders' Club</p>
             </div>
-            <button className="px-6 py-2 bg-blue-500 text-white rounded-lg shadow-lg hover:bg-blue-600 transition-colors duration-300">
+            <button className="btn-primary px-6 py-2 rounded-lg shadow-lg">
               Read More
             </button>
           </div>
         </div>
-      </div>
-    </div>
+    </>
   );
 };
 
@@ -414,8 +410,8 @@ export const StudentClubs = () => {
 // Infrastructure Component
 export const Infrastructure = () => {
   return (
-    <div className="p-8 bg-gray-50 min-h-screen font-sans">
-      <h2 className="text-3xl font-extrabold text-black mb-12 text-center">Infrastructure</h2>
+    <>
+      <h2 className="text-3xl font-extrabold text-black mb-12 text-center heading-premium">Infrastructure</h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {/* Library */}
@@ -424,7 +420,7 @@ export const Infrastructure = () => {
           <div className="absolute inset-0 bg-black opacity-40 group-hover:opacity-50 transition-opacity"></div>
           <div className="absolute inset-0 flex flex-col justify-center items-center text-center text-white">
             <p className="text-2xl font-bold mb-4">Library</p>
-            <button className="px-6 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition-all">
+            <button className="btn-primary px-6 py-2 rounded-lg shadow-md">
               Read More
             </button>
           </div>
@@ -436,7 +432,7 @@ export const Infrastructure = () => {
           <div className="absolute inset-0 bg-black opacity-40 group-hover:opacity-50 transition-opacity"></div>
           <div className="absolute inset-0 flex flex-col justify-center items-center text-center text-white">
             <p className="text-2xl font-bold mb-4">Gymnasium</p>
-            <button className="px-6 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition-all">
+            <button className="btn-primary px-6 py-2 rounded-lg shadow-md">
               Read More
             </button>
           </div>
@@ -448,7 +444,7 @@ export const Infrastructure = () => {
           <div className="absolute inset-0 bg-black opacity-40 group-hover:opacity-50 transition-opacity"></div>
           <div className="absolute inset-0 flex flex-col justify-center items-center text-center text-white">
             <p className="text-2xl font-bold mb-4">Boys and Girls Hostel</p>
-            <button className="px-6 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition-all">
+            <button className="btn-primary px-6 py-2 rounded-lg shadow-md">
               Read More
             </button>
           </div>
@@ -460,7 +456,7 @@ export const Infrastructure = () => {
           <div className="absolute inset-0 bg-black opacity-40 group-hover:opacity-50 transition-opacity"></div>
           <div className="absolute inset-0 flex flex-col justify-center items-center text-center text-white">
             <p className="text-2xl font-bold mb-4">Swimming Pool</p>
-            <button className="px-6 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition-all">
+            <button className="btn-primary px-6 py-2 rounded-lg shadow-md">
               Read More
             </button>
           </div>
@@ -472,7 +468,7 @@ export const Infrastructure = () => {
           <div className="absolute inset-0 bg-black opacity-40 group-hover:opacity-50 transition-opacity"></div>
           <div className="absolute inset-0 flex flex-col justify-center items-center text-center text-white">
             <p className="text-2xl font-bold mb-4">Medical Centre</p>
-            <button className="px-6 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition-all">
+            <button className="btn-primary px-6 py-2 rounded-lg shadow-md">
               Read More
             </button>
           </div>
@@ -484,7 +480,7 @@ export const Infrastructure = () => {
           <div className="absolute inset-0 bg-black opacity-40 group-hover:opacity-50 transition-opacity"></div>
           <div className="absolute inset-0 flex flex-col justify-center items-center text-center text-white">
             <p className="text-2xl font-bold mb-4">Meditation Centre</p>
-            <button className="px-6 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition-all">
+            <button className="btn-primary px-6 py-2 rounded-lg shadow-md">
               Read More
             </button>
           </div>
@@ -496,7 +492,7 @@ export const Infrastructure = () => {
           <div className="absolute inset-0 bg-black opacity-40 group-hover:opacity-50 transition-opacity"></div>
           <div className="absolute inset-0 flex flex-col justify-center items-center text-center text-white">
             <p className="text-2xl font-bold mb-4">Basketball Court</p>
-            <button className="px-6 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition-all">
+            <button className="btn-primary px-6 py-2 rounded-lg shadow-md">
               Read More
             </button>
           </div>
@@ -508,7 +504,7 @@ export const Infrastructure = () => {
           <div className="absolute inset-0 bg-black opacity-40 group-hover:opacity-50 transition-opacity"></div>
           <div className="absolute inset-0 flex flex-col justify-center items-center text-center text-white">
             <p className="text-2xl font-bold mb-4">Football Turf</p>
-            <button className="px-6 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition-all">
+            <button className="btn-primary px-6 py-2 rounded-lg shadow-md">
               Read More
             </button>
           </div>
@@ -520,7 +516,7 @@ export const Infrastructure = () => {
           <div className="absolute inset-0 bg-black opacity-40 group-hover:opacity-50 transition-opacity"></div>
           <div className="absolute inset-0 flex flex-col justify-center items-center text-center text-white">
             <p className="text-2xl font-bold mb-4">Badminton Gurukul</p>
-            <button className="px-6 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition-all">
+            <button className="btn-primary px-6 py-2 rounded-lg shadow-md">
               Read More
             </button>
           </div>
@@ -532,13 +528,13 @@ export const Infrastructure = () => {
           <div className="absolute inset-0 bg-black opacity-40 group-hover:opacity-50 transition-opacity"></div>
           <div className="absolute inset-0 flex flex-col justify-center items-center text-center text-white">
             <p className="text-2xl font-bold mb-4">Canteen</p>
-            <button className="px-6 py-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600 transition-all">
+            <button className="btn-primary px-6 py-2 rounded-lg shadow-md">
               Read More
             </button>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
@@ -549,17 +545,17 @@ export const Infrastructure = () => {
 // Cultural Activities Component
 export const CulturalActivities = () => {
   return (
-    <div className="p-8 bg-gray-50 min-h-screen font-sans">
+    <>
       <p className="text-2xl font-bold mb-4">No content yet
       </p>
-    </div>
+    </>
   );
 };
 
 // Anti Ragging Component
 export const AntiRagging = () => {
   return (
-    <div className="p-8 bg-gray-50 min-h-screen font-sans">
+    <>
       {/* Header Section */}
       <h1 className="text-3xl font-bold text-red-600 mb-6">Anti Ragging</h1>
       
@@ -583,17 +579,17 @@ export const AntiRagging = () => {
           Please report any cases or concerns to ensure a safe and secure environment for all students.
         </p>
       </div>
-    </div>
+    </>
   );
 };
 
 // Student Satisfaction Survey Component
 export const Survey = () => {
   return (
-    <div className="p-8 bg-gray-50 min-h-screen font-sans">
+    <>
       <p className="text-2xl font-bold mb-4">No content yet
       </p>
-    </div>
+    </>
   );
 };
 
