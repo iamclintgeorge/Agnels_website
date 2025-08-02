@@ -65,9 +65,7 @@ const ItHod = () => {
 
   const fetchText = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:3663/api/hod-desk/it"
-      );
+      const response = await axios.get("http://localhost:3663/api/hod-desk/it");
       console.log("Fetched IT HOD Text:", response.data);
       setHodText(response.data);
       if (response.data.length > 0 && response.data[0].id) {
@@ -155,7 +153,9 @@ const ItHod = () => {
         }
       `}</style>
 
-      <h2 className="text-2xl font-bold mb-4">Information Technology - HOD Desk</h2>
+      <h2 className="text-2xl font-bold mb-4">
+        Computer Science and Engineering (Prev. IT) - HOD Desk
+      </h2>
 
       {hodText.length > 0 ? (
         editMode ? (
@@ -222,4 +222,4 @@ const ItHod = () => {
   );
 };
 
-export default ItHod; 
+export default ItHod;

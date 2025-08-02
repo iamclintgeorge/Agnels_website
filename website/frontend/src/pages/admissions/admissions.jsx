@@ -1,7 +1,7 @@
 import React from "react";
 import StaticPages from "../../layouts/staticPages";
 // import { useNavigate } from "react-router-dom";
-import { AdmissionPro, PostG, UnderG ,PhD, Fees} from "./admissionContent";
+import { AdmissionPro, PostG, UnderG, PhD, Fees } from "./admissionContent";
 
 const Admissions = () => {
   const sidebar = [
@@ -16,11 +16,11 @@ const Admissions = () => {
 
   const content = {
     "Admission Process": <AdmissionPro />,
-     "Under Graduate": <UnderG />,
-     "Post Graduate": <PostG />,
-     "PhD": <PhD />,
-     "Fee Payment": <Fees />,
-    // "Information Technology": <InfoT />,
+    "Under Graduate": <UnderG />,
+    "Post Graduate": <PostG />,
+    PhD: <PhD />,
+    "Fee Payment": <Fees />,
+    // "Computer Science and Engineering (Prev. IT)": <InfoT />,
     // "Basic Science and Humanities": <Humanities />,
   };
 

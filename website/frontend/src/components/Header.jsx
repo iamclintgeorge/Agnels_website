@@ -33,7 +33,7 @@ const Header = () => {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <FaInstagram className="text-[#CACACA] text-xl hover:text-blue-600 transition-colors" />
+              <FaInstagram className="text-[#CACACA] text-xl hover:text-[#AE9142] transition-colors" />
             </a>
             {/* Facebook in a small white circle */}
             <a
@@ -42,7 +42,7 @@ const Header = () => {
               rel="noopener noreferrer"
             >
               <div className="w-4 h-4 bg-[#CACACA] rounded-full flex items-center justify-center">
-                <FaFacebookF className="text-[#0c2340] text-xs hover:text-blue-600 text-center" />
+                <FaFacebookF className="text-[#0c2340] text-xs hover:text-[#AE9142] text-center" />
               </div>
             </a>
             {/* LinkedIn */}
@@ -51,7 +51,7 @@ const Header = () => {
               target="_blank"
               rel="noopener noreferrer"
             >
-              <FaLinkedinIn className="text-[#CACACA] hover:text-blue-600 transition-colors text-sm" />
+              <FaLinkedinIn className="text-[#CACACA] hover:text-[#AE9142] transition-colors text-sm" />
             </a>
           </div>
           {/* Vertical Divider */}
