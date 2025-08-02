@@ -62,6 +62,7 @@ export const carouselDeleteController = async (req, res) => {
 
     // Delete the file synchronously
     const filePath = path.join(process.cwd(), "public", image.imageUrl);
+    console.log(filePath);
     try {
       if (fs.existsSync(filePath)) {
         fs.unlinkSync(filePath);

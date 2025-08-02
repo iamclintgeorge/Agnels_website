@@ -50,6 +50,10 @@ const calculateSizes = (isSmall, isMobile, isTablet) => {
 
 const About = ({ departmentName }) => {
   const [content, setContent] = useState("");
+  const [vision, setVision] = useState("");
+  const [mission, setMission] = useState("");
+  const [objective, setObjective] = useState("");
+  const [outcomes, setOutcomes] = useState("");
   const [message, setMessage] = useState("");
   const isSmall = useMediaQuery({ maxWidth: 440 });
   const isMobile = useMediaQuery({ maxWidth: 768 });
@@ -67,6 +71,8 @@ const About = ({ departmentName }) => {
   useEffect(() => {
     fetchText();
     fetchImages();
+    fetchVision();
+    fetchObjective();
   }, [departmentName]);
 
   const fetchImages = async () => {
@@ -94,6 +100,75 @@ const About = ({ departmentName }) => {
         setMessage(""); // Clear any previous error messages
       } else {
         console.warn("No valid id or content in fetched data:", response.data);
+        setMessage("No valid text entry found.");
+      }
+    } catch (err) {
+      console.error(`Error loading ${departmentName} department text:`, err);
+      setMessage(`Error fetching ${departmentName} department text.`);
+    }
+  };
+
+  const fetchVision = async () => {
+    try {
+      const departmentSlug = dept_url[departmentName];
+      const responseVision = await axios.get(
+        `http://localhost:3663/api/department/vision/${departmentSlug}`
+      );
+      console.log(
+        `Fetched ${departmentName} Department Vision Text:`,
+        responseVision.data
+      );
+      console.log(
+        "responseVision.data.vision",
+        responseVision.data.data.vision
+      );
+
+      // Directly check if vision exists in the response
+      if (responseVision.data.data && responseVision.data.data.vision) {
+        setVision(responseVision.data.data.vision);
+        setMission(responseVision.data.data.mission);
+        setMessage("");
+      } else {
+        console.warn(
+          "No valid id or content in fetched data:",
+          responseVision.data
+        );
+        setMessage("No valid text entry found.");
+      }
+    } catch (err) {
+      console.error(`Error loading ${departmentName} department text:`, err);
+      setMessage(`Error fetching ${departmentName} department text.`);
+    }
+  };
+
+  const fetchObjective = async () => {
+    try {
+      const departmentSlug = dept_url[departmentName];
+      const responseObjective = await axios.get(
+        `http://localhost:3663/api/department/objectives/${departmentSlug}`
+      );
+      console.log(
+        `Fetched ${departmentName} Department Objective Text:`,
+        responseObjective.data
+      );
+      console.log(
+        "responseObjective.data.vision",
+        responseObjective.data.data.objective
+      );
+
+      // Directly check if Objective exists in the response
+      if (
+        responseObjective.data.data &&
+        responseObjective.data.data.objective
+      ) {
+        setObjective(responseObjective.data.data.objective);
+        setOutcomes(responseObjective.data.data.outcome);
+        setMessage("");
+      } else {
+        console.warn(
+          "No valid id or content in fetched data:",
+          responseObjective.data
+        );
         setMessage("No valid text entry found.");
       }
     } catch (err) {
@@ -141,16 +216,51 @@ const About = ({ departmentName }) => {
         {message && <p className="error-message">{message}</p>}
         {/* Show error message if any */}
         <div
-          className="department-content text-justify font-inter mb-10"
+          className="department-content text-justify font-librefranklin mb-10"
           dangerouslySetInnerHTML={{ __html: content }} // Display the fetched content
         />
       </div>
-      <div className="about-section">
+      <h1 className="font-playfair text-2xl font-bold mb-4">
+        Vision and Mission
+      </h1>
+      <h3 className="font-playfair text-xl mb-2">Vision:</h3>
+      <div className="vision-section mb-5">
         {message && <p className="error-message">{message}</p>}
         {/* Show error message if any */}
         <div
-          className="department-content text-justify font-inter "
-          dangerouslySetInnerHTML={{ __html: content }} // Display the fetched content
+          className="department-content text-justify font-librefranklin"
+          dangerouslySetInnerHTML={{ __html: vision }} // Display the fetched content
+        />
+      </div>
+      <h3 className="font-playfair text-xl mb-2">Mission:</h3>
+      <div className="mission-section mb-5">
+        {message && <p className="error-message">{message}</p>}
+        <div
+          className="department-content text-justify font-librefranklin"
+          dangerouslySetInnerHTML={{ __html: mission }}
+        />
+      </div>
+      <h1 className="font-playfair text-2xl font-bold mb-4">
+        PEOs, PSOs and Board of Studies/Course Outcomes
+      </h1>
+      <h3 className="font-playfair text-xl mb-2">
+        Program Educational Objectives (PEO):
+      </h3>
+      <div className="mission-section mb-5">
+        {message && <p className="error-message">{message}</p>}
+        <div
+          className="department-content text-justify font-librefranklin"
+          dangerouslySetInnerHTML={{ __html: objective }}
+        />
+      </div>
+      <h3 className="font-playfair text-xl mb-2">
+        Program Specific Outcomes (PSO):
+      </h3>
+      <div className="mission-section mb-5">
+        {message && <p className="error-message">{message}</p>}
+        <div
+          className="department-content text-justify font-librefranklin"
+          dangerouslySetInnerHTML={{ __html: outcomes }}
         />
       </div>
     </>
