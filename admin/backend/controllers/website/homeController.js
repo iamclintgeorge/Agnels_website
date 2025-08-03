@@ -41,7 +41,6 @@ export const carouselUploadController = async (req, res) => {
 
 export const carouselDisplayController = async (req, res) => {
   const section = req.params.section;
-  console.log("carouselDisplayController", section);
   try {
     const images = await carouselDisplay(section);
     res.json(images);
