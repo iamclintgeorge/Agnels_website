@@ -1,0 +1,211 @@
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+
+function AchievementManager() {
+  const [formData, setFormData] = useState({
+    subject: "",
+    description: "",
+    attachment: "",
+    created_by: "",
+    Type: "Students"      // default option
+  });
+  const [achievements, setAchievements] = useState([]);
+  const [showTable, setShowTable] = useState(false);
+  const [editingId, setEditingId] = useState(null);
+
+  /* ----------  handlers  ---------- */
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const payload = {
+      ...formData,
+      created_by: parseInt(formData.created_by, 10) || 0
+    };
+
+    try {
+      if (editingId) {
+        await axios.put(
+          `http://localhost:3663/api/home/achievements/${editingId}`,
+          payload
+        );
+        alert("Achievement updated!");
+        setEditingId(null);
+      } else {
+        await axios.post(
+          "http://localhost:3663/api/home/achievements",
+          payload
+        );
+        alert("Achievement added!");
+      }
+      setFormData({
+        subject: "",
+        description: "",
+        attachment: "",
+        created_by: "",
+        Type: "Students"
+      });
+      fetchAchievements();
+    } catch (err) {
+      alert("Request failed: " + (err.response?.data?.message || err.message));
+    }
+  };
+
+  const fetchAchievements = async () => {
+    try {
+      const res = await axios.get(
+        "http://localhost:3663/api/home/achievements"
+      );
+      setAchievements(res.data.result || []);
+      setShowTable(true);
+    } catch (err) {
+      console.error("Fetch error:", err);
+    }
+  };
+
+  const handleEdit = (row) => {
+    setFormData({
+      subject: row.subject,
+      description: row.description,
+      attachment: row.attachment,
+      created_by: row.created_by.toString(),
+      Type: row.Type
+    });
+    setEditingId(row.id);
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      await axios.put(
+        `http://localhost:3663/api/home/delete-achievements/${id}`
+      );
+      fetchAchievements();
+    } catch (err) {
+      console.error("Delete error:", err);
+    }
+  };
+
+  return (
+    <section className="py-10 px-5 bg-[#F7F7F7] min-h-screen">
+      {/* ----------  FORM  ---------- */}
+      <div className="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-lg">
+        <h2 className="font-semibold italic text-[30px] text-[#0C2340] mb-5">
+          {editingId ? "Edit Achievement" : "Add Achievement"}
+        </h2>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <input
+            name="subject"
+            value={formData.subject}
+            onChange={handleChange}
+            placeholder="Subject"
+            className="w-full p-2 border rounded-md"
+            required
+          />
+          <textarea
+            name="description"
+            value={formData.description}
+            onChange={handleChange}
+            placeholder="Description"
+            className="w-full p-2 border rounded-md"
+            required
+          />
+          <input
+            name="attachment"
+            value={formData.attachment}
+            onChange={handleChange}
+            placeholder="Attachment URL"
+            className="w-full p-2 border rounded-md"
+          />
+
+          {/* ----  NEW FIELD  ---- */}
+          <select
+            name="Type"
+            value={formData.Type}
+            onChange={handleChange}
+            className="w-full p-2 border rounded-md"
+          >
+            <option value="Students">Students</option>
+            <option value="Faculties">Faculties</option>
+          </select>
+
+          <input
+            type="number"
+            name="created_by"
+            value={formData.created_by}
+            onChange={handleChange}
+            placeholder="Created By (User ID)"
+            className="w-full p-2 border rounded-md"
+            required
+          />
+
+          <button
+            type="submit"
+            className="w-full bg-[#0E1D3F] text-white py-2 rounded-md"
+          >
+            {editingId ? "Save Changes" : "Submit"}
+          </button>
+        </form>
+      </div>
+
+      {/* ----------  TABLE  ---------- */}
+      <div className="mt-10 text-center">
+        <button
+          onClick={fetchAchievements}
+          className="bg-[#AE9142] text-white py-2 px-6 rounded-md"
+        >
+          Display Achievements
+        </button>
+      </div>
+
+      {showTable && achievements.length !== 0 && (
+        <div className="overflow-x-auto">
+          <table className="mt-6 w-full border-collapse border border-gray-300">
+            <thead>
+              <tr className="bg-gray-100">
+                <th className="border p-2">Subject</th>
+                <th className="border p-2">Description</th>
+                <th className="border p-2">Attachment</th>
+                <th className="border p-2">Type</th>
+                <th className="border p-2">Created&nbsp;By</th>
+                <th className="border p-2">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {achievements.map((row) => (
+                <tr key={row.id} className="border">
+                  <td className="border p-2">{row.subject}</td>
+                  <td className="border p-2">{row.description}</td>
+                  <td className="border p-2">
+                    {row.attachment || "No attachment"}
+                  </td>
+                  <td className="border p-2">{row.Type}</td>
+                  <td className="border p-2">{row.created_by}</td>
+                  <td className="border p-2">
+                    <button
+                      onClick={() => handleEdit(row)}
+                      className="bg-blue-500 text-white py-1 px-2 rounded-md mr-2"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDelete(row.id)}
+                      className="bg-red-500 text-white py-1 px-2 rounded-md"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </section>
+  );
+}
+
+export default AchievementManager;

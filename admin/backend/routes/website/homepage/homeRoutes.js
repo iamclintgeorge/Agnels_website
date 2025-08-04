@@ -9,6 +9,18 @@ import {
   announcementsFetchController,
   announcementsEditController,
   announcementsDeleteController,
+  achievementsCreateController,
+  achievementsFetchController,
+  achievementsEditController,
+  achievementsDeleteController,
+  admissionsCreateController,
+  admissionsFetchController,
+  admissionsEditController,
+  admissionsDeleteController,
+  circularsCreateController,
+  circularsFetchController,
+  circularsEditController,
+  circularsDeleteController
 } from "../../../controllers/website/homeController.js";
 
 import multer from "multer";
@@ -57,6 +69,17 @@ router.post("/announcements", announcementsCreateController);
 router.get("/announcements", announcementsFetchController);
 router.put("/announcements/:id", announcementsEditController);
 router.put("/delete-announcements/:id", announcementsDeleteController);
-// router.put("/announcements/multiple", announcementsMdeleteController);
+router.post("/achievements", achievementsCreateController);
+router.get("/achievements", achievementsFetchController);
+router.put("/achievements/:id", achievementsEditController);
+router.put("/delete-achievements/:id", achievementsDeleteController);
+router.post ("/admissions",       admissionsCreateController);
+router.get  ("/admissions",       admissionsFetchController);
+router.put  ("/admissions/:id",   admissionsEditController);
+router.put("/delete-admissions/:id",  admissionsDeleteController);
+router.post ("/circulars",       circularsCreateController);
+router.get  ("/circulars",       circularsFetchController);
+router.put  ("/circulars/:id",   circularsEditController);
+router.put("/delete-circulars/:id",  circularsDeleteController);
 
 export default router;

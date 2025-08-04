@@ -27,6 +27,7 @@ import IIC from "./pages/IIC/IIC";
 import NIRF from "./pages/NIRF/NIRF";
 import HumanResource from "./pages/HumanResource/HumanResource";
 import NbaNaaC from "./pages/NBA/NBA.jsx";
+import Circulars from "./pages/Circulars/Circulars.jsx";
 
 function App() {
   // Fix: Redirect /pdfs/... requests directly to the browser
@@ -69,6 +70,7 @@ function App() {
             path="/research_Publications"
             element={<Research_Publications />}
           />
+          <Route path="/circulars" element={<Circulars />} />
           <Route path="/admissions" element={<Admissions />} />
           <Route path="/studentCorner" element={<StudentCorner />} />
           <Route path="/Login" element={<Login />} />
