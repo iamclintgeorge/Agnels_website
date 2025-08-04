@@ -12,7 +12,7 @@ const HomePage = () => {
       <AboutUs />
       <WhatsNew />
       <HomeModal />
-      {/* <Widgets /> */}
+      <Widgets />
     </>
   );
 };
