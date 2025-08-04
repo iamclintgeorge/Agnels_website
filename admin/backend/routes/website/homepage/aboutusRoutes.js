@@ -13,6 +13,7 @@ import path from "path";
 import fs from "fs";
 import {
   principalDisplayController,
+  principalUpdateController,
   getSectionContent,
   updateSectionContent,
   getAllSections,
@@ -101,6 +102,13 @@ router.get(
   authMiddleware,
   checkPermission("about_us"),
   principalDisplayController
+);
+
+router.put(
+  "/principaldesk/:id",
+  authMiddleware,
+  checkPermission("about_us"),
+  principalUpdateController
 );
 
 // Get all sections
