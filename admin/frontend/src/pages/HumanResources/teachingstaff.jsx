@@ -2,18 +2,20 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 const TeachingStaff = () => {
-  const [pdfFile, setPdfFile] = useState(null); 
-  const [message, setMessage] = useState("");    
-  const [displayPdfs, setDisplayPdfs] = useState([]);  
+  const [pdfFile, setPdfFile] = useState(null);
+  const [message, setMessage] = useState("");
+  const [displayPdfs, setDisplayPdfs] = useState([]);
 
   useEffect(() => {
-    fetchPdfs();  
+    fetchPdfs();
   }, []);
 
   // Fetch uploaded PDFs
   const fetchPdfs = async () => {
     try {
-      const response = await axios.get("http://localhost:3663/api/humanResource/pdf/teachingstaff"); // matching category route
+      const response = await axios.get(
+        "http://localhost:3663/api/humanResource/pdf/teachingstaff"
+      ); // matching category route
       setDisplayPdfs(response.data);
     } catch (err) {
       setMessage("Error fetching PDFs.");
@@ -33,12 +35,16 @@ const TeachingStaff = () => {
     formData.append("category", "teachingstaff"); // include category, required by backend
 
     try {
-      await axios.post("http://localhost:3663/api/humanResource/pdf", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      await axios.post(
+        "http://localhost:3663/api/humanResource/pdf",
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
       setMessage("PDF uploaded successfully!");
       setPdfFile(null);
-      fetchPdfs();  // Refresh list
+      fetchPdfs(); // Refresh list
     } catch (error) {
       setMessage("Error uploading PDF.");
     }
@@ -48,7 +54,9 @@ const TeachingStaff = () => {
     <div className="p-4">
       {/* PDF Upload Section */}
       <div>
-        <h2 className="text-xl font-semibold mb-2">Upload PDF (Teaching Staff)</h2>
+        <h2 className="text-xl font-semibold mb-2">
+          Upload PDF (Teaching Staff)
+        </h2>
         <form className="flex gap-4 items-end" onSubmit={handleSubmit}>
           <div>
             <p className="text-sm">Choose a PDF:</p>
@@ -59,7 +67,10 @@ const TeachingStaff = () => {
               required
             />
           </div>
-          <button className="bg-black px-8 py-2 text-white rounded" type="submit">
+          <button
+            className="bg-black px-8 py-2 text-white rounded"
+            type="submit"
+          >
             Upload
           </button>
         </form>
@@ -74,7 +85,7 @@ const TeachingStaff = () => {
             {displayPdfs.map((pdf) => (
               <li key={pdf.id} className="my-2">
                 <a
-                  href={`http://localhost:3663/uploads/teachingstaff/${pdf.file_url}`} // match your folder structure
+                  href={`http://localhost:3663/cdn/teachingstaff/${pdf.file_url}`} // match your folder structure
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-blue-500 underline"

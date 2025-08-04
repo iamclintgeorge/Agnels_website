@@ -6,6 +6,7 @@ const ImgCarousel = () => {
   const [image, setImage] = useState(null);
   const [message, setMessage] = useState("");
   const [displayImg, setDisplayImg] = useState([]);
+  const section = "home_carousel";
 
   useEffect(() => {
     fetchImages();
@@ -14,7 +15,7 @@ const ImgCarousel = () => {
   const fetchImages = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:3663/api/home/carousel"
+        `http://localhost:3663/api/home/carousel/${section}`
       );
       console.log("Fetched images:", response.data); // Debug the response
       setDisplayImg(response.data);
@@ -75,7 +76,7 @@ const ImgCarousel = () => {
         imageFilename: image.name,
       })
     );
-    formData.append("endpoint_url", "api/home/carousel");
+    formData.append("endpoint_url", `api/home/carousel/${section}`);
     formData.append("id", 0);
 
     try {

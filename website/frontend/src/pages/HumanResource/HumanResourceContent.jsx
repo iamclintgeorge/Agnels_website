@@ -31,7 +31,7 @@ export const Teaching_Staff = () => {
           {pdfs.map((pdf, idx) => (
             <li key={idx}>
               <a
-                href={`http://localhost:3663/uploads/${pdf.file_url}`}
+                href={`http://localhost:3663/cdn/${pdf.file_url}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-blue-600 underline"
@@ -72,13 +72,15 @@ export const Non_Teaching_Staff = () => {
     <div className="p-4 bg-white shadow rounded-lg mt-4">
       <h2 className="text-3xl font-semibold">List of Non-Teaching Staff</h2>
       <div className="border-t-2 border-blue-500 my-4"></div>
-      <h1 className="text-2xl font-semibold mt-12 mb-6">Non-Technical/Administrative Staff</h1>
+      <h1 className="text-2xl font-semibold mt-12 mb-6">
+        Non-Technical/Administrative Staff
+      </h1>
 
       {error && <p className="text-red-500">{error}</p>}
 
       {pdfs.length > 0 ? (
         <iframe
-          src={`http://localhost:3663/uploads/${pdfs[0].file_url}`}
+          src={`http://localhost:3663/cdn/${pdfs[0].file_url}`}
           width="100%"
           height="800px"
           title="Non-Technical"

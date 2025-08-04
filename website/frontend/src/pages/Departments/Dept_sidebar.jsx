@@ -1,15 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import StaticPages from "../../layouts/staticPages";
-import {
-  Home,
-  Comps,
-  Mech,
-  EXTC,
-  Electrical,
-  InfoT,
-  Humanities,
-} from "./departmentContent";
 import StudentAssociation from "./sections/debt_st_assoc";
 import About from "./sections/dept_about";
 import AcademicCalendar from "./sections/dept_AcademicCalendar";
@@ -27,6 +18,13 @@ import Publications from "./sections/dept_publication";
 import ResultAnalysis from "./sections/dept_result";
 import Syllabus from "./sections/dept_syllabus";
 import TimeTable from "./sections/dept_timetable";
+import Dept_home from "./Dept_home";
+import Computer from "./branches/computer/computer";
+import Mechanical from "./branches/mechanical/mechanical";
+import Electrical from "./branches/electrical/electrical";
+import EXTC from "./branches/extc/extc";
+import Humanities from "./branches/humanities/humanities";
+import InformationTech from "./branches/IT/informationTech";
 
 export const Departments = () => {
   const navigate = useNavigate();
@@ -42,12 +40,12 @@ export const Departments = () => {
 
   // Define content for each department
   const content = {
-    Home: <Home />,
-    "Computer Engineering": <Comps />,
-    "Mechanical Engineering": <Mech />,
+    Home: <Dept_home />,
+    "Computer Engineering": <Computer />,
+    "Mechanical Engineering": <Mechanical />,
     "Electronics and Telecommunication Engineering": <EXTC />,
     "Electrical Engineering": <Electrical />,
-    "Information Technology": <InfoT />,
+    "Computer Science and Engineering (Prev. IT)": <InformationTech />,
     "Basic Science and Humanities": <Humanities />,
   };
 
@@ -72,7 +70,7 @@ export const Departments = () => {
   return (
     <StaticPages
       pagename={"Departments"}
-      path={"Home / Departments"}
+      path={"Departments / Home"}
       sidebar={sidebar}
       content={content}
       onTabClick={handleTabClick}

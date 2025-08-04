@@ -11,14 +11,13 @@ import {
   announcementsDeleteController,
 } from "../../../controllers/website/homeController.js";
 
-
 import multer from "multer";
 import path from "path";
 
 // Configure multer
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "public/uploads"); // Folder to save images
+    cb(null, "public/cdn"); // Folder to save images
   },
   filename: (req, file, cb) => {
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
@@ -42,15 +41,22 @@ const upload = multer({
 
 const router = express.Router();
 
-router.post("/carousel", upload.single("image"), carouselUploadController);
-router.get("/carousel", carouselDisplayController);
+//Carousel and Home_Modal
+router.post(
+  "/carousel/:section",
+  upload.single("image"),
+  carouselUploadController
+);
+router.get("/carousel/:section", carouselDisplayController);
 router.delete("/carousel/:id", carouselDeleteController);
+
+//IntroText
 router.get("/introtext", introTextController);
 router.put("/introtext/:id", introTextUpdateController);
 router.post("/announcements", announcementsCreateController);
 router.get("/announcements", announcementsFetchController);
 router.put("/announcements/:id", announcementsEditController);
-router.put('/delete-announcements/:id', announcementsDeleteController);
+router.put("/delete-announcements/:id", announcementsDeleteController);
 // router.put("/announcements/multiple", announcementsMdeleteController);
 
 export default router;

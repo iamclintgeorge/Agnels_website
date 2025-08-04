@@ -1,11 +1,34 @@
 import React, { useState, useEffect } from "react";
 
-import { 
-  FaChalkboardTeacher, FaUsers, FaEye, FaClipboardCheck, 
-  FaCheckCircle, FaUniversity, FaGraduationCap, FaBook, 
-  FaCertificate, FaAward, FaChartLine, FaCog, FaSpinner,FaFilePdf,FaBookOpen,FaExclamationTriangle,FaExternalLinkAlt ,FaCalendarAlt, FaDesktop ,FaTags,FaUser, FaEdit, FaTrash, FaPlus, FaSave, FaTimes,FaBell
+import {
+  FaChalkboardTeacher,
+  FaUsers,
+  FaEye,
+  FaClipboardCheck,
+  FaCheckCircle,
+  FaUniversity,
+  FaGraduationCap,
+  FaBook,
+  FaCertificate,
+  FaAward,
+  FaChartLine,
+  FaCog,
+  FaSpinner,
+  FaFilePdf,
+  FaBookOpen,
+  FaExclamationTriangle,
+  FaExternalLinkAlt,
+  FaCalendarAlt,
+  FaDesktop,
+  FaTags,
+  FaUser,
+  FaEdit,
+  FaTrash,
+  FaPlus,
+  FaSave,
+  FaTimes,
+  FaBell,
 } from "react-icons/fa";
-
 
 export const Homee = () => {
   const [homeData, setHomeData] = useState(null);
@@ -20,29 +43,29 @@ export const Homee = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch('http://localhost:3663/api/academic/home');
+      const response = await fetch("http://localhost:3663/api/academic/home");
       const data = await response.json();
-      console.log('Fetched Home Data:', data);
-      
+      console.log("Fetched Home Data:", data);
+
       if (data.result && data.result.length > 0) {
         const homeInfo = data.result[0];
-        
+
         // Parse admin_cards for each section and rename to cards
         if (homeInfo.sections) {
-          homeInfo.sections = homeInfo.sections.map(section => ({
+          homeInfo.sections = homeInfo.sections.map((section) => ({
             ...section,
-            cards: section.admin_cards || [] // Use admin_cards from your query
+            cards: section.admin_cards || [], // Use admin_cards from your query
           }));
         }
-        
-        console.log('Processed Home Data with Cards:', homeInfo);
+
+        console.log("Processed Home Data with Cards:", homeInfo);
         setHomeData(homeInfo);
       } else {
-        setError('No data available');
+        setError("No data available");
       }
     } catch (error) {
-      console.error('Error fetching home data:', error);
-      setError('Failed to load data. Please try again later.');
+      console.error("Error fetching home data:", error);
+      setError("Failed to load data. Please try again later.");
     } finally {
       setLoading(false);
     }
@@ -61,16 +84,14 @@ export const Homee = () => {
       FaCertificate: <FaCertificate className={className} />,
       FaAward: <FaAward className={className} />,
       FaChartLine: <FaChartLine className={className} />,
-      FaCog: <FaCog className={className} />
+      FaCog: <FaCog className={className} />,
     };
     return iconMap[iconName] || <FaUsers className={className} />;
   };
 
   const AdminCard = ({ title, description, icon }) => (
     <div className="bg-white rounded-lg shadow-lg p-6 text-center hover:shadow-xl transition-shadow duration-300">
-      <div className="text-blue-700 mb-4 flex justify-center">
-        {icon}
-      </div>
+      <div className="text-blue-700 mb-4 flex justify-center">{icon}</div>
       <h3 className="text-xl font-semibold text-gray-800 mb-3">{title}</h3>
       <p className="text-gray-600 leading-relaxed">{description}</p>
     </div>
@@ -81,7 +102,9 @@ export const Homee = () => {
       <div className="bg-gray-50 min-h-screen flex items-center justify-center">
         <div className="text-center">
           <FaSpinner className="animate-spin text-4xl text-blue-600 mb-4 mx-auto" />
-          <p className="text-lg text-gray-600">Loading Academic Information...</p>
+          <p className="text-lg text-gray-600">
+            Loading Academic Information...
+          </p>
         </div>
       </div>
     );
@@ -92,7 +115,9 @@ export const Homee = () => {
       <div className="bg-gray-50 min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="text-red-500 text-6xl mb-4">⚠️</div>
-          <h2 className="text-2xl font-semibold text-gray-800 mb-2">Something went wrong</h2>
+          <h2 className="text-2xl font-semibold text-gray-800 mb-2">
+            Something went wrong
+          </h2>
           <p className="text-gray-600 mb-4">{error}</p>
           <button
             onClick={fetchHomeData}
@@ -110,43 +135,79 @@ export const Homee = () => {
       <div className="bg-gray-50 min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="text-gray-400 text-6xl mb-4">📚</div>
-          <h2 className="text-2xl font-semibold text-gray-800 mb-2">No Content Available</h2>
-          <p className="text-gray-600">Academic information is not available at the moment.</p>
+          <h2 className="text-2xl font-semibold text-gray-800 mb-2">
+            No Content Available
+          </h2>
+          <p className="text-gray-600">
+            Academic information is not available at the moment.
+          </p>
         </div>
       </div>
     );
   }
 
   // Debug: Log sections data
-  console.log('Sections data:', homeData.sections);
+  console.log("Sections data:", homeData.sections);
 
   // Group sections by type - Fixed filtering logic
   const sectionsByType = {
-    mission: homeData.sections?.filter(s => s.section_type === 'mission' && (s.is_active === '1' || s.is_active === 1)) || [],
-    admin: homeData.sections?.filter(s => s.section_type === 'admin' && (s.is_active === '1' || s.is_active === 1)) || [],
-    attendance: homeData.sections?.filter(s => s.section_type === 'attendance' && (s.is_active === '1' || s.is_active === 1)) || [],
-    audit: homeData.sections?.filter(s => s.section_type === 'audit' && (s.is_active === '1' || s.is_active === 1)) || [],
-    custom: homeData.sections?.filter(s => s.section_type === 'custom' && (s.is_active === '1' || s.is_active === 1)) || [],
-    other: homeData.sections?.filter(s => !['mission', 'admin', 'attendance', 'audit', 'custom'].includes(s.section_type) && (s.is_active === '1' || s.is_active === 1)) || []
+    mission:
+      homeData.sections?.filter(
+        (s) =>
+          s.section_type === "mission" &&
+          (s.is_active === "1" || s.is_active === 1)
+      ) || [],
+    admin:
+      homeData.sections?.filter(
+        (s) =>
+          s.section_type === "admin" &&
+          (s.is_active === "1" || s.is_active === 1)
+      ) || [],
+    attendance:
+      homeData.sections?.filter(
+        (s) =>
+          s.section_type === "attendance" &&
+          (s.is_active === "1" || s.is_active === 1)
+      ) || [],
+    audit:
+      homeData.sections?.filter(
+        (s) =>
+          s.section_type === "audit" &&
+          (s.is_active === "1" || s.is_active === 1)
+      ) || [],
+    custom:
+      homeData.sections?.filter(
+        (s) =>
+          s.section_type === "custom" &&
+          (s.is_active === "1" || s.is_active === 1)
+      ) || [],
+    other:
+      homeData.sections?.filter(
+        (s) =>
+          !["mission", "admin", "attendance", "audit", "custom"].includes(
+            s.section_type
+          ) &&
+          (s.is_active === "1" || s.is_active === 1)
+      ) || [],
   };
 
   // Debug: Log filtered sections
-  console.log('Filtered sections by type:', sectionsByType);
+  console.log("Filtered sections by type:", sectionsByType);
 
   return (
     <div className="bg-gray-50 text-gray-800 min-h-screen flex flex-col">
       {/* Header Section: Vision & Leadership */}
       <section className="intro py-20 text-black relative">
         {homeData.hero_image_url && (
-          <div 
+          <div
             className="absolute inset-0 bg-cover bg-center opacity-10"
-            style={{ backgroundImage: `url(http://localhost:3663${homeData.hero_image_url?.trim()})` }}
+            style={{
+              backgroundImage: `url(http://localhost:3663${homeData.hero_image_url?.trim()})`,
+            }}
           ></div>
         )}
         <div className="container mx-auto text-center px-6 relative z-10">
-          <h1 className="text-5xl font-extrabold mb-6">
-            {homeData.title}
-          </h1>
+          <h1 className="text-5xl font-extrabold mb-6">{homeData.title}</h1>
           <p className="text-lg max-w-3xl mx-auto mb-8 leading-relaxed">
             {homeData.description}
           </p>
@@ -208,12 +269,14 @@ export const Homee = () => {
             <p className="text-lg max-w-3xl mx-auto text-gray-700 leading-relaxed mb-8">
               {section.description}
             </p>
-            
+
             {/* Mission Cards */}
             {section.cards && section.cards.length > 0 && (
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {section.cards
-                  .filter(card => card.is_active === '1' || card.is_active === 1)
+                  .filter(
+                    (card) => card.is_active === "1" || card.is_active === 1
+                  )
                   .sort((a, b) => (a.order_index || 0) - (b.order_index || 0))
                   .map((card) => (
                     <AdminCard
@@ -247,12 +310,14 @@ export const Homee = () => {
             <p className="text-lg max-w-3xl mx-auto text-gray-700 leading-relaxed mb-8">
               {section.description}
             </p>
-            
+
             {/* Admin Cards */}
             {section.cards && section.cards.length > 0 && (
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-12">
                 {section.cards
-                  .filter(card => card.is_active === '1' || card.is_active === 1)
+                  .filter(
+                    (card) => card.is_active === "1" || card.is_active === 1
+                  )
                   .sort((a, b) => (a.order_index || 0) - (b.order_index || 0))
                   .map((card) => (
                     <AdminCard
@@ -270,7 +335,10 @@ export const Homee = () => {
 
       {/* Attendance Monitoring & Grievance Redressal */}
       {sectionsByType.attendance.map((section) => (
-        <section key={section.id} className="attendance-grievance py-16 bg-white">
+        <section
+          key={section.id}
+          className="attendance-grievance py-16 bg-white"
+        >
           <div className="container mx-auto px-6">
             <div className="text-center mb-4">
               <span className="text-sm text-blue-600 uppercase font-semibold tracking-wide">
@@ -286,12 +354,14 @@ export const Homee = () => {
             <p className="text-lg max-w-3xl mx-auto text-gray-700 leading-relaxed mb-8 text-center">
               {section.description}
             </p>
-            
+
             {/* Attendance Cards */}
             {section.cards && section.cards.length > 0 && (
               <div className="grid md:grid-cols-2 gap-12">
                 {section.cards
-                  .filter(card => card.is_active === '1' || card.is_active === 1)
+                  .filter(
+                    (card) => card.is_active === "1" || card.is_active === 1
+                  )
                   .sort((a, b) => (a.order_index || 0) - (b.order_index || 0))
                   .map((card) => (
                     <AdminCard
@@ -325,13 +395,15 @@ export const Homee = () => {
             <p className="text-lg max-w-3xl mx-auto text-gray-700 leading-relaxed mb-8">
               {section.description}
             </p>
-            
+
             {/* Audit Cards or List */}
             {section.cards && section.cards.length > 0 ? (
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {section.cards
-                  .filter(card => card.is_active === '1' || card.is_active === 1)
-                  .sort((a, b) => (a.order_index || 0) - (b.order_index || 0))    
+                  .filter(
+                    (card) => card.is_active === "1" || card.is_active === 1
+                  )
+                  .sort((a, b) => (a.order_index || 0) - (b.order_index || 0))
                   .map((card) => (
                     <AdminCard
                       key={card.id}
@@ -357,9 +429,11 @@ export const Homee = () => {
 
       {/* Custom Sections */}
       {sectionsByType.custom.map((section, index) => (
-        <section 
-          key={section.id} 
-          className={`custom-section py-16 ${index % 2 === 0 ? 'bg-white' : 'bg-gray-100'}`}
+        <section
+          key={section.id}
+          className={`custom-section py-16 ${
+            index % 2 === 0 ? "bg-white" : "bg-gray-100"
+          }`}
         >
           <div className="container mx-auto text-center px-6">
             <div className="mb-4">
@@ -376,12 +450,14 @@ export const Homee = () => {
             <p className="text-lg max-w-3xl mx-auto text-gray-700 leading-relaxed mb-8">
               {section.description}
             </p>
-            
+
             {/* Custom Section Cards */}
             {section.cards && section.cards.length > 0 && (
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {section.cards
-                  .filter(card => card.is_active === '1' || card.is_active === 1)
+                  .filter(
+                    (card) => card.is_active === "1" || card.is_active === 1
+                  )
                   .sort((a, b) => (a.order_index || 0) - (b.order_index || 0))
                   .map((card) => (
                     <AdminCard
@@ -399,14 +475,16 @@ export const Homee = () => {
 
       {/* Other Sections (for sections that don't match standard types) */}
       {sectionsByType.other.map((section, index) => (
-        <section 
-          key={section.id} 
-          className={`other-section py-16 ${index % 2 === 0 ? 'bg-blue-50' : 'bg-gray-50'}`}
+        <section
+          key={section.id}
+          className={`other-section py-16 ${
+            index % 2 === 0 ? "bg-blue-50" : "bg-gray-50"
+          }`}
         >
           <div className="container mx-auto text-center px-6">
             <div className="mb-4">
               <span className="text-sm text-blue-600 uppercase font-semibold tracking-wide">
-                {section.section_type || 'General'} Section
+                {section.section_type || "General"} Section
               </span>
             </div>
             <h2 className="text-4xl font-semibold text-blue-900 mb-6 flex justify-center items-center">
@@ -418,12 +496,14 @@ export const Homee = () => {
             <p className="text-lg max-w-3xl mx-auto text-gray-700 leading-relaxed mb-8">
               {section.description}
             </p>
-            
+
             {/* Other Section Cards */}
             {section.cards && section.cards.length > 0 && (
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {section.cards
-                  .filter(card => card.is_active === '1' || card.is_active === 1)
+                  .filter(
+                    (card) => card.is_active === "1" || card.is_active === 1
+                  )
                   .sort((a, b) => (a.order_index || 0) - (b.order_index || 0))
                   .map((card) => (
                     <AdminCard
@@ -442,9 +522,7 @@ export const Homee = () => {
       {/* Footer Note */}
       <footer className="bg-blue-900 text-white py-8">
         <div className="container mx-auto text-center px-6">
-          <p className="text-lg">
-            Building Tomorrow's Engineers Today
-          </p>
+          <p className="text-lg">Building Tomorrow's Engineers Today</p>
           <p className="text-sm mt-2 opacity-80">
             Fr. Conceicao Rodrigues Institute of Technology
           </p>
@@ -453,9 +531,6 @@ export const Homee = () => {
     </div>
   );
 };
-
-
-
 
 const AdminCard = ({ title, description, icon }) => {
   return (
@@ -467,7 +542,7 @@ const AdminCard = ({ title, description, icon }) => {
   );
 };
 
-``
+``;
 
 // Academic Handbook Component (for general handbooks)
 export const AcademicHandbook = () => {
@@ -479,57 +554,84 @@ export const AcademicHandbook = () => {
     const fetchHandbook = async () => {
       try {
         setLoading(true);
-        const response = await fetch('http://localhost:3663/api/academic/handbooks');
-        
+        const response = await fetch(
+          "http://localhost:3663/api/academic/handbooks"
+        );
+
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
+
         const responseData = await response.json();
-        
+
         // 🔍 DEBUG: Log the actual API response structure
         // console.log('🔍 API Response:', responseData);
         // console.log('🔍 Response type:', typeof responseData);
         // console.log('🔍 Is array?', Array.isArray(responseData));
         // console.log('🔍 Response keys:', Object.keys(responseData || {}));
         // console.log('🔍 Full response structure:', JSON.stringify(responseData, null, 2));
-        
+
         // Handle different response formats with more debugging
         let data;
         if (Array.isArray(responseData)) {
           // console.log('✅ Using direct array format');
           data = responseData;
-        } else if (responseData && responseData.data && Array.isArray(responseData.data)) {
+        } else if (
+          responseData &&
+          responseData.data &&
+          Array.isArray(responseData.data)
+        ) {
           // console.log('✅ Using responseData.data format');
           data = responseData.data;
-        } else if (responseData && responseData.handbooks && Array.isArray(responseData.handbooks)) {
+        } else if (
+          responseData &&
+          responseData.handbooks &&
+          Array.isArray(responseData.handbooks)
+        ) {
           // console.log('✅ Using responseData.handbooks format');
           data = responseData.handbooks;
-        } else if (responseData && responseData.results && Array.isArray(responseData.results)) {
+        } else if (
+          responseData &&
+          responseData.results &&
+          Array.isArray(responseData.results)
+        ) {
           // console.log('✅ Using responseData.results format');
           data = responseData.results;
-        } else if (responseData && responseData.result && Array.isArray(responseData.result)) {
+        } else if (
+          responseData &&
+          responseData.result &&
+          Array.isArray(responseData.result)
+        ) {
           // console.log('✅ Using responseData.result format (singular)');
           data = responseData.result;
-        } else if (responseData && responseData.rows && Array.isArray(responseData.rows)) {
+        } else if (
+          responseData &&
+          responseData.rows &&
+          Array.isArray(responseData.rows)
+        ) {
           // console.log('✅ Using responseData.rows format');
           data = responseData.rows;
         } else {
           // console.log('❌ None of the expected formats matched');
           // console.log('❌ Available keys:', responseData ? Object.keys(responseData) : 'responseData is null/undefined');
-          throw new Error(`API response format not recognized. Response keys: ${responseData ? Object.keys(responseData).join(', ') : 'none'}`);
+          throw new Error(
+            `API response format not recognized. Response keys: ${
+              responseData ? Object.keys(responseData).join(", ") : "none"
+            }`
+          );
         }
-        
+
         // console.log('📚 Processed data:', data);
-        
+
         // Filter for general handbooks and get the latest one
-        const generalHandbooks = data.filter(item => 
-          item.handbook_type === 'general' && 
-          item.title && 
-          item.pdf_url && 
-          (item.deleted === 0 || item.deleted === "0")
+        const generalHandbooks = data.filter(
+          (item) =>
+            item.handbook_type === "general" &&
+            item.title &&
+            item.pdf_url &&
+            (item.deleted === 0 || item.deleted === "0")
         );
-        
+
         if (generalHandbooks.length > 0) {
           // 🔍 LATEST ENTRY LOGIC: Sort by updated_at (priority) or created_at (fallback)
           // This sorts in DESCENDING order - newest first
@@ -538,7 +640,7 @@ export const AcademicHandbook = () => {
             const dateB = new Date(b.updated_at || b.created_at);
             return dateB - dateA; // Descending order: newer dates first
           })[0]; // Take the first element (newest)
-          
+
           // console.log('📊 All general handbooks:', generalHandbooks.map(h => ({
           //   id: h.id,
           //   title: h.title,
@@ -551,21 +653,23 @@ export const AcademicHandbook = () => {
           //   updated_at: latestHandbook.updated_at,
           //   created_at: latestHandbook.created_at
           // });
-          
+
           setHandbook(latestHandbook);
         } else {
-          setError('No general handbook found');
+          setError("No general handbook found");
         }
       } catch (err) {
-        console.error('❌ Full error details:', err);
-        console.error('❌ Error message:', err.message);
-        console.error('❌ Error stack:', err.stack);
-        
+        console.error("❌ Full error details:", err);
+        console.error("❌ Error message:", err.message);
+        console.error("❌ Error stack:", err.stack);
+
         // More specific error messages
-        if (err.message.includes('API response is not in expected format')) {
+        if (err.message.includes("API response is not in expected format")) {
           setError(`API Format Error: ${err.message}`);
-        } else if (err.message.includes('Failed to fetch')) {
-          setError('Cannot connect to server. Is your API running on port 3663?');
+        } else if (err.message.includes("Failed to fetch")) {
+          setError(
+            "Cannot connect to server. Is your API running on port 3663?"
+          );
         } else {
           setError(`Error: ${err.message}`);
         }
@@ -592,8 +696,8 @@ export const AcademicHandbook = () => {
         <FaExclamationTriangle className="text-4xl text-red-500 mb-4" />
         <h1 className="text-2xl font-bold text-red-600 mb-4">Error</h1>
         <p className="text-lg text-gray-600 mb-6">{error}</p>
-        <button 
-          onClick={() => window.location.reload()} 
+        <button
+          onClick={() => window.location.reload()}
           className="bg-blue-600 text-white px-6 py-3 rounded-lg text-lg font-medium hover:bg-blue-700 transition-all"
         >
           Try Again
@@ -606,8 +710,12 @@ export const AcademicHandbook = () => {
     return (
       <div className="bg-gray-50 text-gray-800 min-h-screen flex flex-col items-center justify-center text-center p-10">
         <FaExclamationTriangle className="text-4xl text-yellow-500 mb-4" />
-        <h1 className="text-2xl font-bold text-yellow-600 mb-4">No Handbook Available</h1>
-        <p className="text-lg text-gray-600">No academic handbook is currently available.</p>
+        <h1 className="text-2xl font-bold text-yellow-600 mb-4">
+          No Handbook Available
+        </h1>
+        <p className="text-lg text-gray-600">
+          No academic handbook is currently available.
+        </p>
       </div>
     );
   }
@@ -617,20 +725,29 @@ export const AcademicHandbook = () => {
       <h1 className="text-4xl font-bold text-blue-900 mb-6 flex items-center">
         <FaBookOpen className="mr-3 text-blue-700" /> Academic Handbook
       </h1>
-      
+
       <div className="bg-white rounded-lg shadow-md p-6 mb-6 max-w-3xl">
-        <h2 className="text-2xl font-semibold text-gray-800 mb-3">{handbook.title}</h2>
+        <h2 className="text-2xl font-semibold text-gray-800 mb-3">
+          {handbook.title}
+        </h2>
         {handbook.description && (
           <p className="text-lg text-gray-700 mb-4">{handbook.description}</p>
         )}
         <p className="text-sm text-gray-500 mb-4">
-          Last updated: {new Date(handbook.updated_at || handbook.created_at).toLocaleDateString()}
+          Last updated:{" "}
+          {new Date(
+            handbook.updated_at || handbook.created_at
+          ).toLocaleDateString()}
         </p>
       </div>
 
       {/* Button to Open PDF in New Tab */}
       <a
-        href={handbook.pdf_url.startsWith('http') ? handbook.pdf_url : `http://localhost:3663${handbook.pdf_url}`}
+        href={
+          handbook.pdf_url.startsWith("http")
+            ? handbook.pdf_url
+            : `http://localhost:3663${handbook.pdf_url}`
+        }
         target="_blank"
         rel="noopener noreferrer"
         className="bg-blue-600 text-white px-6 py-3 rounded-lg text-lg font-medium hover:bg-blue-700 transition-all"
@@ -650,57 +767,89 @@ export const AcademicHandbookDetails = () => {
     const fetchHandbook = async () => {
       try {
         setLoading(true);
-        const response = await fetch('http://localhost:3663/api/academic/handbooks');
-        
+        const response = await fetch(
+          "http://localhost:3663/api/academic/handbooks"
+        );
+
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
+
         const responseData = await response.json();
-        
+
         // 🔍 DEBUG: Log the actual API response structure
         // console.log('🔍 API Response:', responseData);
         // console.log('🔍 Response type:', typeof responseData);
         // console.log('🔍 Is array?', Array.isArray(responseData));
         // console.log('🔍 Response keys:', Object.keys(responseData || {}));
         // console.log('🔍 Full response structure:', JSON.stringify(responseData, null, 2));
-        
+
         // Handle different response formats with more debugging
         let data;
         if (Array.isArray(responseData)) {
           // console.log('✅ Using direct array format');
           data = responseData;
-        } else if (responseData && responseData.data && Array.isArray(responseData.data)) {
+        } else if (
+          responseData &&
+          responseData.data &&
+          Array.isArray(responseData.data)
+        ) {
           // console.log('✅ Using responseData.data format');
           data = responseData.data;
-        } else if (responseData && responseData.handbooks && Array.isArray(responseData.handbooks)) {
+        } else if (
+          responseData &&
+          responseData.handbooks &&
+          Array.isArray(responseData.handbooks)
+        ) {
           // console.log('✅ Using responseData.handbooks format');
           data = responseData.handbooks;
-        } else if (responseData && responseData.results && Array.isArray(responseData.results)) {
+        } else if (
+          responseData &&
+          responseData.results &&
+          Array.isArray(responseData.results)
+        ) {
           // console.log('✅ Using responseData.results format');
           data = responseData.results;
-        } else if (responseData && responseData.result && Array.isArray(responseData.result)) {
+        } else if (
+          responseData &&
+          responseData.result &&
+          Array.isArray(responseData.result)
+        ) {
           // console.log('✅ Using responseData.result format (singular)');
           data = responseData.result;
-        } else if (responseData && responseData.rows && Array.isArray(responseData.rows)) {
+        } else if (
+          responseData &&
+          responseData.rows &&
+          Array.isArray(responseData.rows)
+        ) {
           // console.log('✅ Using responseData.rows format');
           data = responseData.rows;
         } else {
-          console.log('❌ None of the expected formats matched');
-          console.log('❌ Available keys:', responseData ? Object.keys(responseData) : 'responseData is null/undefined');
-          throw new Error(`API response format not recognized. Response keys: ${responseData ? Object.keys(responseData).join(', ') : 'none'}`);
+          console.log("❌ None of the expected formats matched");
+          console.log(
+            "❌ Available keys:",
+            responseData
+              ? Object.keys(responseData)
+              : "responseData is null/undefined"
+          );
+          throw new Error(
+            `API response format not recognized. Response keys: ${
+              responseData ? Object.keys(responseData).join(", ") : "none"
+            }`
+          );
         }
-        
+
         // console.log('📚 Processed data:', data);
-        
+
         // Filter for honours_minors handbooks and get the latest one
-        const honoursMinorsHandbooks = data.filter(item => 
-          item.handbook_type === 'honours_minors' && 
-          item.title && 
-          item.pdf_url && 
-          (item.deleted === 0 || item.deleted === "0")
+        const honoursMinorsHandbooks = data.filter(
+          (item) =>
+            item.handbook_type === "honours_minors" &&
+            item.title &&
+            item.pdf_url &&
+            (item.deleted === 0 || item.deleted === "0")
         );
-        
+
         if (honoursMinorsHandbooks.length > 0) {
           // 🔍 LATEST ENTRY LOGIC: Sort by updated_at (priority) or created_at (fallback)
           // This sorts in DESCENDING order - newest first
@@ -709,7 +858,7 @@ export const AcademicHandbookDetails = () => {
             const dateB = new Date(b.updated_at || b.created_at);
             return dateB - dateA; // Descending order: newer dates first
           })[0]; // Take the first element (newest)
-          
+
           // console.log('📊 All honours_minors handbooks:', honoursMinorsHandbooks.map(h => ({
           //   id: h.id,
           //   title: h.title,
@@ -722,21 +871,23 @@ export const AcademicHandbookDetails = () => {
           //   updated_at: latestHandbook.updated_at,
           //   created_at: latestHandbook.created_at
           // });
-          
+
           setHandbook(latestHandbook);
         } else {
-          setError('No Honours & Minors handbook found');
+          setError("No Honours & Minors handbook found");
         }
       } catch (err) {
-        console.error('❌ Full error details:', err);
-        console.error('❌ Error message:', err.message);
-        console.error('❌ Error stack:', err.stack);
-        
+        console.error("❌ Full error details:", err);
+        console.error("❌ Error message:", err.message);
+        console.error("❌ Error stack:", err.stack);
+
         // More specific error messages
-        if (err.message.includes('API response is not in expected format')) {
+        if (err.message.includes("API response is not in expected format")) {
           setError(`API Format Error: ${err.message}`);
-        } else if (err.message.includes('Failed to fetch')) {
-          setError('Cannot connect to server. Is your API running on port 3663?');
+        } else if (err.message.includes("Failed to fetch")) {
+          setError(
+            "Cannot connect to server. Is your API running on port 3663?"
+          );
         } else {
           setError(`Error: ${err.message}`);
         }
@@ -763,8 +914,8 @@ export const AcademicHandbookDetails = () => {
         <FaExclamationTriangle className="text-4xl text-red-500 mb-4" />
         <h1 className="text-2xl font-bold text-red-600 mb-4">Error</h1>
         <p className="text-lg text-gray-600 mb-6">{error}</p>
-        <button 
-          onClick={() => window.location.reload()} 
+        <button
+          onClick={() => window.location.reload()}
           className="bg-blue-600 text-white px-6 py-3 rounded-lg text-lg font-medium hover:bg-blue-700 transition-all"
         >
           Try Again
@@ -777,8 +928,12 @@ export const AcademicHandbookDetails = () => {
     return (
       <div className="bg-gray-50 text-gray-800 min-h-screen flex flex-col items-center justify-center text-center p-10">
         <FaExclamationTriangle className="text-4xl text-yellow-500 mb-4" />
-        <h1 className="text-2xl font-bold text-yellow-600 mb-4">No Handbook Available</h1>
-        <p className="text-lg text-gray-600">No Honours & Minors handbook is currently available.</p>
+        <h1 className="text-2xl font-bold text-yellow-600 mb-4">
+          No Handbook Available
+        </h1>
+        <p className="text-lg text-gray-600">
+          No Honours & Minors handbook is currently available.
+        </p>
       </div>
     );
   }
@@ -786,22 +941,32 @@ export const AcademicHandbookDetails = () => {
   return (
     <div className="bg-gray-50 text-gray-800 min-h-screen flex flex-col items-center justify-center text-center p-10">
       <h1 className="text-4xl font-bold text-blue-900 mb-6 flex items-center">
-        <FaFilePdf className="mr-3 text-blue-700" /> Academic Handbook for Honours & Minors
+        <FaFilePdf className="mr-3 text-blue-700" /> Academic Handbook for
+        Honours & Minors
       </h1>
-      
+
       <div className="bg-white rounded-lg shadow-md p-6 mb-6 max-w-3xl">
-        <h2 className="text-2xl font-semibold text-gray-800 mb-3">{handbook.title}</h2>
+        <h2 className="text-2xl font-semibold text-gray-800 mb-3">
+          {handbook.title}
+        </h2>
         {handbook.description && (
           <p className="text-lg text-gray-700 mb-4">{handbook.description}</p>
         )}
         <p className="text-sm text-gray-500 mb-4">
-          Last updated: {new Date(handbook.updated_at || handbook.created_at).toLocaleDateString()}
+          Last updated:{" "}
+          {new Date(
+            handbook.updated_at || handbook.created_at
+          ).toLocaleDateString()}
         </p>
       </div>
 
       {/* Button to Open PDF in New Tab */}
       <a
-        href={handbook.pdf_url.startsWith('http') ? handbook.pdf_url : `http://localhost:3663${handbook.pdf_url}`}
+        href={
+          handbook.pdf_url.startsWith("http")
+            ? handbook.pdf_url
+            : `http://localhost:3663${handbook.pdf_url}`
+        }
         target="_blank"
         rel="noopener noreferrer"
         className="bg-blue-600 text-white px-6 py-3 rounded-lg text-lg font-medium hover:bg-blue-700 transition-all"
@@ -821,60 +986,89 @@ export const AcademicCalender = () => {
     const fetchCalendars = async () => {
       try {
         setLoading(true);
-        const response = await fetch('http://localhost:3663/api/academic/calendar');
-        
+        const response = await fetch(
+          "http://localhost:3663/api/academic/calendar"
+        );
+
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
+
         const responseData = await response.json();
-        
+
         // 🔍 DEBUG: Log the actual API response structure
-        console.log('🔍 Calendar API Response:', responseData);
-        console.log('🔍 Response type:', typeof responseData);
-        console.log('🔍 Is array?', Array.isArray(responseData));
-        console.log('🔍 Response keys:', Object.keys(responseData || {}));
-        
+        console.log("🔍 Calendar API Response:", responseData);
+        console.log("🔍 Response type:", typeof responseData);
+        console.log("🔍 Is array?", Array.isArray(responseData));
+        console.log("🔍 Response keys:", Object.keys(responseData || {}));
+
         // Handle different response formats
         let data;
         if (Array.isArray(responseData)) {
-          console.log('✅ Using direct array format');
+          console.log("✅ Using direct array format");
           data = responseData;
-        } else if (responseData && responseData.result && Array.isArray(responseData.result)) {
-          console.log('✅ Using responseData.result format');
+        } else if (
+          responseData &&
+          responseData.result &&
+          Array.isArray(responseData.result)
+        ) {
+          console.log("✅ Using responseData.result format");
           data = responseData.result;
-        } else if (responseData && responseData.data && Array.isArray(responseData.data)) {
-          console.log('✅ Using responseData.data format');
+        } else if (
+          responseData &&
+          responseData.data &&
+          Array.isArray(responseData.data)
+        ) {
+          console.log("✅ Using responseData.data format");
           data = responseData.data;
-        } else if (responseData && responseData.calendars && Array.isArray(responseData.calendars)) {
-          console.log('✅ Using responseData.calendars format');
+        } else if (
+          responseData &&
+          responseData.calendars &&
+          Array.isArray(responseData.calendars)
+        ) {
+          console.log("✅ Using responseData.calendars format");
           data = responseData.calendars;
         } else {
-          console.log('❌ None of the expected formats matched');
-          console.log('❌ Available keys:', responseData ? Object.keys(responseData) : 'responseData is null/undefined');
-          throw new Error(`API response format not recognized. Response keys: ${responseData ? Object.keys(responseData).join(', ') : 'none'}`);
+          console.log("❌ None of the expected formats matched");
+          console.log(
+            "❌ Available keys:",
+            responseData
+              ? Object.keys(responseData)
+              : "responseData is null/undefined"
+          );
+          throw new Error(
+            `API response format not recognized. Response keys: ${
+              responseData ? Object.keys(responseData).join(", ") : "none"
+            }`
+          );
         }
-        
-        console.log('📅 Processed calendar data:', data);
-        
+
+        console.log("📅 Processed calendar data:", data);
+
         // Filter out deleted entries and sort by date (newest first)
         const activeCalendars = data
-          .filter(item => item.deleted === 0 || item.deleted === "0")
+          .filter((item) => item.deleted === 0 || item.deleted === "0")
           .sort((a, b) => {
             // Sort by created_at or updated_at, newest first
-            const dateA = new Date(a.updated_at || a.created_at || a.issue_date);
-            const dateB = new Date(b.updated_at || b.created_at || b.issue_date);
+            const dateA = new Date(
+              a.updated_at || a.created_at || a.issue_date
+            );
+            const dateB = new Date(
+              b.updated_at || b.created_at || b.issue_date
+            );
             return dateB - dateA;
           });
-        
+
         setCalendars(activeCalendars);
       } catch (err) {
-        console.error('❌ Error fetching calendars:', err);
-        console.error('❌ Error message:', err.message);
-        
+        console.error("❌ Error fetching calendars:", err);
+        console.error("❌ Error message:", err.message);
+
         // More specific error messages
-        if (err.message.includes('Failed to fetch')) {
-          setError('Cannot connect to server. Is your API running on port 3663?');
+        if (err.message.includes("Failed to fetch")) {
+          setError(
+            "Cannot connect to server. Is your API running on port 3663?"
+          );
         } else {
           setError(`Error: ${err.message}`);
         }
@@ -901,8 +1095,8 @@ export const AcademicCalender = () => {
         <FaExclamationTriangle className="text-4xl text-red-500 mb-4" />
         <h1 className="text-2xl font-bold text-red-600 mb-4">Error</h1>
         <p className="text-lg text-gray-600 mb-6">{error}</p>
-        <button 
-          onClick={() => window.location.reload()} 
+        <button
+          onClick={() => window.location.reload()}
           className="bg-blue-600 text-white px-6 py-3 rounded-lg text-lg font-medium hover:bg-blue-700 transition-all"
         >
           Try Again
@@ -915,21 +1109,25 @@ export const AcademicCalender = () => {
     return (
       <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center p-10">
         <FaExclamationTriangle className="text-4xl text-yellow-500 mb-4" />
-        <h1 className="text-2xl font-bold text-yellow-600 mb-4">No Calendars Available</h1>
-        <p className="text-lg text-gray-600">No academic calendars are currently available.</p>
+        <h1 className="text-2xl font-bold text-yellow-600 mb-4">
+          No Calendars Available
+        </h1>
+        <p className="text-lg text-gray-600">
+          No academic calendars are currently available.
+        </p>
       </div>
     );
   }
 
   // Helper function to format date
   const formatDate = (dateString) => {
-    if (!dateString) return 'N/A';
+    if (!dateString) return "N/A";
     try {
       const date = new Date(dateString);
-      return date.toLocaleDateString('en-GB', {
-        day: '2-digit',
-        month: 'short',
-        year: 'numeric'
+      return date.toLocaleDateString("en-GB", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
       });
     } catch {
       return dateString; // Return original if parsing fails
@@ -938,8 +1136,10 @@ export const AcademicCalender = () => {
 
   // Helper function to create full PDF URL
   const getPdfUrl = (pdfPath) => {
-    if (!pdfPath) return '#';
-    return pdfPath.startsWith('http') ? pdfPath : `http://localhost:3663${pdfPath}`;
+    if (!pdfPath) return "#";
+    return pdfPath.startsWith("http")
+      ? pdfPath
+      : `http://localhost:3663${pdfPath}`;
   };
 
   return (
@@ -949,7 +1149,7 @@ export const AcademicCalender = () => {
           <FaCalendarAlt className="mr-3 text-blue-700" />
           Academic Calendar
         </h1>
-        
+
         <div className="overflow-x-auto">
           <table className="w-full border-collapse rounded-lg shadow-md">
             <thead className="bg-blue-700 text-white text-left">
@@ -968,14 +1168,18 @@ export const AcademicCalender = () => {
                 >
                   <td className="py-3 px-5">{index + 1}</td>
                   <td className="py-3 px-5">
-                    {item.year || item.title || item.academic_year || 'N/A'}
+                    {item.year || item.title || item.academic_year || "N/A"}
                   </td>
                   <td className="py-3 px-5">
-                    {formatDate(item.issue_date || item.date || item.created_at)}
+                    {formatDate(
+                      item.issue_date || item.date || item.created_at
+                    )}
                   </td>
                   <td className="py-3 px-5 text-center">
                     <a
-                      href={getPdfUrl(item.pdf_url || item.link || item.file_path)}
+                      href={getPdfUrl(
+                        item.pdf_url || item.link || item.file_path
+                      )}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-all inline-flex items-center justify-center"
@@ -988,10 +1192,12 @@ export const AcademicCalender = () => {
             </tbody>
           </table>
         </div>
-        
+
         {/* Summary */}
         <div className="mt-6 text-center text-gray-600">
-          <p>Total Academic Calendars: <strong>{calendars.length}</strong></p>
+          <p>
+            Total Academic Calendars: <strong>{calendars.length}</strong>
+          </p>
         </div>
       </div>
     </div>
@@ -1007,42 +1213,52 @@ export const APMS = () => {
     const fetchAPMSData = async () => {
       try {
         setLoading(true);
-        const response = await fetch('http://localhost:3663/api/academic/links');
-        
+        const response = await fetch(
+          "http://localhost:3663/api/academic/links"
+        );
+
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
+
         const responseData = await response.json();
-        console.log('🔍 APMS API Response:', responseData);
-        
+        console.log("🔍 APMS API Response:", responseData);
+
         // Handle different response formats
         let data;
         if (Array.isArray(responseData)) {
           data = responseData;
-        } else if (responseData && responseData.result && Array.isArray(responseData.result)) {
+        } else if (
+          responseData &&
+          responseData.result &&
+          Array.isArray(responseData.result)
+        ) {
           data = responseData.result;
-        } else if (responseData && responseData.data && Array.isArray(responseData.data)) {
+        } else if (
+          responseData &&
+          responseData.data &&
+          Array.isArray(responseData.data)
+        ) {
           data = responseData.data;
         } else {
-          throw new Error('API response format not recognized');
+          throw new Error("API response format not recognized");
         }
-        
+
         // Find APMS link (filter by link_type or title)
-        const apmsLink = data.find(item => 
-          item.link_type === 'APMS' || 
-          item.title?.toLowerCase().includes('apms') ||
-          item.url?.includes('apms')
+        const apmsLink = data.find(
+          (item) =>
+            item.link_type === "APMS" ||
+            item.title?.toLowerCase().includes("apms") ||
+            item.url?.includes("apms")
         );
-        
+
         if (apmsLink) {
           setApmsData(apmsLink);
         } else {
-          throw new Error('APMS link not found in API response');
+          throw new Error("APMS link not found in API response");
         }
-        
       } catch (err) {
-        console.error('❌ Error fetching APMS data:', err);
+        console.error("❌ Error fetching APMS data:", err);
         setError(err.message);
       } finally {
         setLoading(false);
@@ -1075,8 +1291,8 @@ export const APMS = () => {
           <FaExclamationTriangle className="text-4xl text-red-500 mb-4 mx-auto" />
           <h1 className="text-2xl font-bold text-red-600 mb-4">Error</h1>
           <p className="text-lg text-gray-600 mb-6">{error}</p>
-          <button 
-            onClick={() => window.location.reload()} 
+          <button
+            onClick={() => window.location.reload()}
             className="bg-blue-600 text-white px-6 py-3 rounded-lg text-lg font-medium hover:bg-blue-700 transition-all"
           >
             Try Again
@@ -1092,22 +1308,28 @@ export const APMS = () => {
         <div className="flex items-center justify-center mb-4">
           <FaDesktop className="text-4xl text-blue-700 mr-3" />
           <h1 className="text-3xl font-bold text-blue-900">
-            {apmsData?.title || 'APMS Portal'}
+            {apmsData?.title || "APMS Portal"}
           </h1>
         </div>
-        
+
         <p className="text-lg text-gray-700 mb-6 leading-relaxed">
-          {apmsData?.description || 'Academic Performance Monitoring System for student performance tracking.'}
+          {apmsData?.description ||
+            "Academic Performance Monitoring System for student performance tracking."}
         </p>
-        
+
         <div className="mb-6 text-sm text-gray-500">
-          <p><strong>Link Type:</strong> {apmsData?.link_type || 'APMS'}</p>
+          <p>
+            <strong>Link Type:</strong> {apmsData?.link_type || "APMS"}
+          </p>
           {apmsData?.updated_at && (
-            <p><strong>Last Updated:</strong> {new Date(apmsData.updated_at).toLocaleDateString('en-GB')}</p>
+            <p>
+              <strong>Last Updated:</strong>{" "}
+              {new Date(apmsData.updated_at).toLocaleDateString("en-GB")}
+            </p>
           )}
         </div>
-        
-        <button 
+
+        <button
           onClick={handleRedirect}
           className="bg-blue-600 text-white px-6 py-3 rounded-lg text-lg font-medium hover:bg-blue-700 transition-all flex items-center justify-center mx-auto"
         >
@@ -1119,7 +1341,6 @@ export const APMS = () => {
   );
 };
 
-
 export const LMS = () => {
   const [lmsData, setLmsData] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -1129,43 +1350,53 @@ export const LMS = () => {
     const fetchLMSData = async () => {
       try {
         setLoading(true);
-        const response = await fetch('http://localhost:3663/api/academic/links');
-        
+        const response = await fetch(
+          "http://localhost:3663/api/academic/links"
+        );
+
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
-        
+
         const responseData = await response.json();
-        console.log('🔍 LMS API Response:', responseData);
-        
+        console.log("🔍 LMS API Response:", responseData);
+
         // Handle different response formats
         let data;
         if (Array.isArray(responseData)) {
           data = responseData;
-        } else if (responseData && responseData.result && Array.isArray(responseData.result)) {
+        } else if (
+          responseData &&
+          responseData.result &&
+          Array.isArray(responseData.result)
+        ) {
           data = responseData.result;
-        } else if (responseData && responseData.data && Array.isArray(responseData.data)) {
+        } else if (
+          responseData &&
+          responseData.data &&
+          Array.isArray(responseData.data)
+        ) {
           data = responseData.data;
         } else {
-          throw new Error('API response format not recognized');
+          throw new Error("API response format not recognized");
         }
-        
+
         // Find LMS link (filter by link_type or title)
-        const lmsLink = data.find(item => 
-          item.link_type === 'LMS' || 
-          item.title?.toLowerCase().includes('lms') ||
-          item.title?.toLowerCase().includes('learning management') ||
-          item.url?.includes('lms')
+        const lmsLink = data.find(
+          (item) =>
+            item.link_type === "LMS" ||
+            item.title?.toLowerCase().includes("lms") ||
+            item.title?.toLowerCase().includes("learning management") ||
+            item.url?.includes("lms")
         );
-        
+
         if (lmsLink) {
           setLmsData(lmsLink);
         } else {
-          throw new Error('LMS link not found in API response');
+          throw new Error("LMS link not found in API response");
         }
-        
       } catch (err) {
-        console.error('❌ Error fetching LMS data:', err);
+        console.error("❌ Error fetching LMS data:", err);
         setError(err.message);
       } finally {
         setLoading(false);
@@ -1184,7 +1415,9 @@ export const LMS = () => {
     return (
       <div className="min-h-screen bg-gray-50 flex flex-col items-center justify-center text-center p-10">
         <FaSpinner className="text-4xl text-blue-600 animate-spin mb-4" />
-        <p className="text-lg text-gray-600">Loading Learning Management System...</p>
+        <p className="text-lg text-gray-600">
+          Loading Learning Management System...
+        </p>
       </div>
     );
   }
@@ -1195,8 +1428,8 @@ export const LMS = () => {
         <FaExclamationTriangle className="text-4xl text-red-500 mb-4" />
         <h1 className="text-2xl font-bold text-red-600 mb-4">Error</h1>
         <p className="text-lg text-gray-600 mb-6">{error}</p>
-        <button 
-          onClick={() => window.location.reload()} 
+        <button
+          onClick={() => window.location.reload()}
           className="bg-blue-600 text-white px-6 py-3 rounded-lg text-lg font-medium hover:bg-blue-700 transition-all"
         >
           Try Again
@@ -1211,14 +1444,15 @@ export const LMS = () => {
         <div className="flex items-center justify-center mb-6">
           <FaGraduationCap className="text-4xl text-blue-700 mr-3" />
           <h1 className="text-4xl font-bold text-blue-900">
-            {lmsData?.title || 'Learning Management System'}
+            {lmsData?.title || "Learning Management System"}
           </h1>
         </div>
-        
+
         <p className="text-lg max-w-2xl text-gray-700 mb-6 leading-relaxed">
-          {lmsData?.description || 'Access our Learning Management System (LMS) for online courses, assignments, and educational resources.'}
+          {lmsData?.description ||
+            "Access our Learning Management System (LMS) for online courses, assignments, and educational resources."}
         </p>
-        
+
         {/* <div className="mb-6 text-sm text-gray-500 bg-gray-50 p-4 rounded-lg">
           <p><strong>System Type:</strong> {lmsData?.link_type || 'LMS'}</p>
           {lmsData?.updated_at && (
@@ -1228,7 +1462,7 @@ export const LMS = () => {
             <p><strong>Available Since:</strong> {new Date(lmsData.created_at).toLocaleDateString('en-GB')}</p>
           )}
         </div> */}
-        
+
         <button
           onClick={handleRedirect}
           className="bg-blue-600 text-white px-8 py-4 rounded-lg text-lg font-medium flex items-center hover:bg-blue-700 transition-all mx-auto"
@@ -1240,7 +1474,6 @@ export const LMS = () => {
     </div>
   );
 };
-
 
 export const StakeholderFeedback = () => {
   const [feedbackData, setFeedbackData] = useState([]);
@@ -1254,21 +1487,25 @@ export const StakeholderFeedback = () => {
   const fetchFeedbackData = async () => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:3663/api/academic/feedback');
-      
+      const response = await fetch(
+        "http://localhost:3663/api/academic/feedback"
+      );
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-      
+
       const data = await response.json();
-      
+
       // Get the result array and filter out deleted items (where deleted is not 0)
       const feedbackArray = data.result || [];
-      const nonDeletedFeedback = feedbackArray.filter(item => item.deleted === "0");
+      const nonDeletedFeedback = feedbackArray.filter(
+        (item) => item.deleted === "0"
+      );
       setFeedbackData(nonDeletedFeedback);
     } catch (err) {
       setError(err.message);
-      console.error('Error fetching feedback data:', err);
+      console.error("Error fetching feedback data:", err);
     } finally {
       setLoading(false);
     }
@@ -1276,7 +1513,7 @@ export const StakeholderFeedback = () => {
 
   const handleViewPDF = (pdfUrl, title) => {
     if (pdfUrl) {
-      window.open(pdfUrl, '_blank', 'noopener,noreferrer');
+      window.open(pdfUrl, "_blank", "noopener,noreferrer");
     } else {
       alert(`PDF not available for: ${title}`);
     }
@@ -1284,28 +1521,28 @@ export const StakeholderFeedback = () => {
 
   const formatDate = (dateString) => {
     try {
-      return new Date(dateString).toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
+      return new Date(dateString).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
       });
     } catch {
-      return 'Invalid Date';
+      return "Invalid Date";
     }
   };
 
   const getFeedbackTypeColor = (type) => {
     switch (type?.toLowerCase()) {
-      case 'syllabus':
-        return 'bg-blue-100 text-blue-800';
-      case 'industry':
-        return 'bg-green-100 text-green-800';
-      case 'student':
-        return 'bg-purple-100 text-purple-800';
+      case "syllabus":
+        return "bg-blue-100 text-blue-800";
+      case "industry":
+        return "bg-green-100 text-green-800";
+      case "student":
+        return "bg-purple-100 text-purple-800";
       default:
-        return 'bg-gray-100 text-gray-800';
+        return "bg-gray-100 text-gray-800";
     }
   };
 
@@ -1325,7 +1562,9 @@ export const StakeholderFeedback = () => {
       <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
         <div className="text-center bg-white shadow-lg rounded-lg p-8 max-w-md">
           <FaExclamationTriangle className="text-4xl text-red-500 mb-4 mx-auto" />
-          <h2 className="text-xl font-bold text-gray-800 mb-2">Error Loading Data</h2>
+          <h2 className="text-xl font-bold text-gray-800 mb-2">
+            Error Loading Data
+          </h2>
           <p className="text-gray-600 mb-4">{error}</p>
           <button
             onClick={fetchFeedbackData}
@@ -1357,8 +1596,12 @@ export const StakeholderFeedback = () => {
         {feedbackData.length === 0 ? (
           <div className="text-center bg-white shadow-lg rounded-lg p-8">
             <FaFilePdf className="text-4xl text-gray-400 mb-4 mx-auto" />
-            <h3 className="text-xl font-semibold text-gray-700 mb-2">No Feedback Available</h3>
-            <p className="text-gray-500">There are currently no feedback documents to display.</p>
+            <h3 className="text-xl font-semibold text-gray-700 mb-2">
+              No Feedback Available
+            </h3>
+            <p className="text-gray-500">
+              There are currently no feedback documents to display.
+            </p>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -1370,7 +1613,7 @@ export const StakeholderFeedback = () => {
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex-1">
                     <h3 className="text-lg font-bold text-gray-800 mb-2 line-clamp-2">
-                      {feedback.title || 'Untitled Feedback'}
+                      {feedback.title || "Untitled Feedback"}
                     </h3>
                     <span
                       className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getFeedbackTypeColor(
@@ -1378,7 +1621,7 @@ export const StakeholderFeedback = () => {
                       )}`}
                     >
                       <FaTags className="mr-1" />
-                      {feedback.feedback_type || 'General'}
+                      {feedback.feedback_type || "General"}
                     </span>
                   </div>
                 </div>
@@ -1388,7 +1631,7 @@ export const StakeholderFeedback = () => {
                     {feedback.description}
                   </p>
                 )}
-{/* 
+                {/* 
                 <div className="space-y-2 mb-4 text-xs text-gray-500">
                   <div className="flex items-center">
                     <FaUser className="mr-2 flex-shrink-0" />
@@ -1407,12 +1650,14 @@ export const StakeholderFeedback = () => {
                 </div> */}
 
                 <button
-                  onClick={() => handleViewPDF(feedback.pdf_url, feedback.title)}
+                  onClick={() =>
+                    handleViewPDF(feedback.pdf_url, feedback.title)
+                  }
                   className="w-full bg-blue-600 text-white px-4 py-3 rounded-lg text-sm font-medium hover:bg-blue-700 transition-colors flex items-center justify-center"
                   disabled={!feedback.pdf_url}
                 >
                   <FaFilePdf className="mr-2" />
-                  {feedback.pdf_url ? 'View PDF' : 'PDF Not Available'}
+                  {feedback.pdf_url ? "View PDF" : "PDF Not Available"}
                 </button>
               </div>
             ))}
@@ -1423,257 +1668,257 @@ export const StakeholderFeedback = () => {
   );
 };
 
-export const Examination = () => {
-  const [examinationData, setExaminationData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+// export const Examination = () => {
+//   const [examinationData, setExaminationData] = useState([]);
+//   const [loading, setLoading] = useState(true);
+//   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    fetchExaminationData();
-  }, []);
+//   useEffect(() => {
+//     fetchExaminationData();
+//   }, []);
 
-  const fetchExaminationData = async () => {
-    try {
-      setLoading(true);
-      const response = await fetch('http://localhost:3663/api/academic/examinations');
-      
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      
-      const data = await response.json();
-      
-      // Get the result array and filter out deleted items
-      const examinationArray = data.result || [];
-      console.log('Raw examination data:', examinationArray); // Debug log
-      
-      // Filter out deleted items - handle both string and number values
-      const nonDeletedExaminations = examinationArray.filter(item => {
-        const isDeleted = item.deleted === 0 || item.deleted === '0' || !item.deleted;
-        console.log(`Item ${item.id}: deleted=${item.deleted}, isDeleted=${isDeleted}`); // Debug log
-        return isDeleted;
-      });
-      
-      console.log('Filtered examinations:', nonDeletedExaminations); // Debug log
-      setExaminationData(nonDeletedExaminations);
-    } catch (err) {
-      setError(err.message);
-      console.error('Error fetching examination data:', err);
-    } finally {
-      setLoading(false);
-    }
-  };
+//   const fetchExaminationData = async () => {
+//     try {
+//       setLoading(true);
+//       const response = await fetch('http://localhost:3663/api/academic/examinations');
 
-  const handleViewPDF = (timetableUrl, examType, semester) => {
-    if (timetableUrl && timetableUrl !== 'NULL') {
-      // Handle relative URLs by prepending the server base URL if needed
-      const fullUrl = timetableUrl.startsWith('http') 
-        ? timetableUrl 
-        : `http://localhost:3663${timetableUrl}`;
-      window.open(fullUrl, '_blank', 'noopener,noreferrer');
-    } else {
-      alert(`Timetable not available for: ${examType} - Semester ${semester}`);
-    }
-  };
+//       if (!response.ok) {
+//         throw new Error(`HTTP error! status: ${response.status}`);
+//       }
 
-  const handleViewResult = (resultUrl, examType, semester) => {
-    if (resultUrl && resultUrl !== 'NULL') {
-      const fullUrl = resultUrl.startsWith('http') 
-        ? resultUrl 
-        : `http://localhost:3663${resultUrl}`;
-      window.open(fullUrl, '_blank', 'noopener,noreferrer');
-    } else {
-      alert(`Result not available for: ${examType} - Semester ${semester}`);
-    }
-  };
+//       const data = await response.json();
 
-  const formatDate = (dateString) => {
-    try {
-      return new Date(dateString).toLocaleDateString('en-US', {
-        year: 'numeric',
-        month: 'short',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-      });
-    } catch {
-      return 'Invalid Date';
-    }
-  };
+//       // Get the result array and filter out deleted items
+//       const examinationArray = data.result || [];
+//       console.log('Raw examination data:', examinationArray); // Debug log
 
-  const getExamTypeColor = (examType) => {
-    switch (examType?.toUpperCase()) {
-      case 'MSE':
-        return 'bg-blue-100 text-blue-800';
-      case 'ESE':
-        return 'bg-green-100 text-green-800';
-      case 'FINAL':
-        return 'bg-red-100 text-red-800';
-      case 'MIDTERM':
-        return 'bg-yellow-100 text-yellow-800';
-      default:
-        return 'bg-gray-100 text-gray-800';
-    }
-  };
+//       // Filter out deleted items - handle both string and number values
+//       const nonDeletedExaminations = examinationArray.filter(item => {
+//         const isDeleted = item.deleted === 0 || item.deleted === '0' || !item.deleted;
+//         console.log(`Item ${item.id}: deleted=${item.deleted}, isDeleted=${isDeleted}`); // Debug log
+//         return isDeleted;
+//       });
 
-  const getSemesterColor = (semester) => {
-    const colors = [
-      'bg-purple-100 text-purple-800',
-      'bg-pink-100 text-pink-800',
-      'bg-indigo-100 text-indigo-800',
-      'bg-teal-100 text-teal-800',
-      'bg-orange-100 text-orange-800',
-      'bg-cyan-100 text-cyan-800',
-      'bg-lime-100 text-lime-800',
-      'bg-rose-100 text-rose-800'
-    ];
-    return colors[(semester - 1) % colors.length] || 'bg-gray-100 text-gray-800';
-  };
+//       console.log('Filtered examinations:', nonDeletedExaminations); // Debug log
+//       setExaminationData(nonDeletedExaminations);
+//     } catch (err) {
+//       setError(err.message);
+//       console.error('Error fetching examination data:', err);
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="text-center">
-          <FaSpinner className="animate-spin text-4xl text-blue-600 mb-4 mx-auto" />
-          <p className="text-gray-600">Loading examination data...</p>
-        </div>
-      </div>
-    );
-  }
+//   const handleViewPDF = (timetableUrl, examType, semester) => {
+//     if (timetableUrl && timetableUrl !== 'NULL') {
+//       // Handle relative URLs by prepending the server base URL if needed
+//       const fullUrl = timetableUrl.startsWith('http')
+//         ? timetableUrl
+//         : `http://localhost:3663${timetableUrl}`;
+//       window.open(fullUrl, '_blank', 'noopener,noreferrer');
+//     } else {
+//       alert(`Timetable not available for: ${examType} - Semester ${semester}`);
+//     }
+//   };
 
-  if (error) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
-        <div className="text-center bg-white shadow-lg rounded-lg p-8 max-w-md">
-          <FaExclamationTriangle className="text-4xl text-red-500 mb-4 mx-auto" />
-          <h2 className="text-xl font-bold text-gray-800 mb-2">Error Loading Data</h2>
-          <p className="text-gray-600 mb-4">{error}</p>
-          <button
-            onClick={fetchExaminationData}
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
-          >
-            Try Again
-          </button>
-        </div>
-      </div>
-    );
-  }
+//   const handleViewResult = (resultUrl, examType, semester) => {
+//     if (resultUrl && resultUrl !== 'NULL') {
+//       const fullUrl = resultUrl.startsWith('http')
+//         ? resultUrl
+//         : `http://localhost:3663${resultUrl}`;
+//       window.open(fullUrl, '_blank', 'noopener,noreferrer');
+//     } else {
+//       alert(`Result not available for: ${examType} - Semester ${semester}`);
+//     }
+//   };
 
-  return (
-    <div className="min-h-screen bg-gray-50 p-6">
-      <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-blue-900 mb-2 flex items-center justify-center">
-            <FaGraduationCap className="mr-3 text-blue-600" />
-            Examinations
-          </h1>
-          <p className="text-lg text-gray-600">
-            View examination timetables and results
-          </p>
-          <div className="mt-2 text-sm text-gray-500">
-            Total Examinations: {examinationData.length}
-          </div>
-        </div>
+//   const formatDate = (dateString) => {
+//     try {
+//       return new Date(dateString).toLocaleDateString('en-US', {
+//         year: 'numeric',
+//         month: 'short',
+//         day: 'numeric',
+//         hour: '2-digit',
+//         minute: '2-digit'
+//       });
+//     } catch {
+//       return 'Invalid Date';
+//     }
+//   };
 
-        {examinationData.length === 0 ? (
-          <div className="text-center bg-white shadow-lg rounded-lg p-8">
-            <FaGraduationCap className="text-4xl text-gray-400 mb-4 mx-auto" />
-            <h3 className="text-xl font-semibold text-gray-700 mb-2">No Examinations Available</h3>
-            <p className="text-gray-500">There are currently no examination records to display.</p>
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {examinationData.map((exam) => (
-              <div
-                key={exam.id}
-                className="bg-white shadow-lg rounded-lg p-6 hover:shadow-xl transition-shadow duration-300 border border-gray-200"
-              >
-                <div className="flex items-start justify-between mb-4">
-                  <div className="flex-1">
-                    <div className="flex flex-wrap gap-2 mb-3">
-                      <span
-                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getExamTypeColor(
-                          exam.exam_type
-                        )}`}
-                      >
-                        <FaBookOpen className="mr-1" />
-                        {exam.exam_type || 'General'}
-                      </span>
-                      <span
-                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getSemesterColor(
-                          exam.semester
-                        )}`}
-                      >
-                        Semester {exam.semester}
-                      </span>
-                    </div>
-                    <h3 className="text-lg font-bold text-gray-800 mb-2">
-                      {exam.exam_type} - Semester {exam.semester}
-                    </h3>
-                    <p className="text-sm text-gray-600 mb-2">
-                      <strong>Year:</strong> {exam.year}
-                    </p>
-                  </div>
-                </div>
+//   const getExamTypeColor = (examType) => {
+//     switch (examType?.toUpperCase()) {
+//       case 'MSE':
+//         return 'bg-blue-100 text-blue-800';
+//       case 'ESE':
+//         return 'bg-green-100 text-green-800';
+//       case 'FINAL':
+//         return 'bg-red-100 text-red-800';
+//       case 'MIDTERM':
+//         return 'bg-yellow-100 text-yellow-800';
+//       default:
+//         return 'bg-gray-100 text-gray-800';
+//     }
+//   };
 
-                {exam.notification && exam.notification !== 'NULL' && (
-                  <div className="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
-                    <div className="flex items-start">
-                      <FaBell className="text-yellow-600 mr-2 mt-0.5 flex-shrink-0" />
-                      <p className="text-sm text-yellow-800">{exam.notification}</p>
-                    </div>
-                  </div>
-                )}
+//   const getSemesterColor = (semester) => {
+//     const colors = [
+//       'bg-purple-100 text-purple-800',
+//       'bg-pink-100 text-pink-800',
+//       'bg-indigo-100 text-indigo-800',
+//       'bg-teal-100 text-teal-800',
+//       'bg-orange-100 text-orange-800',
+//       'bg-cyan-100 text-cyan-800',
+//       'bg-lime-100 text-lime-800',
+//       'bg-rose-100 text-rose-800'
+//     ];
+//     return colors[(semester - 1) % colors.length] || 'bg-gray-100 text-gray-800';
+//   };
 
-                {/* <div className="space-y-2 mb-4 text-xs text-gray-500">
-                  <div className="flex items-center">
-                    <FaUser className="mr-2 flex-shrink-0" />
-                    <span>Created by: User {exam.created_by}</span>
-                  </div>
-                  <div className="flex items-center">
-                    <FaCalendarAlt className="mr-2 flex-shrink-0" />
-                    <span>Created: {formatDate(exam.created_at)}</span>
-                  </div>
-                  {exam.updated_at !== exam.created_at && (
-                    <div className="flex items-center">
-                      <FaCalendarAlt className="mr-2 flex-shrink-0" />
-                      <span>Updated: {formatDate(exam.updated_at)}</span>
-                    </div>
-                  )}
-                </div> */}
+//   if (loading) {
+//     return (
+//       <div className="min-h-screen flex items-center justify-center bg-gray-50">
+//         <div className="text-center">
+//           <FaSpinner className="animate-spin text-4xl text-blue-600 mb-4 mx-auto" />
+//           <p className="text-gray-600">Loading examination data...</p>
+//         </div>
+//       </div>
+//     );
+//   }
 
-                <div className="space-y-2">
-                  <button
-                    onClick={() => handleViewPDF(exam.timetable_url, exam.exam_type, exam.semester)}
-                    className={`w-full px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center justify-center ${
-                      exam.timetable_url && exam.timetable_url !== 'NULL'
-                        ? 'bg-blue-600 text-white hover:bg-blue-700'
-                        : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                    }`}
-                    disabled={!exam.timetable_url || exam.timetable_url === 'NULL'}
-                  >
-                    <FaFilePdf className="mr-2" />
-                    {exam.timetable_url && exam.timetable_url !== 'NULL' ? 'View Timetable' : 'Timetable Not Available'}
-                  </button>
+//   if (error) {
+//     return (
+//       <div className="min-h-screen flex items-center justify-center bg-gray-50 p-4">
+//         <div className="text-center bg-white shadow-lg rounded-lg p-8 max-w-md">
+//           <FaExclamationTriangle className="text-4xl text-red-500 mb-4 mx-auto" />
+//           <h2 className="text-xl font-bold text-gray-800 mb-2">Error Loading Data</h2>
+//           <p className="text-gray-600 mb-4">{error}</p>
+//           <button
+//             onClick={fetchExaminationData}
+//             className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+//           >
+//             Try Again
+//           </button>
+//         </div>
+//       </div>
+//     );
+//   }
 
-                  <button
-                    onClick={() => handleViewResult(exam.result_url, exam.exam_type, exam.semester)}
-                    className={`w-full px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center justify-center ${
-                      exam.result_url && exam.result_url !== 'NULL'
-                        ? 'bg-green-600 text-white hover:bg-green-700'
-                        : 'bg-gray-300 text-gray-500 cursor-not-allowed'
-                    }`}
-                    disabled={!exam.result_url || exam.result_url === 'NULL'}
-                  >
-                    <FaGraduationCap className="mr-2" />
-                    {exam.result_url && exam.result_url !== 'NULL' ? 'View Results' : 'Results Not Available'}
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-    </div>
-  );
-};
+//   return (
+//     <div className="min-h-screen bg-gray-50 p-6">
+//       <div className="max-w-6xl mx-auto">
+//         <div className="text-center mb-8">
+//           <h1 className="text-4xl font-bold text-blue-900 mb-2 flex items-center justify-center">
+//             <FaGraduationCap className="mr-3 text-blue-600" />
+//             Examinations
+//           </h1>
+//           <p className="text-lg text-gray-600">
+//             View examination timetables and results
+//           </p>
+//           <div className="mt-2 text-sm text-gray-500">
+//             Total Examinations: {examinationData.length}
+//           </div>
+//         </div>
+
+//         {examinationData.length === 0 ? (
+//           <div className="text-center bg-white shadow-lg rounded-lg p-8">
+//             <FaGraduationCap className="text-4xl text-gray-400 mb-4 mx-auto" />
+//             <h3 className="text-xl font-semibold text-gray-700 mb-2">No Examinations Available</h3>
+//             <p className="text-gray-500">There are currently no examination records to display.</p>
+//           </div>
+//         ) : (
+//           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+//             {examinationData.map((exam) => (
+//               <div
+//                 key={exam.id}
+//                 className="bg-white shadow-lg rounded-lg p-6 hover:shadow-xl transition-shadow duration-300 border border-gray-200"
+//               >
+//                 <div className="flex items-start justify-between mb-4">
+//                   <div className="flex-1">
+//                     <div className="flex flex-wrap gap-2 mb-3">
+//                       <span
+//                         className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getExamTypeColor(
+//                           exam.exam_type
+//                         )}`}
+//                       >
+//                         <FaBookOpen className="mr-1" />
+//                         {exam.exam_type || 'General'}
+//                       </span>
+//                       <span
+//                         className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getSemesterColor(
+//                           exam.semester
+//                         )}`}
+//                       >
+//                         Semester {exam.semester}
+//                       </span>
+//                     </div>
+//                     <h3 className="text-lg font-bold text-gray-800 mb-2">
+//                       {exam.exam_type} - Semester {exam.semester}
+//                     </h3>
+//                     <p className="text-sm text-gray-600 mb-2">
+//                       <strong>Year:</strong> {exam.year}
+//                     </p>
+//                   </div>
+//                 </div>
+
+//                 {exam.notification && exam.notification !== 'NULL' && (
+//                   <div className="mb-4 p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+//                     <div className="flex items-start">
+//                       <FaBell className="text-yellow-600 mr-2 mt-0.5 flex-shrink-0" />
+//                       <p className="text-sm text-yellow-800">{exam.notification}</p>
+//                     </div>
+//                   </div>
+//                 )}
+
+//                 {/* <div className="space-y-2 mb-4 text-xs text-gray-500">
+//                   <div className="flex items-center">
+//                     <FaUser className="mr-2 flex-shrink-0" />
+//                     <span>Created by: User {exam.created_by}</span>
+//                   </div>
+//                   <div className="flex items-center">
+//                     <FaCalendarAlt className="mr-2 flex-shrink-0" />
+//                     <span>Created: {formatDate(exam.created_at)}</span>
+//                   </div>
+//                   {exam.updated_at !== exam.created_at && (
+//                     <div className="flex items-center">
+//                       <FaCalendarAlt className="mr-2 flex-shrink-0" />
+//                       <span>Updated: {formatDate(exam.updated_at)}</span>
+//                     </div>
+//                   )}
+//                 </div> */}
+
+//                 <div className="space-y-2">
+//                   <button
+//                     onClick={() => handleViewPDF(exam.timetable_url, exam.exam_type, exam.semester)}
+//                     className={`w-full px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center justify-center ${
+//                       exam.timetable_url && exam.timetable_url !== 'NULL'
+//                         ? 'bg-blue-600 text-white hover:bg-blue-700'
+//                         : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+//                     }`}
+//                     disabled={!exam.timetable_url || exam.timetable_url === 'NULL'}
+//                   >
+//                     <FaFilePdf className="mr-2" />
+//                     {exam.timetable_url && exam.timetable_url !== 'NULL' ? 'View Timetable' : 'Timetable Not Available'}
+//                   </button>
+
+//                   <button
+//                     onClick={() => handleViewResult(exam.result_url, exam.exam_type, exam.semester)}
+//                     className={`w-full px-4 py-2 rounded-lg text-sm font-medium transition-colors flex items-center justify-center ${
+//                       exam.result_url && exam.result_url !== 'NULL'
+//                         ? 'bg-green-600 text-white hover:bg-green-700'
+//                         : 'bg-gray-300 text-gray-500 cursor-not-allowed'
+//                     }`}
+//                     disabled={!exam.result_url || exam.result_url === 'NULL'}
+//                   >
+//                     <FaGraduationCap className="mr-2" />
+//                     {exam.result_url && exam.result_url !== 'NULL' ? 'View Results' : 'Results Not Available'}
+//                   </button>
+//                 </div>
+//               </div>
+//             ))}
+//           </div>
+//         )}
+//       </div>
+//     </div>
+//   );
+// };

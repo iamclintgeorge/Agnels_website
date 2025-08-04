@@ -64,7 +64,7 @@ function AboutUs() {
   const fetchImages = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:3663/api/home/carousel"
+        "http://localhost:3663/api/home/carousel/home_carousel"
       );
       // console.log("Fetched images:", response.data);
       setImages(response.data);

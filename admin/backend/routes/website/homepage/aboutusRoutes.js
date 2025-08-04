@@ -13,6 +13,7 @@ import path from "path";
 import fs from "fs";
 import {
   principalDisplayController,
+  principalUpdateController,
   getSectionContent,
   updateSectionContent,
   getAllSections,
@@ -25,7 +26,7 @@ import {
 const router = express.Router();
 
 // Configure multer for file uploads
-const uploadsDir = path.join(process.cwd(), "uploads", "documents");
+const uploadsDir = path.join(process.cwd(), "cdn", "documents");
 
 // Ensure uploads directory exists
 if (!fs.existsSync(uploadsDir)) {
@@ -62,7 +63,7 @@ const upload = multer({
 // Configure multer for image uploads
 const imageStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const uploadDir = path.join(process.cwd(), "uploads", "images");
+    const uploadDir = path.join(process.cwd(), "cdn", "images");
     if (!fs.existsSync(uploadDir)) {
       fs.mkdirSync(uploadDir, { recursive: true });
     }
@@ -101,6 +102,13 @@ router.get(
   authMiddleware,
   checkPermission("about_us"),
   principalDisplayController
+);
+
+router.put(
+  "/principaldesk/:id",
+  authMiddleware,
+  checkPermission("about_us"),
+  principalUpdateController
 );
 
 // Get all sections
@@ -210,7 +218,7 @@ router.post("/upload-document", upload.single("file"), (req, res) => {
 
     // Construct the file URL
     const baseUrl = `${req.protocol}://${req.get("host")}`;
-    const relativePath = `/uploads/documents/${req.file.filename}`;
+    const relativePath = `/cdn/documents/${req.file.filename}`;
     const fileUrl = `${baseUrl}${relativePath}`;
 
     console.log(`File uploaded: ${req.file.originalname} -> ${fileUrl}`);
@@ -243,7 +251,7 @@ router.post("/upload-image", imageUpload.single("image"), (req, res) => {
 
     // Construct the file URL
     const baseUrl = `${req.protocol}://${req.get("host")}`;
-    const relativePath = `/uploads/images/${req.file.filename}`;
+    const relativePath = `/cdn/images/${req.file.filename}`;
     const imageUrl = `${baseUrl}${relativePath}`;
 
     console.log(`Image uploaded: ${req.file.originalname} -> ${imageUrl}`);

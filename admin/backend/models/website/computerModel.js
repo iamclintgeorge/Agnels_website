@@ -1,12 +1,13 @@
 import db from "../../config/db.js";
 
-export const computerHomeTextDisplay = async () => {
+export const computerHomeTextDisplay = async (id) => {
   const query = `
-    SELECT * FROM infoText WHERE Section = 'compHome';
+    SELECT * FROM abouts WHERE department_id = ?;
   `;
+  const value = id;
 
   try {
-    const [rows] = await db.promise().query(query);
+    const [rows] = await db.promise().query(query, value);
     return rows;
   } catch (error) {
     console.error("Database fetch error:", error);
@@ -14,17 +15,22 @@ export const computerHomeTextDisplay = async () => {
   }
 };
 
-export const computerHomeTextUpdate = async (id, content) => {
-  if (!id || id === "undefined") {
+export const computerHomeTextUpdate = async (departmentId, id, content) => {
+  if (
+    !id ||
+    id === "undefined" ||
+    !departmentId ||
+    departmentId === "undefined"
+  ) {
     throw new Error("Invalid ID provided for update");
   }
 
   const query = `
-    UPDATE infoText 
-    SET Content = ?, Updated_At = CURRENT_TIMESTAMP 
-    WHERE id = ? AND Section = 'compHome';
+    UPDATE abouts 
+    SET paragraph1 = ? 
+    WHERE department_id = ?;
   `;
-  const values = [content, id];
+  const values = [content, departmentId];
 
   try {
     const [result] = await db.promise().query(query, values);
@@ -34,4 +40,4 @@ export const computerHomeTextUpdate = async (id, content) => {
     console.error("Database update error:", error);
     throw error;
   }
-}; 
+};

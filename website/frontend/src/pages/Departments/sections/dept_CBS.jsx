@@ -11,7 +11,7 @@ const CommitteesBoardOfStudy = ({ departmentName }) => {
     "Basic Science and Humanities": 3,
     "Electrical Engineering": 4,
     "Mechanical Engineering": 5,
-    "Information Technology": 6,
+    "Computer Science and Engineering (Prev. IT)": 6,
     Home: "general", // For general department home
   };
 
@@ -25,7 +25,7 @@ const CommitteesBoardOfStudy = ({ departmentName }) => {
     try {
       const departmentSlug = departmentId[departmentName];
       const response = await axios.get(
-        `http://localhost:3663/api/dept/committees/${departmentSlug}`
+        `http://localhost:3663/api/department/committees/${departmentSlug}`
       );
       console.log(`Fetched ${departmentName} Department File:`, response.data);
 
@@ -57,7 +57,7 @@ const CommitteesBoardOfStudy = ({ departmentName }) => {
         <div>
           <h1>{committee.type}</h1>
           <a
-            href={`http://localhost:3663/uploads/department/${committee.attachment}`}
+            href={`http://localhost:3663/cdn/department/${committee.attachment}`}
             target="_blank"
             rel="noopener noreferrer"
             className="text-blue-500 hover:underline font-medium"

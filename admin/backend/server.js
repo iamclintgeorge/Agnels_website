@@ -3,6 +3,8 @@ import cors from "cors";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import session from "express-session";
+import logger from "./services/logger.js";
+import { v4 as uuidv4 } from "uuid";
 import path from "path";
 import { fileURLToPath } from "url";
 import routes from "./routes/routes.js";
@@ -14,6 +16,7 @@ import profileRoutes from "./routes/website/profileRoutes.js";
 import studentcornerRoutes from "./routes/website/studentcorner/studentcornerRoutes.js";
 import { roleHierarchyController } from "./controllers/website/contentApprovalController.js";
 import facultyStaffRoute from "./routes/website/facultyStaffRoutes.js";
+import researchRoutes from "./routes/website/homepage/research/researchRoutes.js";
 
 // Import new department routes
 import computerRoutes from "./routes/website/department/computerRoutes.js";
@@ -36,7 +39,7 @@ import contentApprovalRoutes from "./routes/website/contentApprovalRoutes.js";
 import activityLogsRoutes from "./routes/admin/activityLogsRoutes.js";
 
 // Import logging middleware
-import adminActivityLogger from "./middlewares/loggingMiddleware.js";
+// import adminActivityLogger from "./middlewares/loggingMiddleware.js";
 
 import iicRoutes from "./routes/website/iicRoutes.js";
 
@@ -87,10 +90,10 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Serve static files from the 'public' folder
-app.use("/uploads", express.static(path.join(__dirname, "public", "uploads")));
+app.use("/cdn", express.static(path.join(__dirname, "public", "cdn")));
 
 // Add admin activity logging middleware (after session, before routes)
-app.use(adminActivityLogger);
+// app.use(adminActivityLogger);
 
 // Integrate IIC routes
 // app.use("/api/iic", iicRoutes);
@@ -103,21 +106,22 @@ app.get("/", (req, res) => {
 app.use("/", routes);
 app.use("/api/nirf", nirfRoutes);
 app.use("/api/nba-naac", nbaNaacRoutes);
-app.use("/api/department", deptHomeRoutes);
-app.use("/api/department", compActivityRoutes);
+app.use("/api/department", deptHomeRoutes); //Working
+app.use("/api/department", compActivityRoutes); //Not in Use But Clint had created this
 app.use("/api/profile", profileRoutes);
 app.use("/api/studentcorner", studentcornerRoutes);
+app.use("/api/department/research", researchRoutes);
 
 // New department routes
-app.use("/api/department/computer", computerRoutes);
-app.use("/api/department/mechanical", mechanicalRoutes);
-app.use("/api/department/electrical", electricalRoutes);
-app.use("/api/department/extc", extcRoutes);
-app.use("/api/department/cse", cseRoutes);
-app.use("/api/department/bsh", bshRoutes);
+app.use("/api/department/home", computerRoutes); //Wprking
+// app.use("/api/department/mechanical", mechanicalRoutes);
+// app.use("/api/department/electrical", electricalRoutes);
+// app.use("/api/department/extc", extcRoutes);
+// app.use("/api/department/cse", cseRoutes);
+// app.use("/api/department/bsh", bshRoutes);
 
 // Department PDF routes (for all departments and sections)
-app.use("/api/department", deptPdfRoutes);
+// app.use("/api/department", deptPdfRoutes);
 
 // HOD desk routes
 app.use("/api/hod-desk", hodDeskRoutes);
@@ -134,8 +138,18 @@ app.use("/api/iic", iicRoutes);
 app.use("/api/faculties", facultyStaffRoute);
 
 // Activity logs routes
-app.use("/api/activity-logs", activityLogsRoutes);
+app.use("/api/logs", activityLogsRoutes);
 
 app.listen(port, () => {
   console.log(`Server Started at URI http://localhost:${port}/`);
+  logger.info("Server started", {
+    id: uuidv4(), // Use a UUID or other method to generate an ID
+    title: `Server started at http://localhost:${port}/`,
+    service: "fcrit backend server",
+    description: "No additional info",
+    level: "INFO",
+    created_by: "system",
+    source_ip: "N/A", // You can fetch the IP dynamically if needed
+    created_on: new Date().toISOString(),
+  });
 });

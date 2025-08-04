@@ -11,6 +11,234 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Global CSS Variables */
+:root {
+  --primary-color: #0c2340;
+  --accent-color: #AE9142;
+  --primary-font: 'Inter', sans-serif;
+  --premium-font: 'Playfair Display', serif;
+  --secondary-font: 'Libre Franklin', sans-serif;
+}
+
+/* Global Font Application */
+* {
+  font-family: var(--primary-font);
+}
+
+body {
+  font-family: var(--primary-font);
+  line-height: 1.6;
+}
+
+/* Premium Font Class for Special Occasions */
+.font-premium {
+  font-family: var(--premium-font);
+}
+
+/* Global Button Styling */
+button, .btn {
+  font-family: var(--primary-font);
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+/* Primary Button Styling */
+.btn-primary,
+button[type="submit"],
+button[type="button"]:not(.btn-secondary):not(.btn-outline),
+.bg-blue-500, /* Targeting existing Tailwind classes for conversion */
+.bg-green-500,
+.bg-gray-500 {
+  background-color: var(--primary-color) !important;
+  color: white !important;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.btn-primary:hover,
+button[type="submit"]:hover,
+button[type="button"]:not(.btn-secondary):not(.btn-outline):hover,
+.bg-blue-500:hover,
+.bg-green-500:hover,
+.bg-gray-500:hover {
+  background-color: #081a2e !important; /* Darker shade for hover */
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(12, 35, 64, 0.3);
+}
+
+/* Accent Button (use sparingly) */
+.btn-accent {
+  background-color: var(--accent-color) !important;
+  color: white !important;
+  border: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.btn-accent:hover {
+  background-color: #9a7f38 !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(174, 145, 66, 0.3);
+}
+
+/* Outline Button */
+.btn-outline {
+  background-color: transparent !important;
+  color: var(--primary-color) !important;
+  border: 2px solid var(--primary-color);
+  border-radius: 6px;
+  padding: 8px 16px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.btn-outline:hover {
+  background-color: var(--primary-color) !important;
+  color: white !important;
+}
+
+/* Text Color Utilities */
+.text-primary {
+  color: var(--primary-color) !important;
+}
+
+.text-accent {
+  color: var(--accent-color) !important;
+}
+
+/* Headings with Premium Font (for special occasions) */
+.heading-premium {
+  font-family: var(--premium-font);
+  font-weight: 600;
+  color: var(--primary-color);
+}
+
+/* Links */
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: var(--accent-color);
+}
+
+/* Form Elements */
+input, textarea, select {
+  font-family: var(--primary-font);
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  padding: 8px 12px;
+  transition: border-color 0.3s ease;
+}
+
+input:focus, textarea:focus, select:focus {
+  border-color: var(--primary-color);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(12, 35, 64, 0.1);
+}
+
+/* Navigation Elements */
+nav, .nav {
+  font-family: var(--primary-font);
+}
+
+/* Table Elements */
+table {
+  font-family: var(--primary-font);
+}
+
+/* Card Elements */
+.card {
+  font-family: var(--primary-font);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+.card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Navbar/Header Specific Overrides - Preserve Original Styling */
+header * {
+  /* Reset global font override for header elements */
+  font-family: inherit !important;
+}
+
+/* Preserve original navbar button styling - prevent global button styles from applying */
+header button {
+  background-color: inherit !important;
+  color: inherit !important;
+  border: inherit !important;
+  border-radius: inherit !important;
+  padding: inherit !important;
+  font-weight: inherit !important;
+  font-family: inherit !important;
+}
+
+header button:hover {
+  background-color: inherit !important;
+  color: inherit !important;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+/* Preserve original navbar link styling */
+header a {
+  color: inherit !important;
+  font-family: inherit !important;
+}
+
+header a:hover {
+  color: inherit !important;
+}
+
+/* Specific font classes in header should work as originally intended */
+header .font-inter {
+  font-family: "Inter", sans-serif !important;
+}
+
+header .font-playfair {
+  font-family: "Playfair Display", serif !important;
+}
+
+/* Preserve original navigation styling */
+header nav {
+  font-family: inherit !important;
+}
+
+header nav ul {
+  font-family: inherit !important;
+}
+
+header nav li {
+  font-family: inherit !important;
+}
+
+/* Preserve original input/form styling in header */
+header input,
+header textarea,
+header select {
+  border: inherit !important;
+  border-radius: inherit !important;
+  padding: inherit !important;
+  font-family: inherit !important;
+}
+
+header input:focus,
+header textarea:focus,
+header select:focus {
+  border-color: inherit !important;
+  box-shadow: none !important;
+}
+
 .marquee-container {
   position: relative;
   width: 100%;

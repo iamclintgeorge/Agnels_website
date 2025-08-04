@@ -1,17 +1,6 @@
-// import { principalTextDisplay } from "../../models/website/aboutusModel.js";
-
-// export const principalDisplayController = async (req, res) => {
-//   try {
-//     const text = await principalTextDisplay();
-//     res.json(text);
-//   } catch (error) {
-//     console.error("Fetch error:", error);
-//     res.status(500).json({ message: "Error fetching Principal's Desk Text" });
-//   }
-// };
-
 import {
   principalTextDisplay,
+  principalTextUpdate,
   getAboutUsSection,
   upsertAboutUsSection,
   getAllAboutUsSections,
@@ -23,6 +12,19 @@ export const principalDisplayController = async (req, res) => {
     res.json(result);
   } catch (error) {
     console.error("Error in principalDisplayController:", error);
+    res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+export const principalUpdateController = async (req, res) => {
+  const { id } = req.params;
+  const { content } = req.body;
+  console.log("principalUpdateController", content);
+  const result = await principalTextUpdate(id, content);
+  res.status(200).json(result);
+  try {
+  } catch (error) {
+    console.log(error);
     res.status(500).json({ error: "Internal server error" });
   }
 };

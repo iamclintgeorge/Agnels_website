@@ -5,7 +5,7 @@ export const TP_Home = () => {
   return (
     <div className="p-8 bg-white min-h-screen font-sans text-gray-900">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-4xl font-semibold text-center text-black mb-6">
+        <h1 className="text-4xl font-semibold text-center text-black mb-6 heading-premium">
           Training and Placement Cell
         </h1>
 
@@ -21,7 +21,7 @@ export const TP_Home = () => {
         </p>
 
         <div className="mt-8">
-          <button className="px-6 py-3 bg-indigo-600 text-white font-semibold rounded-lg shadow-lg hover:bg-indigo-700 transition-colors duration-300">
+          <button className="btn-primary px-6 py-3 font-semibold rounded-lg shadow-lg">
             Learn More
           </button>
         </div>
@@ -34,13 +34,13 @@ export const TP_Home = () => {
 export const VisionandMission = () => {
   return (
     <div id="vm" className="p-4 bg-white shadow rounded-lg mt-4">
-      <h2 className="text-2xl font-semibold">Vision</h2>
+      <h2 className="text-2xl font-semibold heading-premium">Vision</h2>
       <hr className="text-xl border-t-2 border-blue-500 mt-2" />
       <p className="mt-2 text-xl">
         To provide quality placement to all eligible students.
       </p>
 
-      <h2 className="text-2xl font-semibold mt-6">Mission</h2>
+      <h2 className="text-2xl font-semibold mt-6 heading-premium">Mission</h2>
       <hr className="border-t-2 border-blue-500 mt-2" />
       <ol className="text-xl mt-2 list-decimal pl-6">
         <li>

@@ -92,9 +92,10 @@ export const getPendingApprovals = async (req, res) => {
     // Get all pending requests from these slaves
     const [requests] = await db
       .promise()
-      .query(`SELECT * FROM approval_requests WHERE req_roleID IN (?)`, [
-        slaveIds,
-      ]);
+      .query(
+        `SELECT * FROM approval_requests WHERE req_roleID IN (?) ORDER BY id DESC`,
+        [slaveIds]
+      );
     res.json({
       success: true,
       requests,
@@ -226,13 +227,13 @@ export const rejectRequest = async (req, res) => {
       });
     }
 
-    // Attempt to delete the file from /uploads/pending if it exists
+    // Attempt to delete the file from /cdn/pending if it exists
     try {
       const { imageFilename } = JSON.parse(
         requestData.proposed_content || "{}"
       );
       if (imageFilename) {
-        const pendingPath = path.join("public/uploads/pending", imageFilename);
+        const pendingPath = path.join("public/cdn/pending", imageFilename);
         if (fs.existsSync(pendingPath)) {
           fs.unlinkSync(pendingPath);
         }

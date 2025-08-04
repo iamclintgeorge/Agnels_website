@@ -5,18 +5,10 @@ const StaticPages = (props) => {
   const [activeTab, setActiveTab] = useState(props.sidebar[0]);
   const navigate = useNavigate();
 
-  // const handleTabClick = (tab) => {
-  //   setActiveTab(tab);
-
-  //   if (tab === "Examinations") {
-  //     navigate("/examinations-page");
-  //   }
-  // };
-
   const handleTabClick = (tab) => {
     setActiveTab(tab);
     if (props.onTabClick) {
-      props.onTabClick(tab); // Call the function passed from Departments.jsx
+      props.onTabClick(tab);
     }
   };
 

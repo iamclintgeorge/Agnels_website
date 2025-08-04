@@ -10,7 +10,7 @@ const HeadOfDepartment = ({ departmentName }) => {
     "Mechanical Engineering": "mechanical",
     "Electronics and Telecommunication Engineering": "extc",
     "Electrical Engineering": "electrical",
-    "Information Technology": "it",
+    "Computer Science and Engineering (Prev. IT)": "it",
     "Basic Science and Humanities": "bsh",
   };
 
@@ -44,7 +44,7 @@ const HeadOfDepartment = ({ departmentName }) => {
       {message && <p className="error-message">{message}</p>}
       {/* Show error message if any */}
       <div
-        className="department-content"
+        className="department-content font-librefranklin"
         dangerouslySetInnerHTML={{ __html: content }} // Display the fetched content
       />
     </div>
