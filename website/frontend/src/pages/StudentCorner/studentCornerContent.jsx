@@ -452,117 +452,139 @@ export const NSS = () => {
 export const StudentClubs = () => {
   return (
     <>
-      <h2 className="text-3xl font-extrabold text-black mb-8 text-center heading-premium">
+      <h2 className="text-3xl font-semibold mb-8 text-center heading-premium">
         Student Clubs
       </h2>
 
-      <div className="space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {/* Agnel Robotics Club */}
-        <div className="flex items-center justify-between p-4 bg-gray-100 rounded-lg shadow-md hover:bg-gray-200 transition-all">
-          <div className="flex items-center space-x-4">
+        <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
+          <div className="flex items-center mb-4">
             <img
               src="src/assets/imgs/agnels-robotic-club.png"
               alt="Agnel Robotics Club Logo"
-              className="w-16 h-16 rounded-full"
+              className="w-12 h-12 mr-4 rounded-full"
             />
-            <p className="text-lg font-medium">Agnel Robotics Club</p>
+            <p className="font-medium text-lg">Agnel Robotics Club</p>
           </div>
-          <button className="btn-primary px-6 py-2 rounded-lg shadow-lg">
-            Read More
-          </button>
+          <p className="text-sm text-gray-600 mb-4">
+            Promotes hands-on learning and innovation in robotics.
+          </p>
+          <div className="mt-auto">
+            <button className="btn-primary w-full px-4 py-2 rounded">Read More</button>
+          </div>
         </div>
 
         {/* Agnel Sports Club */}
-        <div className="flex items-center justify-between p-4 bg-gray-100 rounded-lg shadow-md hover:bg-gray-200 transition-all">
-          <div className="flex items-center space-x-4">
+        <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
+          <div className="flex items-center mb-4">
             <img
               src="src/assets/imgs/sports-club.jpeg"
               alt="Agnel Sports Club Logo"
-              className="w-16 h-16 rounded-full"
+              className="w-12 h-12 mr-4 rounded-full"
             />
-            <p className="text-lg font-medium">Agnel Sports Club</p>
+            <p className="font-medium text-lg">Agnel Sports Club</p>
           </div>
-          <button className="btn-primary px-6 py-2 rounded-lg shadow-lg">
-            Read More
-          </button>
+          <p className="text-sm text-gray-600 mb-4">
+            Encouraging fitness and teamwork through sports.
+          </p>
+          <div className="mt-auto">
+            <button className="btn-primary w-full px-4 py-2 rounded">Read More</button>
+          </div>
         </div>
 
         {/* Drama Club */}
-        <div className="flex items-center justify-between p-4 bg-gray-100 rounded-lg shadow-md hover:bg-gray-200 transition-all">
-          <div className="flex items-center space-x-4">
+        <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
+          <div className="flex items-center mb-4">
             <img
               src="src/assets/imgs/drama-club.jpeg"
               alt="Drama Club Logo"
-              className="w-16 h-16 rounded-full"
+              className="w-12 h-12 mr-4 rounded-full"
             />
-            <p className="text-lg font-medium">Drama Club</p>
+            <p className="font-medium text-lg">Drama Club</p>
           </div>
-          <button className="btn-primary px-6 py-2 rounded-lg shadow-lg">
-            Read More
-          </button>
+          <p className="text-sm text-gray-600 mb-4">
+            Platform for students passionate about theatre and performing arts.
+          </p>
+          <div className="mt-auto">
+            <button className="btn-primary w-full px-4 py-2 rounded">Read More</button>
+          </div>
         </div>
 
         {/* AI and Deep Learning Club */}
-        <div className="flex items-center justify-between p-4 bg-gray-100 rounded-lg shadow-md hover:bg-gray-200 transition-all">
-          <div className="flex items-center space-x-4">
+        <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
+          <div className="flex items-center mb-4">
             <img
               src="src/assets/imgs/artificial-intelligence-and-deep-learning-club.jpeg"
               alt="AI and Deep Learning Club Logo"
-              className="w-16 h-16 rounded-full"
+              className="w-12 h-12 mr-4 rounded-full"
             />
-            <p className="text-lg font-medium">AI and Deep Learning Club</p>
+            <p className="font-medium text-lg">AI & DL Club</p>
           </div>
-          <button className="btn-primary px-6 py-2 rounded-lg shadow-lg">
-            Read More
-          </button>
+          <p className="text-sm text-gray-600 mb-4">
+            Exploring cutting-edge AI technologies and real-world applications.
+          </p>
+          <div className="mt-auto">
+            <button className="btn-primary w-full px-4 py-2 rounded">Read More</button>
+          </div>
         </div>
 
         {/* Music Club */}
-        <div className="flex items-center justify-between p-4 bg-gray-100 rounded-lg shadow-md hover:bg-gray-200 transition-all">
-          <div className="flex items-center space-x-4">
+        <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
+          <div className="flex items-center mb-4">
             <img
               src="src/assets/imgs/music-club.jpeg"
               alt="Music Club Logo"
-              className="w-16 h-16 rounded-full"
+              className="w-12 h-12 mr-4 rounded-full"
             />
-            <p className="text-lg font-medium">Music Club</p>
+            <p className="font-medium text-lg">Music Club</p>
           </div>
-          <button className="btn-primary px-6 py-2 rounded-lg shadow-lg">
-            Read More
-          </button>
+          <p className="text-sm text-gray-600 mb-4">
+            A community for students to express themselves musically.
+          </p>
+          <div className="mt-auto">
+            <button className="btn-primary w-full px-4 py-2 rounded">Read More</button>
+          </div>
         </div>
 
         {/* College Magazine */}
-        <div className="flex items-center justify-between p-4 bg-gray-100 rounded-lg shadow-md hover:bg-gray-200 transition-all">
-          <div className="flex items-center space-x-4">
+        <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
+          <div className="flex items-center mb-4">
             <img
               src="src/assets/imgs/college-magazine.jpeg"
               alt="College Magazine Logo"
-              className="w-16 h-16 rounded-full"
+              className="w-12 h-12 mr-4 rounded-full"
             />
-            <p className="text-lg font-medium">College Magazine</p>
+            <p className="font-medium text-lg">College Magazine</p>
           </div>
-          <button className="btn-primary px-6 py-2 rounded-lg shadow-lg">
-            Read More
-          </button>
+          <p className="text-sm text-gray-600 mb-4">
+            Curating creativity through student-led publishing.
+          </p>
+          <div className="mt-auto">
+            <button className="btn-primary w-full px-4 py-2 rounded">Read More</button>
+          </div>
         </div>
 
         {/* Coders' Club */}
-        <div className="flex items-center justify-between p-4 bg-gray-100 rounded-lg shadow-md hover:bg-gray-200 transition-all">
-          <div className="flex items-center space-x-4">
+        <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
+          <div className="flex items-center mb-4">
             <img
               src="src/assets/imgs/coders-club.jpeg"
               alt="Coders' Club Logo"
-              className="w-16 h-16 rounded-full"
+              className="w-12 h-12 mr-4 rounded-full"
             />
-            <p className="text-lg font-medium">Coders' Club</p>
+            <p className="font-medium text-lg">Coders' Club</p>
           </div>
-          <button className="btn-primary px-6 py-2 rounded-lg shadow-lg">
-            Read More
-          </button>
+          <p className="text-sm text-gray-600 mb-4">
+            For programmers and tech enthusiasts to build and compete.
+          </p>
+          <div className="mt-auto">
+            <button className="btn-primary w-full px-4 py-2 rounded">Read More</button>
+          </div>
         </div>
       </div>
     </>
+
   );
 };
 
@@ -793,7 +815,32 @@ export const AntiRagging = () => {
 export const Survey = () => {
   return (
     <>
-      <p className="text-2xl font-bold mb-4">No content yet</p>
+      <div className="main-container" style={{ paddingBottom: 5 }}>
+        {/*  Main-container start */}
+        <div className="container ">
+          <div
+            className="row sponsorship-detail"
+            style={{ padding: "0 10px", height: "50px" }}
+          >
+            <object
+              className="displaypdf"
+              data="https://fcrit.ac.in/static_pdfs/feedback/SSS_23_24.pdf"
+              type="application/pdf"
+              width="100%"
+              height="600px"
+            >
+              <p>
+                <b>Error:</b>: This browser does not support PDFs. Please download the
+                PDF to view it:{" "}
+                <a href="https://fcrit.ac.in/static_pdfs/feedback/SSS_23_24.pdf">
+                  Download PDF
+                </a>
+                .
+              </p>
+            </object>
+          </div>
+        </div>
+      </div>
     </>
   );
 };
