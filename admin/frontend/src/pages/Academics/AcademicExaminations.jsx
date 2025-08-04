@@ -455,120 +455,66 @@ const AcademicExaminations = () => {
     setEditingId(item.id);
     setIsAdding(true);
   };
-  const handleSave = async () => {
-  try {
-    let body;
-    let headers = {};
-    const isFileUpload =
-      activeTab === 'timetables' ||
-      activeTab === 'slides' ||
-      activeTab === 'forms' ||
-      activeTab === 'archives';
 
-    if (isFileUpload) {
-      body = new FormData();
-      Object.keys(formData).forEach(key => {
-        if (key !== 'pdf' && key !== 'image' && formData[key] !== null && formData[key] !== undefined) {
-          body.append(key, formData[key]);
+  const handleSave = async () => {
+    try {
+      let body;
+      let headers = {};
+      const isFileUpload =
+        activeTab === 'timetables' ||
+        activeTab === 'slides' ||
+        activeTab === 'forms' ||
+        activeTab === 'archives';
+
+      if (isFileUpload) {
+        body = new FormData();
+        Object.keys(formData).forEach(key => {
+          if (key !== 'pdf' && key !== 'image' && formData[key] !== null && formData[key] !== undefined) {
+            body.append(key, formData[key]);
+          }
+        });
+
+        if (activeTab === 'timetables' && formData.pdf) {
+          body.append('pdf', formData.pdf);
+        } else if (activeTab === 'slides' && formData.image) {
+          body.append('pdf', formData.image);
+        } else if ((activeTab === 'forms' || activeTab === 'archives') && formData.pdf) {
+          body.append('pdf', formData.pdf);
         }
+      } else {
+        body = JSON.stringify(formData);
+        headers['Content-Type'] = 'application/json';
+      }
+
+      const endpoints = {
+        timetables: editingId ? `examinations/${editingId}` : 'examinations-create',
+        slides: editingId ? `examination-slides/${editingId}` : 'examination-slides-create',
+        notifications: editingId ? `examination-notifications/${editingId}` : 'examination-notifications-create',
+        forms: editingId ? `examination-forms/${editingId}` : 'examination-forms-create',
+        archives: editingId ? `examination-archives/${editingId}` : 'examination-archives-create',
+      };
+
+      const url = `http://localhost:3663/api/academic/${endpoints[activeTab]}`;
+      const method = editingId ? 'PUT' : 'POST';
+
+      const response = await fetch(url, {
+        method,
+        headers,
+        body,
       });
 
-      if (activeTab === 'timetables' && formData.pdf) {
-        body.append('timetable_pdf', formData.pdf);
-      } else if (activeTab === 'slides' && formData.image) {
-        body.append('pdf', formData.image);
-      } else if ((activeTab === 'forms' || activeTab === 'archives') && formData.pdf) {
-        body.append('pdf', formData.pdf);
+      if (response.ok) {
+        fetchExaminations();
+        handleCancel();
+      } else {
+        const errorData = await response.json();
+        setError(errorData.message || 'Failed to save');
       }
-    } else {
-      body = JSON.stringify(formData);
-      headers['Content-Type'] = 'application/json';
+    } catch (error) {
+      console.error('Error saving:', error);
+      setError('Failed to save data');
     }
-
-    const endpoints = {
-      timetables: editingId ? `examinations/${editingId}` : 'examinations-create',
-      slides: editingId ? `examination-slides/${editingId}` : 'examination-slides-create',
-      notifications: editingId ? `examination-notifications/${editingId}` : 'examination-notifications-create',
-      forms: editingId ? `examination-forms/${editingId}` : 'examination-forms-create',
-      archives: editingId ? `examination-archives/${editingId}` : 'examination-archives-create',
-    };
-
-    const url = `http://localhost:3663/api/academic/${endpoints[activeTab]}`;
-    const method = editingId ? 'PUT' : 'POST';
-
-    const response = await fetch(url, {
-      method,
-      headers,
-      body,
-    });
-
-    if (response.ok) {
-      fetchExaminations();
-      handleCancel();
-    } else {
-      const errorData = await response.json();
-      setError(errorData.message || 'Failed to save');
-    }
-  } catch (error) {
-    console.error('Error saving:', error);
-    setError('Failed to save data');
-  }
-};
-
-
-  // const handleSave = async () => {
-  //   try {
-  //     const formDataToSend = new FormData();
-      
-  //     Object.keys(formData).forEach(key => {
-  //       if (key !== 'pdf' && key !== 'image' && formData[key] !== null && formData[key] !== undefined) {
-  //         formDataToSend.append(key, formData[key]);
-  //       }
-  //     });
-
-  //     // Handle different file field names based on activeTab
-  //     if (activeTab === 'timetables') {
-  //       if (formData.pdf) {
-  //         formDataToSend.append('timetable_pdf', formData.pdf);
-  //       }
-  //     } else if (activeTab === 'slides') {
-  //       if (formData.image) {
-  //         formDataToSend.append('pdf', formData.image);
-  //       }
-  //     } else if (activeTab === 'forms' || activeTab === 'archives') {
-  //       if (formData.pdf) {
-  //         formDataToSend.append('pdf', formData.pdf);
-  //       }
-  //     }
-
-  //     const endpoints = {
-  //       timetables: editingId ? `examinations/${editingId}` : 'examinations-create',
-  //       slides: editingId ? `examination-slides/${editingId}` : 'examination-slides-create',
-  //       notifications: editingId ? `examination-notifications/${editingId}` : 'examination-notifications-create',
-  //       forms: editingId ? `examination-forms/${editingId}` : 'examination-forms-create',
-  //       archives: editingId ? `examination-archives/${editingId}` : 'examination-archives-create'
-  //     };
-
-  //     const url = `http://localhost:3663/api/academic/${endpoints[activeTab]}`;
-  //     const method = editingId ? 'PUT' : 'POST';
-
-  //     const response = await fetch(url, {
-  //       method,
-  //       body: formDataToSend
-  //     });
-
-  //     if (response.ok) {
-  //       fetchExaminations();
-  //       handleCancel();
-  //     } else {
-  //       const errorData = await response.json();
-  //       setError(errorData.message || 'Failed to save');
-  //     }
-  //   } catch (error) {
-  //     console.error('Error saving:', error);
-  //     setError('Failed to save data');
-  //   }
-  // };
+  };
 
   const handleDelete = async (id) => {
     if (window.confirm('Are you sure you want to delete this item?')) {
@@ -930,152 +876,76 @@ const AcademicExaminations = () => {
         </table>
       );
     }
-    return (
-  <table className="w-full table-auto">
-    <thead className="bg-gray-50">
-      <tr>
-        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-          {activeTab === 'slides' ? 'Title' : activeTab === 'notifications' ? 'Title' : activeTab === 'forms' ? 'Name' : 'Title'}
-        </th>
-        {activeTab === 'slides' && <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Order</th>}
-        {activeTab === 'archives' && <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Year</th>}
-        {activeTab === 'notifications' && <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>}
-        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Descriptions</th>
-        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
-      </tr>
-    </thead>
-    <tbody className="bg-white divide-y divide-gray-200">
-      {currentData.map((item, index) => (
-        <tr key={item.id || index} className="hover:bg-gray-50">
-          <td className="px-6 py-4">{item.title || item.name}</td>
-          {activeTab === 'slides' && <td className="px-6 py-4">{item.display_order}</td>}
-          {activeTab === 'archives' && <td className="px-6 py-4">{item.year}</td>}
-          {activeTab === 'notifications' && (
-            <td className="px-6 py-4">
-              {(item.isNew || item.is_new) ?
-                 <span className="bg-red-500 text-white px-2 py-1 text-xs rounded">NEW</span> :
-                 <span className="text-gray-500">Read</span>
-              }
-            </td>
-          )}
-          <td className="px-6 py-4">
-            {activeTab === 'slides' && item.image && (
-              <a href={`http://localhost:3663/${item.image}`} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-900 flex items-center">
-                <FaImage className="mr-1" /> View Image
-              </a>
-            )}
-            {(activeTab === 'forms' || activeTab === 'archives') && item.link && (
-              <a href={`http://localhost:3663${item.link}`} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-900 flex items-center">
-                <FaFilePdf className="mr-1" /> View PDF
-              </a>
-            )}
-            {activeTab === 'notifications' && (
-              <span className="text-gray-700">
-                {item.description || "No description"}
-              </span>
-            )}
-          </td>
-          <td className="px-6 py-4">
-            <div className="flex space-x-2">
-              <button
-                 onClick={() => handleEdit(item)}
-                 className="text-blue-600 hover:text-blue-900 p-1"
-                title="Edit"
-              >
-                <FaEdit />
-              </button>
-              <button
-                 onClick={() => handleDelete(item.id)}
-                 className="text-red-600 hover:text-red-900 p-1"
-                title="Delete"
-              >
-                <FaTrash />
-              </button>
-            </div>
-          </td>
-        </tr>
-      ))}
-    </tbody>
-  </table>
-);
 
     // Render tables for other sections
-//     return (
-//       <table className="w-full table-auto">
-//         <thead className="bg-gray-50">
-//           <tr>
-//             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
-//               {activeTab === 'slides' ? 'Title' : activeTab === 'notifications' ? 'Title' : activeTab === 'forms' ? 'Name' : 'Title'}
-//             </th>
-//             {activeTab === 'slides' && <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Order</th>}
-//             {activeTab === 'archives' && <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Year</th>}
-//             {activeTab === 'notifications' && <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>}
-//             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Descriptions</th>
-//             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
-//           </tr>
-//         </thead>
-//         <tbody className="bg-white divide-y divide-gray-200">
-//           {currentData.map((item, index) => (
-//             <tr key={item.id || index} className="hover:bg-gray-50">
-//               <td className="px-6 py-4">{item.title || item.name}</td>
-//               {activeTab === 'slides' && <td className="px-6 py-4">{item.display_order}</td>}
-//               {activeTab === 'archives' && <td className="px-6 py-4">{item.year}</td>}
-//               {activeTab === 'notifications' && (
-//                 <td className="px-6 py-4">
-//                   {(item.isNew || item.is_new) ? 
-//                     <span className="bg-red-500 text-white px-2 py-1 text-xs rounded">NEW</span> : 
-//                     <span className="text-gray-500">Read</span>
-//                   }
-//                 </td>
-//               )}
-//               <td className="px-6 py-4">
-//                 {activeTab === 'slides' && item.image && (
-//                   <a href={`http://localhost:3663/${item.image}`} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-900 flex items-center">
-//                     <FaImage className="mr-1" /> View Image
-//                   </a>
-//                 )}
-//                 {(activeTab === 'forms' || activeTab === 'archives') && item.link && (
-//                   <a href={`http://localhost:3663${item.link}`} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-900 flex items-center">
-//                     <FaFilePdf className="mr-1" /> View PDF
-//                   </a>
-//                 )}
-//        {activeTab === 'notifications' && (
-//   <span className="text-gray-400">
-//   {data.notifications.map((item) => (
-//       <tr key={item.id}>
-        
-//         <td>{item.description || "No description"}</td> {/* ✅ Show description here */}
-       
-//       </tr>
-//     ))}
-//   </span>
-// )}
-
-
-//               </td>
-//               <td className="px-6 py-4">
-//                 <div className="flex space-x-2">
-//                   <button 
-//                     onClick={() => handleEdit(item)} 
-//                     className="text-blue-600 hover:text-blue-900 p-1"
-//                     title="Edit"
-//                   >
-//                     <FaEdit />
-//                   </button>
-//                   <button 
-//                     onClick={() => handleDelete(item.id)} 
-//                     className="text-red-600 hover:text-red-900 p-1"
-//                     title="Delete"
-//                   >
-//                     <FaTrash />
-//                   </button>
-//                 </div>
-//               </td>
-//             </tr>
-//           ))}
-//         </tbody>
-//       </table>
-//     );
+    return (
+      <table className="w-full table-auto">
+        <thead className="bg-gray-50">
+          <tr>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+              {activeTab === 'slides' ? 'Title' : activeTab === 'notifications' ? 'Title' : activeTab === 'forms' ? 'Name' : 'Title'}
+            </th>
+            {activeTab === 'slides' && <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Order</th>}
+            {activeTab === 'archives' && <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Year</th>}
+            {activeTab === 'notifications' && <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>}
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Descriptions</th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+          </tr>
+        </thead>
+        <tbody className="bg-white divide-y divide-gray-200">
+          {currentData.map((item, index) => (
+            <tr key={item.id || index} className="hover:bg-gray-50">
+              <td className="px-6 py-4">{item.title || item.name}</td>
+              {activeTab === 'slides' && <td className="px-6 py-4">{item.display_order}</td>}
+              {activeTab === 'archives' && <td className="px-6 py-4">{item.year}</td>}
+              {activeTab === 'notifications' && (
+                <td className="px-6 py-4">
+                  {(item.isNew || item.is_new) ?
+                     <span className="bg-red-500 text-white px-2 py-1 text-xs rounded">NEW</span> :
+                     <span className="text-gray-500">Read</span>
+                  }
+                </td>
+              )}
+              <td className="px-6 py-4">
+                {activeTab === 'slides' && item.image && (
+                  <a href={`http://localhost:3663/${item.image}`} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-900 flex items-center">
+                    <FaImage className="mr-1" /> View Image
+                  </a>
+                )}
+                {(activeTab === 'forms' || activeTab === 'archives') && item.link && (
+                  <a href={`http://localhost:3663${item.link}`} target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:text-blue-900 flex items-center">
+                    <FaFilePdf className="mr-1" /> View PDF
+                  </a>
+                )}
+                {activeTab === 'notifications' && (
+                  <span className="text-gray-700">
+                    {item.description || "No description"}
+                  </span>
+                )}
+              </td>
+              <td className="px-6 py-4">
+                <div className="flex space-x-2">
+                  <button
+                     onClick={() => handleEdit(item)}
+                     className="text-blue-600 hover:text-blue-900 p-1"
+                    title="Edit"
+                  >
+                    <FaEdit />
+                  </button>
+                  <button
+                     onClick={() => handleDelete(item.id)}
+                     className="text-red-600 hover:text-red-900 p-1"
+                    title="Delete"
+                  >
+                    <FaTrash />
+                  </button>
+                </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    );
   };
 
   const tabs = [
