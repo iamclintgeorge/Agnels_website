@@ -6,14 +6,15 @@ import {
   AcademicHandbook,
   AcademicHandbookDetails,
   AcademicCalender,
-  APMS,
-  LMS,
+  // APMS,
+  // LMS,
   StakeholderFeedback,
-  Examination,
+  // Examination,
 } from "./academicContent";
-// ✅ Import the Examinations component
+import Examinations from "./Examinations";
+
 const Academics = () => {
-  const navigate = useNavigate(); // ✅ Navigation Hook
+  const navigate = useNavigate();
 
   const sidebar = [
     "Home",
@@ -21,6 +22,7 @@ const Academics = () => {
     "Academic Handbook for Honours and Minors",
     "Academic Calendar",
     "Examinations",
+    "Fee Approval Proposal for Academic Year 2025-26",
     "APMS",
     "LMS",
     "Stakeholder Feedback on Syllabus",
@@ -31,15 +33,21 @@ const Academics = () => {
     "Academic Handbook": <AcademicHandbook />,
     "Academic Handbook for Honours and Minors": <AcademicHandbookDetails />,
     "Academic Calendar": <AcademicCalender />,
-    Examinations: <Examination />, // ✅ Correctly references the Examinations component
-    APMS: <APMS />,
-    LMS: <LMS />,
     "Stakeholder Feedback on Syllabus": <StakeholderFeedback />,
   };
 
-  const handleSidebarClick = (item) => {
-    if (item === "Examinations") {
-      navigate("/examinations-page"); // ✅ Correctly redirects to a new page
+  const handleTabClick = (tab) => {
+    if (tab === "Examinations") {
+      navigate("/examinations-page"); // Navigate to examinations page
+    } else if (tab === "APMS") {
+      window.open("https://apms.fcrit.ac.in/apms/index.php", "_blank");
+    } else if (tab === "LMS") {
+      window.open("http://lms.fcrit.ac.in/moodle/", "_blank");
+    } else if (tab === "Fee Approval Proposal for Academic Year 2025-26") {
+      window.open(
+        "https://fcrit.ac.in/static_pdfs/FeeApproval2025-26.pdf",
+        "_blank"
+      );
     }
   };
 
@@ -50,7 +58,7 @@ const Academics = () => {
         path={"Home / Academics"}
         sidebar={sidebar}
         content={content}
-        onSidebarClick={handleSidebarClick} // ✅ Pass function to handle sidebar clicks
+        onTabClick={handleTabClick}
       />
     </div>
   );

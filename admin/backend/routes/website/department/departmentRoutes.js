@@ -1,7 +1,10 @@
 import express from "express";
 import DepartmentController from "../../../controllers/website/departmentController.js";
 import { upload } from "../../../models/website/departmentModel.js";
-import { authMiddleware, checkPermission, } from "../../../middlewares/authMiddleware.js";
+import {
+  authMiddleware,
+  checkPermission,
+} from "../../../middlewares/authMiddleware.js";
 // import { checkPermission } from '../../../utils/permissions.js';
 
 const router = express.Router();
@@ -21,6 +24,49 @@ router.delete(
   authMiddleware,
   checkPermission("department_management"),
   DepartmentController.deleteDeptText
+);
+
+// Dept_Vision and Mission Routes
+router.put(
+  "/vision/:id",
+  authMiddleware,
+  checkPermission("department_management"),
+  DepartmentController.updateDeptVisionText
+);
+
+router.put(
+  "/mission/:id",
+  authMiddleware,
+  checkPermission("department_management"),
+  DepartmentController.updateDeptMissionText
+);
+
+router.put(
+  "/objectives/:id",
+  authMiddleware,
+  checkPermission("department_management"),
+  DepartmentController.updateDeptObjectivesText
+);
+
+router.put(
+  "/outcomes/:id",
+  authMiddleware,
+  checkPermission("department_management"),
+  DepartmentController.updateDeptOutcomesText
+);
+
+router.get("/vision/:departmentId", DepartmentController.getDeptVisionText);
+
+router.get("/mission/:departmentId", DepartmentController.getDeptVisionText);
+
+router.get(
+  "/objectives/:departmentId",
+  DepartmentController.getDeptObjectiveText
+);
+
+router.get(
+  "/outcomes/:departmentId",
+  DepartmentController.getDeptObjectiveText
 );
 
 // DEPT_COMMITTEES ROUTES
@@ -289,14 +335,13 @@ router.delete(
   DepartmentController.deleteMiniProject
 );
 
-// UTILITY ROUTES
-router.get("/data/:departmentId", DepartmentController.getAllDepartmentData);
+// Infrastructure Routes
+router.get("/infrastructure/:departmentId", DepartmentController.getInfra);
 
-router.get(
-  "/statistics/:departmentId?",
-  authMiddleware,
-  checkPermission("department_management"),
-  DepartmentController.getDepartmentStatistics
-);
+// Syllabus Routes
+router.get("/syllabus/:departmentId", DepartmentController.getSyllabus);
+
+// Innovative Teaching Method Routes
+router.get("/innovative/:departmentId", DepartmentController.getITM);
 
 export default router;

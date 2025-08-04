@@ -10,45 +10,23 @@ import path from "path";
 import db from "../../config/db.js";
 import fs from "fs";
 
-// export const carouselUploadController = async (req, res) => {
-//   try {
-//     const { altText } = req.body;
-//     const image = req.file;
-
-//     if (!image) {
-//       return res.status(400).json({ message: "No image uploaded" });
-//     }
-
-//     const imageUrl = `/uploads/${image.filename}`;
-//     await carouselUpload(altText, imageUrl);
-
-//     res.json({
-//       message: "Upload successful",
-//       imageUrl: imageUrl,
-//       altText: altText,
-//     });
-//   } catch (error) {
-//     console.error("Upload error:", error);
-//     res.status(500).json({ message: "Error uploading image" });
-//   }
-// };
-
 export const carouselUploadController = async (req, res) => {
   try {
+    const section = req.params.section;
     const { content } = req.body;
     const parsed = JSON.parse(content);
     const { altText, imageFilename } = parsed;
 
-    const pendingPath = path.join("public/uploads/pending", imageFilename);
-    const finalPath = path.join("public/uploads", imageFilename);
+    const pendingPath = path.join("public/cdn/pending", imageFilename);
+    const finalPath = path.join("public/cdn", imageFilename);
 
     // Move image if it exists
     if (fs.existsSync(pendingPath)) {
       fs.renameSync(pendingPath, finalPath);
     }
 
-    const imageUrl = `/uploads/${imageFilename}`;
-    await carouselUpload(altText, imageUrl);
+    const imageUrl = `/cdn/${imageFilename}`;
+    await carouselUpload(altText, imageUrl, section);
 
     res.json({
       message: "Upload successful",
@@ -62,8 +40,9 @@ export const carouselUploadController = async (req, res) => {
 };
 
 export const carouselDisplayController = async (req, res) => {
+  const section = req.params.section;
   try {
-    const images = await carouselDisplay();
+    const images = await carouselDisplay(section);
     res.json(images);
   } catch (error) {
     console.error("Display error:", error);
@@ -82,6 +61,7 @@ export const carouselDeleteController = async (req, res) => {
 
     // Delete the file synchronously
     const filePath = path.join(process.cwd(), "public", image.imageUrl);
+    console.log(filePath);
     try {
       if (fs.existsSync(filePath)) {
         fs.unlinkSync(filePath);

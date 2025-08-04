@@ -20,7 +20,7 @@ import {
   stakeholderFeedbackFetchController,
   stakeholderFeedbackEditController,
   stakeholderFeedbackDeleteController,
-    academicHomeCreateController,
+  academicHomeCreateController,
   academicHomeFetchController,
   academicHomeEditController,
   academicHomeDeleteController,
@@ -29,7 +29,7 @@ import {
   academicHomeSectionDeleteController,
   academicHomeAdminCardCreateController,
   academicHomeAdminCardEditController,
-  academicHomeAdminCardDeleteController
+  academicHomeAdminCardDeleteController,
 } from "../../../controllers/website/academicsController.js";
 
 import multer from "multer";
@@ -38,7 +38,7 @@ import path from "path";
 // Configure multer for PDF uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "public/uploads"); // Folder to save PDFs
+    cb(null, "public/cdn"); // Folder to save PDFs
   },
   filename: (req, file, cb) => {
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
@@ -51,7 +51,7 @@ const fileFilter = (req, file, cb) => {
     "application/pdf",
     "image/jpeg",
     "image/png",
-    "image/jpg"
+    "image/jpg",
   ];
 
   if (allowedMimeTypes.includes(file.mimetype)) {
@@ -60,7 +60,6 @@ const fileFilter = (req, file, cb) => {
     cb(new Error("Only PDF, JPG, and PNG files are allowed"), false);
   }
 };
-
 
 const upload = multer({
   storage: storage,
@@ -71,15 +70,15 @@ const upload = multer({
 // Middleware to handle optional file uploads
 const optionalFileUpload = (req, res, next) => {
   // Check if request has file data
-  const contentType = req.get('Content-Type');
-  
-  if (contentType && contentType.includes('multipart/form-data')) {
+  const contentType = req.get("Content-Type");
+
+  if (contentType && contentType.includes("multipart/form-data")) {
     // Handle file upload
     upload.single("pdf")(req, res, (err) => {
       if (err) {
-        return res.status(400).json({ 
-          success: false, 
-          message: err.message 
+        return res.status(400).json({
+          success: false,
+          message: err.message,
         });
       }
       next();
@@ -90,22 +89,22 @@ const optionalFileUpload = (req, res, next) => {
   }
 };
 const examinationFileUpload = (req, res, next) => {
-  const contentType = req.get('Content-Type');
-  
-  if (contentType && contentType.includes('multipart/form-data')) {
+  const contentType = req.get("Content-Type");
+
+  if (contentType && contentType.includes("multipart/form-data")) {
     upload.fields([
-      { name: 'timetable_pdf', maxCount: 1 },
-      { name: 'result_pdf', maxCount: 1 }
+      { name: "timetable_pdf", maxCount: 1 },
+      { name: "result_pdf", maxCount: 1 },
     ])(req, res, (err) => {
       if (err) {
-        console.error('Examination upload error:', err);
+        console.error("Examination upload error:", err);
         return res.status(400).json({
           success: false,
-          message: err.message
+          message: err.message,
         });
       }
-      console.log('Examination upload successful - Body:', req.body);
-      console.log('Examination upload successful - Files:', req.files);
+      console.log("Examination upload successful - Body:", req.body);
+      console.log("Examination upload successful - Files:", req.files);
       next();
     });
   } else {
@@ -138,7 +137,6 @@ const examinationFileUpload = (req, res, next) => {
 // };
 const router = express.Router();
 
-
 // Academic Home Routes
 router.post("/home-create", optionalFileUpload, academicHomeCreateController);
 router.get("/home", academicHomeFetchController);
@@ -155,23 +153,42 @@ router.post("/admin-card-create", academicHomeAdminCardCreateController);
 router.put("/admin-card/:id", academicHomeAdminCardEditController);
 router.put("/delete-admin-card/:id", academicHomeAdminCardDeleteController);
 
-
 // Academic Handbook Routes - Single endpoint with optional file upload
-router.post("/handbooks-create", optionalFileUpload, academicHandbookCreateController);
+router.post(
+  "/handbooks-create",
+  optionalFileUpload,
+  academicHandbookCreateController
+);
 router.get("/handbooks", academicHandbookFetchController);
-router.put("/handbooks/:id", optionalFileUpload, academicHandbookEditController);
+router.put(
+  "/handbooks/:id",
+  optionalFileUpload,
+  academicHandbookEditController
+);
 router.put("/delete-handbooks/:id", academicHandbookDeleteController);
 
 // Academic Calendar Routes - Single endpoint with optional file upload
-router.post("/calendar-create", optionalFileUpload, academicCalendarCreateController);
+router.post(
+  "/calendar-create",
+  optionalFileUpload,
+  academicCalendarCreateController
+);
 router.get("/calendar", academicCalendarFetchController);
 router.put("/calendar/:id", optionalFileUpload, academicCalendarEditController);
 router.put("/delete-calendar/:id", academicCalendarDeleteController);
 
 // Examination Routes
-router.post("/examinations-create",examinationFileUpload, examinationCreateController);
+router.post(
+  "/examinations-create",
+  examinationFileUpload,
+  examinationCreateController
+);
 router.get("/examinations", examinationFetchController);
-router.put("/examinations/:id", examinationFileUpload,examinationEditController);
+router.put(
+  "/examinations/:id",
+  examinationFileUpload,
+  examinationEditController
+);
 router.put("/delete-examinations/:id", examinationDeleteController);
 
 // Academic Links Routes
@@ -181,9 +198,17 @@ router.put("/links/:id", academicLinksEditController);
 router.put("/delete-links/:id", academicLinksDeleteController);
 
 // Stakeholder Feedback Routes - Single endpoint with optional file upload
-router.post("/feedback-create", optionalFileUpload, stakeholderFeedbackCreateController);
+router.post(
+  "/feedback-create",
+  optionalFileUpload,
+  stakeholderFeedbackCreateController
+);
 router.get("/feedback", stakeholderFeedbackFetchController);
-router.put("/feedback/:id", optionalFileUpload, stakeholderFeedbackEditController);
+router.put(
+  "/feedback/:id",
+  optionalFileUpload,
+  stakeholderFeedbackEditController
+);
 router.put("/delete-feedback/:id", stakeholderFeedbackDeleteController);
 
 export default router;

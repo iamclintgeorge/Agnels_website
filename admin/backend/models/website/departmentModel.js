@@ -10,7 +10,7 @@ const __dirname = path.dirname(__filename);
 // Configure multer for file uploads
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    const uploadPath = path.join(__dirname, "../../public/uploads/department");
+    const uploadPath = path.join(__dirname, "../../public/cdn/department");
     if (!fs.existsSync(uploadPath)) {
       fs.mkdirSync(uploadPath, { recursive: true });
     }
@@ -82,6 +82,89 @@ class DepartmentModel {
         .promise()
         .query("DELETE FROM dept_text WHERE id = ?", [id]);
       return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  //Dept Vision and Mission Route
+  static async updateDeptVisionText(id, content) {
+    try {
+      const [result] = await db
+        .promise()
+        .query("UPDATE dept_visions SET vision = ? WHERE id = ?", [
+          content,
+          id,
+        ]);
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async updateDeptMissionText(id, content) {
+    try {
+      const [result] = await db
+        .promise()
+        .query("UPDATE dept_visions SET mission = ? WHERE id = ?", [
+          content,
+          id,
+        ]);
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async updateDeptObjectiveText(id, content) {
+    try {
+      const [result] = await db
+        .promise()
+        .query("UPDATE dept_objectives SET objective = ? WHERE id = ?", [
+          content,
+          id,
+        ]);
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async updateDeptOutcomesText(id, content) {
+    try {
+      const [result] = await db
+        .promise()
+        .query("UPDATE dept_objectives SET outcome = ? WHERE id = ?", [
+          content,
+          id,
+        ]);
+      return result;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async getDeptVisionText(departmentId) {
+    try {
+      const [rows] = await db
+        .promise()
+        .query("SELECT * FROM dept_visions WHERE department_id = ?", [
+          departmentId,
+        ]);
+      return rows[0] || null;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  static async getDeptObjectiveText(departmentId) {
+    try {
+      const [rows] = await db
+        .promise()
+        .query("SELECT * FROM dept_objectives WHERE department_id = ?", [
+          departmentId,
+        ]);
+      return rows[0] || null;
     } catch (error) {
       throw error;
     }
@@ -162,7 +245,7 @@ class DepartmentModel {
       if (rows[0]?.attachment && !rows[0].attachment.startsWith("http")) {
         const filePath = path.join(
           __dirname,
-          "../../public/uploads/department",
+          "../../public/cdn/department",
           rows[0].attachment
         );
         if (fs.existsSync(filePath)) {
@@ -238,7 +321,7 @@ class DepartmentModel {
       if (rows[0]?.attachment && !rows[0].attachment.startsWith("http")) {
         const filePath = path.join(
           __dirname,
-          "../../public/uploads/department",
+          "../../public/cdn/department",
           rows[0].attachment
         );
         if (fs.existsSync(filePath)) {
@@ -314,7 +397,7 @@ class DepartmentModel {
       if (rows[0]?.attachment && !rows[0].attachment.startsWith("http")) {
         const filePath = path.join(
           __dirname,
-          "../../public/uploads/department",
+          "../../public/cdn/department",
           rows[0].attachment
         );
         if (fs.existsSync(filePath)) {
@@ -341,7 +424,7 @@ class DepartmentModel {
       const [result] = await db
         .promise()
         .query(
-          "INSERT INTO time_tables (department_id, type, division, semester, attachment, created_by) VALUES (?, ?, ?, ?, ?, ?)",
+          "INSERT INTO time_tables (department_id, type, division, semester, attachment) VALUES (?, ?, ?, ?, ?)",
           [departmentId, type, division, semester, attachment, createdBy]
         );
       return result;
@@ -365,7 +448,7 @@ class DepartmentModel {
         params.push(semester);
       }
 
-      query += " ORDER BY semester DESC, created_timestamp DESC";
+      // query += " ORDER BY semester DESC, created_timestamp DESC";
 
       const [rows] = await db.promise().query(query, params);
       return rows;
@@ -413,7 +496,7 @@ class DepartmentModel {
       if (rows[0]?.attachment && !rows[0].attachment.startsWith("http")) {
         const filePath = path.join(
           __dirname,
-          "../../public/uploads/department",
+          "../../public/cdn/department",
           rows[0].attachment
         );
         if (fs.existsSync(filePath)) {
@@ -500,7 +583,7 @@ class DepartmentModel {
       if (rows[0]?.attachment && !rows[0].attachment.startsWith("http")) {
         const filePath = path.join(
           __dirname,
-          "../../public/uploads/department",
+          "../../public/cdn/department",
           rows[0].attachment
         );
         if (fs.existsSync(filePath)) {
@@ -580,7 +663,7 @@ class DepartmentModel {
       if (rows[0]?.attachment && !rows[0].attachment.startsWith("http")) {
         const filePath = path.join(
           __dirname,
-          "../../public/uploads/department",
+          "../../public/cdn/department",
           rows[0].attachment
         );
         if (fs.existsSync(filePath)) {
@@ -656,7 +739,7 @@ class DepartmentModel {
       if (rows[0]?.attachment && !rows[0].attachment.startsWith("http")) {
         const filePath = path.join(
           __dirname,
-          "../../public/uploads/department",
+          "../../public/cdn/department",
           rows[0].attachment
         );
         if (fs.existsSync(filePath)) {
@@ -732,7 +815,7 @@ class DepartmentModel {
       if (rows[0]?.attachment && !rows[0].attachment.startsWith("http")) {
         const filePath = path.join(
           __dirname,
-          "../../public/uploads/department",
+          "../../public/cdn/department",
           rows[0].attachment
         );
         if (fs.existsSync(filePath)) {
@@ -856,93 +939,39 @@ class DepartmentModel {
     }
   }
 
-  // UTILITY METHODS
-  static async getAllDepartmentData(departmentId) {
+  // Infrastructure Models
+  static async getInfraModel(id) {
     try {
-      const [
-        committees,
-        publications,
-        magazines,
-        timeTables,
-        achievements,
-        academicCalendars,
-        activities,
-        associations,
-        undergraduateProjects,
-        miniProjects,
-        deptTexts,
-      ] = await Promise.all([
-        this.getCommittees(departmentId),
-        this.getPublications(departmentId),
-        this.getMagazines(departmentId),
-        this.getTimeTables(departmentId),
-        this.getAchievements(departmentId),
-        this.getAcademicCalendars(departmentId),
-        this.getActivities(departmentId),
-        this.getAssociations(departmentId),
-        this.getUndergraduateProjects(departmentId),
-        this.getMiniProjects(departmentId),
-        db
-          .promise()
-          .query("SELECT * FROM dept_text WHERE department_id = ?", [
-            departmentId,
-          ]),
-      ]);
-
-      return {
-        committees,
-        publications,
-        magazines,
-        timeTables,
-        achievements,
-        academicCalendars,
-        activities,
-        associations,
-        undergraduateProjects,
-        miniProjects,
-        deptTexts: deptTexts[0],
-      };
+      const [rows] = await db
+        .promise()
+        .query("SELECT * FROM infrastructures WHERE department_id = ?", [id]);
+      return rows;
     } catch (error) {
       throw error;
     }
   }
 
-  static async getStatistics(departmentId = null) {
+  // Syllabus Models
+  static async getSyllabusModel(id) {
     try {
-      let whereClause = departmentId ? "WHERE department_id = ?" : "";
-      let params = departmentId ? [departmentId] : [];
+      const [rows] = await db
+        .promise()
+        .query("SELECT * FROM syllabi WHERE department_id = ?", [id]);
+      return rows;
+    } catch (error) {
+      throw error;
+    }
+  }
 
-      const queries = [
-        `SELECT COUNT(*) as count FROM dept_committees ${whereClause}`,
-        `SELECT COUNT(*) as count FROM dept_publications ${whereClause}`,
-        `SELECT COUNT(*) as count FROM magzines ${whereClause}`,
-        `SELECT COUNT(*) as count FROM time_tables ${whereClause}`,
-        `SELECT COUNT(*) as count FROM achievements ${whereClause}`,
-        `SELECT COUNT(*) as count FROM academic_calendars ${whereClause}`,
-        `SELECT COUNT(*) as count FROM activities ${whereClause}`,
-        `SELECT COUNT(*) as count FROM associations ${whereClause}`,
-        `SELECT COUNT(*) as count FROM undergraduate_projects ${whereClause}`,
-        `SELECT COUNT(*) as count FROM mini_projects ${whereClause}`,
-        `SELECT COUNT(*) as count FROM dept_text ${whereClause}`,
-      ];
-
-      const results = await Promise.all(
-        queries.map((query) => db.promise().query(query, params))
-      );
-
-      return {
-        committees: results[0][0][0].count,
-        publications: results[1][0][0].count,
-        magazines: results[2][0][0].count,
-        timeTables: results[3][0][0].count,
-        achievements: results[4][0][0].count,
-        academicCalendars: results[5][0][0].count,
-        activities: results[6][0][0].count,
-        associations: results[7][0][0].count,
-        undergraduateProjects: results[8][0][0].count,
-        miniProjects: results[9][0][0].count,
-        deptTexts: results[10][0][0].count,
-      };
+  //Innovative Teaching Method
+  static async getITMModel(id) {
+    try {
+      const [rows] = await db
+        .promise()
+        .query("SELECT * FROM innovative_methods WHERE department_id = ?", [
+          id,
+        ]);
+      return rows;
     } catch (error) {
       throw error;
     }

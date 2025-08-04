@@ -12,7 +12,7 @@ const DeptPdfModel = {
           // Transform the results to include proper PDF URL
           const transformedResults = results.map((result) => ({
             ...result,
-            pdfUrl: `/uploads/department/${department}/${section}/${result.filename}`,
+            pdfUrl: `/cdn/department/${department}/${section}/${result.filename}`,
           }));
           resolve(transformedResults);
         }

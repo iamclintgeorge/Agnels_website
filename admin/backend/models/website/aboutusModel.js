@@ -30,6 +30,23 @@ export const principalTextDisplay = async () => {
   }
 };
 
+export const principalTextUpdate = async (id, content) => {
+  const query = `
+    UPDATE infoText 
+        SET Content = ?, Updated_At = CURRENT_TIMESTAMP 
+        WHERE id = ?
+  `;
+  const value = [content, id];
+
+  try {
+    const [rows] = await db.promise().query(query, value);
+    return rows;
+  } catch (error) {
+    console.error("Database fetch error:", error);
+    throw error;
+  }
+};
+
 export const getAboutUsSection = async (sectionKey) => {
   const query = `
     SELECT id, Section AS sectionKey, Content AS content 

@@ -1,14 +1,22 @@
-import { saveNIRFData, getNIRFData, getAllNIRFData } from "../../models/website/nirfModel.js";
+import {
+  saveNIRFData,
+  getNIRFData,
+  getAllNIRFData,
+} from "../../models/website/nirfModel.js";
 import multer from "multer";
 import path from "path";
 
 // Configure Multer for PDF uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "public/uploads/NIRF");
+    cb(null, "public/cdn/NIRF");
   },
   filename: (req, file, cb) => {
-    const uniqueName = Date.now() + "-" + Math.round(Math.random() * 1e9) + path.extname(file.originalname);
+    const uniqueName =
+      Date.now() +
+      "-" +
+      Math.round(Math.random() * 1e9) +
+      path.extname(file.originalname);
     cb(null, uniqueName);
   },
 });
@@ -31,7 +39,7 @@ export const upload = multer({
 export const saveNIRFDataController = async (req, res) => {
   try {
     const { year, content } = req.body;
-    const pdf_url = req.file ? `/uploads/NIRF/${req.file.filename}` : null;
+    const pdf_url = req.file ? `/cdn/NIRF/${req.file.filename}` : null;
     const pdf_title = req.file ? req.file.originalname : null;
 
     if (!year || !content) {
@@ -42,7 +50,9 @@ export const saveNIRFDataController = async (req, res) => {
     res.json({ message: "NIRF data saved successfully" });
   } catch (error) {
     console.error("Error saving NIRF data:", error);
-    res.status(500).json({ message: "Error saving NIRF data", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error saving NIRF data", error: error.message });
   }
 };
 
@@ -54,12 +64,16 @@ export const getNIRFDataController = async (req, res) => {
 
     const data = await getNIRFData(year);
     if (!data) {
-      return res.status(404).json({ message: `No data found for year ${year}` });
+      return res
+        .status(404)
+        .json({ message: `No data found for year ${year}` });
     }
     res.json(data);
   } catch (error) {
     console.error("Error fetching NIRF data:", error);
-    res.status(500).json({ message: "Error fetching NIRF data", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error fetching NIRF data", error: error.message });
   }
 };
 
@@ -70,8 +84,8 @@ export const getAllNIRFDataController = async (req, res) => {
     res.json(data);
   } catch (error) {
     console.error("Error fetching all NIRF data:", error);
-    res.status(500).json({ message: "Error fetching all NIRF data", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error fetching all NIRF data", error: error.message });
   }
 };
-
-

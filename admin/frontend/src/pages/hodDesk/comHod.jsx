@@ -13,7 +13,8 @@ const ComHod = () => {
   const quillRef = useRef(null);
 
   // Check if user has permission to edit (compHod role or superAdmin)
-  const canEdit = user && (user.role === "compHod" || user.role === "superAdmin");
+  const canEdit =
+    user && (user.role === "compHod" || user.role === "superAdmin");
 
   useEffect(() => {
     fetchText();
@@ -163,7 +164,9 @@ const ComHod = () => {
         }
       `}</style>
 
-      <h2 className="text-2xl font-bold mb-4">Computer Engineering - HOD Desk</h2>
+      <h2 className="text-2xl font-bold mb-4">
+        Computer Engineering - HOD Desk
+      </h2>
 
       {hodText.length > 0 ? (
         editMode ? (
@@ -230,4 +233,4 @@ const ComHod = () => {
   );
 };
 
-export default ComHod; 
+export default ComHod;

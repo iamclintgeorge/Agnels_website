@@ -24,7 +24,8 @@ router.use("/api", userRoutes);
 router.use("/api", roleHierarchyRoutes);
 router.use("/api/home", homeRoutes);
 // router.use("/api/department", deptHomeRoutes);
-router.use("/api/department", compActivityRoutes);
+router.use("/api/department", departmentRoutes);
+// router.use("/api/department", compActivityRoutes);
 router.use("/api/training-placement", trainingPlacementRoutes);
 router.use(
   "/api/aboutus",
@@ -37,7 +38,6 @@ router.use("/api/humanResource", humanRRoutes);
 router.use("/api/profile", profileRoutes);
 router.use("/api/faculty", facultyRoutes);
 router.use("/api/infrastructure", infrastructureRoutes);
-router.use("/api/dept", departmentRoutes);
 router.use("/api/students-corner", studentcornerRoutes);
 router.use("/api/admission", admissionRoutes);
 

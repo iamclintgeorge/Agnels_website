@@ -175,7 +175,7 @@ const Iic_policy = () => {
             {displayPdfs.map((pdf) => (
               <li key={pdf.id} className="flex justify-between items-center">
                 <a
-                  href={`http://localhost:3663/uploads/IIC/${pdf.file_url}`}
+                  href={`http://localhost:3663/cdn/IIC/${pdf.file_url}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-blue-500 underline"

@@ -1,14 +1,21 @@
-import { uploadHumanRPDF, getHumanRPDFsByCategory } from "../../models/website/humanRModel.js";
+import {
+  uploadHumanRPDF,
+  getHumanRPDFsByCategory,
+} from "../../models/website/humanRModel.js";
 import multer from "multer";
 import path from "path";
 
 // Configure Multer for HR PDF uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "public/uploads");
+    cb(null, "public/cdn");
   },
   filename: (req, file, cb) => {
-    const uniqueName = Date.now() + "-" + Math.round(Math.random() * 1e9) + path.extname(file.originalname);
+    const uniqueName =
+      Date.now() +
+      "-" +
+      Math.round(Math.random() * 1e9) +
+      path.extname(file.originalname);
     cb(null, uniqueName);
   },
 });
@@ -33,7 +40,9 @@ export const uploadHRPDFController = async (req, res) => {
     const { category } = req.body;
 
     if (!req.file || !category) {
-      return res.status(400).json({ message: "File and category are required" });
+      return res
+        .status(400)
+        .json({ message: "File and category are required" });
     }
 
     const file_url = req.file.filename;
@@ -41,10 +50,17 @@ export const uploadHRPDFController = async (req, res) => {
 
     await uploadHumanRPDF(file_url, title, category);
 
-    res.json({ message: "PDF uploaded successfully", file_url, title, category });
+    res.json({
+      message: "PDF uploaded successfully",
+      file_url,
+      title,
+      category,
+    });
   } catch (error) {
     console.error("Error uploading HR PDF:", error);
-    res.status(500).json({ message: "Error uploading PDF", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error uploading PDF", error: error.message });
   }
 };
 
@@ -61,7 +77,9 @@ export const getHRPDFsController = async (req, res) => {
     res.json(files);
   } catch (error) {
     console.error("Error fetching HR PDFs:", error);
-    res.status(500).json({ message: "Error fetching PDFs", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Error fetching PDFs", error: error.message });
   }
 };
 
@@ -69,7 +87,7 @@ export const getHRPDFsController = async (req, res) => {
 //   try {
 //     const category = req.query.category || req.params.category;
 
-//     console.log("Fetching PDFs for category:", category); 
+//     console.log("Fetching PDFs for category:", category);
 
 //     if (!category) {
 //       return res.status(400).json({ message: "Category is required" });
@@ -82,4 +100,3 @@ export const getHRPDFsController = async (req, res) => {
 //     res.status(500).json({ message: "Error fetching PDFs", error: error.message });
 //   }
 // };
-

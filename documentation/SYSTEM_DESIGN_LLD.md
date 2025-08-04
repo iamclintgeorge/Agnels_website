@@ -1,7 +1,9 @@
 # System Design - Low Level Design (LLD)
+
 ## Fr. Conceicao Rodrigues Institute of Technology Website
 
 ### Table of Contents
+
 1. [Component Architecture](#component-architecture)
 2. [Database Design](#database-design)
 3. [API Design](#api-design)
@@ -18,6 +20,7 @@
 ### Frontend Component Hierarchy
 
 #### Public Website Components
+
 ```
 App
 ├── Layouts
@@ -59,6 +62,7 @@ App
 ```
 
 #### Admin Panel Components
+
 ```
 AdminApp
 ├── Layout
@@ -100,6 +104,7 @@ AdminApp
 ### Backend Component Architecture
 
 #### MVC Structure
+
 ```
 Backend
 ├── config
@@ -151,6 +156,7 @@ Backend
 ### Core Tables
 
 #### Users and Authentication
+
 ```sql
 -- Users table
 CREATE TABLE users (
@@ -194,6 +200,7 @@ CREATE TABLE permissions (
 ```
 
 #### Faculty Management
+
 ```sql
 -- Faculty table
 CREATE TABLE faculties (
@@ -256,6 +263,7 @@ CREATE TABLE faculty_publications (
 ```
 
 #### Content Management
+
 ```sql
 -- About Us sections
 CREATE TABLE about_us_sections (
@@ -290,6 +298,7 @@ CREATE TABLE content_approvals (
 ```
 
 #### Activity Logging
+
 ```sql
 -- Activity logs
 CREATE TABLE activity_logs (
@@ -315,6 +324,7 @@ CREATE TABLE activity_logs (
 ## API Design
 
 ### Authentication Endpoints
+
 ```
 POST   /api/auth/login
 POST   /api/auth/logout
@@ -325,6 +335,7 @@ POST   /api/auth/change-password
 ```
 
 ### Role Management Endpoints
+
 ```
 GET    /api/roles                     # Get all roles
 POST   /api/roles                     # Create new role
@@ -337,6 +348,7 @@ PUT    /api/roles/users/:userId/role  # Update user role
 ```
 
 ### Faculty Management Endpoints
+
 ```
 GET    /api/faculty/department/:dept  # Get faculty by department
 GET    /api/faculty/profile/:id       # Get faculty profile
@@ -346,6 +358,7 @@ DELETE /api/faculty/admin/delete/:id  # Delete faculty (admin)
 ```
 
 ### About Us Management Endpoints
+
 ```
 GET    /api/aboutus/sections          # Get all sections
 GET    /api/aboutus/sections/:name    # Get specific section
@@ -357,6 +370,7 @@ POST   /api/aboutus/upload/image      # Upload image
 ```
 
 ### Content Approval Endpoints
+
 ```
 GET    /api/content/approvals         # Get pending approvals
 POST   /api/content/approvals         # Submit for approval
@@ -371,6 +385,7 @@ GET    /api/content/approvals/history # Get approval history
 ### Frontend React Components
 
 #### Role Management Classes
+
 ```typescript
 interface Role {
   id: number;
@@ -392,7 +407,7 @@ class RoleManager {
   - permissions: Permission[]
   - selectedRole: Role | null
   - isEditing: boolean
-  
+
   + loadRoles(): Promise<void>
   + createRole(role: Role): Promise<void>
   + updateRole(id: number, role: Role): Promise<void>
@@ -402,6 +417,7 @@ class RoleManager {
 ```
 
 #### Faculty Management Classes
+
 ```typescript
 interface Faculty {
   id: number;
@@ -437,7 +453,7 @@ class FacultyManager {
   - faculties: Faculty[]
   - departments: Department[]
   - selectedFaculty: Faculty | null
-  
+
   + loadFaculties(departmentId?: number): Promise<void>
   + createFaculty(faculty: Faculty): Promise<void>
   + updateFaculty(id: number, faculty: Faculty): Promise<void>
@@ -449,6 +465,7 @@ class FacultyManager {
 ### Backend Classes
 
 #### Authentication & Authorization
+
 ```typescript
 class AuthService {
   + generateToken(user: User): string
@@ -467,10 +484,11 @@ class PermissionService {
 ```
 
 #### Data Access Layer
+
 ```typescript
 class BaseModel {
   # db: DatabaseConnection
-  
+
   + findById(id: number): Promise<T | null>
   + findAll(filters?: object): Promise<T[]>
   + create(data: Partial<T>): Promise<T>
@@ -491,6 +509,7 @@ class FacultyModel extends BaseModel<Faculty> {
 ## Sequence Diagrams
 
 ### User Authentication Flow
+
 ```
 User -> Frontend: Enter credentials
 Frontend -> Backend: POST /api/auth/login
@@ -503,6 +522,7 @@ Frontend -> User: Redirect to dashboard
 ```
 
 ### Role Management Flow
+
 ```
 Admin -> Frontend: Click "Create Role"
 Frontend -> Frontend: Show role editor
@@ -518,6 +538,7 @@ Frontend -> Admin: Show success message
 ```
 
 ### Faculty Profile Creation Flow
+
 ```
 Admin -> Frontend: Upload faculty data
 Frontend -> Backend: POST /api/faculty/admin/create
@@ -534,6 +555,7 @@ Frontend -> Admin: Show success + redirect
 ```
 
 ### Content Approval Flow
+
 ```
 HOD -> Frontend: Submit content changes
 Frontend -> Backend: POST /api/content/approvals
@@ -559,6 +581,7 @@ ContentService -> Database: Update live content
 ## Data Models
 
 ### User Data Model
+
 ```json
 {
   "id": 1,
@@ -577,6 +600,7 @@ ContentService -> Database: Update live content
 ```
 
 ### Faculty Data Model
+
 ```json
 {
   "id": 1,
@@ -587,7 +611,7 @@ ContentService -> Database: Update live content
   "qualification": "Ph.D. in Computer Science",
   "departmentId": 1,
   "staffType": "teaching",
-  "imageUrl": "/uploads/faculty/john-smith.jpg",
+  "imageUrl": "/cdn/faculty/john-smith.jpg",
   "bio": "Dr. Smith has 15 years of experience...",
   "joiningDate": "2010-07-01",
   "isActive": true,
@@ -618,6 +642,7 @@ ContentService -> Database: Update live content
 ```
 
 ### Content Section Data Model
+
 ```json
 {
   "id": 1,
@@ -625,12 +650,12 @@ ContentService -> Database: Update live content
   "title": "Our History",
   "content": {
     "subtitle": "Tracing the roots and evolution",
-    "headerImage": "/uploads/images/history-header.jpg",
+    "headerImage": "/cdn/images/history-header.jpg",
     "sections": {
       "establishment": {
         "heading": "Establishment",
         "text": "The institution was established...",
-        "image": "/uploads/images/establishment.jpg"
+        "image": "/cdn/images/establishment.jpg"
       }
     }
   },
@@ -645,6 +670,7 @@ ContentService -> Database: Update live content
 ## Security Implementation
 
 ### JWT Token Structure
+
 ```json
 {
   "header": {
@@ -663,32 +689,33 @@ ContentService -> Database: Update live content
 ```
 
 ### Permission Checking Implementation
+
 ```javascript
 // Middleware for permission checking
 const checkPermission = (requiredPermission) => {
   return async (req, res, next) => {
     try {
       const user = req.user; // From auth middleware
-      
+
       // Super admin has all permissions
-      if (user.permissions.includes('all')) {
+      if (user.permissions.includes("all")) {
         return next();
       }
-      
+
       // Check specific permission
       if (user.permissions.includes(requiredPermission)) {
         return next();
       }
-      
+
       // Permission denied
       return res.status(403).json({
         success: false,
-        error: 'Insufficient permissions'
+        error: "Insufficient permissions",
       });
     } catch (error) {
       return res.status(500).json({
         success: false,
-        error: 'Permission check failed'
+        error: "Permission check failed",
       });
     }
   };
@@ -696,30 +723,31 @@ const checkPermission = (requiredPermission) => {
 ```
 
 ### Input Validation
+
 ```javascript
 // Validation schemas
 const facultyValidationSchema = {
   name: {
     required: true,
-    type: 'string',
+    type: "string",
     minLength: 2,
-    maxLength: 100
+    maxLength: 100,
   },
   email: {
     required: true,
-    type: 'email',
-    unique: true
+    type: "email",
+    unique: true,
   },
   designation: {
     required: true,
-    type: 'string',
-    maxLength: 100
+    type: "string",
+    maxLength: 100,
   },
   departmentId: {
     required: true,
-    type: 'number',
-    min: 1
-  }
+    type: "number",
+    min: 1,
+  },
 };
 
 // Validation middleware
@@ -729,7 +757,7 @@ const validateInput = (schema) => {
     if (errors.length > 0) {
       return res.status(400).json({
         success: false,
-        errors: errors
+        errors: errors,
       });
     }
     next();
@@ -742,6 +770,7 @@ const validateInput = (schema) => {
 ## File Structure
 
 ### Complete Project Structure
+
 ```
 Agnels_website/
 ├── admin/
@@ -857,18 +886,19 @@ Agnels_website/
 ### Key Configuration Files
 
 #### Database Configuration
+
 ```javascript
 // admin/backend/config/db.js
-import mysql from 'mysql2/promise';
+import mysql from "mysql2/promise";
 
 const dbConfig = {
-  host: process.env.DB_HOST || 'localhost',
-  user: process.env.DB_USER || 'root',
-  password: process.env.DB_PASSWORD || '',
-  database: process.env.DB_NAME || 'agnels_db',
+  host: process.env.DB_HOST || "localhost",
+  user: process.env.DB_USER || "root",
+  password: process.env.DB_PASSWORD || "",
+  database: process.env.DB_NAME || "agnels_db",
   waitForConnections: true,
   connectionLimit: 10,
-  queueLimit: 0
+  queueLimit: 0,
 };
 
 const db = mysql.createPool(dbConfig);
@@ -876,6 +906,7 @@ export default db;
 ```
 
 #### Environment Configuration
+
 ```bash
 # .env file
 DB_HOST=localhost
@@ -886,7 +917,7 @@ DB_NAME=agnels_db
 JWT_SECRET=your-secret-key
 JWT_EXPIRES_IN=24h
 
-UPLOAD_PATH=/uploads
+UPLOAD_PATH=/cdn
 MAX_FILE_SIZE=10485760
 ALLOWED_FILE_TYPES=pdf,doc,docx,jpg,jpeg,png
 
@@ -896,4 +927,4 @@ PORT=3663
 
 ---
 
-This LLD provides detailed implementation guidance for all system components, ensuring consistent development practices and maintainable code architecture. 
+This LLD provides detailed implementation guidance for all system components, ensuring consistent development practices and maintainable code architecture.
