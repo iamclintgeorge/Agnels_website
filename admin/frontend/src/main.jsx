@@ -17,8 +17,7 @@ import DeptHome from "./pages/Department/dept_home";
 import TrainingPlacement from "./pages/Training-Placement/training-placement";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import HodDesk from "./pages/rolebasedPages/hodDesk";
-import PrincipalDesk from "./pages/rolebasedPages/principalDesk";
+import PrincipalDesk from "./pages/Principal's Desk/principalDesk";
 import AboutUsManager from "./pages/AboutUsManager/AboutUsManager";
 import ResearchAdmin from "./pages/research/ResearchAdmin";
 import AdminNIRF from "./pages/AdminNIRF";
@@ -165,7 +164,6 @@ const App = () => {
           <Route path="/activity-logs" element={<ActivityLogs />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/training-placement" element={<TrainingPlacement />} />
-          <Route path="/hoddesk" element={<HodDesk />} />
           <Route path="/principaldesk" element={<PrincipalDesk />} />
           <Route path="/about-us" element={<AboutUsManager />} />
           <Route path="/research/:section" element={<ResearchAdmin />} />
