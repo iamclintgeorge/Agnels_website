@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const StaticPages = (props) => {
-  const [activeTab, setActiveTab] = useState(props.sidebar[0]);
+  const [activeTab, setActiveTab] = useState(
+    props.sidebar?.length ? props.sidebar[0] : null
+  );
   const navigate = useNavigate();
 
   const handleTabClick = (tab) => {
@@ -21,38 +23,44 @@ const StaticPages = (props) => {
         <p className="text-sm text-left pl-7 mt-1 font-normal">{props.path}</p>
       </div>
 
-      {/* Sidebar Section */}
+      {/* Sidebar Section (render only if sidebar items exist) */}
       <main className="flex flex-col items-center py-16">
         <div className="flex flex-col md:flex-row w-11/12 max-w-7xl">
-          {/* Sidebar */}
-          <div className="w-full md:w-1/4 pr-0 md:pr-6 mb-8 md:mb-0">
-            <ul className="space-y-3">
-              {props.sidebar.map((tab, index) => (
-                <li
-                  key={index}
-                  className="relative group cursor-pointer"
-                  onClick={() => handleTabClick(tab)}
-                >
-                  <span className="block px-2 py-3 text-black font-[350] font-inter transition duration-300 ease-in-out group-hover:text-[#0c2340] group-hover:bg-gray-50">
-                    {tab}
-                  </span>
-                  <span
-                    className={`absolute left-0 bottom-0 h-[2px] bg-black transition-all duration-300 ${
-                      activeTab === tab ? "w-full" : "w-0"
-                    } group-hover:w-full`}
-                  ></span>
-                </li>
-              ))}
-            </ul>
-            <hr className="mt-4 border-t border-gray-300 block md:hidden" />
-          </div>
+          
+          {props.sidebar?.length > 0 && (
+            <>
+              {/* Sidebar */}
+              <div className="w-full md:w-1/4 pr-0 md:pr-6 mb-8 md:mb-0">
+                <ul className="space-y-3">
+                  {props.sidebar.map((tab, index) => (
+                    <li
+                      key={index}
+                      className="relative group cursor-pointer"
+                      onClick={() => handleTabClick(tab)}
+                    >
+                      <span className="block px-2 py-3 text-black font-[350] font-inter transition duration-300 ease-in-out group-hover:text-[#0c2340] group-hover:bg-gray-50">
+                        {tab}
+                      </span>
+                      <span
+                        className={`absolute left-0 bottom-0 h-[2px] bg-black transition-all duration-300 ${
+                          activeTab === tab ? "w-full" : "w-0"
+                        } group-hover:w-full`}
+                      ></span>
+                    </li>
+                  ))}
+                </ul>
+                <hr className="mt-4 border-t border-gray-300 block md:hidden" />
+              </div>
 
-          {/* Divider */}
-          <div className="hidden md:block w-[1px] bg-gray-300"></div>
+              {/* Divider */}
+              <div className="hidden md:block w-[1px] bg-gray-300"></div>
+            </>
+          )}
 
           {/* Content Area */}
-          <div className="w-full md:w-3/4 pl-0 md:pl-6">
-            {props.content[activeTab]}
+          <div className={`${props.sidebar?.length > 0 ? "w-full md:w-3/4 pl-0 md:pl-6" : "w-full"}`}>
+            {/* Use customContent if provided (for pages without sidebar), otherwise use normal content */}
+            {props.customContent || (activeTab ? props.content[activeTab] : null)}
           </div>
         </div>
       </main>
