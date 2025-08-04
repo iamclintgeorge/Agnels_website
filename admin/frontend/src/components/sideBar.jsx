@@ -1,117 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../services/useAuthCheck";
+import {
+  departmentSections,
+  academicSections,
+  aboutSections,
+  departments,
+  PERMISSIONS_CONFIG,
+  mockPermissions,
+} from "../util/sideBar_utils";
 
 export const SectionContext = React.createContext({
   setSelectedSection: () => {},
 });
-
-// Permission configuration - this should ideally come from your backend
-const PERMISSIONS_CONFIG = {
-  dashboard: { component: "dashboard", roles: ["all"] },
-  home_page: {
-    component: "home_page",
-    roles: [
-      "superAdmin",
-      "compHod",
-      "mechHod",
-      "extcHod",
-      "electricalHod",
-      "itHod",
-      "bshHod",
-      "teach_staff",
-      "principal",
-    ],
-  },
-  about_us: {
-    component: "about_us",
-    roles: ["superAdmin", "principal", "admin"],
-  },
-  "departments.computer-engineering": {
-    component: "departments",
-    roles: ["superAdmin", "compHod"],
-  },
-  "departments.mechanical-engineering": {
-    component: "departments",
-    roles: ["superAdmin", "mechHod"],
-  },
-  "departments.extc": {
-    component: "departments",
-    roles: ["superAdmin", "extcHod"],
-  },
-  "departments.electrical-engineering": {
-    component: "departments",
-    roles: ["superAdmin", "electricalHod"],
-  },
-  "departments.computer-science-and-engineering": {
-    component: "departments",
-    roles: ["superAdmin", "itHod"],
-  },
-  "departments.basic-science-and-humanities": {
-    component: "departments",
-    roles: ["superAdmin", "bshHod"],
-  },
-  "hod-desk": {
-    component: "hod-desk",
-    roles: [
-      "superAdmin",
-      "compHod",
-      "mechHod",
-      "extcHod",
-      "electricalHod",
-      "itHod",
-      "bshHod",
-    ],
-  },
-  admission: {
-    component: "admission",
-    roles: ["superAdmin", "principal", "admin"],
-  },
-  academics: {
-    component: "academics",
-    roles: ["superAdmin", "principal", "admin"],
-  },
-  training_placement: {
-    component: "training_placement",
-    roles: ["superAdmin", "principal", "admin"],
-  },
-  students_corner: {
-    component: "students_corner",
-    roles: ["superAdmin", "teach_staff", "principal"],
-  },
-  research: {
-    component: "research",
-    roles: ["superAdmin", "principal", "teach_staff"],
-  },
-  human_resource: {
-    component: "human_resource",
-    roles: ["superAdmin", "principal", "admin"],
-  },
-  alumni: {
-    component: "alumni",
-    roles: ["superAdmin", "principal", "admin"],
-  },
-  downloads: {
-    component: "downloads",
-    roles: ["superAdmin", "principal", "admin"],
-  },
-  manage_users: {
-    component: "manage_users",
-    roles: ["superAdmin", "hod"],
-  },
-  nirf: {
-    component: "nirf",
-    roles: ["superAdmin", "admin"],
-  },
-  nba_naac: {
-    component: "nba_naac",
-    roles: ["superAdmin", "admin"],
-  },
-  logs: {
-    component: "logs",
-    roles: ["superAdmin"],
-  },
-};
 
 const DynamicSideBar = () => {
   const { user } = useAuth();
@@ -151,60 +52,6 @@ const DynamicSideBar = () => {
   const fetchUserPermissions = async (userRole) => {
     // This should be an API call to get user permissions
     // For demo purposes, using mock data
-    const mockPermissions = {
-      superAdmin: ["all"],
-      compHod: [
-        "dashboard",
-        "home_page",
-        "departments.computer-engineering",
-        "manage_users",
-        "hod-desk",
-      ],
-      mechHod: [
-        "dashboard",
-        "home_page",
-        "departments.mechanical-engineering",
-        "hod-desk",
-      ],
-      extcHod: ["dashboard", "home_page", "departments.extc", "hod-desk"],
-      electricalHod: [
-        "dashboard",
-        "home_page",
-        "departments.electrical-engineering",
-        "hod-desk",
-      ],
-      itHod: [
-        "dashboard",
-        "home_page",
-        "departments.computer-science-and-engineering",
-        "hod-desk",
-      ],
-      bshHod: [
-        "dashboard",
-        "home_page",
-        "departments.basic-science-and-humanities",
-        "hod-desk",
-      ],
-      teach_staff: ["dashboard", "home_page", "students_corner", "research"],
-      non_teach_staff: ["dashboard", "home_page"],
-      principal: [
-        "dashboard",
-        "home_page",
-        "about_us",
-        "academics",
-        "research",
-        "human_resource",
-      ],
-      admin: [
-        "dashboard",
-        "nirf",
-        "nba_naac",
-        "about_us",
-        "academics",
-        "admission",
-      ],
-    };
-
     setUserPermissions(mockPermissions[userRole] || []);
   };
 
@@ -275,80 +122,6 @@ const DynamicSideBar = () => {
     }, 50);
   };
 
-  const departmentSections = [
-    "Carousel",
-    "Committees and Board of Studies",
-    "Activities",
-    "Infrastructure",
-    "Student Association",
-    "Magazine",
-    "Syllabus",
-    // "Result Analysis",
-    "Time Table",
-    "Achievements",
-    "Academic Calendar",
-    "Innovative Teaching and Learning Methods",
-    "Alumni Testimonials",
-    "Publications",
-    "Projects",
-  ];
-
-  const academicSections = [
-    "Home",
-    "Academic Handbook",
-    "Academic Handbook Honours/Minors",
-    "Academic Calendar",
-    "Examinations",
-    "APMS",
-    "LMS",
-    "Stakeholder Feedback",
-  ];
-
-  const aboutSections = [
-    "History",
-    "Vision and Mission",
-    "Trustees",
-    "Managing Director's Desk",
-    "Principal's Desk",
-    "Governance",
-    "Audit Report and Affiliations",
-    "Administrations and Committees",
-    "Institute Roadmap",
-    "Service Regulation",
-    "Qualification and Eligibility norms for Recruitment",
-    "Best Practices",
-    "Mandatory Disclosures",
-  ];
-
-  const departments = [
-    {
-      id: "computer-engineering",
-      name: "Computer Engineering",
-      permission: "departments.computer-engineering",
-    },
-    {
-      id: "mechanical-engineering",
-      name: "Mechanical Engineering",
-      permission: "departments.mechanical-engineering",
-    },
-    { id: "extc", name: "EXTC", permission: "departments.extc" },
-    {
-      id: "electrical-engineering",
-      name: "Electrical Engineering",
-      permission: "departments.electrical-engineering",
-    },
-    {
-      id: "computer-science-and-engineering",
-      name: "Computer Science and Engineering",
-      permission: "departments.computer-science-and-engineering",
-    },
-    {
-      id: "basic-science-and-humanities",
-      name: "Basic Science and Humanities",
-      permission: "departments.basic-science-and-humanities",
-    },
-  ];
-
   if (!user) return null;
 
   return (
@@ -395,8 +168,8 @@ const DynamicSideBar = () => {
         )}
 
         {/* About Us Section */}
-        {hasPermission("about_us") && (
-          <div>
+        {/* {hasPermission("about_us") && ( */}
+        {/* <div>
             <p
               className="cursor-pointer flex justify-between items-center pr-8"
               onClick={() => toggleSection("about")}
@@ -423,8 +196,8 @@ const DynamicSideBar = () => {
                 ))}
               </div>
             )}
-          </div>
-        )}
+          </div> */}
+        {/* )} */}
 
         {/* Departments Section */}
         {hasDepartmentAccess() && (
@@ -549,6 +322,13 @@ const DynamicSideBar = () => {
           </div>
         )}
 
+        {/* Principal's Desk */}
+        {hasPermission("principalDesk") && (
+          <Link to="/principaldesk" className="flex justify-between pr-8">
+            Principal's Desk <span>&gt;</span>
+          </Link>
+        )}
+
         {/* Admission */}
         {hasPermission("admission") && (
           <Link to="/admission" className="flex justify-between pr-8">
@@ -596,11 +376,11 @@ const DynamicSideBar = () => {
         )}
 
         {/* Students Corner */}
-        {hasPermission("students_corner") && (
+        {/* {hasPermission("students_corner") && (
           <Link to="/studentscorner" className="flex justify-between pr-8">
             Students Corner <span>&gt;</span>
           </Link>
-        )}
+        )} */}
 
         {/* Research and Publication */}
         {hasPermission("research") && (
@@ -786,6 +566,13 @@ const DynamicSideBar = () => {
         {hasPermission("nba_naac") && (
           <Link to="/admin/nba-naac" className="flex justify-between pr-8">
             NBA/NAAC
+          </Link>
+        )}
+
+        {/* Upload Static Files */}
+        {hasPermission("upload_files") && (
+          <Link to="/upload_files" className="flex justify-between pr-8">
+            Upload Files <span>&gt;</span>
           </Link>
         )}
 
