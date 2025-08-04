@@ -66,6 +66,9 @@ import RoleHierarchy from "./pages/ContentApproval/roleHierarchy";
 
 // Activity Logs Components
 import ActivityLogs from "./pages/AuditLogs/ActivityLogs";
+import AchievementManager from "./pages/HomePage/AchievementManager";
+import AdmissionManager from "./pages/HomePage/AdmissionManager";
+import CircularManager from "./pages/HomePage/CircularManager";
 
 const App = () => {
   return (
@@ -77,6 +80,9 @@ const App = () => {
         <Route path="/" element={<AdminLayout />}>
           <Route path="/home/carousel" element={<ImgCarousel />} />
           <Route path="/home/whatsNew" element={<WhatsNew />} />
+          <Route path="/home/AchievementManager" element={<AchievementManager />} />
+          <Route path="/home/AdmissionManager" element={<AdmissionManager />} />
+          <Route path="/home/CircularManager" element={<CircularManager />} />
           <Route path="/home/introtext" element={<IntroText />} />
           <Route path="/home/modal" element={<ImgModal />} />
           <Route path="/department/home" element={<DeptHome />} />
