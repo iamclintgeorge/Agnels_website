@@ -33,6 +33,16 @@ export const carouselUploadController = async (req, res) => {
       imageUrl: imageUrl,
       altText: altText,
     });
+    // logger.info("Home Carousel Upload", {
+    //   id: uuidv4(), // Use a UUID or other method to generate an ID
+    //   title: `Home Carousel Image Successfully Uploaded`,
+    //   service: "Home Page",
+    //   description: "No additional info",
+    //   level: "INFO",
+    //   created_by: "To Be Added",
+    //   source_ip: "N/A",
+    //   created_on: new Date().toISOString(),
+    // });
   } catch (error) {
     console.error("Upload error:", error);
     res.status(500).json({ message: "Error uploading image" });
@@ -174,13 +184,9 @@ export const achievementsCreateController = async (req, res) => {
     VALUES (?,?,?,?,?)`;
   const { subject, description, attachment, created_by, Type } = req.body;
   try {
-    await db.promise().query(sql, [
-      subject,
-      description,
-      attachment,
-      created_by,
-      Type
-    ]);
+    await db
+      .promise()
+      .query(sql, [subject, description, attachment, created_by, Type]);
     res.json({ message: "Achievement added successfully" });
   } catch (err) {
     console.error("DB-Insert Error:", err);
@@ -209,14 +215,9 @@ export const achievementsEditController = async (req, res) => {
   const { subject, description, attachment, created_by, Type } = req.body;
   const { id } = req.params;
   try {
-    await db.promise().query(sql, [
-      subject,
-      description,
-      attachment,
-      created_by,
-      Type,
-      id
-    ]);
+    await db
+      .promise()
+      .query(sql, [subject, description, attachment, created_by, Type, id]);
     res.json({ message: "Achievement updated successfully" });
   } catch (err) {
     console.error("DB-Update Error:", err);
@@ -250,13 +251,9 @@ export const admissionsCreateController = async (req, res) => {
     VALUES (?,?,?,?,?)`;
   const { subject, description, attachment, created_by, Type } = req.body;
   try {
-    await db.promise().query(sql, [
-      subject,
-      description,
-      attachment,
-      created_by,
-      Type
-    ]);
+    await db
+      .promise()
+      .query(sql, [subject, description, attachment, created_by, Type]);
     res.json({ message: "Admission entry added" });
   } catch (err) {
     console.error("DB-Insert Error:", err);
@@ -285,14 +282,9 @@ export const admissionsEditController = async (req, res) => {
   const { subject, description, attachment, created_by, Type } = req.body;
   const { id } = req.params;
   try {
-    await db.promise().query(sql, [
-      subject,
-      description,
-      attachment,
-      created_by,
-      Type,
-      id
-    ]);
+    await db
+      .promise()
+      .query(sql, [subject, description, attachment, created_by, Type, id]);
     res.json({ message: "Admission entry updated" });
   } catch (err) {
     console.error("DB-Update Error:", err);
@@ -325,12 +317,9 @@ export const circularsCreateController = async (req, res) => {
     VALUES (?,?,?,?)`;
   const { subject, description, attachment, created_by } = req.body;
   try {
-    await db.promise().query(sql, [
-      subject,
-      description,
-      attachment,
-      created_by
-    ]);
+    await db
+      .promise()
+      .query(sql, [subject, description, attachment, created_by]);
     res.json({ message: "Circular added" });
   } catch (err) {
     console.error("DB-Insert Error:", err);
@@ -359,13 +348,9 @@ export const circularsEditController = async (req, res) => {
   const { subject, description, attachment, created_by } = req.body;
   const { id } = req.params;
   try {
-    await db.promise().query(sql, [
-      subject,
-      description,
-      attachment,
-      created_by,
-      id
-    ]);
+    await db
+      .promise()
+      .query(sql, [subject, description, attachment, created_by, id]);
     res.json({ message: "Circular updated" });
   } catch (err) {
     console.error("DB-Update Error:", err);

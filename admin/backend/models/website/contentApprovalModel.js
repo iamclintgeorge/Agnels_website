@@ -38,6 +38,8 @@ export const createApprovalRequestModal = async (data) => {
       id,
       req_userID,
       requesterRole,
+      username,
+      client_ip,
     } = data;
     const status = "Pending";
 
@@ -58,11 +60,12 @@ export const createApprovalRequestModal = async (data) => {
 
     // Insert new approval request into the database
     const query = `INSERT INTO approval_requests 
-       (req_userID, req_userRole, req_roleId, title, section, method, status, change_summary, current_content, proposed_content, endpoint_url, content_id)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+       (req_userID, req_username, req_userRole, req_roleId, title, section, method, status, change_summary, current_content, proposed_content, endpoint_url, content_id, req_userIP)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
     const value = [
       req_userID,
+      username,
       requesterRole,
       req_roleId,
       title,
@@ -74,6 +77,7 @@ export const createApprovalRequestModal = async (data) => {
       proposedContent,
       endpoint,
       id,
+      client_ip,
     ];
 
     const [result] = await db.promise().query(query, value);
