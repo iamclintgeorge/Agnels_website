@@ -8,6 +8,7 @@ import Error404 from "./pages/Error_Pages/error404";
 import Error403 from "./pages/Error_Pages/error403";
 import AdminLayout from "./layout/adminLayout";
 import { AuthProvider } from "./services/useAuthCheck";
+import PrivateRoute from "./services/privateRoute";
 import WhatsNew from "./pages/HomePage/whatsNew";
 import Profile from "./pages/profile";
 import ImgCarousel from "./pages/HomePage/imgCarousel";
@@ -80,7 +81,10 @@ const App = () => {
         <Route path="/" element={<AdminLayout />}>
           <Route path="/home/carousel" element={<ImgCarousel />} />
           <Route path="/home/whatsNew" element={<WhatsNew />} />
-          <Route path="/home/AchievementManager" element={<AchievementManager />} />
+          <Route
+            path="/home/AchievementManager"
+            element={<AchievementManager />}
+          />
           <Route path="/home/AdmissionManager" element={<AdmissionManager />} />
           <Route path="/home/CircularManager" element={<CircularManager />} />
           <Route path="/home/introtext" element={<IntroText />} />
@@ -170,7 +174,15 @@ const App = () => {
           <Route path="/activity-logs" element={<ActivityLogs />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/training-placement" element={<TrainingPlacement />} />
-          <Route path="/principaldesk" element={<PrincipalDesk />} />
+          {/* <Route path="/principaldesk" element={<PrincipalDesk />} /> */}
+          <Route
+            path="/principaldesk"
+            element={
+              <PrivateRoute permission="principal_desk">
+                <PrincipalDesk />
+              </PrivateRoute>
+            }
+          />
           <Route path="/about-us" element={<AboutUsManager />} />
           <Route path="/research/:section" element={<ResearchAdmin />} />
           <Route path="/research" element={<ResearchAdmin />} />
