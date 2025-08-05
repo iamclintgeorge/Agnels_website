@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 function WhatsNew() {
-  /* ──────── 1.  FETCH DATA ──────── */
+  /* ──────── 1. FETCH DATA ──────── */
   const [announcements, setAnnouncements] = useState([]);
   const [achievements, setAchievements] = useState([]);
   const [admissions, setAdmissions] = useState([]);
@@ -11,15 +11,21 @@ function WhatsNew() {
     (async () => {
       try {
         // Fetch announcements
-        const announcementsRes = await axios.get("http://localhost:3663/api/home/announcements");
+        const announcementsRes = await axios.get(
+          "http://localhost:3663/api/home/announcements"
+        );
         setAnnouncements(announcementsRes.data?.result || []);
 
         // Fetch achievements
-        const achievementsRes = await axios.get("http://localhost:3663/api/home/achievements");
+        const achievementsRes = await axios.get(
+          "http://localhost:3663/api/home/achievements"
+        );
         setAchievements(achievementsRes.data?.result || []);
 
         // Fetch admissions
-        const admissionsRes = await axios.get("http://localhost:3663/api/home/admissions");
+        const admissionsRes = await axios.get(
+          "http://localhost:3663/api/home/admissions"
+        );
         setAdmissions(admissionsRes.data?.result || []);
       } catch (err) {
         console.error("Data fetch error:", err);
@@ -27,10 +33,10 @@ function WhatsNew() {
     })();
   }, []);
 
-  /* ──────── 2.  MODAL STATE ──────── */
+  /* ──────── 2. MODAL STATE ──────── */
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalMode, setModalMode] = useState(null);      // "single" | "all"
-  const [modalType, setModalType] = useState(null);      // "announcements" | "achievements" | "admissions"
+  const [modalMode, setModalMode] = useState(null); // "single" | "all"
+  const [modalType, setModalType] = useState(null); // "announcements" | "achievements" | "admissions"
   const [activeRow, setActiveRow] = useState(null);
 
   const openSingle = (row, type) => {
@@ -48,38 +54,44 @@ function WhatsNew() {
 
   const closeModal = () => setIsModalOpen(false);
 
-  /* ──────── 3.  FILTER DATA BY TYPE ──────── */
-  const studentsAchievements = achievements.filter(a => a.Type === "Students");
-  const facultiesAchievements = achievements.filter(a => a.Type === "Faculties");
+  const studentsAchievements = achievements.filter(
+    (a) => a.Type === "Students"
+  );
+  const facultiesAchievements = achievements.filter(
+    (a) => a.Type === "Faculties"
+  );
 
-  const firstYearAdmissions = admissions.filter(a => a.Type === "1st Year B. Tech");
-  const directSecondYearAdmissions = admissions.filter(a => a.Type === "Direct 2nd Year B. Tech");
-  const mtechPhdAdmissions = admissions.filter(a => a.Type === "M.Tech/Ph.D");
+  const firstYearAdmissions = admissions.filter(
+    (a) => a.Type === "1st Year B.Tech"
+  );
+  const directSecondYearAdmissions = admissions.filter(
+    (a) => a.Type === "Direct 2nd Year B.Tech"
+  );
+  const mtechPhdAdmissions = admissions.filter((a) => a.Type === "M.Tech/Ph.D");
 
-  /* ──────── 4.  CARD DATA DEFINITIONS ──────── */
   const tablesData = [
     {
       title: "Notice Board",
       tabs: [],
-      content: announcements.map((a) => a.subject)
+      content: announcements.map((a) => a.subject),
     },
     {
       title: "Achievements",
       tabs: ["Students", "Faculties"],
       content: {
         Students: studentsAchievements,
-        Faculties: facultiesAchievements
-      }
+        Faculties: facultiesAchievements,
+      },
     },
     {
       title: "Admissions",
-      tabs: ["1st Year B. Tech", "Direct 2nd Year B. Tech", "M.Tech/Ph.D"],
+      tabs: ["1st Year B.Tech", "Direct 2nd Year B.Tech", "M.Tech/Ph.D"],
       content: {
-        "1st Year B. Tech": firstYearAdmissions,
-        "Direct 2nd Year B. Tech": directSecondYearAdmissions,
-        "M.Tech/Ph.D": mtechPhdAdmissions
-      }
-    }
+        "1st Year B.Tech": firstYearAdmissions,
+        "Direct 2nd Year B.Tech": directSecondYearAdmissions,
+        "M.Tech/Ph.D": mtechPhdAdmissions,
+      },
+    },
   ];
 
   const [activeTabs, setActiveTabs] = useState(tablesData.map(() => 0));
@@ -87,12 +99,9 @@ function WhatsNew() {
     setActiveTabs((prev) => prev.map((v, i) => (i === tIdx ? tabIdx : v)));
   };
 
-  /* ──────── 5.  JSX ──────── */
   return (
     <>
-      {/* =========================  MAIN SECTION  ========================== */}
       <section className="relative py-10 pb-28 px-5 bg-[#F7F7F7]">
-        {/* big grey watermark */}
         <div className="absolute inset-0 flex text-[#EDEDED] font-medium text-[9.6vw] leading-none uppercase opacity-70 z-0 mt-[220px] md:mt-[250px] tracking-widest">
           Announcements
         </div>
@@ -103,7 +112,6 @@ function WhatsNew() {
         </h2>
         <div className="w-40 h-[5px] bg-[#AE9142] mb-24 md:mb-40 mx-auto md:mx-0" />
 
-        {/* cards */}
         <div className="flex flex-col md:flex-row justify-center gap-y-12 md:gap-5 items-center">
           {tablesData.map((table, tableIdx) => (
             <div
@@ -123,19 +131,20 @@ function WhatsNew() {
 
               {/* tabs (Achievements / Admissions) */}
               {table.tabs.length > 0 && (
-                <div className="flex justify-between">
+                <div className="flex">
                   {table.tabs.map((tab, tabIdx) => (
                     <span
                       key={tabIdx}
-                      className={`pt-3 text-center text-nowrap text-[15px] w-44 h-12 cursor-pointer ${
+                      className={`flex-1 py-2 px-1 text-center text-wrap text-[15px] cursor-pointer ${
                         activeTabs[tableIdx] === tabIdx
-                          ? "text-[#AE9142] font-bold"
-                          : "text-[#000000]"
+                          ? "text-[#AE9142] font-bold bg-[#F7F7F7]"
+                          : "text-[#000000] bg-[#E1E1E1]"
                       }`}
                       onClick={() => handleTabClick(tableIdx, tabIdx)}
                       style={{
-                        boxShadow: "0 4px 6px rgba(0,0,0,0.3)",
-                        border: "0.5px solid #757575"
+                        boxShadow: "0 2px 4px rgba(0,0,0,0.2)",
+                        border: "0.5px solid #757575",
+                        transition: "all 0.3s ease",
                       }}
                     >
                       {tab}
@@ -167,15 +176,17 @@ function WhatsNew() {
                 {table.title === "Achievements" && (
                   <div className="vertical-marquee-container">
                     <div className="vertical-marquee">
-                      {table.content[table.tabs[activeTabs[tableIdx]]].map((row) => (
-                        <div
-                          key={row.id}
-                          className="vertical-marquee-item cursor-pointer"
-                          onClick={() => openSingle(row, "achievements")}
-                        >
-                          <p className="text-[#333]">{row.subject}</p>
-                        </div>
-                      ))}
+                      {table.content[table.tabs[activeTabs[tableIdx]]].map(
+                        (row) => (
+                          <div
+                            key={row.id}
+                            className="vertical-marquee-item cursor-pointer"
+                            onClick={() => openSingle(row, "achievements")}
+                          >
+                            <p className="text-[#333]">{row.subject}</p>
+                          </div>
+                        )
+                      )}
                     </div>
                   </div>
                 )}
@@ -184,15 +195,17 @@ function WhatsNew() {
                 {table.title === "Admissions" && (
                   <div className="vertical-marquee-container">
                     <div className="vertical-marquee">
-                      {table.content[table.tabs[activeTabs[tableIdx]]].map((row) => (
-                        <div
-                          key={row.id}
-                          className="vertical-marquee-item cursor-pointer"
-                          onClick={() => openSingle(row, "admissions")}
-                        >
-                          <p className="text-[#333]">{row.subject}</p>
-                        </div>
-                      ))}
+                      {table.content[table.tabs[activeTabs[tableIdx]]].map(
+                        (row) => (
+                          <div
+                            key={row.id}
+                            className="vertical-marquee-item cursor-pointer"
+                            onClick={() => openSingle(row, "admissions")}
+                          >
+                            <p className="text-[#333]">{row.subject}</p>
+                          </div>
+                        )
+                      )}
                     </div>
                   </div>
                 )}
@@ -202,7 +215,7 @@ function WhatsNew() {
         </div>
       </section>
 
-      {/* =========================  MODAL  ========================== */}
+      {/* ========================= MODAL ========================== */}
       {isModalOpen && (
         <div
           className="fixed inset-0 bg-black bg-opacity-60 flex items-center justify-center z-50"
@@ -239,8 +252,8 @@ function WhatsNew() {
                       {activeRow.attachment || "—"}
                     </td>
                   </tr>
-                  {/* Show Type for achievements and admissions */}
-                  {(modalType === "achievements" || modalType === "admissions") && (
+                  {(modalType === "achievements" ||
+                    modalType === "admissions") && (
                     <tr>
                       <th className="border p-2 text-left">Type</th>
                       <td className="border p-2">{activeRow.Type}</td>
