@@ -20,7 +20,11 @@ import {
   circularsCreateController,
   circularsFetchController,
   circularsEditController,
-  circularsDeleteController
+  circularsDeleteController,
+  newsCreateController,
+  newsFetchController,
+  newsEditController,
+  newsDeleteController
 } from "../../../controllers/website/homeController.js";
 
 import multer from "multer";
@@ -81,5 +85,9 @@ router.post ("/circulars",       circularsCreateController);
 router.get  ("/circulars",       circularsFetchController);
 router.put  ("/circulars/:id",   circularsEditController);
 router.put("/delete-circulars/:id",  circularsDeleteController);
+router.post("/news",       newsCreateController);
+router.get("/news",       newsFetchController);
+router.put("/news/:id",   newsEditController);
+router.put("/delete-news/:id",   newsDeleteController);
 
 export default router;

@@ -135,7 +135,7 @@ export const announcementsCreateController = async (req, res) => {
 
 export const announcementsFetchController = async (req, res) => {
   // console.log("hi");
-  const sql = `SELECT * FROM announcements WHERE deleted = '0'`;
+  const sql = `SELECT * FROM announcements WHERE Type='Announcements' AND deleted = '0'`;
   try {
     // const values = [subject, description, attachment, created_by];
     const [result] = await db.promise().query(sql);
@@ -367,6 +367,80 @@ export const circularsDeleteController = async (req, res) => {
     res.json({ message: "Circular deleted" });
   } catch (err) {
     console.error("DB-Delete Error:", err);
+    res.status(500).json({ message: "Delete failed" });
+  }
+};
+/* =================================================================== */
+/*                           NEWS  (announcements table)               */
+/* =================================================================== */
+
+// INSERT  (Type is hard-coded to 'News')
+export const newsCreateController = async (req, res) => {
+  const sql =
+    `INSERT INTO announcements
+      (subject, description, attachment, created_by, Type)
+     VALUES (?,?,?,?, 'News')`;
+
+  const { subject, description, attachment, created_by } = req.body;
+  try {
+    await db.promise().query(sql, [
+      subject,
+      description,
+      attachment,
+      created_by
+    ]);
+    res.json({ message: "News inserted" });
+  } catch (err) {
+    console.error("DB-Insert Error (News):", err);
+    res.status(500).json({ message: "Insert failed" });
+  }
+};
+
+// READ  (only rows where Type = 'News')
+export const newsFetchController = async (_req, res) => {
+  const sql = `SELECT * FROM announcements WHERE Type = 'News' AND deleted = 0`;
+  try {
+    const [result] = await db.promise().query(sql);
+    res.json({ result });
+  } catch (err) {
+    console.error("DB-Fetch Error (News):", err);
+    res.status(500).json({ message: "Fetch failed" });
+  }
+};
+
+// UPDATE
+export const newsEditController = async (req, res) => {
+  const sql =
+    `UPDATE announcements
+     SET subject = ?, description = ?, attachment = ?, created_by = ?
+     WHERE id = ? AND Type = 'News'`;
+
+  const { subject, description, attachment, created_by } = req.body;
+  const { id } = req.params;
+  try {
+    await db.promise().query(sql, [
+      subject,
+      description,
+      attachment,
+      created_by,
+      id
+    ]);
+    res.json({ message: "News updated" });
+  } catch (err) {
+    console.error("DB-Update Error (News):", err);
+    res.status(500).json({ message: "Update failed" });
+  }
+};
+
+// HARD DELETE
+export const newsDeleteController = async (req, res) => {
+  const sql = `DELETE FROM announcements WHERE id = ? AND Type = 'News'`;
+  const { id } = req.params;
+  try {
+    await db.promise().query(sql, [id]);
+    res.json({ message: "News deleted" });
+  } catch (err) {
+    console.error("DB-Delete Error (News):", err);
     res.status(500).json({ message: "Delete failed" });
   }
 };
