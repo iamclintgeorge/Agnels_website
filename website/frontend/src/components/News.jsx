@@ -1,37 +1,38 @@
 import React, { useState, useEffect } from "react";
-import "../styles/Header.css"; // Custom styles if needed
+import axios from "axios";
+import "../styles/Header.css";          // marquee CSS you already have
 
-const News = () => {
+function News() {
   const [newsItems, setNewsItems] = useState([]);
 
   useEffect(() => {
-    // Simulating news items fetched from an API
-    setNewsItems([
-      "Institute Level Provisional Merit List for Admission to the First Year Engineering for the A.Y.2024-25",
-      "Fee Approval Proposal for Academic Year 2024-25",
-      "NBA Accreditation to Computer Engineering, Mechanical Engineering, Electronics and Telecommunication Engg., Electrical Engineering for three years up to June 2025",
-      "NIRF 2020 Rank Band : 201-250",
-      "New Sports Infrastructure Opened",
-      "Placement Drive for Batch 2024",
-    ]);
-  }, []);
+    const fetchNews = async () => {
+      try {
+        const res = await axios.get("http://localhost:3663/api/home/news");
+        // res.data.result is an array of rows – take the subject for the marquee
+        const titles = res.data?.result?.map((row) => row.subject) || [];
+        setNewsItems(titles);
+      } catch (err) {
+        console.error("Error fetching news:", err);
+        // Optional fallback (leave empty array if you prefer)
+        setNewsItems(["Unable to load news at the moment"]);
+      }
+    };
 
-  // bg-[#102239]
+    fetchNews();
+  }, []);
 
   return (
     <div className="flex items-center space-x-4 w-full">
-      <div className="w-full h-12 pt-2 bg-[#102239] text-white overflow-hidden font-librefranklin text-base md:text-base lg:text-base">
+      <div className="w-full h-12 pt-2 bg-[#102239] text-white overflow-hidden font-librefranklin text-base">
         <div className="marquee flex animate-marquee whitespace-nowrap">
-          {/* Render the news items with dots separating them */}
-          {newsItems.map((item, index) => (
-            <span key={index} className="mr-4 flex items-center">
+          {newsItems.map((item, idx) => (
+            <span key={idx} className="mr-4 flex items-center">
               {/* News text */}
               <span dangerouslySetInnerHTML={{ __html: item }}></span>
               {/* Dot between news items */}
-              {index < newsItems.length - 1 && (
-                <span className="ml-5 text-[#AE9142] text-xl md:text-3xl lg:text-4xl">
-                  •
-                </span>
+              {idx < newsItems.length - 1 && (
+                <span className="ml-5 text-[#AE9142] text-xl">•</span>
               )}
             </span>
           ))}
@@ -39,6 +40,6 @@ const News = () => {
       </div>
     </div>
   );
-};
+}
 
 export default News;
