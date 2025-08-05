@@ -4,6 +4,8 @@ import "./index.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./pages/login";
 import Signup from "./pages/signup";
+import ChangePassword from "./pages/User_Account/changePassword";
+import ForgotPassword from "./pages/User_Account/forgotPassword";
 import Error404 from "./pages/Error_Pages/error404";
 import Error403 from "./pages/Error_Pages/error403";
 import AdminLayout from "./layout/adminLayout";
@@ -173,7 +175,6 @@ const App = () => {
           <Route path="/activity-logs" element={<ActivityLogs />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/training-placement" element={<TrainingPlacement />} />
-          {/* <Route path="/principaldesk" element={<PrincipalDesk />} /> */}
           <Route
             path="/principaldesk"
             element={
@@ -193,6 +194,8 @@ const App = () => {
             path="/rolePermissionManager"
             element={<RolePermissionManager />}
           />
+          <Route path="/change_password" element={<ChangePassword />} />
+          <Route path="/forgot_password" element={<ForgotPassword />} />
         </Route>
         <Route path="*" element={<Error404 />} />
         <Route path="/error403" element={<Error403 />} />

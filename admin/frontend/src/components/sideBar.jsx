@@ -496,10 +496,7 @@ const DynamicSideBar = () => {
         )}
 
         {/* Content Approval Section */}
-        {(user.role === "superAdmin" ||
-          user.role === "principal" ||
-          user.role?.endsWith("Hod") ||
-          user.role === "teach_staff") && (
+        {hasPermission("content_approval") && (
           <Link to="/content-approval" className="flex justify-between pr-8">
             Content Approval <span>&gt;</span>
           </Link>
@@ -603,16 +600,18 @@ const DynamicSideBar = () => {
         )}
 
         {/* Edit User Profiles */}
-        <Link to="/ManageFacultyStaff" className="flex justify-between pr-8">
-          Manage Faculty Staffs <span>&gt;</span>
-        </Link>
+        {hasPermission("manage_staff") && (
+          <Link to="/ManageFacultyStaff" className="flex justify-between pr-8">
+            Manage Faculty Staffs <span>&gt;</span>
+          </Link>
+        )}
 
         {/* Activity Logs */}
-        <p>
+        {hasPermission("logs") && (
           <Link to="/activity-logs" className="flex justify-between pr-8">
             Activity Logs <span>&gt;</span>
           </Link>
-        </p>
+        )}
       </div>
     </div>
   );

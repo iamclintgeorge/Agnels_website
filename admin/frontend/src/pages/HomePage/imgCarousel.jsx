@@ -139,7 +139,7 @@ const ImgCarousel = () => {
       );
 
       setMessage("Image delete request submitted for approval!");
-      fetchImages(); // Refresh images
+      fetchImages();
     } catch (error) {
       console.error("Delete error:", error);
       setMessage("Error submitting delete request.");
