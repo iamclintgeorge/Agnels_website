@@ -80,6 +80,7 @@ export const fetchPermissions = async (req, res) => {
     if (!res) {
       return null;
     }
+    // console.log("fetchPermissionsModel", res);
     return res;
   } catch (error) {
     console.log(error);

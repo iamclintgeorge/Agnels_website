@@ -7,8 +7,8 @@ import {
   aboutSections,
   departments,
   PERMISSIONS_CONFIG,
-  mockPermissions,
 } from "../util/sideBar_utils";
+import axios from "axios";
 
 export const SectionContext = React.createContext({
   setSelectedSection: () => {},
@@ -17,6 +17,8 @@ export const SectionContext = React.createContext({
 const DynamicSideBar = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
+  const [permissionsData, setPermissionsData] = useState([]);
+  const [userPermissions, setUserPermissions] = useState([]);
 
   // State for managing open/closed sections
   const [openSections, setOpenSections] = useState({
@@ -38,21 +40,33 @@ const DynamicSideBar = () => {
     hodDesk: false,
   });
 
-  // User permissions - this should come from your backend/context
-  const [userPermissions, setUserPermissions] = useState([]);
+  useEffect(() => {
+    fetchPermissions();
+  }, []);
 
   useEffect(() => {
-    // Fetch user permissions from backend
-    // For now, using mock data based on role
     if (user) {
       fetchUserPermissions(user.role);
+      console.log("user.role", user.role);
     }
-  }, [user]);
+  }, [user, permissionsData]);
+
+  const fetchPermissions = async () => {
+    try {
+      const permissionRes = await axios.get(
+        "http://localhost:3663/api/fetchroles"
+      );
+      setPermissionsData(permissionRes.data);
+      console.log("Permissions", permissionRes.data);
+    } catch (error) {
+      console.log("Error Fetching Permissions", error);
+    }
+  };
 
   const fetchUserPermissions = async (userRole) => {
-    // This should be an API call to get user permissions
-    // For demo purposes, using mock data
-    setUserPermissions(mockPermissions[userRole] || []);
+    const roleData = permissionsData.find((role) => role.name === userRole);
+    console.log("roleData", roleData);
+    setUserPermissions(roleData ? roleData.permissions : []); // Set permissions based on role
   };
 
   const hasPermission = (permission) => {
@@ -180,8 +194,8 @@ const DynamicSideBar = () => {
         )}
 
         {/* About Us Section */}
-        {/* {hasPermission("about_us") && ( */}
-        {/* <div>
+        {hasPermission("about_us") && (
+          <div>
             <p
               className="cursor-pointer flex justify-between items-center pr-8"
               onClick={() => toggleSection("about")}
@@ -208,8 +222,8 @@ const DynamicSideBar = () => {
                 ))}
               </div>
             )}
-          </div> */}
-        {/* )} */}
+          </div>
+        )}
 
         {/* Departments Section */}
         {hasDepartmentAccess() && (

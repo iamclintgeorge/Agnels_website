@@ -37,10 +37,10 @@ const StudentCorner = () => {
     "Professional Bodies": <ProfessionalBodies />,
     "National Service Scheme": <NSS />,
     "Student Clubs": <StudentClubs />,
-    Infrastructure: <Infrastructure />,
+    "Infrastructure": <Infrastructure />,
     "Cultural Activities": <CulturalActivities />,
     "Anti Ragging": <AntiRagging />,
-    StudentSatisfactionSurvey: <Survey />,
+    "Student Satisfaction Survey": <Survey />,
 
     // "Computer Science and Engineering (Prev. IT)": <InfoT />,
     // "Basic Science and Humanities": <Humanities />,
