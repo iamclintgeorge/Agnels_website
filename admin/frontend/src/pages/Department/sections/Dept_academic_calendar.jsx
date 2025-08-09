@@ -29,6 +29,7 @@ const DeptAcademicCalendar = () => {
       const response = await axios.get(
         `http://localhost:3663/api/department/calendars/${departmentId}`
       );
+      console.log(response.data);
       if (response.data.success) {
         setCalendars(response.data.data);
       }

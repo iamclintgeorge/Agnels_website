@@ -26,6 +26,7 @@ const DeptAchievements = () => {
       const response = await axios.get(
         `http://localhost:3663/api/department/achievements/${departmentId}`
       );
+      console.log(response.data);
       setPdfs(response.data.data); // Setting the fetched data
     } catch (err) {
       console.error("Error loading PDFs:", err);

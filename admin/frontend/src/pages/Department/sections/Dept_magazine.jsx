@@ -23,6 +23,7 @@ const DeptMagazine = () => {
       const response = await axios.get(
         `http://localhost:3663/api/department/magazines/${departmentId}`
       );
+      console.log("Fetched Magazines:", response.data);
       if (response.data.success) {
         setPdfs(response.data.data); // Correctly access the 'data' array
       } else {
