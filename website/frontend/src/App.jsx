@@ -28,6 +28,7 @@ import NIRF from "./pages/NIRF/NIRF";
 import HumanResource from "./pages/HumanResource/HumanResource";
 import NbaNaaC from "./pages/NBA/NBA.jsx";
 import Circulars from "./pages/Circulars/Circulars.jsx";
+import ProfilePage from "./pages/Departments/sections/dept_faculty_profile.jsx";
 
 function App() {
   // Fix: Redirect /pdfs/... requests directly to the browser
@@ -81,6 +82,10 @@ function App() {
           <Route path="/nba-naac" element={<NbaNaaC />} />
           <Route path="/hr" element={<HumanResource />} />
           <Route path="/developers" element={<Developers />} />
+          <Route
+            path="/:department/faculty/:facultyname/:id"
+            element={<ProfilePage />}
+          />
           <Route path="/human-resource" element={<HumanResource />} />
           <Route path="*" element={<ErrorSection />} />
         </Routes>

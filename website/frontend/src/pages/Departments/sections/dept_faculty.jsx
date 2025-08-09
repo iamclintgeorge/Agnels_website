@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios"; // Make sure axios is imported
+import { useNavigate } from "react-router-dom";
 
 const FacultySupportingStaff = ({ departmentName }) => {
   const [departments, setDepartments] = useState([]);
   const [faculties, setFaculties] = useState([]);
   const [selectedDeptId, setSelectedDeptId] = useState(null); // State for department selection
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const dept_url = {
     "Computer Engineering": 2,
@@ -62,7 +64,13 @@ const FacultySupportingStaff = ({ departmentName }) => {
             filteredFaculties.map((faculty) => (
               <div
                 key={faculty.id}
-                className="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 border border-gray-100 overflow-hidden group h-80 flex flex-col"
+                className="bg-white shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 border border-gray-100 overflow-hidden group h-80 flex flex-col"
+                onClick={() => {
+                  const facultyName = faculty.name.replace(/\s+/g, "-");
+                  navigate(
+                    `/${department_id}/faculty/${facultyName}/${faculty.id}`
+                  );
+                }}
               >
                 {/* Faculty Image */}
                 <div className="relative overflow-hidden h-48">

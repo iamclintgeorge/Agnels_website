@@ -5,6 +5,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 import { useMediaQuery } from "react-responsive";
+import { deptFirst } from "../../../utils/dept_mapping.js";
 
 const CustomNextArrow = ({ onClick }) => (
   <button
@@ -67,6 +68,8 @@ const About = ({ departmentName }) => {
     "Computer Science and Engineering (Prev. IT)": 6,
     "Basic Science and Humanities": 3,
   };
+  const deptSlug = deptFirst[departmentName];
+  const section = `${deptSlug}_carousel`;
 
   useEffect(() => {
     fetchText();
@@ -78,7 +81,7 @@ const About = ({ departmentName }) => {
   const fetchImages = async () => {
     try {
       const response = await axios.get(
-        "http://localhost:3663/api/home/carousel/home_carousel"
+        `http://localhost:3663/api/home/carousel/${section}`
       );
       // console.log("Fetched images:", response.data);
       setImages(response.data);
