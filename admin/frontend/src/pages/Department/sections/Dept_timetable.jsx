@@ -15,9 +15,9 @@ const DeptTimetable = () => {
   const [file, setFile] = useState(null);
   const [title, setTitle] = useState("");
   const [year, setYear] = useState("");
-  const [type, setType] = useState("under-graduate"); // Default to 'under-graduate'
-  const [division, setDivision] = useState(""); // Division input
-  const [semester, setSemester] = useState(1); // Default semester to 1
+  const [type, setType] = useState("under-graduate");
+  const [division, setDivision] = useState("");
+  const [semester, setSemester] = useState(1);
   const [uploading, setUploading] = useState(false);
   const { departmentName } = useParams();
   const departmentId = deptId[departmentName];
@@ -26,15 +26,16 @@ const DeptTimetable = () => {
   useEffect(() => {
     fetchPdfs();
     fetchDeptText();
-  }, []);
+  }, [departmentId]);
 
   const fetchPdfs = async () => {
     try {
       const response = await axios.get(
         `http://localhost:3663/api/department/timetables/${departmentId}`
       );
+      console.log("Fetched PDFs:", response.data);
       if (response.data.success) {
-        setPdfs(response.data.data); // Store the PDF data
+        setPdfs(response.data.data);
       } else {
         toast.error("No PDFs found");
       }
@@ -145,6 +146,16 @@ const DeptTimetable = () => {
     }
   };
 
+  const handleCopyLink = async (url) => {
+    try {
+      await navigator.clipboard.writeText(url);
+      toast.success("Link copied to clipboard!");
+    } catch (err) {
+      console.error("Error copying link:", err);
+      toast.error("Failed to copy link");
+    }
+  };
+
   const modules = {
     toolbar: [
       [{ header: [1, 2, 3, false] }],
@@ -174,172 +185,201 @@ const DeptTimetable = () => {
   ];
 
   return (
-    <div className="p-4">
-      <h2 className="text-2xl font-bold mb-4">{deptName} - Time Table</h2>
+    <div className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-sm overflow-hidden">
+        <div className="p-8">
+          <h2 className="text-2xl font-semibold text-gray-900 mb-6">
+            {deptName || "Department"} - Timetable
+          </h2>
 
-      {/* Text Content Section */}
-      <div className="mb-8 p-4 border border-gray-200 rounded-lg">
-        <div className="flex justify-between items-center mb-4">
-          <h3 className="text-lg font-semibold text-gray-700">Information</h3>
-          <button
-            onClick={() => {
-              setEditMode(!editMode);
-              if (!editMode) setTextContent(deptText);
-            }}
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-          >
-            {editMode ? "Cancel" : "Edit"}
-          </button>
-        </div>
-
-        {editMode ? (
-          <div>
-            <ReactQuill
-              ref={quillRef}
-              value={textContent}
-              onChange={setTextContent}
-              modules={modules}
-              formats={formats}
-              className="mb-4"
-              placeholder="Add information about department activities. You can include links to uploaded files here..."
-            />
-            <button
-              onClick={handleTextUpdate}
-              className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
-            >
-              Save Text
-            </button>
-          </div>
-        ) : (
-          <div
-            dangerouslySetInnerHTML={{
-              __html:
-                deptText ||
-                "No information available. Click Edit to add content.",
-            }}
-            className="prose max-w-none"
-          />
-        )}
-      </div>
-
-      {/* File is Handled here */}
-      <form onSubmit={handleUpload} className="mb-8">
-        <div className="mb-4">
-          <label className="block text-gray-700 mb-2">PDF Title</label>
-          <input
-            type="text"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="w-full p-2 border rounded"
-            placeholder="Enter PDF title"
-          />
-        </div>
-
-        <div className="mb-4">
-          <label className="block text-gray-700 mb-2">Year</label>
-          <input
-            type="text"
-            value={year}
-            onChange={(e) => setYear(e.target.value)}
-            className="w-full p-2 border rounded"
-            placeholder="Enter year (e.g., 2023-24)"
-          />
-        </div>
-
-        <div className="mb-4">
-          <label className="block text-gray-700 mb-2">Type</label>
-          <select
-            value={type}
-            onChange={(e) => setType(e.target.value)}
-            className="w-full p-2 border rounded"
-          >
-            <option value="under-graduate">Under-graduate</option>
-            <option value="post-graduate">Post-graduate</option>
-            <option value="phd">PhD</option>
-          </select>
-        </div>
-
-        <div className="mb-4">
-          <label className="block text-gray-700 mb-2">Division</label>
-          <input
-            type="text"
-            value={division}
-            onChange={(e) => setDivision(e.target.value)}
-            className="w-full p-2 border rounded"
-            placeholder="Enter division"
-          />
-        </div>
-
-        <div className="mb-4">
-          <label className="block text-gray-700 mb-2">Semester</label>
-          <input
-            type="number"
-            value={semester}
-            onChange={(e) => setSemester(Number(e.target.value))}
-            min="1"
-            max="8"
-            className="w-full p-2 border rounded"
-            placeholder="Enter semester (1-8)"
-          />
-        </div>
-
-        <div className="mb-4">
-          <label className="block text-gray-700 mb-2">Upload PDF</label>
-          <input
-            type="file"
-            accept="application/pdf"
-            onChange={handleFileChange}
-            className="w-full p-2 border rounded"
-          />
-        </div>
-
-        <button
-          type="submit"
-          disabled={uploading}
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 disabled:bg-blue-300"
-        >
-          {uploading ? "Uploading..." : "Upload PDF"}
-        </button>
-      </form>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {pdfs.length > 0 ? (
-          pdfs.map((pdf) => (
-            <div
-              key={pdf.id}
-              className="border p-4 rounded flex justify-between items-center"
-            >
-              <div>
-                <a
-                  href={`http://localhost:3663${pdf.pdfUrl}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-blue-500 hover:underline"
-                >
-                  {pdf.title}
-                </a>
-                <p className="text-sm text-gray-500">
-                  Uploaded: {new Date(pdf.created_at).toLocaleDateString()}
-                </p>
-                <p className="text-sm text-gray-500">Type: {pdf.type}</p>
-                <p className="text-sm text-gray-500">
-                  Division: {pdf.division}
-                </p>
-                <p className="text-sm text-gray-500">
-                  Semester: {pdf.semester}
-                </p>
-              </div>
+          {/* Text Content Section */}
+          <div className="mb-8 border border-gray-200 rounded-lg p-6 bg-white">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-medium text-gray-900">Information</h3>
               <button
-                onClick={() => handleDelete(pdf.id)}
-                className="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600"
+                onClick={() => {
+                  setEditMode(!editMode);
+                  if (!editMode) setTextContent(deptText);
+                }}
+                className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors duration-200"
               >
-                Delete
+                {editMode ? "Cancel" : "Edit"}
               </button>
             </div>
-          ))
-        ) : (
-          <p>No PDFs available.</p>
-        )}
+
+            {editMode ? (
+              <div>
+                <ReactQuill
+                  ref={quillRef}
+                  value={textContent}
+                  onChange={setTextContent}
+                  modules={modules}
+                  formats={formats}
+                  className="mb-4 bg-white"
+                  placeholder="Add information about department timetables..."
+                />
+                <button
+                  onClick={handleTextUpdate}
+                  className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600 transition-colors duration-200"
+                >
+                  Save Text
+                </button>
+              </div>
+            ) : (
+              <div
+                dangerouslySetInnerHTML={{
+                  __html:
+                    deptText ||
+                    "No information available. Click Edit to add content.",
+                }}
+                className="prose prose-sm max-w-none text-gray-700"
+              />
+            )}
+          </div>
+
+          {/* File Upload Form */}
+          <form onSubmit={handleUpload} className="mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  PDF Title
+                </label>
+                <input
+                  type="text"
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  className="w-full p-2 border border-gray-200 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Enter PDF title"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Year
+                </label>
+                <input
+                  type="text"
+                  value={year}
+                  onChange={(e) => setYear(e.target.value)}
+                  className="w-full p-2 border border-gray-200 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Enter year (e.g., 2023-24)"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Type
+                </label>
+                <select
+                  value={type}
+                  onChange={(e) => setType(e.target.value)}
+                  className="w-full p-2 border border-gray-200 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                >
+                  <option value="under-graduate">Under-graduate</option>
+                  <option value="post-graduate">Post-graduate</option>
+                  <option value="phd">PhD</option>
+                </select>
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Division
+                </label>
+                <input
+                  type="text"
+                  value={division}
+                  onChange={(e) => setDivision(e.target.value)}
+                  className="w-full p-2 border border-gray-200 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Enter division"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Semester
+                </label>
+                <input
+                  type="number"
+                  value={semester}
+                  onChange={(e) => setSemester(Number(e.target.value))}
+                  min="1"
+                  max="8"
+                  className="w-full p-2 border border-gray-200 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="Enter semester (1-8)"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Upload PDF
+                </label>
+                <input
+                  type="file"
+                  accept="application/pdf"
+                  onChange={handleFileChange}
+                  className="w-full p-2 border border-gray-200 rounded-md file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                />
+              </div>
+            </div>
+            <button
+              type="submit"
+              disabled={uploading}
+              className="mt-4 bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 transition-colors duration-200 disabled:bg-blue-300 disabled:cursor-not-allowed"
+            >
+              {uploading ? "Uploading..." : "Upload PDF"}
+            </button>
+          </form>
+
+          {/* PDF List */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {pdfs.length > 0 ? (
+              pdfs.map((pdf) => (
+                <div
+                  key={pdf.id}
+                  className="border border-gray-200 rounded-lg p-4 bg-white hover:bg-gray-50 transition-colors duration-200"
+                >
+                  <div className="flex flex-col">
+                    <a
+                      href={pdf.attachment}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-blue-600 hover:text-blue-800 transition-colors duration-200 font-medium"
+                    >
+                      {pdf.title}
+                    </a>
+                    <p className="text-sm text-gray-500 mt-1">
+                      Type: {pdf.type}
+                    </p>
+                    <p className="text-sm text-gray-500">
+                      Division: {pdf.division || "N/A"}
+                    </p>
+                    <p className="text-sm text-gray-500">
+                      Semester: {pdf.semester}
+                    </p>
+                    <p className="text-sm text-gray-500 truncate">
+                      Link: {pdf.attachment}
+                    </p>
+                  </div>
+                  <div className="flex space-x-2 mt-3">
+                    <button
+                      onClick={() => handleCopyLink(pdf.attachment)}
+                      className="bg-gray-500 text-white px-3 py-1 rounded-md hover:bg-gray-600 transition-colors duration-200 text-sm"
+                      title="Copy link to clipboard"
+                      aria-label="Copy link to clipboard"
+                    >
+                      Copy Link
+                    </button>
+                    <button
+                      onClick={() => handleDelete(pdf.id)}
+                      className="bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 transition-colors duration-200 text-sm"
+                      title="Delete PDF"
+                      aria-label="Delete PDF"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p className="text-gray-500 text-sm">No PDFs available.</p>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
