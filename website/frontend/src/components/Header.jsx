@@ -162,12 +162,12 @@ const Header = () => {
             </li>
 
             <li className="ml-4 mt-[-3px]">
-              <button
+              <div
                 onClick={() => navigate("/login")}
                 className="bg-transparent border-white border-[1px] text-xs px-4 py-[5px] hover:bg-white hover:text-black hover:border-black transition-all duration-300"
               >
                 Login
-              </button>
+              </div>
             </li>
           </ul>
         </nav>
@@ -299,7 +299,7 @@ const Header = () => {
 
       {/* Mobile Dropdown for Bottom Navigation */}
       {isBottomMenuOpen && (
-        <div className="fixed inset-0 w-full h-full bg-[#0C2340] flex flex-col z-[99999] px-4 pt-6 md:hidden overflow-y-auto">
+        <div className="fixed inset-0 w-full h-full bg-[#0C2340] flex flex-col z-50 px-4 pt-6 md:hidden overflow-y-auto">
           {/* Top Row: Close Icon and Logo/Text */}
           <div className="flex items-center justify-between mb-6">
             <button
@@ -423,15 +423,15 @@ const Header = () => {
           </nav>
 
           {/* Login Button at the Bottom */}
-          <button
-            className="mt-12 mb-8 border border-white text-white py-2 rounded w-full"
+          <div
+            className="mt-12 mb-8 border border-white text-white py-2 text-center rounded w-full"
             onClick={() => {
               setIsBottomMenuOpen(false);
               navigate("/login");
             }}
           >
             Login
-          </button>
+          </div>
         </div>
       )}
     </header>
