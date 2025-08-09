@@ -131,7 +131,7 @@ const ApprovalDashboard = () => {
   const handleRejectAction = async (requestId, req_roleId) => {
     try {
       setActionLoading(true);
-      const response = await axios.post(
+      const response = await axios.put(
         `http://localhost:3663/api/content-approval/${requestId}/reject`,
         { slaveId: req_roleId },
         {

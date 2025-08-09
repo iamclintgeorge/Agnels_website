@@ -24,7 +24,7 @@ router.get("/pending", getPendingApprovals);
 router.post("/:id/approve", approveRequest);
 
 // // Reject a request
-router.post("/:id/reject", rejectRequest);
+router.put("/:id/reject", rejectRequest);
 
 // // Request revision
 // router.post("/:id/revision", requestRevision);
