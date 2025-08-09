@@ -1,10 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { useParams } from "react-router-dom";
 import { deptId, deptname } from "../../../util/dept_mapping.js";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 const DeptTimetable = () => {
+  const [editMode, setEditMode] = useState(false);
+  const [deptText, setDeptText] = useState("");
+  const [textContent, setTextContent] = useState("");
+  const quillRef = useRef(null);
   const [pdfs, setPdfs] = useState([]);
   const [file, setFile] = useState(null);
   const [title, setTitle] = useState("");
@@ -19,6 +25,7 @@ const DeptTimetable = () => {
 
   useEffect(() => {
     fetchPdfs();
+    fetchDeptText();
   }, []);
 
   const fetchPdfs = async () => {
@@ -34,6 +41,20 @@ const DeptTimetable = () => {
     } catch (err) {
       console.error("Error loading PDFs:", err);
       toast.error("Error fetching PDFs");
+    }
+  };
+
+  const fetchDeptText = async () => {
+    try {
+      const response = await axios.get(
+        `http://localhost:3663/api/department/text/${departmentId}/timetable`
+      );
+      if (response.data.success && response.data.data) {
+        setDeptText(response.data.data.content);
+        setTextContent(response.data.data.content);
+      }
+    } catch (err) {
+      console.error("Error loading department text:", err);
     }
   };
 
@@ -97,10 +118,111 @@ const DeptTimetable = () => {
     }
   };
 
+  const handleTextUpdate = async () => {
+    try {
+      const response = await axios.post(
+        "http://localhost:3663/api/department/text/create",
+        {
+          departmentId: departmentId,
+          section: "timetable",
+          content: textContent,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      if (response.data.success) {
+        toast.success("Text content updated successfully!");
+        setEditMode(false);
+        setDeptText(textContent);
+        fetchDeptText();
+      }
+    } catch (error) {
+      console.error("Text update error:", error);
+      toast.error("Error updating text content");
+    }
+  };
+
+  const modules = {
+    toolbar: [
+      [{ header: [1, 2, 3, false] }],
+      ["bold", "italic", "underline"],
+      [{ list: "ordered" }, { list: "bullet" }],
+      [{ indent: "-1" }, { indent: "+1" }],
+      [{ size: ["small", false, "large", "huge"] }],
+      [{ font: [] }],
+      [{ align: [] }],
+      ["link"],
+      ["clean"],
+    ],
+  };
+
+  const formats = [
+    "header",
+    "bold",
+    "italic",
+    "underline",
+    "list",
+    "bullet",
+    "indent",
+    "size",
+    "font",
+    "align",
+    "link",
+  ];
+
   return (
     <div className="p-4">
       <h2 className="text-2xl font-bold mb-4">{deptName} - Time Table</h2>
 
+      {/* Text Content Section */}
+      <div className="mb-8 p-4 border border-gray-200 rounded-lg">
+        <div className="flex justify-between items-center mb-4">
+          <h3 className="text-lg font-semibold text-gray-700">Information</h3>
+          <button
+            onClick={() => {
+              setEditMode(!editMode);
+              if (!editMode) setTextContent(deptText);
+            }}
+            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+          >
+            {editMode ? "Cancel" : "Edit"}
+          </button>
+        </div>
+
+        {editMode ? (
+          <div>
+            <ReactQuill
+              ref={quillRef}
+              value={textContent}
+              onChange={setTextContent}
+              modules={modules}
+              formats={formats}
+              className="mb-4"
+              placeholder="Add information about department activities. You can include links to uploaded files here..."
+            />
+            <button
+              onClick={handleTextUpdate}
+              className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+            >
+              Save Text
+            </button>
+          </div>
+        ) : (
+          <div
+            dangerouslySetInnerHTML={{
+              __html:
+                deptText ||
+                "No information available. Click Edit to add content.",
+            }}
+            className="prose max-w-none"
+          />
+        )}
+      </div>
+
+      {/* File is Handled here */}
       <form onSubmit={handleUpload} className="mb-8">
         <div className="mb-4">
           <label className="block text-gray-700 mb-2">PDF Title</label>

@@ -1,27 +1,20 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
 import { toast } from "react-toastify";
 import { deptId, deptname } from "../../../util/dept_mapping.js";
 
 const DeptActivities = () => {
   const [activities, setActivities] = useState([]);
-  const [deptText, setDeptText] = useState("");
   const [file, setFile] = useState(null);
   const [heading, setHeading] = useState("");
   const [uploading, setUploading] = useState(false);
-  const [editMode, setEditMode] = useState(false);
-  const [textContent, setTextContent] = useState("");
-  const quillRef = useRef(null);
   const { departmentName } = useParams();
   const departmentId = deptId[departmentName];
   const deptName = deptname[departmentName];
 
   useEffect(() => {
     fetchActivities();
-    fetchDeptText();
   }, []);
 
   const fetchActivities = async () => {
@@ -35,20 +28,6 @@ const DeptActivities = () => {
     } catch (err) {
       console.error("Error loading activities:", err);
       toast.error("Error fetching activities");
-    }
-  };
-
-  const fetchDeptText = async () => {
-    try {
-      const response = await axios.get(
-        `http://localhost:3663/api/department/text/${departmentId}/activities`
-      );
-      if (response.data.success && response.data.data) {
-        setDeptText(response.data.data.content);
-        setTextContent(response.data.data.content);
-      }
-    } catch (err) {
-      console.error("Error loading department text:", err);
     }
   };
 
@@ -117,111 +96,11 @@ const DeptActivities = () => {
     }
   };
 
-  const handleTextUpdate = async () => {
-    try {
-      const response = await axios.post(
-        "http://localhost:3663/api/department/text/create",
-        {
-          departmentId: departmentId,
-          section: "activities",
-          content: textContent,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
-      if (response.data.success) {
-        toast.success("Text content updated successfully!");
-        setEditMode(false);
-        setDeptText(textContent);
-        fetchDeptText();
-      }
-    } catch (error) {
-      console.error("Text update error:", error);
-      toast.error("Error updating text content");
-    }
-  };
-
-  const modules = {
-    toolbar: [
-      [{ header: [1, 2, 3, false] }],
-      ["bold", "italic", "underline"],
-      [{ list: "ordered" }, { list: "bullet" }],
-      [{ indent: "-1" }, { indent: "+1" }],
-      [{ size: ["small", false, "large", "huge"] }],
-      [{ font: [] }],
-      [{ align: [] }],
-      ["link"],
-      ["clean"],
-    ],
-  };
-
-  const formats = [
-    "header",
-    "bold",
-    "italic",
-    "underline",
-    "list",
-    "bullet",
-    "indent",
-    "size",
-    "font",
-    "align",
-    "link",
-  ];
-
   return (
     <div className="p-6 bg-white">
       <h2 className="text-2xl font-bold mb-6 text-gray-800">
         {deptName} - Activities
       </h2>
-
-      {/* Text Content Section */}
-      <div className="mb-8 p-4 border border-gray-200 rounded-lg">
-        <div className="flex justify-between items-center mb-4">
-          <h3 className="text-lg font-semibold text-gray-700">Information</h3>
-          <button
-            onClick={() => {
-              setEditMode(!editMode);
-              if (!editMode) setTextContent(deptText);
-            }}
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-          >
-            {editMode ? "Cancel" : "Edit"}
-          </button>
-        </div>
-
-        {editMode ? (
-          <div>
-            <ReactQuill
-              ref={quillRef}
-              value={textContent}
-              onChange={setTextContent}
-              modules={modules}
-              formats={formats}
-              className="mb-4"
-              placeholder="Add information about department activities. You can include links to uploaded files here..."
-            />
-            <button
-              onClick={handleTextUpdate}
-              className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
-            >
-              Save Text
-            </button>
-          </div>
-        ) : (
-          <div
-            dangerouslySetInnerHTML={{
-              __html:
-                deptText ||
-                "No information available. Click Edit to add content.",
-            }}
-            className="prose max-w-none"
-          />
-        )}
-      </div>
 
       {/* Upload Form */}
       <div className="mb-8 p-4 border border-gray-200 rounded-lg">
