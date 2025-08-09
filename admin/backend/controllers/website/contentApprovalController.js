@@ -266,19 +266,22 @@ export const rejectRequest = async (req, res) => {
       .query(`SELECT * FROM approval_requests WHERE id = ?`, [id]);
 
     allData = fetchDetails[0];
-    const requestData = fetchDetails[0].proposed_content;
+    console.log("allData", allData);
+    const requestData = fetchDetails[0].proposed_content
+      ? fetchDetails[0].proposed_content
+      : fetchDetails[0].current_content;
     if (!requestData) {
       return res.status(404).json({
         success: false,
-        message: "Request not found",
+        message: "requestData not found",
       });
     }
 
     // Attempt to delete the file from /cdn/pending if it exists
     try {
-      const { imageFilename } = JSON.parse(
-        requestData.proposed_content || "{}"
-      );
+      const { imageFilename } = JSON.parse(requestData || "{}");
+      console.log("imageFilename", imageFilename);
+      console.log("requestData", requestData);
       if (imageFilename) {
         const pendingPath = path.join("public/cdn/pending", imageFilename);
         if (fs.existsSync(pendingPath)) {
