@@ -108,7 +108,9 @@ const NavBar = () => {
                     {/* <Link to="/profile">
                       <p>Edit Profile</p>
                     </Link> */}
-                    <p>Edit Account</p>
+                    <Link to="/change_password">
+                      <p>Edit Account</p>
+                    </Link>
                     {/* {(user.role === "hod" || user.role === "superAdmin") && (
                       <Link to="/hoddesk">
                         <p className="mt-5">HOD's Desk</p>

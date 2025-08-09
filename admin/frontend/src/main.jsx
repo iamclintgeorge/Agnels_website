@@ -4,10 +4,13 @@ import "./index.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./pages/login";
 import Signup from "./pages/signup";
+import ChangePassword from "./pages/User_Account/changePassword";
+import ForgotPassword from "./pages/User_Account/forgotPassword";
 import Error404 from "./pages/Error_Pages/error404";
 import Error403 from "./pages/Error_Pages/error403";
 import AdminLayout from "./layout/adminLayout";
 import { AuthProvider } from "./services/useAuthCheck";
+import PrivateRoute from "./services/privateRoute";
 import WhatsNew from "./pages/HomePage/whatsNew";
 import Profile from "./pages/profile";
 import ImgCarousel from "./pages/HomePage/imgCarousel";
@@ -30,6 +33,8 @@ import StudentsCorner from "./pages/StudentsCorner/StudentsCorner";
 import RolePermissionManager from "./pages/rolePermission";
 import ManageFacultyStaff from "./pages/manageFacultyStaff";
 import AdminAdmissions from "./pages/AdminAdmissions";
+import ImportantLinksAdmin from "./pages/ImportantLinksAdmin";
+import AdminDownloadManagement from "./pages/AdminDownloadManagement.jsx";
 
 // IIC
 import Iic_ambassador from "./pages/IIC/iic_ambassador";
@@ -67,6 +72,10 @@ import RoleHierarchy from "./pages/ContentApproval/roleHierarchy";
 
 // Activity Logs Components
 import ActivityLogs from "./pages/AuditLogs/ActivityLogs";
+import AchievementManager from "./pages/HomePage/AchievementManager";
+import AdmissionManager from "./pages/HomePage/AdmissionManager";
+import CircularManager from "./pages/HomePage/CircularManager";
+import NewsManager from "./pages/HomePage/NewsManager";
 
 const App = () => {
   return (
@@ -78,12 +87,19 @@ const App = () => {
         <Route path="/" element={<AdminLayout />}>
           <Route path="/home/carousel" element={<ImgCarousel />} />
           <Route path="/home/whatsNew" element={<WhatsNew />} />
+          <Route path="/home/NewsManager" element={<NewsManager />} />
+          <Route path="/home/AchievementManager" element={<AchievementManager />} />
+          <Route path="/home/AdmissionManager" element={<AdmissionManager />} />
+          <Route path="/home/CircularManager" element={<CircularManager />} />
           <Route path="/home/introtext" element={<IntroText />} />
           <Route path="/home/modal" element={<ImgModal />} />
           <Route path="/department/home" element={<DeptHome />} />
           <Route path="/academic/handbook" element={<AcademicHandbook />} />
           <Route path="/academics" element={<AcademicAdmin />} />
           <Route path="/studentscorner" element={<StudentsCorner />} />
+          <Route path="/admission" element={<AdminAdmissions />} />
+          <Route path="/downloads" element={<AdminDownloadManagement />} />
+          <Route path="/important-links" element={<ImportantLinksAdmin />} />
           <Route path="/roleHierarchy" element={<RoleHierarchy />} />
           <Route path="/ManageFacultyStaff" element={<ManageFacultyStaff />} />
           {/* IIC Routes */}
@@ -165,7 +181,14 @@ const App = () => {
           <Route path="/activity-logs" element={<ActivityLogs />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/training-placement" element={<TrainingPlacement />} />
-          <Route path="/principaldesk" element={<PrincipalDesk />} />
+          <Route
+            path="/principaldesk"
+            element={
+              <PrivateRoute permission="principal_desk">
+                <PrincipalDesk />
+              </PrivateRoute>
+            }
+          />
           <Route path="/about-us" element={<AboutUsManager />} />
           <Route path="/research/:section" element={<ResearchAdmin />} />
           <Route path="/research" element={<ResearchAdmin />} />
@@ -177,6 +200,8 @@ const App = () => {
             path="/rolePermissionManager"
             element={<RolePermissionManager />}
           />
+          <Route path="/change_password" element={<ChangePassword />} />
+          <Route path="/forgot_password" element={<ForgotPassword />} />
         </Route>
         <Route path="*" element={<Error404 />} />
         <Route path="/error403" element={<Error403 />} />

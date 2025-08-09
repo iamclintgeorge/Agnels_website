@@ -4,6 +4,8 @@ import fs from "fs";
 import path from "path";
 import FormData from "form-data";
 import { fileURLToPath } from "url";
+import logger from "../../services/logger.js";
+import { v4 as uuidv4 } from "uuid";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -13,29 +15,29 @@ import { createApprovalRequestModal } from "../../models/website/contentApproval
 
 // Create approval request
 export const createApprovalRequest = async (req, res) => {
+  const body = req.body;
+  const method = body.method;
+  const section = body.section;
+  const title = body.title;
+  const changeSummary = body.changeSummary || body.change_summary;
+  const currentContent = body.currentContent || body.current_content;
+  const file = req.file;
+  const uploadedFilename = file?.filename || null;
+  let proposedContent = body.proposedContent || body.proposed_content;
+  const endpoint = body.endpoint_url;
+  const id = body.id;
+  const username = req.session.user.userName;
+  const client_ip =
+    req.headers["x-forwarded-for"] || req.connection.remoteAddress;
+  const req_userID = req.session.user.id;
+  const requesterRole = req.session.user.role;
+  console.log("client_ip", client_ip);
   try {
-    const body = req.body;
-    // const contentType = body.contentType || body.content_type;
-    // const contentId = body.contentId || body.content_id;
-    const method = body.method;
-    const section = body.section;
-    const title = body.title;
-    const changeSummary = body.changeSummary || body.change_summary;
-    const currentContent = body.currentContent || body.current_content;
-    const file = req.file;
-    const uploadedFilename = file?.filename || null;
-    let proposedContent = body.proposedContent || body.proposed_content;
     if (uploadedFilename) {
       const parsed = JSON.parse(proposedContent || "{}");
       parsed.imageFilename = uploadedFilename;
       proposedContent = JSON.stringify(parsed);
     }
-    const endpoint = body.endpoint_url;
-    const id = body.id;
-    // const changeType = body.changeType || body.operation || body.change_type;
-
-    const req_userID = req.session.user.id;
-    const requesterRole = req.session.user.role;
 
     // Validate required fields
     if (!method || !title || !section) {
@@ -56,6 +58,19 @@ export const createApprovalRequest = async (req, res) => {
       id,
       req_userID,
       requesterRole,
+      username,
+      client_ip,
+    });
+
+    logger.info("Created Approval Request", {
+      id: uuidv4(),
+      title: `${title}`,
+      service: `${section}`,
+      description: `${username} Made a Content Approval Request for ${title}`,
+      level: "INFO",
+      created_by: `${username}`,
+      source_ip: `${client_ip}`,
+      created_on: new Date().toISOString(),
     });
 
     res.status(201).json({
@@ -69,6 +84,16 @@ export const createApprovalRequest = async (req, res) => {
       success: false,
       message: "Failed to create approval request",
       error: error.message,
+    });
+    logger.warn("Error creating approval request", {
+      id: uuidv4(),
+      title: `Error creating approval request`,
+      service: `${section}`,
+      description: `There was an Error when ${username} tried to make a Content Approval Request for ${title}. Error: ${error}`,
+      level: "WARN",
+      created_by: `${username}`,
+      source_ip: `${client_ip}`,
+      created_on: new Date().toISOString(),
     });
   }
 };
@@ -111,6 +136,7 @@ export const getPendingApprovals = async (req, res) => {
 };
 
 export const approveRequest = async (req, res) => {
+  let requestData;
   try {
     const { id } = req.params;
     const slaveId = req.body.slaveId;
@@ -133,7 +159,7 @@ export const approveRequest = async (req, res) => {
       .promise()
       .query(`SELECT * FROM approval_requests WHERE id = ?`, [id]);
 
-    const requestData = fetchDetails[0];
+    requestData = fetchDetails[0];
     if (!requestData) {
       return res
         .status(404)
@@ -170,6 +196,17 @@ export const approveRequest = async (req, res) => {
           id,
         ]);
 
+      logger.info("Content Request Approved", {
+        id: uuidv4(),
+        title: `Content Request Approved`,
+        service: `${requestData.section}`,
+        description: `${requestData.req_username}'s Content Approval Request was Approved for ${requestData.title}`,
+        level: "INFO",
+        created_by: `${requestData.req_username}`,
+        source_ip: `${requestData.req_userIP}`,
+        created_on: new Date().toISOString(),
+      });
+
       return res.status(200).json({
         success: true,
         message: "Request approved and forwarded successfully",
@@ -184,6 +221,16 @@ export const approveRequest = async (req, res) => {
     }
   } catch (err) {
     console.error("Error approving request:", err.message);
+    logger.warn("Error Approving Request", {
+      id: uuidv4(),
+      title: `Error Approving Request`,
+      service: `${requestData.section}`,
+      description: `There was an Error while Rejecting Content Approval Request for ${requestData.title}. Error: ${error}`,
+      level: "WARN",
+      created_by: `${requestData.req_username}`,
+      source_ip: `${requestData.req_userIP}`,
+      created_on: new Date().toISOString(),
+    });
     return res.status(500).json({
       success: false,
       message: "Failed to approve request",
@@ -194,6 +241,7 @@ export const approveRequest = async (req, res) => {
 
 // Reject request
 export const rejectRequest = async (req, res) => {
+  let allData;
   try {
     const { id } = req.params;
     const slaveId = req.body.slaveId;
@@ -215,11 +263,10 @@ export const rejectRequest = async (req, res) => {
     // Fetch request details
     const [fetchDetails] = await db
       .promise()
-      .query(`SELECT proposed_content FROM approval_requests WHERE id = ?`, [
-        id,
-      ]);
+      .query(`SELECT * FROM approval_requests WHERE id = ?`, [id]);
 
-    const requestData = fetchDetails[0];
+    allData = fetchDetails[0];
+    const requestData = fetchDetails[0].proposed_content;
     if (!requestData) {
       return res.status(404).json({
         success: false,
@@ -257,12 +304,33 @@ export const rejectRequest = async (req, res) => {
       success: true,
       message: "Request rejected successfully",
     });
+
+    logger.info("Content Request Rejected", {
+      id: uuidv4(),
+      title: `Content Request Rejected`,
+      service: `${allData.section}`,
+      description: `${allData.req_username}'s Content Approval Request was Rejected for ${allData.title}`,
+      level: "INFO",
+      created_by: `${allData.req_username}`,
+      source_ip: `${allData.req_userIP}`,
+      created_on: new Date().toISOString(),
+    });
   } catch (error) {
     console.error("Error rejecting request:", error);
     res.status(500).json({
       success: false,
       message: "Failed to reject request",
       error: error.message,
+    });
+    logger.warn("Error Rejected Request", {
+      id: uuidv4(),
+      title: `Error Rejected Request`,
+      service: `${allData.section}`,
+      description: `There was an Error while Rejecting Content Approval Request for ${allData.title}. Error: ${error}`,
+      level: "WARN",
+      created_by: `${allData.req_username}`,
+      source_ip: `${allData.req_userIP}`,
+      created_on: new Date().toISOString(),
     });
   }
 };

@@ -175,7 +175,7 @@ const IntroText = () => {
         {
           method: "PUT",
           section: "homepage",
-          title: "Intro Text Update",
+          title: "Home Page Intro Text Update",
           change_summary: "Updated intro text",
           current_content: introText[0].Content,
           proposed_content: content,

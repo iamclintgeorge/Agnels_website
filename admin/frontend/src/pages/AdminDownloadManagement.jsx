@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { PlusCircle, Edit, Trash2, Download, ExternalLink, FileText } from 'lucide-react';
+import { UploadCloud, Edit, Trash2, Download, ExternalLink, FileText } from 'lucide-react';
 
 const AdminDownloadManagement = () => {
   const [downloads, setDownloads] = useState({
@@ -146,14 +146,14 @@ const AdminDownloadManagement = () => {
     <div className="p-6 bg-gray-50 min-h-screen">
       <div className="max-w-7xl mx-auto">
         <div className="bg-white rounded-lg shadow-sm">
-          <div className="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
-            <h1 className="text-2xl font-bold text-gray-900">Download Management</h1>
+          <div className="px-6 py-4 border-b border-gray-200 flex items-center justify-between gap-4 flex-wrap sm:flex-nowrap">
+            <h1 className="text-2xl font-bold text-gray-900 min-w-0 truncate">Download Management</h1>
             <button
               onClick={() => setShowModal(true)}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg flex items-center gap-2 transition-colors shadow-sm shrink-0 sm:ml-auto"
             >
-              <PlusCircle size={20} />
-              Add Download
+              <UploadCloud size={20} />
+              Upload
             </button>
           </div>
 
@@ -166,7 +166,7 @@ const AdminDownloadManagement = () => {
                 {downloads[category.value]?.length > 0 ? (
                   <div className="grid gap-4">
                     {downloads[category.value].map(download => (
-                      <div key={download.id} className="bg-gray-50 p-4 rounded-lg border">
+                      <div key={download.id} className="bg-white p-4 rounded-lg border hover:shadow-sm transition-shadow">
                         <div className="flex justify-between items-start">
                           <div className="flex-1">
                             <h3 className="font-semibold text-gray-900 mb-2">{download.title}</h3>
@@ -186,7 +186,7 @@ const AdminDownloadManagement = () => {
                                   <span>External Link</span>
                                 </div>
                               )}
-                              <span>Order: {download.display_order}</span>
+                              <span className="inline-flex items-center rounded-full bg-gray-100 px-2 py-0.5 text-xs text-gray-600">Order: {download.display_order}</span>
                             </div>
                           </div>
                           <div className="flex gap-2 ml-4">
@@ -208,7 +208,13 @@ const AdminDownloadManagement = () => {
                     ))}
                   </div>
                 ) : (
-                  <p className="text-gray-500 italic">No downloads available for this category</p>
+                  <div className="rounded-lg border-2 border-dashed border-gray-200 p-8 text-center bg-gray-50">
+                    <div className="flex flex-col items-center gap-3">
+                      <UploadCloud className="text-gray-400" size={36} />
+                      <p className="text-gray-500">No downloads available for this category</p>
+                      <p className="text-xs text-gray-400">Use the Upload button above to add a file.</p>
+                    </div>
+                  </div>
                 )}
               </div>
             ))}
@@ -220,7 +226,7 @@ const AdminDownloadManagement = () => {
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-white rounded-lg p-6 w-full max-w-md mx-4">
               <h2 className="text-xl font-bold mb-4">
-                {editingDownload ? 'Edit Download' : 'Add New Download'}
+                {editingDownload ? 'Edit Download' : 'Upload New File'}
               </h2>
 
               <div className="space-y-4">
@@ -310,7 +316,7 @@ const AdminDownloadManagement = () => {
                     disabled={loading}
                     className="flex-1 bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg transition-colors disabled:opacity-50"
                   >
-                    {loading ? 'Saving...' : (editingDownload ? 'Update' : 'Create')}
+                    {loading ? 'Saving...' : (editingDownload ? 'Update' : 'Upload')}
                   </button>
                   <button
                     type="button"

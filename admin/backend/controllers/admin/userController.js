@@ -124,6 +124,7 @@ export const fetchrolesController = async (req, res) => {
 export const fetchpermissionsController = async (req, res) => {
   try {
     const permissions = await fetchPermissions();
+    // console.log("fetchpermissionsController", permissions);
     res.status(200).json(permissions);
   } catch (err) {
     res.status(500).json({ message: "Failed to fetch Permissions" });

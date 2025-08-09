@@ -3,7 +3,7 @@ import AcademicHome from "./AcademicHome";
 import AcademicHandbook from "./AcademicHandbook";
 import AcademicHandbookHonours from "./AcademicHandbookHonours";
 import AcademicCalendar from "./AcademicCalendar";
-import Examinations from "./AcademinExaminations";
+import Examinations from "./AcademicExaminations";
 import APMS from "./AcademicLinks"
 import LMS from "./AcademicLinks";
 import StakeholderFeedback from "./StakeholderFeedback";
