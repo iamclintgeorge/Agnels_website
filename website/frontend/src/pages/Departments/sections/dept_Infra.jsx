@@ -33,10 +33,10 @@ const Infrastructure = ({ departmentName }) => {
   }, [departmentId]);
 
   return (
-    <div className="min-h-screen bg-gray-100 py-0 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen py-0 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto shadow-sm overflow-hidden">
-        <div className="p-8">
-          <h2 className="text-3xl font-semibold font-playfair text-gray-900 mb-6">
+        <div>
+          <h2 className="text-3xl font-semibold font-playfair text-gray-900 mb-10">
             Infrastructure
           </h2>
           {infrastructure.length > 0 ? (

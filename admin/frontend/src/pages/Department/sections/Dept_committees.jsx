@@ -8,12 +8,12 @@ import { deptId, deptname } from "../../../util/dept_mapping.js";
 
 const DeptCommittees = () => {
   const [committees, setCommittees] = useState([]);
-  const [deptText, setDeptText] = useState("");
   const [file, setFile] = useState(null);
   const [type, setType] = useState("Under-graduate");
   const [year, setYear] = useState("");
   const [uploading, setUploading] = useState(false);
   const [editMode, setEditMode] = useState(false);
+  const [deptText, setDeptText] = useState("");
   const [textContent, setTextContent] = useState("");
   const quillRef = useRef(null);
   const { departmentName } = useParams();
@@ -192,6 +192,19 @@ const DeptCommittees = () => {
     "link",
   ];
 
+  // Copy Link Feature
+  const handleCopyLink = (link) => {
+    navigator.clipboard.writeText(link).then(
+      () => {
+        toast.success("Link copied to clipboard!");
+      },
+      (err) => {
+        console.error("Error copying link:", err);
+        toast.error("Failed to copy link");
+      }
+    );
+  };
+
   return (
     <div className="p-6 bg-white">
       <h2 className="text-2xl font-bold mb-6 text-gray-800">
@@ -342,13 +355,20 @@ const DeptCommittees = () => {
                 </div>
                 <div>
                   <a
-                    href={`http://localhost:3663/cdn/department/${committee.attachment}`}
+                    href={`${committee.attachment}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-500 hover:underline font-medium"
                   >
                     {committee.attachment}
                   </a>
+                  <button
+                    onClick={() => handleCopyLink(`${committee.attachment}`)}
+                    className="ml-2 text-gray-600 hover:text-gray-800"
+                    title="Copy Link"
+                  >
+                    Copy Link
+                  </button>
                   <p className="text-sm text-gray-500 mt-1">
                     Uploaded:{" "}
                     {new Date(committee.created_timestamp).toLocaleDateString()}
