@@ -17,7 +17,7 @@ const ResultAnalysis = ({ departmentName }) => {
 
   return (
     <div className="result-analysis-section">
-      <h2>Result Analysis</h2>
+      <h2 className="font-playfair text-3xl font-semibold">Result Analysis</h2>
       <div dangerouslySetInnerHTML={{ __html: content }} />
     </div>
   );
