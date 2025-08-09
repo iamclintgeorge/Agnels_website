@@ -83,7 +83,7 @@ function App() {
           <Route path="/hr" element={<HumanResource />} />
           <Route path="/developers" element={<Developers />} />
           <Route
-            path="/:department/faculty/:facultyname"
+            path="/:department/faculty/:facultyname/:id"
             element={<ProfilePage />}
           />
           <Route path="/human-resource" element={<HumanResource />} />

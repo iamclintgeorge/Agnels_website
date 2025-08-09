@@ -67,7 +67,9 @@ const FacultySupportingStaff = ({ departmentName }) => {
                 className="bg-white shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 border border-gray-100 overflow-hidden group h-80 flex flex-col"
                 onClick={() => {
                   const facultyName = faculty.name.replace(/\s+/g, "-");
-                  navigate(`/${department_id}/faculty/${facultyName}`);
+                  navigate(
+                    `/${department_id}/faculty/${facultyName}/${faculty.id}`
+                  );
                 }}
               >
                 {/* Faculty Image */}
