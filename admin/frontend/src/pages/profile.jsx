@@ -246,13 +246,13 @@ const ProfilePage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-md overflow-hidden">
+    <div className="min-h-screen py-0 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto overflow-hidden font-inter">
         <div className="p-8">
           {/* Profile Header */}
-          <div className="flex flex-col items-center mb-8">
+          <div className="flex flex-col items-center mb-10">
             <div className="relative group">
-              <div className="w-36 h-36 rounded-full overflow-hidden border-4 border-white shadow-lg mb-4">
+              <div className="w-36 h-36 rounded-full overflow-hidden border-4 border-white shadow-lg">
                 <img
                   src={
                     profile.photo
@@ -295,15 +295,15 @@ const ProfilePage = () => {
               </div>
             </div>
             <div className="text-center">
-              <h2 className="text-2xl font-semibold text-gray-900">
+              <h2 className="text-2xl mt-5 font-inter font-semibold text-gray-900">
                 {profile.name || "User Profile"}
               </h2>
             </div>
           </div>
 
           {/* Personal Information */}
-          <div className="mb-8 bg-gray-50 p-6 rounded-lg">
-            <h3 className="text-xl font-medium text-gray-900 mb-6 border-b pb-2">
+          <div className="mb-8 border-2 border-gray-300 p-6 rounded-lg">
+            <h3 className="text-2xl font-playfair font-medium text-gray-900 mb-6 border-b pb-2">
               Personal Information
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -361,8 +361,8 @@ const ProfilePage = () => {
           </div>
 
           {/* Academic Details */}
-          <div className="mb-8 bg-gray-50 p-6 rounded-lg">
-            <h3 className="text-xl font-medium text-gray-900 mb-6 border-b pb-2">
+          <div className="mb-8 border-2 border-gray-300 p-6 rounded-lg">
+            <h3 className="text-2xl font-playfair font-medium text-gray-900 mb-6 border-b pb-2">
               Academic Details
             </h3>
             <div className="space-y-6">
