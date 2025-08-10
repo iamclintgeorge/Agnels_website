@@ -260,3 +260,100 @@ export const deleteResearch = async (id, researchId) => {
     ]);
   return result.affectedRows > 0;
 };
+
+export const updateOnlineProfile = async (userId, profileId, description) => {
+  try {
+    console.log(
+      "userId, profileId, description",
+      userId,
+      profileId,
+      description
+    );
+    const result = await db
+      .promise()
+      .query(
+        "UPDATE faculty_online_profiles SET description = ? WHERE id = ? AND faculty_id = ?",
+        [description, profileId, userId]
+      );
+    return [result];
+  } catch (error) {
+    console.log(`Error updating online profile: ${error.message}`);
+  }
+};
+
+export const updateSpecialization = async (userId, specId, description) => {
+  try {
+    const result = await db
+      .promise()
+      .query(
+        "UPDATE faculty_specializations SET description = ? WHERE id = ? AND faculty_id = ?",
+        [description, specId, userId]
+      );
+    return [result];
+  } catch (error) {
+    throw new Error(`Error updating specialization: ${error.message}`);
+  }
+};
+
+export const updateSubject = async (
+  userId,
+  subjectId,
+  { subject, type, semester }
+) => {
+  try {
+    const result = await db
+      .promise()
+      .query(
+        "UPDATE faculty_subjects SET subject = ?, type = ?, semester = ? WHERE id = ? AND faculty_id = ?",
+        [subject, type, semester, subjectId, userId]
+      );
+    return [result];
+  } catch (error) {
+    throw new Error(`Error updating subject: ${error.message}`);
+  }
+};
+
+export const updatePaper = async (
+  userId,
+  paperId,
+  { title, description, link }
+) => {
+  try {
+    console.log("title, description, link", title, description, link);
+    const result = await db
+      .promise()
+      .query(
+        "UPDATE faculty_papers SET title = ?, description = ?, link = ? WHERE id = ? AND faculty_id = ?",
+        [title, description, link, paperId, userId]
+      );
+    return [result];
+  } catch (error) {
+    throw new Error(`Error updating paper: ${error.message}`);
+  }
+};
+
+export const updateResearch = async (
+  userId,
+  researchId,
+  { title, grant_type, funding_organization, amount, duration }
+) => {
+  try {
+    const result = await db
+      .promise()
+      .query(
+        "UPDATE faculty_researches SET title = ?, grant_type = ?, funding_organization = ?, amount = ?, duration = ? WHERE id = ? AND faculty_id = ?",
+        [
+          title,
+          grant_type,
+          funding_organization,
+          amount,
+          duration,
+          researchId,
+          userId,
+        ]
+      );
+    return [result];
+  } catch (error) {
+    throw new Error(`Error updating research project: ${error.message}`);
+  }
+};

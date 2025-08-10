@@ -12,6 +12,11 @@ import {
   deleteSubjectController,
   deletePaperController,
   deleteResearchController,
+  updateOnlineProfileController,
+  updateSpecializationController,
+  updateSubjectController,
+  updatePaperController,
+  updateResearchController,
 } from "../../controllers/website/profileController.js";
 import multer from "multer";
 import path from "path";
@@ -64,5 +69,10 @@ router.delete("/:id/specialization/:specId", deleteSpecializationController);
 router.delete("/:id/subject/:subjectId", deleteSubjectController);
 router.delete("/:id/paper/:paperId", deletePaperController);
 router.delete("/:id/research/:researchId", deleteResearchController);
+router.put("/:id/online-profile/:profileId", updateOnlineProfileController);
+router.put("/:id/specialization/:specId", updateSpecializationController);
+router.put("/:id/subject/:subjectId", updateSubjectController);
+router.put("/:id/paper/:paperId", updatePaperController);
+router.put("/:id/research/:researchId", updateResearchController);
 
 export default router;

@@ -11,6 +11,11 @@ import {
   deleteSubject,
   deletePaper,
   deleteResearch,
+  updateOnlineProfile,
+  updateSpecialization,
+  updateSubject,
+  updatePaper,
+  updateResearch,
 } from "../../models/website/profileModel.js";
 import fs from "fs/promises";
 import path from "path";
@@ -235,5 +240,101 @@ export const deleteResearchController = async (req, res) => {
   } catch (error) {
     console.error("Delete research error:", error);
     res.status(500).json({ message: "Error deleting research project" });
+  }
+};
+
+export const updateOnlineProfileController = async (req, res) => {
+  try {
+    const { id, profileId } = req.params;
+    const { description } = req.body;
+    console.log("id, profileId, description", id, profileId, description);
+
+    const updated = await updateOnlineProfile(id, profileId, description);
+    if (!updated) {
+      return res.status(404).json({ message: "Profile not found" });
+    }
+
+    res.status(200).json({ message: "Online profile updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+export const updateSpecializationController = async (req, res) => {
+  try {
+    const { id, specId } = req.params;
+    const { description } = req.body;
+
+    const updated = await updateSpecialization(id, specId, description);
+    if (!updated) {
+      return res.status(404).json({ message: "Specialization not found" });
+    }
+
+    res.status(200).json({ message: "Specialization updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+export const updateSubjectController = async (req, res) => {
+  try {
+    const { id, subjectId } = req.params;
+    const { subject, type, semester } = req.body;
+
+    const updated = await updateSubject(id, subjectId, {
+      subject,
+      type,
+      semester,
+    });
+    if (!updated) {
+      return res.status(404).json({ message: "Subject not found" });
+    }
+
+    res.status(200).json({ message: "Subject updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+export const updatePaperController = async (req, res) => {
+  try {
+    const { id, paperId } = req.params;
+    const { title, description, link } = req.body;
+
+    const updated = await updatePaper(id, paperId, {
+      title,
+      description,
+      link,
+    });
+    if (!updated) {
+      return res.status(404).json({ message: "Paper not found" });
+    }
+
+    res.status(200).json({ message: "Paper updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+export const updateResearchController = async (req, res) => {
+  try {
+    const { id, researchId } = req.params;
+    const { title, grant_type, funding_organization, amount, duration } =
+      req.body;
+
+    const updated = await updateResearch(id, researchId, {
+      title,
+      grant_type,
+      funding_organization,
+      amount,
+      duration,
+    });
+    if (!updated) {
+      return res.status(404).json({ message: "Research project not found" });
+    }
+
+    res.status(200).json({ message: "Research project updated successfully" });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
   }
 };
