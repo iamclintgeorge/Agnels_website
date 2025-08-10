@@ -113,7 +113,7 @@ const ProfilePage = () => {
               <p className="text-sm">
                 {profile.bioData ? (
                   <a
-                    href={`http://localhost:3663${profile.bioData}`}
+                    href={`${profile.bioData}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-600 hover:text-blue-800 transition-colors duration-200"
@@ -132,7 +132,7 @@ const ProfilePage = () => {
               <p className="text-sm">
                 {profile.publications ? (
                   <a
-                    href={`http://localhost:3663${profile.publications}`}
+                    href={`${profile.publications}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-blue-600 hover:text-blue-800 transition-colors duration-200"
