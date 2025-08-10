@@ -202,11 +202,10 @@ const ProfilePage = () => {
                     className="overflow-x-auto"
                     dangerouslySetInnerHTML={{
                       __html: `
-                  ${profile.specializations.map(
-                    (spec, index) => `${spec.areasOfSpecialization}
-                    `
-                  )}
-            `,
+    ${profile.specializations
+      .map((spec) => `${spec.areasOfSpecialization}`)
+      .join("")}
+  `,
                     }}
                   ></div>
                 ) : (
