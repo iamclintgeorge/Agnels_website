@@ -64,7 +64,7 @@ const FacultySupportingStaff = ({ departmentName }) => {
             filteredFaculties.map((faculty) => (
               <div
                 key={faculty.id}
-                className="bg-white shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 border border-gray-100 overflow-hidden group h-80 flex flex-col"
+                className="border-2 border-gray-300 pt-5 hover:shadow-2xl transition-all duration-300 transform hover:scale-105 overflow-hidden group h-80 flex flex-col"
                 onClick={() => {
                   const facultyName = faculty.name.replace(/\s+/g, "-");
                   navigate(
