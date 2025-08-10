@@ -12,7 +12,8 @@ import AdminLayout from "./layout/adminLayout";
 import { AuthProvider } from "./services/useAuthCheck";
 import PrivateRoute from "./services/privateRoute";
 import WhatsNew from "./pages/HomePage/whatsNew";
-import Profile from "./pages/profile";
+// import Profile from "./pages/profile";
+import ProfilePage from "./pages/ProfilePage/profilePage";
 import ImgCarousel from "./pages/HomePage/imgCarousel";
 import IntroText from "./pages/HomePage/introText";
 import ImgModal from "./pages/HomePage/home_Modal";
@@ -282,7 +283,7 @@ const App = () => {
               </PrivateRoute>
             }
           />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/profile" element={<ProfilePage />} />
           <Route
             path="/training-placement"
             element={
