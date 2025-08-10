@@ -50,6 +50,22 @@ const upload = multer({
 const router = express.Router();
 
 router.get("/:id", getProfileController);
+
+//POST Requests
+router.post("/:id/online-profile", addOnlineProfileController);
+router.post("/:id/specialization", addSpecializationController);
+router.post("/:id/subject", addSubjectController);
+router.post("/:id/paper", addPaperController);
+router.post("/:id/research", addResearchController);
+
+//DELETE Requests
+router.delete("/:id/online-profile/:profileId", deleteOnlineProfileController);
+router.delete("/:id/specialization/:specId", deleteSpecializationController);
+router.delete("/:id/subject/:subjectId", deleteSubjectController);
+router.delete("/:id/paper/:paperId", deletePaperController);
+router.delete("/:id/research/:researchId", deleteResearchController);
+
+//PUT Requests
 router.put(
   "/:id",
   upload.fields([
@@ -59,16 +75,6 @@ router.put(
   ]),
   updateProfileController
 );
-router.post("/:id/online-profile", addOnlineProfileController);
-router.post("/:id/specialization", addSpecializationController);
-router.post("/:id/subject", addSubjectController);
-router.post("/:id/paper", addPaperController);
-router.post("/:id/research", addResearchController);
-router.delete("/:id/online-profile/:profileId", deleteOnlineProfileController);
-router.delete("/:id/specialization/:specId", deleteSpecializationController);
-router.delete("/:id/subject/:subjectId", deleteSubjectController);
-router.delete("/:id/paper/:paperId", deletePaperController);
-router.delete("/:id/research/:researchId", deleteResearchController);
 router.put("/:id/online-profile/:profileId", updateOnlineProfileController);
 router.put("/:id/specialization/:specId", updateSpecializationController);
 router.put("/:id/subject/:subjectId", updateSubjectController);

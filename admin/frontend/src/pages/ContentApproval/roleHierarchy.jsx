@@ -108,7 +108,7 @@ const RoleHierarchy = () => {
           <h3 className="text-lg font-semibold text-gray-800">
             Master: {master.displayName}
           </h3>
-          <p className="text-sm text-gray-600">Slaves:</p>
+          <p className="text-sm text-gray-600">Members:</p>
           <ul className="mt-2 space-y-1">
             {entries.map((entry) => (
               <li
@@ -143,7 +143,7 @@ const RoleHierarchy = () => {
             Role Hierarchy Management
           </h1>
           <p className="text-gray-600">
-            Manage role master-slave hierarchies for efficient administration
+            Manage role Master-Member hierarchies for Content Approval System.
           </p>
         </div>
 
