@@ -8,9 +8,8 @@ import { deptId, deptname } from "../../../util/dept_mapping.js";
 
 const DeptProjects = () => {
   const [undergraduateProjects, setUndergraduateProjects] = useState([]);
-  const [deptText, setDeptText] = useState("");
   const [editMode, setEditMode] = useState(false);
-  const [textContent, setTextContent] = useState("");
+  const [textContent, setTextContent] = useState(""); // For editing department text
   const [editingProject, setEditingProject] = useState(null);
   const [editProjectContent, setEditProjectContent] = useState("");
   const quillRef = useRef(null);
@@ -20,34 +19,19 @@ const DeptProjects = () => {
 
   useEffect(() => {
     fetchProjects();
-    fetchDeptText();
   }, []);
 
   const fetchProjects = async () => {
     try {
+      // Fetch Projects
       const undergraduateResponse = await axios.get(
         `http://localhost:3663/api/department/projects/undergraduate/${departmentId}`
       );
-
       setUndergraduateProjects(undergraduateResponse.data.data);
       console.log(undergraduateResponse.data);
     } catch (err) {
       console.error("Error loading projects:", err);
       toast.error("Error fetching projects");
-    }
-  };
-
-  const fetchDeptText = async () => {
-    try {
-      const response = await axios.get(
-        `http://localhost:3663/api/department/text/${departmentId}/projects`
-      );
-      if (response.data.success && response.data.data) {
-        setDeptText(response.data.data.content);
-        setTextContent(response.data.data.content);
-      }
-    } catch (err) {
-      console.error("Error loading department text:", err);
     }
   };
 
@@ -81,33 +65,6 @@ const DeptProjects = () => {
     }
   };
 
-  const handleTextUpdate = async () => {
-    try {
-      const response = await axios.post(
-        "http://localhost:3663/api/department/text/create",
-        {
-          departmentId: departmentId,
-          section: "projects",
-          content: textContent,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
-      if (response.data.success) {
-        toast.success("Text content updated successfully!");
-        setEditMode(false);
-        setDeptText(textContent);
-        fetchDeptText();
-      }
-    } catch (error) {
-      console.error("Text update error:", error);
-      toast.error("Error updating text content");
-    }
-  };
-
   const modules = {
     toolbar: [
       [{ header: [1, 2, 3, false] }],
@@ -137,69 +94,24 @@ const DeptProjects = () => {
   ];
 
   return (
-    <div className="p-6 bg-white">
-      <h2 className="text-2xl font-bold mb-6 text-gray-800">
-        {deptName} - Projects
-      </h2>
+    <div className="bg-gray-50 min-h-screen p-6">
+      <div className="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-lg">
+        <h2 className="text-3xl font-semibold text-gray-800 mb-8">
+          {deptName} - Projects
+        </h2>
 
-      {/* Text Content Section */}
-      <div className="mb-8 p-4 border border-gray-200 rounded-lg">
-        <div className="flex justify-between items-center mb-4">
-          <h3 className="text-lg font-semibold text-gray-700">Information</h3>
-          <button
-            onClick={() => {
-              setEditMode(!editMode);
-              if (!editMode) setTextContent(deptText);
-            }}
-            className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-          >
-            {editMode ? "Cancel" : "Edit"}
-          </button>
-        </div>
-
-        {editMode ? (
-          <div>
-            <ReactQuill
-              ref={quillRef}
-              value={textContent}
-              onChange={setTextContent}
-              modules={modules}
-              formats={formats}
-              className="mb-4"
-              placeholder="Add information about projects. You can include guidelines, requirements, etc..."
-            />
-            <button
-              onClick={handleTextUpdate}
-              className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
-            >
-              Save Text
-            </button>
-          </div>
-        ) : (
-          <div
-            dangerouslySetInnerHTML={{
-              __html:
-                deptText ||
-                "No information available. Click Edit to add content.",
-            }}
-            className="prose max-w-none"
-          />
-        )}
-      </div>
-
-      {/* Projects Section */}
-      <div className="space-y-4">
-        {undergraduateProjects.length > 0 ? (
-          undergraduateProjects.map((project) => (
-            <div
-              key={project.id}
-              className="border border-gray-200 p-4 rounded-lg hover:shadow-md transition-shadow"
-            >
-              <div className="flex justify-between items-start mb-2">
-                <span className="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
-                  {project.type} Project
-                </span>
-                <div className="flex space-x-2">
+        {/* Projects Section */}
+        <div className="space-y-6">
+          {undergraduateProjects.length > 0 ? (
+            undergraduateProjects.map((project) => (
+              <div
+                key={project.id}
+                className="border border-gray-200 p-6 rounded-lg hover:shadow-lg transition-shadow duration-200"
+              >
+                <div className="flex justify-between items-center mb-4">
+                  <span className="inline-block bg-blue-100 text-blue-800 text-xs px-3 py-1 rounded-full font-medium">
+                    {project.type} Project
+                  </span>
                   <button
                     onClick={() => {
                       setEditingProject(project.id);
@@ -211,48 +123,48 @@ const DeptProjects = () => {
                     ✏️
                   </button>
                 </div>
-              </div>
 
-              {editingProject === project.id ? (
-                <div>
-                  <ReactQuill
-                    value={editProjectContent}
-                    onChange={setEditProjectContent}
-                    modules={modules}
-                    formats={formats}
-                    className="mb-4"
-                  />
-                  <div className="flex space-x-2">
-                    <button
-                      onClick={() => handleUpdateProject(project.id)}
-                      className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
-                    >
-                      Save
-                    </button>
-                    <button
-                      onClick={() => {
-                        setEditingProject(null);
-                        setEditProjectContent("");
-                      }}
-                      className="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600"
-                    >
-                      Cancel
-                    </button>
+                {editingProject === project.id ? (
+                  <div>
+                    <ReactQuill
+                      value={editProjectContent}
+                      onChange={setEditProjectContent}
+                      modules={modules}
+                      formats={formats}
+                      className="mb-6"
+                    />
+                    <div className="flex space-x-4">
+                      <button
+                        onClick={() => handleUpdateProject(project.id)}
+                        className="bg-green-600 text-white px-5 py-2 rounded-md hover:bg-green-700 transition-colors"
+                      >
+                        Save
+                      </button>
+                      <button
+                        onClick={() => {
+                          setEditingProject(null);
+                          setEditProjectContent("");
+                        }}
+                        className="bg-gray-500 text-white px-5 py-2 rounded-md hover:bg-gray-600 transition-colors"
+                      >
+                        Cancel
+                      </button>
+                    </div>
                   </div>
-                </div>
-              ) : (
-                <div
-                  dangerouslySetInnerHTML={{ __html: project.projects }}
-                  className="prose max-w-none"
-                />
-              )}
+                ) : (
+                  <div
+                    dangerouslySetInnerHTML={{ __html: project.projects }}
+                    className="prose max-w-none mt-4 text-gray-700"
+                  />
+                )}
+              </div>
+            ))
+          ) : (
+            <div className="text-center py-12 text-gray-500 text-xl">
+              No projects available.
             </div>
-          ))
-        ) : (
-          <div className="text-center py-8 text-gray-500">
-            No projects available.
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );

@@ -195,8 +195,8 @@ const DynamicSideBar = () => {
         )}
 
         {/* About Us Section */}
-        {hasPermission("about_us") && (
-          <div>
+        {/* {hasPermission("about_us") && ( */}
+        {/* <div>
             <p
               className="cursor-pointer flex justify-between items-center pr-8"
               onClick={() => toggleSection("about")}
@@ -223,8 +223,8 @@ const DynamicSideBar = () => {
                 ))}
               </div>
             )}
-          </div>
-        )}
+          </div> */}
+        {/* )} */}
 
         {/* Departments Section */}
         {hasDepartmentAccess() && (

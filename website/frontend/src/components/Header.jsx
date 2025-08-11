@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import logo from "../assets/imgs/fcritlogo.png";
 import { FaBars, FaInstagram, FaFacebookF } from "react-icons/fa";
 import { FaLinkedinIn } from "react-icons/fa6";
@@ -13,6 +13,20 @@ const Header = () => {
     useState(false); // For Student Corner submenu
 
   const navigate = useNavigate();
+
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (isBottomMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+
+    // Cleanup function to reset overflow when component unmounts
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isBottomMenuOpen]);
 
   return (
     <header className="bg-[#0c2340] text-white p-0 m-0 relative h-48 sm:h-52 w-full z-10">
@@ -65,7 +79,7 @@ const Header = () => {
           onClick={() => navigate("/")}
         />
         <div
-          className="ml-20 sm:ml-32 mt-2 sm:mt-0 cursor-pointer"
+          className="ml-16 sm:ml-32 mt-2 sm:mt-0 cursor-pointer"
           onClick={() => navigate("/")}
         >
           <div className="relative top-8 sm:left-10">
@@ -108,11 +122,7 @@ const Header = () => {
             }}
             className="z-30"
           >
-            {isBottomMenuOpen ? (
-              <span className="text-white text-3xl">&times;</span>
-            ) : (
-              <FaBars className="text-white text-2xl" />
-            )}
+            <FaBars className="text-white text-2xl" />
           </button>
         </div>
 
@@ -168,19 +178,19 @@ const Header = () => {
             </li>
 
             <li className="ml-4 mt-[-3px]">
-              <button
+              <div
                 onClick={() => navigate("/login")}
                 className="bg-transparent border-white border-[1px] text-xs px-4 py-[5px] hover:bg-white hover:text-black hover:border-black transition-all duration-300"
               >
                 Login
-              </button>
+              </div>
             </li>
           </ul>
         </nav>
       </div>
 
       {/* <div className="ml-[90vw] -mt-5 mb-5">Hi</div> */}
-      <SearchBar />
+      {!isBottomMenuOpen && <SearchBar />}
 
       {/* Bottom Navigation Links (Desktop) */}
       <div className="absolute gap-3 text-base p-0 m-0 font-inter z-10 ml-[42vw] mr-10 mt-1 text-nowrap font-light hidden md:flex cursor-default">
@@ -305,11 +315,11 @@ const Header = () => {
 
       {/* Mobile Dropdown for Bottom Navigation */}
       {isBottomMenuOpen && (
-        <div className="fixed inset-0 w-full h-full bg-[#0C2340] flex flex-col z-[99999] px-4 pt-6 md:hidden overflow-y-auto">
+        <div className="fixed inset-0 w-full h-full bg-[#0C2340] flex flex-col z-[9998] px-4 pt-6 md:hidden overflow-y-auto">
           {/* Top Row: Close Icon and Logo/Text */}
           <div className="flex items-center justify-between mb-6">
             <button
-              className="text-white text-3xl"
+              className="text-white text-3xl z-[9999]"
               onClick={() => setIsBottomMenuOpen(false)}
             >
               &times;
@@ -436,15 +446,15 @@ const Header = () => {
           </nav>
 
           {/* Login Button at the Bottom */}
-          <button
-            className="mt-12 mb-8 border border-white text-white py-2 rounded w-full"
+          <div
+            className="mt-12 mb-8 border border-white text-white py-2 text-center rounded w-full"
             onClick={() => {
               setIsBottomMenuOpen(false);
               navigate("/login");
             }}
           >
             Login
-          </button>
+          </div>
         </div>
       )}
     </header>

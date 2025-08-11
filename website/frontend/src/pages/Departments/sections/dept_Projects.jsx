@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
+import "react-quill/dist/quill.snow.css";
 
 const Projects = ({ departmentName }) => {
-  const [content, setContent] = useState({}); // Renamed from 'committee' to 'content'
+  const [projects, setProjects] = useState([]);
   const [message, setMessage] = useState("");
 
   const departmentId = {
@@ -12,70 +13,64 @@ const Projects = ({ departmentName }) => {
     "Electrical Engineering": 4,
     "Mechanical Engineering": 5,
     "Computer Science and Engineering (Prev. IT)": 6,
-    Home: "general", // For general department home
+    Home: "general",
   };
 
-  console.log("Activities", departmentName);
-
   useEffect(() => {
-    fetchContent();
+    fetchProjects();
   }, [departmentName]);
 
-  const fetchContent = async () => {
+  const fetchProjects = async () => {
     try {
       const departmentSlug = departmentId[departmentName];
+      if (!departmentSlug) {
+        setMessage("Invalid department name.");
+        return;
+      }
       const response = await axios.get(
         `http://localhost:3663/api/department/projects/undergraduate/${departmentSlug}`
       );
-      console.log(
-        `Fetched ${departmentName} Department Content:`,
-        response.data
-      );
+      console.log(`Fetched ${departmentName} Projects Data:`, response.data);
 
-      // Check if the response contains content data
       if (
         response.data.success &&
         response.data.data &&
         response.data.data.length > 0
       ) {
         const fetchedData = response.data.data[0];
-        setContent(fetchedData); // Store the fetched data
-        setMessage(""); // Clear any previous error messages
+        setProjects(fetchedData.projects); // Directly set the HTML content
+        setMessage("");
       } else {
         console.warn(
-          "No valid content data in fetched response:",
+          "No valid project data in fetched response:",
           response.data
         );
-        setMessage("No valid content entry found.");
+        setMessage("No project data found.");
       }
-    } catch (err) {
-      console.error(`Error loading ${departmentName} department content:`, err);
-      setMessage(`Error fetching ${departmentName} department content.`);
+    } catch (error) {
+      console.error(`Error fetching ${departmentName} projects:`, error);
+      setMessage(`Error fetching ${departmentName} projects.`);
     }
   };
 
   return (
-    <div className="activities-section">
-      {message && <p className="error-message">{message}</p>}
-
-      {/* Render file download link */}
-      {content.attachment && (
-        <div>
-          <h1>{content.heading}</h1> {/* If there's a heading */}
-          <a
-            href={`http://localhost:3663/cdn/department/${content.attachment}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-blue-500 hover:underline font-medium"
-          >
-            {content.attachment} {/* Link text */}
-          </a>
-          <p className="text-sm text-gray-500 mt-1">
-            Uploaded: {new Date(content.created_timestamp).toLocaleDateString()}{" "}
-            {/* Display uploaded date */}
-          </p>
-        </div>
-      )}
+    <div className="min-h-screen">
+      <div className="max-w-4xl mx-auto overflow-hidden p-6">
+        <h2 className="text-3xl font-playfair font-semibold text-gray-900 mb-10">
+          Projects
+        </h2>
+        {message && <p className="text-gray-500 text-sm mb-4">{message}</p>}
+        {projects.length > 0 ? (
+          <div
+            className="space-y-6 ql-editor"
+            dangerouslySetInnerHTML={{ __html: projects }} // Inject raw HTML
+          />
+        ) : (
+          !message && (
+            <p className="text-gray-500 text-sm">No project data available</p>
+          )
+        )}
+      </div>
     </div>
   );
 };

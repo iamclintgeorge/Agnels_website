@@ -99,7 +99,7 @@ PhD Programs:
   return (
     <div className="p-8 bg-gray-50 min-h-screen font-sans">
       <div className="mb-8">
-        <h1 className="text-5xl font-light text-black mb-3 heading-premium">
+        <h1 className="text-3xl font-light text-black mb-3 heading-premium">
           Admission Process
         </h1>
       </div>
@@ -190,11 +190,10 @@ Students seeking admission to the second year of the undergraduate programs thro
   return (
     <div className="p-8 bg-gray-50 min-h-screen font-sans">
       <div className="text-center mb-12">
-        <h1 className="text-5xl font-extralight text-black mb-3 heading-premium">
+        <h1 className="text-3xl font-extralight text-black mb-3 heading-premium">
           Undergraduate Admissions
         </h1>
       </div>
-
       <div
         className="text-lg text-gray-800 leading-relaxed"
         dangerouslySetInnerHTML={{ __html: content }}
@@ -261,11 +260,10 @@ Eligibility & Admission Process:
   return (
     <div className="p-8 bg-gray-50 min-h-screen font-sans">
       <div className="text-center mb-12">
-        <h1 className="text-5xl font-extralight text-black mb-3 heading-premium">
+        <h1 className="text-3xl font-extralight text-black mb-3 heading-premium">
           Post Graduate Admissions
         </h1>
       </div>
-
       <div
         className="text-lg text-gray-800 leading-relaxed"
         dangerouslySetInnerHTML={{ __html: content }}
@@ -344,11 +342,10 @@ Eligibility:
   return (
     <div className="p-8 bg-gray-50 min-h-screen font-sans">
       <div className="text-center mb-12">
-        <h1 className="text-5xl font-extralight text-black mb-3 heading-premium">
+        <h1 className="text-3xl font-extralight text-black mb-3 heading-premium">
           PhD Admissions
         </h1>
       </div>
-
       <div
         className="text-lg text-gray-800 leading-relaxed"
         dangerouslySetInnerHTML={{ __html: content }}
@@ -403,7 +400,7 @@ Pay Fees: https://www.eduqfix.com/PayDirect/#/student/pay/XxoRsO6mfiXGAnQY1R64lG
   return (
     <div className="p-8 bg-gray-50 min-h-screen flex flex-col items-center justify-center font-sans">
       <div className="text-center mb-12">
-        <h1 className="text-5xl font-extralight text-gray-900 mb-6 heading-premium">
+        <h1 className="text-3xl font-extralight text-gray-900 mb-6 heading-premium">
           Fee Payment
         </h1>
       </div>

@@ -12,7 +12,8 @@ import AdminLayout from "./layout/adminLayout";
 import { AuthProvider } from "./services/useAuthCheck";
 import PrivateRoute from "./services/privateRoute";
 import WhatsNew from "./pages/HomePage/whatsNew";
-import Profile from "./pages/profile";
+// import Profile from "./pages/profile";
+import ProfilePage from "./pages/ProfilePage/profilePage";
 import ImgCarousel from "./pages/HomePage/imgCarousel";
 import IntroText from "./pages/HomePage/introText";
 import ImgModal from "./pages/HomePage/home_Modal";
@@ -86,24 +87,115 @@ const App = () => {
         <Route path="/signup" element={<Signup />} />
 
         <Route path="/" element={<AdminLayout />}>
-          <Route path="/home/carousel" element={<ImgCarousel />} />
-          <Route path="/home/whatsNew" element={<WhatsNew />} />
-          <Route path="/home/NewsManager" element={<NewsManager />} />
-          <Route path="/home/AchievementManager" element={<AchievementManager />} />
-          <Route path="/home/AdmissionManager" element={<AdmissionManager />} />
-          <Route path="/home/CircularManager" element={<CircularManager />} />
-          <Route path="/home/introtext" element={<IntroText />} />
-          <Route path="/home/modal" element={<ImgModal />} />
+          <Route
+            path="/home/carousel"
+            element={
+              <PrivateRoute permission="home_page">
+                <ImgCarousel />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/home/whatsNew"
+            element={
+              <PrivateRoute permission="home_page">
+                <WhatsNew />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/home/NewsManager"
+            element={
+              <PrivateRoute permission="home_page">
+                <NewsManager />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/home/AchievementManager"
+            element={
+              <PrivateRoute permission="home_page">
+                <AchievementManager />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/home/AdmissionManager"
+            element={
+              <PrivateRoute permission="home_page">
+                <AdmissionManager />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/home/CircularManager"
+            element={
+              <PrivateRoute permission="home_page">
+                <CircularManager />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/home/introtext"
+            element={
+              <PrivateRoute permission="home_page">
+                <IntroText />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/home/modal"
+            element={
+              <PrivateRoute permission="home_page">
+                <ImgModal />
+              </PrivateRoute>
+            }
+          />
           <Route path="/department/home" element={<DeptHome />} />
-          <Route path="/academic/handbook" element={<AcademicHandbook />} />
-          <Route path="/academics" element={<AcademicAdmin />} />
-          <Route path="/studentscorner" element={<StudentsCorner />} />
+          <Route
+            path="/academic/handbook"
+            element={
+              <PrivateRoute permission="academics">
+                <AcademicHandbook />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/academics"
+            element={
+              <PrivateRoute permission="academics">
+                <AcademicAdmin />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/studentscorner"
+            element={
+              <PrivateRoute permission="students_corner">
+                <StudentsCorner />
+              </PrivateRoute>
+            }
+          />
           <Route path="/admission" element={<AdminAdmissions />} />
           <Route path="/downloads" element={<AdminDownloadManagement />} />
           <Route path="/iqac" element={<IQACAdmin />} />
           <Route path="/important-links" element={<ImportantLinksAdmin />} />
-          <Route path="/roleHierarchy" element={<RoleHierarchy />} />
-          <Route path="/ManageFacultyStaff" element={<ManageFacultyStaff />} />
+          <Route
+            path="/roleHierarchy"
+            element={
+              <PrivateRoute permission="content_approval">
+                <RoleHierarchy />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/ManageFacultyStaff"
+            element={
+              <PrivateRoute permission="manage_staff">
+                <ManageFacultyStaff />
+              </PrivateRoute>
+            }
+          />
           {/* IIC Routes */}
           <Route path="/iic-innovation-council" element={<Iic_council />} />
           <Route path="/iic-innovation-policy" element={<Iic_policy />} />
@@ -112,6 +204,7 @@ const App = () => {
             element={<Iic_ambassador />}
           />
           <Route path="/iic-innovation-centre" element={<Iic_innovation />} />
+
           {/* Department Home Routes */}
           <Route
             path="/department/:departmentName/home"
@@ -177,12 +270,35 @@ const App = () => {
           <Route path="/hod-desk/electrical" element={<ElectricalHod />} />
           <Route path="/hod-desk/it" element={<ItHod />} />
           <Route path="/hod-desk/bsh" element={<BshHod />} />
+
           {/* Content Approval Routes */}
-          <Route path="/content-approval" element={<ApprovalDashboard />} />
+          <Route
+            path="/content-approval"
+            element={
+              <PrivateRoute permission="content_approval">
+                <ApprovalDashboard />
+              </PrivateRoute>
+            }
+          />
+
           {/* Activity Logs Routes */}
-          <Route path="/activity-logs" element={<ActivityLogs />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/training-placement" element={<TrainingPlacement />} />
+          <Route
+            path="/activity-logs"
+            element={
+              <PrivateRoute permission="logs">
+                <ActivityLogs />
+              </PrivateRoute>
+            }
+          />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route
+            path="/training-placement"
+            element={
+              <PrivateRoute permission="training_placement">
+                <TrainingPlacement />
+              </PrivateRoute>
+            }
+          />
           <Route
             path="/principaldesk"
             element={
@@ -191,16 +307,69 @@ const App = () => {
               </PrivateRoute>
             }
           />
-          <Route path="/about-us" element={<AboutUsManager />} />
-          <Route path="/research/:section" element={<ResearchAdmin />} />
-          <Route path="/research" element={<ResearchAdmin />} />
-          <Route path="/admin/nirf" element={<AdminNIRF />} />
-          <Route path="/admin/nba-naac" element={<AdminNBANAAC />} />
-          <Route path="/teachingstaff" element={<Teaching_staff />} />
-          <Route path="/nonteachingstaff" element={<Nonteaching_staff />} />
+          <Route
+            path="/about-us"
+            element={
+              <PrivateRoute permission="about_us">
+                <AboutUsManager />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/research/:section"
+            element={
+              <PrivateRoute permission="research">
+                <ResearchAdmin />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/research"
+            element={
+              <PrivateRoute permission="research">
+                <ResearchAdmin />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/admin/nirf"
+            element={
+              <PrivateRoute permission="nirf">
+                <AdminNIRF />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/admin/nba-naac"
+            element={
+              <PrivateRoute permission="nba_naac">
+                <AdminNBANAAC />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/teachingstaff"
+            element={
+              <PrivateRoute permission="human_resource">
+                <Teaching_staff />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/nonteachingstaff"
+            element={
+              <PrivateRoute permission="human_resource">
+                <Nonteaching_staff />
+              </PrivateRoute>
+            }
+          />
           <Route
             path="/rolePermissionManager"
-            element={<RolePermissionManager />}
+            element={
+              <PrivateRoute permission="manage_users">
+                <RolePermissionManager />
+              </PrivateRoute>
+            }
           />
           <Route path="/change_password" element={<ChangePassword />} />
           <Route path="/forgot_password" element={<ForgotPassword />} />

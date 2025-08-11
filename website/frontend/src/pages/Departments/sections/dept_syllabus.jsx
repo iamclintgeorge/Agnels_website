@@ -1,24 +1,55 @@
 import React, { useEffect, useState } from "react";
-// import { fetchDepartmentSectionContent } from "./api";
+import axios from "axios";
 
 const Syllabus = ({ departmentName }) => {
-  const [content, setContent] = useState("");
+  const [deptText, setDeptText] = useState("");
+  const [textContent, setTextContent] = useState("");
+  const [error, setError] = useState("");
+
+  const departmentId = {
+    "Electronics and Telecommunication Engineering": 1,
+    "Computer Engineering": 2,
+    "Basic Science and Humanities": 3,
+    "Electrical Engineering": 4,
+    "Mechanical Engineering": 5,
+    "Computer Science and Engineering (Prev. IT)": 6,
+  };
 
   useEffect(() => {
-    const getContent = async () => {
-      const data = await fetchDepartmentSectionContent(
-        departmentName,
-        "Syllabus"
-      );
-      setContent(data.Content);
-    };
-    getContent();
+    fetchText();
   }, [departmentName]);
 
+  const fetchText = async () => {
+    try {
+      const departmentSlug = departmentId[departmentName];
+      const response = await axios.get(
+        `http://localhost:3663/api/department/text/${departmentSlug}/syllabus`
+      );
+      // console.log("Syllabus Text", response.data);
+
+      // Check if the response contains file data
+      if (response.data.success && response.data.data) {
+        setDeptText(response.data.data.content);
+        setTextContent(response.data.data.content);
+      }
+    } catch (err) {
+      console.error(`Error loading ${departmentName} department file:`, err);
+      setError("Failed to load content.");
+    }
+  };
+
   return (
-    <div className="syllabus-section">
-      <h2>Syllabus</h2>
-      <div dangerouslySetInnerHTML={{ __html: content }} />
+    <div className="p-4">
+      <h1 className="text-3xl font-playfair font-bold mb-10">Syllabus</h1>
+      {error ? (
+        <p className="text-red-500">{error}</p>
+      ) : (
+        <div
+          className="ql-editor text-justify font-librefranklin"
+          style={{ padding: 0 }}
+          dangerouslySetInnerHTML={{ __html: textContent }}
+        />
+      )}
     </div>
   );
 };

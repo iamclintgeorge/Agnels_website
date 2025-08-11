@@ -17,7 +17,9 @@ const AlumniTestimonials = ({ departmentName }) => {
 
   return (
     <div className="alumni-testimonials-section">
-      <h2>Alumni Testimonials</h2>
+      <h2 className="text-3xl font-playfair font-semibold">
+        Alumni Testimonials
+      </h2>
       <div dangerouslySetInnerHTML={{ __html: content }} />
     </div>
   );

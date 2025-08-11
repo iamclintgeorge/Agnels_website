@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import "quill/dist/quill.snow.css";
+import "react-quill/dist/quill.snow.css";
 
 const Dept_home = () => {
   const [content, setContent] = useState("");

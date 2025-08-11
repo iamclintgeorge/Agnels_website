@@ -101,7 +101,7 @@ const NavBar = () => {
                   <div className="absolute left-16 transform -translate-x-full py-4 px-5 space-y-4 bg-[#0C2340] text-nowrap">
                     {user.role !== "superAdmin" && (
                       <Link to="/profile">
-                        <p>Edit Profile</p>
+                        <p className="mb-5">Edit Profile</p>
                       </Link>
                     )}
 
