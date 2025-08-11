@@ -38,6 +38,7 @@ const DynamicSideBar = () => {
     },
     humanResource: false,
     hodDesk: false,
+    iqac: false,
   });
 
   useEffect(() => {
@@ -498,6 +499,13 @@ const DynamicSideBar = () => {
               Important Links <span>&gt;</span>
             </Link>
           </>
+        )}
+
+        {/* IQAC */}
+        {hasPermission("iqac") && (
+          <Link to="/iqac" className="flex justify-between pr-8">
+            IQAC <span>&gt;</span>
+          </Link>
         )}
 
         {/* Content Approval Section */}

@@ -45,7 +45,7 @@ const AdmissionForm = () => {
     });
 
     try {
-      const response = await axios.post("/api/admission/apply", data, {
+      const response = await axios.post("http://localhost:3663/api/admission/apply", data, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

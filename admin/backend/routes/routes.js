@@ -17,6 +17,7 @@ import roleHierarchyRoutes from "./admin/roleHierarchyRoutes.js";
 import downloadsRoutes from "./website/downloadsRoutes.js";
 import importantLinksRoutes from "./website/importantLinksRoutes.js";
 import admissionsContentRoutes from "./website/admissionsContentRoutes.js";
+import iqacRoutes from "./website/iqacRoutes.js";
 import {
   authMiddleware,
   checkPermission,
@@ -47,6 +48,7 @@ router.use("/api/admission", admissionRoutes);
 router.use("/api/downloads", downloadsRoutes);
 router.use("/api/admissions", admissionsContentRoutes);
 router.use("/api/important-links", importantLinksRoutes);
+router.use("/api/iqac", iqacRoutes);
 // router.use("/api/announcements", announcementRoutes);
 
 export default router;

@@ -3,6 +3,7 @@ import {
   admissionsGetSectionController,
   admissionsUpsertSectionController,
   admissionsGetAllSectionsController,
+  admissionsDeleteSectionController,
 } from "../../controllers/website/admissionsContentController.js";
 import { authMiddleware, checkPermission } from "../../middlewares/authMiddleware.js";
 
@@ -18,6 +19,13 @@ router.put(
   authMiddleware,
   checkPermission("admission"),
   admissionsUpsertSectionController
+);
+
+router.delete(
+  "/sections/:sectionKey",
+  authMiddleware,
+  checkPermission("admission"),
+  admissionsDeleteSectionController
 );
 
 export default router;

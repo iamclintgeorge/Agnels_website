@@ -18,8 +18,9 @@ export const AdmissionPro = () => {
       );
       console.log("Fetched admission process content:", response.data);
       
-      if (response.data?.content?.content) {
-        setContent(response.data.content.content);
+      const apiContent = response.data?.content;
+      if (apiContent && Object.prototype.hasOwnProperty.call(apiContent, "content")) {
+        setContent(apiContent.content || "");
       } else {
         // Fallback content if API fails
         setContent(`Ever since its inception, Fr. C. Rodrigues Institute of Technology, Vashi has established itself as one of the leading Engineering Colleges in Mumbai nurturing quality education, supported by its excellent results in the University examinations.
@@ -103,9 +104,10 @@ PhD Programs:
         </h1>
       </div>
 
-      <div className="text-lg text-gray-800 leading-relaxed whitespace-pre-line">
-        {content}
-      </div>
+      <div
+        className="text-lg text-gray-800 leading-relaxed"
+        dangerouslySetInnerHTML={{ __html: content }}
+      />
     </div>
   );
 };
@@ -126,8 +128,9 @@ export const UnderG = () => {
       );
       console.log("Fetched undergraduate content:", response.data);
       
-      if (response.data?.content?.content) {
-        setContent(response.data.content.content);
+      const apiContent = response.data?.content;
+      if (apiContent && Object.prototype.hasOwnProperty.call(apiContent, "content")) {
+        setContent(apiContent.content || "");
       } else {
         // Fallback content
         setContent(`80% seats of the sanctioned intake are admitted through the centralized process, while the remaining 20% are admitted at Institute level.
@@ -192,9 +195,10 @@ Students seeking admission to the second year of the undergraduate programs thro
         </h1>
       </div>
 
-      <div className="text-lg text-gray-800 leading-relaxed whitespace-pre-line">
-        {content}
-      </div>
+      <div
+        className="text-lg text-gray-800 leading-relaxed"
+        dangerouslySetInnerHTML={{ __html: content }}
+      />
     </div>
   );
 };
@@ -214,8 +218,9 @@ export const PostG = () => {
       );
       console.log("Fetched postgraduate content:", response.data);
       
-      if (response.data?.content?.content) {
-        setContent(response.data.content.content);
+      const apiContent = response.data?.content;
+      if (apiContent && Object.prototype.hasOwnProperty.call(apiContent, "content")) {
+        setContent(apiContent.content || "");
       } else {
         setContent(`Allotment of Seats for the Masters Program would be done through the centralized process.
 
@@ -261,9 +266,10 @@ Eligibility & Admission Process:
         </h1>
       </div>
 
-      <div className="text-lg text-gray-800 leading-relaxed whitespace-pre-line">
-        {content}
-      </div>
+      <div
+        className="text-lg text-gray-800 leading-relaxed"
+        dangerouslySetInnerHTML={{ __html: content }}
+      />
     </div>
   );
 };
@@ -283,8 +289,9 @@ export const PhD = () => {
       );
       console.log("Fetched PhD content:", response.data);
       
-      if (response.data?.content?.content) {
-        setContent(response.data.content.content);
+      const apiContent = response.data?.content;
+      if (apiContent && Object.prototype.hasOwnProperty.call(apiContent, "content")) {
+        setContent(apiContent.content || "");
       } else {
         setContent(`Application Form for PhD: Please check the institute website or advertisements in the newspapers for the application form.
 
@@ -342,9 +349,10 @@ Eligibility:
         </h1>
       </div>
 
-      <div className="text-lg text-gray-800 leading-relaxed whitespace-pre-line">
-        {content}
-      </div>
+      <div
+        className="text-lg text-gray-800 leading-relaxed"
+        dangerouslySetInnerHTML={{ __html: content }}
+      />
     </div>
   );
 };
@@ -364,8 +372,9 @@ export const Fees = () => {
       );
       console.log("Fetched fee payment content:", response.data);
       
-      if (response.data?.content?.content) {
-        setContent(response.data.content.content);
+      const apiContent = response.data?.content;
+      if (apiContent && Object.prototype.hasOwnProperty.call(apiContent, "content")) {
+        setContent(apiContent.content || "");
       } else {
         setContent(`Please proceed with the fee payment by clicking the button below:
 
@@ -399,9 +408,10 @@ Pay Fees: https://www.eduqfix.com/PayDirect/#/student/pay/XxoRsO6mfiXGAnQY1R64lG
         </h1>
       </div>
 
-      <div className="text-lg text-gray-800 leading-relaxed whitespace-pre-line text-center">
-        {content}
-      </div>
+      <div
+        className="text-lg text-gray-800 leading-relaxed text-center"
+        dangerouslySetInnerHTML={{ __html: content }}
+      />
     </div>
   );
 };

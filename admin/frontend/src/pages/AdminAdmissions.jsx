@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 const AdminAdmissions = () => {
   const [applications, setApplications] = useState([]);
@@ -71,6 +73,21 @@ const AdminAdmissions = () => {
     }
   };
 
+  const deleteSection = async () => {
+    if (!window.confirm("Delete this section content? This cannot be undone.")) return;
+    try {
+      await axios.delete(
+        `http://localhost:3663/api/admissions/sections/${encodeURIComponent(sectionKey)}`,
+        { withCredentials: true }
+      );
+      setContent("");
+      alert("Section deleted successfully");
+    } catch (e) {
+      console.error(e);
+      alert("Failed to delete section");
+    }
+  };
+
   if (loading) return <div className="p-6">Loading...</div>;
 
   return (
@@ -139,21 +156,23 @@ const AdminAdmissions = () => {
             <label className="block text-sm font-medium text-gray-700 mb-2">
               Content:
             </label>
-            <textarea
-              rows={15}
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-              className="w-full border border-gray-300 rounded px-3 py-2 font-mono text-sm"
-              placeholder="Enter content for this section..."
-            />
+            <ReactQuill value={content} onChange={setContent} theme="snow" />
           </div>
 
-          <button
-            onClick={saveSection}
-            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded"
-          >
-            Save Section
-          </button>
+          <div className="flex gap-3">
+            <button
+              onClick={saveSection}
+              className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded"
+            >
+              Save Section
+            </button>
+            <button
+              onClick={deleteSection}
+              className="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded"
+            >
+              Delete Section
+            </button>
+          </div>
         </div>
       </div>
     </div>

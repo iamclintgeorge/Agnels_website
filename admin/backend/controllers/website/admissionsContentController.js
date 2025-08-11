@@ -2,6 +2,7 @@ import {
   getAdmissionsSection,
   upsertAdmissionsSection,
   getAllAdmissionsSections,
+  deleteAdmissionsSection,
 } from "../../models/website/admissionsContentModel.js";
 
 export const admissionsGetSectionController = async (req, res) => {
@@ -38,6 +39,18 @@ export const admissionsGetAllSectionsController = async (_req, res) => {
   } catch (error) {
     console.error("Admissions get all sections error:", error);
     res.status(500).json({ message: "Error fetching admissions sections" });
+  }
+};
+
+export const admissionsDeleteSectionController = async (req, res) => {
+  try {
+    const { sectionKey } = req.params;
+    if (!sectionKey) return res.status(400).json({ message: "sectionKey is required" });
+    const result = await deleteAdmissionsSection(sectionKey);
+    res.json({ success: true, affectedRows: result.affectedRows });
+  } catch (error) {
+    console.error("Admissions delete section error:", error);
+    res.status(500).json({ message: "Error deleting admissions section" });
   }
 };
 
