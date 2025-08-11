@@ -6,7 +6,7 @@ export const AdmissionPro = () => {
   return (
     <div className="p-8 bg-gray-50 min-h-screen font-sans">
       <div className="mb-8">
-        <h1 className="text-5xl font-light text-black mb-3 heading-premium">
+        <h1 className="text-3xl font-light text-black mb-3 heading-premium">
           Admission Process
         </h1>
         <p className="text-lg text-gray-700">
@@ -119,14 +119,14 @@ export const UnderG = () => {
   return (
     <div className="p-8 bg-gray-50 min-h-screen font-sans">
       <div className="text-center mb-12">
-        <h1 className="text-5xl font-extralight text-black mb-3 heading-premium">
+        <h1 className="text-3xl font-extralight text-black mb-3 heading-premium">
           Undergraduate Admissions
         </h1>
       </div>
 
       {/* First Year Admissions */}
       <div className="mb-12">
-        <h2 className="text-3xl font-semibold text-gray-800 mb-6">
+        <h2 className="text-2xl font-semibold text-gray-800 mb-6">
           First Year Admissions:
         </h2>
         <p className="text-lg text-gray-700 leading-relaxed mb-6">
@@ -257,14 +257,14 @@ export const PostG = () => {
   return (
     <div className="p-8 bg-gray-50 min-h-screen font-sans">
       <div className="text-center mb-12">
-        <h1 className="text-5xl font-extralight text-black mb-3 heading-premium">
+        <h1 className="text-3xl font-extralight text-black mb-3 heading-premium">
           Post Graduate Admissions
         </h1>
       </div>
 
       {/* Masters of Technology (M.Tech) */}
       <div className="mb-12">
-        <h2 className="text-3xl font-semibold text-gray-800 mb-6">
+        <h2 className="text-2xl font-semibold text-gray-800 mb-6">
           Masters of Technology (M.Tech):
         </h2>
         <p className="text-lg text-gray-700 leading-relaxed mb-6">
@@ -320,14 +320,14 @@ export const PhD = () => {
   return (
     <div className="p-8 bg-gray-50 min-h-screen font-sans">
       <div className="text-center mb-12">
-        <h1 className="text-5xl font-extralight text-black mb-3 heading-premium">
+        <h1 className="text-3xl font-extralight text-black mb-3 heading-premium">
           PhD Admissions
         </h1>
       </div>
 
       {/* PhD Admission Details */}
       <div className="mb-12">
-        <h2 className="text-3xl font-semibold text-gray-800 mb-6">
+        <h2 className="text-2xl font-semibold text-gray-800 mb-6">
           PhD Admissions
         </h2>
 
@@ -388,7 +388,7 @@ export const Fees = () => {
   return (
     <div className="p-8 bg-gray-50 min-h-screen flex flex-col items-center justify-center font-sans">
       <div className="text-center mb-12">
-        <h1 className="text-5xl font-extralight text-gray-900 mb-6 heading-premium">
+        <h1 className="text-3xl font-extralight text-gray-900 mb-6 heading-premium">
           Fee Payment
         </h1>
         <p className="text-xl text-gray-700 mb-6">

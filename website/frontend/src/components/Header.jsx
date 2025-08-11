@@ -79,7 +79,7 @@ const Header = () => {
           onClick={() => navigate("/")}
         />
         <div
-          className="ml-20 sm:ml-32 mt-2 sm:mt-0 cursor-pointer"
+          className="ml-16 sm:ml-32 mt-2 sm:mt-0 cursor-pointer"
           onClick={() => navigate("/")}
         >
           <div className="relative top-8 sm:left-10">
