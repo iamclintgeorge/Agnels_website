@@ -102,7 +102,7 @@ function WhatsNew() {
   return (
     <>
       <section className="relative py-10 pb-28 px-5 bg-[#F7F7F7]">
-        <div className="absolute inset-0 flex text-[#EDEDED] font-medium text-[9.6vw] leading-none uppercase opacity-70 z-0 mt-[220px] md:mt-[250px] tracking-widest">
+        <div className="absolute inset-0 sm:flex text-[#EDEDED] font-medium text-[9.6vw] hidden leading-none uppercase opacity-70 z-0 mt-[220px] md:mt-[250px] tracking-widest">
           Announcements
         </div>
 
@@ -116,12 +116,12 @@ function WhatsNew() {
           {tablesData.map((table, tableIdx) => (
             <div
               key={tableIdx}
-              className="bg-[#E1E1E1] border rounded-lg w-96 h-[200px] min-h-96 z-10"
+              className="bg-[#E1E1E1] border rounded-lg w-[80vw] sm:w-96 h-[200px] min-h-96 z-10"
               style={{ boxShadow: "0 4px 6px rgba(0,0,0,0.3)" }}
             >
               {/* clickable card title */}
               <h3
-                className={`bg-[#0E1D3F] text-white w-96 h-10 text-[17px] font-semibold text-center py-2 rounded-t-lg select-none ${
+                className={`bg-[#0E1D3F] text-white w-[80.2vw] sm:w-96 h-10 text-[17px] font-semibold text-center py-2 rounded-t-lg select-none ${
                   table.title === "Notice Board" ? "cursor-pointer" : ""
                 }`}
                 onClick={() => table.title === "Notice Board" && openAll()}
