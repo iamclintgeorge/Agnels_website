@@ -2,6 +2,8 @@ import React from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+//Core Routes
 import Login from "./pages/login";
 import Signup from "./pages/signup";
 import ChangePassword from "./pages/User_Account/changePassword";
@@ -11,12 +13,18 @@ import Error403 from "./pages/Error_Pages/error403";
 import AdminLayout from "./layout/adminLayout";
 import { AuthProvider } from "./services/useAuthCheck";
 import PrivateRoute from "./services/privateRoute";
+
+//Home Page
 import WhatsNew from "./pages/HomePage/whatsNew";
-// import Profile from "./pages/profile";
-import ProfilePage from "./pages/ProfilePage/profilePage";
 import ImgCarousel from "./pages/HomePage/imgCarousel";
 import IntroText from "./pages/HomePage/introText";
 import ImgModal from "./pages/HomePage/home_Modal";
+import AchievementManager from "./pages/HomePage/AchievementManager";
+import AdmissionManager from "./pages/HomePage/AdmissionManager";
+import CircularManager from "./pages/HomePage/CircularManager";
+import NewsManager from "./pages/HomePage/NewsManager";
+
+import ProfilePage from "./pages/ProfilePage/profilePage";
 import DeptHome from "./pages/Department/dept_home";
 import TrainingPlacement from "./pages/Training-Placement/training-placement";
 import { ToastContainer } from "react-toastify";
@@ -70,10 +78,9 @@ import RoleHierarchy from "./pages/ContentApproval/roleHierarchy";
 
 // Activity Logs Components
 import ActivityLogs from "./pages/AuditLogs/ActivityLogs";
-import AchievementManager from "./pages/HomePage/AchievementManager";
-import AdmissionManager from "./pages/HomePage/AdmissionManager";
-import CircularManager from "./pages/HomePage/CircularManager";
-import NewsManager from "./pages/HomePage/NewsManager";
+
+//Utility Components
+import UploadFile from "./pages/uploadFile/uploadFile";
 
 const App = () => {
   return (
@@ -188,7 +195,6 @@ const App = () => {
               </PrivateRoute>
             }
           />
-
           {/* IIC Routes */}
           <Route path="/iic-innovation-council" element={<Iic_council />} />
           <Route path="/iic-innovation-policy" element={<Iic_policy />} />
@@ -197,7 +203,6 @@ const App = () => {
             element={<Iic_ambassador />}
           />
           <Route path="/iic-innovation-centre" element={<Iic_innovation />} />
-
           {/* Department Home Routes */}
           <Route
             path="/department/:departmentName/home"
@@ -255,7 +260,6 @@ const App = () => {
             path="/department/:departmentName/syllabus"
             element={<DeptSyllabus />}
           />
-
           {/* HOD Desk Routes */}
           <Route path="/hod-desk/computer" element={<ComHod />} />
           <Route path="/hod-desk/mechanical" element={<MechHod />} />
@@ -263,7 +267,6 @@ const App = () => {
           <Route path="/hod-desk/electrical" element={<ElectricalHod />} />
           <Route path="/hod-desk/it" element={<ItHod />} />
           <Route path="/hod-desk/bsh" element={<BshHod />} />
-
           {/* Content Approval Routes */}
           <Route
             path="/content-approval"
@@ -273,7 +276,6 @@ const App = () => {
               </PrivateRoute>
             }
           />
-
           {/* Activity Logs Routes */}
           <Route
             path="/activity-logs"
@@ -361,6 +363,14 @@ const App = () => {
             element={
               <PrivateRoute permission="manage_users">
                 <RolePermissionManager />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/upload_files"
+            element={
+              <PrivateRoute permission="upload_files">
+                <UploadFile />
               </PrivateRoute>
             }
           />

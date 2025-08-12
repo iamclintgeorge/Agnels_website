@@ -27,7 +27,7 @@ import cseRoutes from "./routes/website/department/cseRoutes.js";
 import bshRoutes from "./routes/website/department/bshRoutes.js";
 
 // Import department PDF routes
-import deptPdfRoutes from "./routes/website/deptPdfRoutes.js";
+import staticPdfRoutes from "./routes/website/staticPdfRoutes.js";
 
 // Import HOD desk routes
 import hodDeskRoutes from "./routes/website/hodDeskRoutes.js";
@@ -121,7 +121,7 @@ app.use("/api/department/home", computerRoutes); //Wprking
 // app.use("/api/department/bsh", bshRoutes);
 
 // Department PDF routes (for all departments and sections)
-// app.use("/api/department", deptPdfRoutes);
+app.use("/api/static-files", staticPdfRoutes);
 
 // HOD desk routes
 app.use("/api/hod-desk", hodDeskRoutes);

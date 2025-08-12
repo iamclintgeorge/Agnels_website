@@ -1,8 +1,13 @@
-import DeptPdfModel from "../../models/website/deptPdfModel.js";
 import multer from "multer";
 import path from "path";
 import fs from "fs";
 import { fileURLToPath } from "url";
+import {
+  getAllStaticPdfs,
+  createStaticPdfs,
+  getById,
+  deleteById,
+} from "../../models/website/staticPdfModel.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -10,13 +15,7 @@ const __dirname = path.dirname(__filename);
 // Configure multer for file uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const { department, section } = req.params;
-    const uploadPath = path.join(
-      __dirname,
-      "../../public/cdn/department",
-      department,
-      section
-    );
+    const uploadPath = path.join(__dirname, "../../public/cdn/static_pdfs");
 
     // Create directory if it doesn't exist
     fs.mkdirSync(uploadPath, { recursive: true });
@@ -42,14 +41,11 @@ const upload = multer({
   },
 });
 
-// Get all PDFs for a specific department and section
+// Get all PDFs
 export const getAllPdfs = async (req, res) => {
   try {
-    const { department, section } = req.params;
-    const pdfs = await DeptPdfModel.getAllByDepartmentAndSection(
-      department,
-      section
-    );
+    // const { department, section } = req.params;
+    const pdfs = await getAllStaticPdfs();
     res.json(pdfs);
   } catch (error) {
     console.error("Error fetching PDFs:", error);
@@ -60,8 +56,10 @@ export const getAllPdfs = async (req, res) => {
 // Upload a new PDF
 export const uploadPdf = async (req, res) => {
   try {
-    const { department, section } = req.params;
     const { title } = req.body;
+    const userName = req.session.user.userName;
+
+    console.log("req.session", req.session.user.userName);
 
     if (!req.file) {
       return res.status(400).json({ error: "No file uploaded" });
@@ -72,19 +70,17 @@ export const uploadPdf = async (req, res) => {
     }
 
     const filename = req.file.filename;
-    const newPdf = await DeptPdfModel.create(
-      department,
-      section,
+    const originalname = req.file.originalname;
+    const newPdf = await createStaticPdfs(
       title,
-      filename
+      filename,
+      originalname,
+      userName
     );
 
     res.status(201).json({
       message: "PDF uploaded successfully",
-      pdf: {
-        ...newPdf,
-        pdfUrl: `/cdn/department/${department}/${section}/${filename}`,
-      },
+      newPdf,
     });
   } catch (error) {
     console.error("Error uploading PDF:", error);
@@ -96,27 +92,27 @@ export const uploadPdf = async (req, res) => {
 export const deletePdf = async (req, res) => {
   try {
     const { id } = req.params;
+    console.log("deletePdf", id);
 
-    // Get PDF details before deletion to remove file from filesystem
-    const pdf = await DeptPdfModel.getById(id);
+    const pdf = await getById(id);
     if (!pdf) {
       return res.status(404).json({ error: "PDF not found" });
     }
 
-    // Delete from database
-    await DeptPdfModel.deleteById(id);
+    console.log("deletePdfController: ", pdf);
 
     // Delete file from filesystem
     const filePath = path.join(
       __dirname,
-      "../../public/cdn/department",
-      pdf.department,
-      pdf.section,
-      pdf.filename
+      "../../public/cdn/static_pdfs",
+      pdf[0].filename
     );
     if (fs.existsSync(filePath)) {
       fs.unlinkSync(filePath);
     }
+
+    // Delete from DB
+    await deleteById(id);
 
     res.json({ message: "PDF deleted successfully" });
   } catch (error) {
@@ -135,7 +131,7 @@ export const updatePdf = async (req, res) => {
       return res.status(400).json({ error: "Title is required" });
     }
 
-    await DeptPdfModel.updateById(id, title);
+    await updateById(id, title);
     res.json({ message: "PDF updated successfully" });
   } catch (error) {
     console.error("Error updating PDF:", error);
@@ -144,4 +140,4 @@ export const updatePdf = async (req, res) => {
 };
 
 // Middleware for file upload
-export const uploadMiddleware = upload.single("pdf");
+export const uploadMiddleware = upload.single("file");
