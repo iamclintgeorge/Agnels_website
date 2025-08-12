@@ -15,6 +15,7 @@ const RolePermissionManager = () => {
   const [roles, setRoles] = useState([]);
   const [editingRole, setEditingRole] = useState(null);
   const [isCreateMode, setIsCreateMode] = useState(false);
+  const [isPermissionCreateMode, setIsPermissionCreateMode] = useState(false);
   const [selectedTab, setSelectedTab] = useState("roles");
   const [userRoles, setUserRoles] = useState([]);
   const [availablePermissions, setAvailablePermissions] = useState([]);
@@ -471,38 +472,132 @@ const RolePermissionManager = () => {
         )}
 
         {selectedTab === "permissions" && (
-          <div className="bg-white rounded-lg shadow-md p-6">
-            <h2 className="text-xl font-semibold mb-4">
-              Available Permissions
-            </h2>
-            <div className="space-y-6">
-              {Object.entries(groupedPermissions).map(
-                ([category, permissions]) => (
-                  <div
-                    key={category}
-                    className="border-l-4 border-blue-500 pl-4"
-                  >
-                    <h3 className="font-medium text-gray-800 mb-3 capitalize">
-                      {category}
-                    </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-                      {permissions.map((permission) => (
-                        <div
-                          key={permission.id}
-                          className="bg-gray-50 p-3 rounded-md"
-                        >
-                          <p className="font-medium text-sm">
-                            {permission.name}
-                          </p>
-                          <p className="text-xs text-gray-500">
-                            ID: {permission.id}
-                          </p>
-                        </div>
-                      ))}
+          <div>
+            {/* Create New Role Button */}
+            <div className="mb-6">
+              <button
+                onClick={() => setIsPermissionCreateMode(true)}
+                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
+              >
+                <Plus size={16} />
+                <span>Create New Permission</span>
+              </button>
+            </div>
+
+            {/* Create Permission Modal */}
+            {isPermissionCreateMode && (
+              <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                <div className="bg-white rounded-lg p-6 w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+                  <div className="flex justify-between items-center mb-4">
+                    <h2 className="text-xl font-semibold">
+                      Create New Permission
+                    </h2>
+                    <button
+                      onClick={() => setIsPermissionCreateMode(false)}
+                      className="text-gray-500 hover:text-gray-700"
+                    >
+                      <X size={20} />
+                    </button>
+                  </div>
+
+                  <div className="space-y-4 mb-6">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Permission ID:
+                      </label>
+                      <input
+                        type="text"
+                        value={newRole.name}
+                        onChange={(e) =>
+                          setNewRole({ ...newRole, name: e.target.value })
+                        }
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="e.g., manage_users"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Display Name
+                      </label>
+                      <input
+                        type="text"
+                        value={newRole.displayName}
+                        onChange={(e) =>
+                          setNewRole({
+                            ...newRole,
+                            displayName: e.target.value,
+                          })
+                        }
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="e.g., Manage faculty Staffs"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Category:
+                      </label>
+                      <input
+                        type="text"
+                        value={newRole.name}
+                        onChange={(e) =>
+                          setNewRole({ ...newRole, name: e.target.value })
+                        }
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="e.g., Content"
+                      />
                     </div>
                   </div>
-                )
-              )}
+
+                  <div className="flex justify-end space-x-3 mt-6">
+                    <button
+                      onClick={() => setIsPermissionCreateMode(false)}
+                      className="px-4 py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      // onClick={handleCreateRole}
+                      className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                    >
+                      Create Permission
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+            <div className="bg-white rounded-lg shadow-md p-6">
+              <h2 className="text-xl font-semibold mb-4">
+                Available Permissions
+              </h2>
+              <div className="space-y-6">
+                {Object.entries(groupedPermissions).map(
+                  ([category, permissions]) => (
+                    <div
+                      key={category}
+                      className="border-l-4 border-blue-500 pl-4"
+                    >
+                      <h3 className="font-medium text-gray-800 mb-3 capitalize">
+                        {category}
+                      </h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
+                        {permissions.map((permission) => (
+                          <div
+                            key={permission.id}
+                            className="bg-gray-50 p-3 rounded-md"
+                          >
+                            <p className="font-medium text-sm">
+                              {permission.name}
+                            </p>
+                            <p className="text-xs text-gray-500">
+                              ID: {permission.id}
+                            </p>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )
+                )}
+              </div>
             </div>
           </div>
         )}
