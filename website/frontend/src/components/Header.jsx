@@ -31,7 +31,7 @@ const Header = () => {
   return (
     <header className="bg-[#0c2340] text-white p-0 m-0 relative h-48 sm:h-52 w-full z-10">
       {/* Yellow Border */}
-      <div className="flex top-0 left-0 w-full bg-[#AE9142] h-6 items-center justify-center text-black text-[10px] sm:text-xs font-normal">
+      <div className="flex top-0 left-0 w-full bg-[#AE9142] h-6 items-center justify-center text-black text-[10px] font-medium sm:text-xs sm:font-normal">
         An Autonomous Institute & Permanently Affiliated to University of Mumbai
       </div>
 
