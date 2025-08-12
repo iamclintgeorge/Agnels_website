@@ -1,5 +1,7 @@
 import React from "react";
 import { HiChevronUp, HiChevronDown } from "react-icons/hi";
+// import ReactQuill from "react-quill";
+// import "react-quill/dist/quill.snow.css";
 
 const AccordionSection = ({
   section,
@@ -31,7 +33,10 @@ const AccordionSection = ({
       {data.length > 0 ? (
         <div className="space-y-4 mb-6">
           {data.map((item) => (
-            <div key={item.id} className="border-b border-gray-200 pb-4">
+            <div
+              key={item.id}
+              className="border-b border-gray-200 pb-4 font-inter"
+            >
               {renderItem(item)}
             </div>
           ))}
