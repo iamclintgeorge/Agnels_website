@@ -8,7 +8,7 @@ import {
 } from "react-icons/fa";
 
 const Button = ({ icon: Icon, label, subLabel }) => (
-  <button className="flex flex-col items-center w-10 px-2 pb-4 pt-5 border-2 border-gray-300 hover:shadow-[8px_8px_20px_rgba(0,0,0,0.2)] transition-all duration-300 ease-in-out flex-1 space-y-3">
+  <button className="flex flex-col items-center w-full sm:w-32 px-4 py-5 border-2 border-gray-300 hover:shadow-[8px_8px_20px_rgba(0,0,0,0.2)] transition-all duration-300 ease-in-out space-y-3">
     <Icon className="text-3xl mb-3 text-[#0E1D3F]" />
     <div className="text-lg font-librefranklin font-medium text-gray-800">
       {label}
@@ -20,7 +20,7 @@ const Button = ({ icon: Icon, label, subLabel }) => (
 );
 
 const Widgets = () => (
-  <div className="flex space-x-6 px-16 py-12 w-full bg-[#F7F7F7] justify-center">
+  <div className="flex flex-col sm:flex-row sm:flex-wrap justify-center gap-6 px-4 sm:px-16 sm:pb-20 py-8 w-full bg-[#F7F7F7]">
     <Button icon={FaEnvelope} label="Transcripts" />
     <Button icon={FaCalendarAlt} label="Academic Calendar" />
     <Button icon={FaRegNewspaper} label="E-News Letter" />
