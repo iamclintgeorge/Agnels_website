@@ -28,6 +28,8 @@ import NIRF from "./pages/NIRF/NIRF";
 import HumanResource from "./pages/HumanResource/HumanResource";
 import NbaNaaC from "./pages/NBA/NBA.jsx";
 import Circulars from "./pages/Circulars/Circulars.jsx";
+import ImportantLinks from "./pages/ImportantLinks/ImportantLinks.jsx";
+import UserDownloads from "./pages/Downloads/UserDownloads.jsx";
 import ProfilePage from "./pages/Departments/sections/dept_faculty_profile.jsx";
 
 function App() {
@@ -72,6 +74,8 @@ function App() {
             element={<Research_Publications />}
           />
           <Route path="/circulars" element={<Circulars />} />
+          <Route path="/downloads" element={<UserDownloads />} />
+          <Route path="/Important-Links" element={<ImportantLinks />} />
           <Route path="/admissions" element={<Admissions />} />
           <Route path="/studentCorner" element={<StudentCorner />} />
           <Route path="/Login" element={<Login />} />

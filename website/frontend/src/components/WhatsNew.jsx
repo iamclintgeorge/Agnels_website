@@ -116,12 +116,12 @@ function WhatsNew() {
           {tablesData.map((table, tableIdx) => (
             <div
               key={tableIdx}
-              className="bg-[#E1E1E1] border rounded-lg w-[80vw] sm:w-96 h-[200px] min-h-96 z-10"
+              className="bg-[#E1E1E1] border rounded-lg w-[90vw] sm:w-96 h-[200px] min-h-96 z-10"
               style={{ boxShadow: "0 4px 6px rgba(0,0,0,0.3)" }}
             >
               {/* clickable card title */}
               <h3
-                className={`bg-[#0E1D3F] text-white w-[80.2vw] sm:w-96 h-10 text-[17px] font-semibold text-center py-2 rounded-t-lg select-none ${
+                className={`bg-[#0E1D3F] text-white w-[90.2vw] sm:w-96 h-10 text-[17px] font-semibold text-center py-2 rounded-t-lg select-none ${
                   table.title === "Notice Board" ? "cursor-pointer" : ""
                 }`}
                 onClick={() => table.title === "Notice Board" && openAll()}

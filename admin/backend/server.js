@@ -105,9 +105,6 @@ const __dirname = path.dirname(__filename);
 // Serve static files from the 'public' folder
 app.use("/cdn", express.static(path.join(__dirname, "public", "cdn")));
 
-// Add admin activity logging middleware (after session, before routes)
-// app.use(adminActivityLogger);
-
 // Integrate IIC routes
 // app.use("/api/iic", iicRoutes);
 // Root test route

@@ -12,7 +12,12 @@ import facultyRoutes from "./website/department/facultyRoutes.js";
 import infrastructureRoutes from "./website/department/infrastructureRoutes.js";
 import departmentRoutes from "./website/department/departmentRoutes.js";
 import studentcornerRoutes from "./website/studentcorner/studentcornerRoutes.js";
+import admissionRoutes from "./website/admissionRoutes.js";
 import roleHierarchyRoutes from "./admin/roleHierarchyRoutes.js";
+import downloadsRoutes from "./website/downloadsRoutes.js";
+import importantLinksRoutes from "./website/importantLinksRoutes.js";
+import admissionsContentRoutes from "./website/admissionsContentRoutes.js";
+import iqacRoutes from "./website/iqacRoutes.js";
 import {
   authMiddleware,
   checkPermission,
@@ -37,8 +42,13 @@ router.use("/api/humanResource", humanRRoutes);
 router.use("/api/profile", profileRoutes);
 router.use("/api/faculty", facultyRoutes);
 router.use("/api/infrastructure", infrastructureRoutes);
+router.use("/api/dept", departmentRoutes);
 router.use("/api/students-corner", studentcornerRoutes);
-
+router.use("/api/admission", admissionRoutes);
+router.use("/api/downloads", downloadsRoutes);
+router.use("/api/admissions", admissionsContentRoutes);
+router.use("/api/important-links", importantLinksRoutes);
+router.use("/api/iqac", iqacRoutes);
 // router.use("/api/announcements", announcementRoutes);
 
 export default router;

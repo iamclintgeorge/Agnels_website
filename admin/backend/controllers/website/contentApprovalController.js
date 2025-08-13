@@ -101,14 +101,21 @@ export const createApprovalRequest = async (req, res) => {
 // Get pending approvals for current user to review
 export const getPendingApprovals = async (req, res) => {
   try {
-    const masterId = req.session.user.id;
+    const userrole = req.session.user.role;
+
+    //Fetch masterId from the `role` table using userrole
+    const [[{ id: masterId }]] = await db
+      .promise()
+      .query("SELECT id FROM roles WHERE name = ?", userrole);
+
     console.log("Master ID:", masterId);
     console.log("User info", req.session.user);
 
     // Get all slave roles for this master user
-    const query = `SELECT slaveId FROM role_hierarchy WHERE masterId = ?`;
+    const query = `SELECT slaveId, userId FROM role_hierarchy WHERE masterId = ?`;
     const [slaveRows] = await db.promise().query(query, [masterId]);
-    const slaveIds = slaveRows.map((row) => row.slaveId);
+    const slaveIds = slaveRows.map((row) => row.slaveId || row.userId);
+
     if (slaveIds.length === 0) {
       return res.json({ success: true, requests: [] });
     }
@@ -121,6 +128,8 @@ export const getPendingApprovals = async (req, res) => {
         `SELECT * FROM approval_requests WHERE req_roleID IN (?) ORDER BY id DESC`,
         [slaveIds]
       );
+
+    // console.log(requests);
     res.json({
       success: true,
       requests,
@@ -142,17 +151,17 @@ export const approveRequest = async (req, res) => {
     const slaveId = req.body.slaveId;
 
     // Verify master-slave relationship
-    const [verifyMaster] = await db
-      .promise()
-      .query(`SELECT masterId FROM role_hierarchy WHERE slaveId = ?`, [
-        slaveId,
-      ]);
+    // const [verifyMaster] = await db
+    //   .promise()
+    //   .query(`SELECT masterId FROM role_hierarchy WHERE slaveId = ?`, [
+    //     slaveId,
+    //   ]);
 
-    if (verifyMaster.length === 0) {
-      return res
-        .status(403)
-        .json({ success: false, message: "Master not authorized" });
-    }
+    // if (verifyMaster.length === 0) {
+    //   return res
+    //     .status(403)
+    //     .json({ success: false, message: "Master not authorized" });
+    // }
 
     // Fetch request details
     const [fetchDetails] = await db
@@ -246,19 +255,28 @@ export const rejectRequest = async (req, res) => {
     const { id } = req.params;
     const slaveId = req.body.slaveId;
 
-    // Verify master authorization
-    const [verifyMaster] = await db
-      .promise()
-      .query(`SELECT masterId FROM role_hierarchy WHERE slaveId = ?`, [
-        slaveId,
-      ]);
+    /* 
+      MasterId Verification Logic Needs to be FIXED.
+      Current Problem:
+      - The Frontend API sends the roleId
+      - Now, userId ought to be required when considering standalone faculty member rather than allowing the entire "teach_staff" role to have the permission to approve.
+      - Problem is that by what means can the userId be separated considering that certain positions such as "principal" etc must not require userId, rather roleId should be sufficient. Thus for current, there is no verification as such, only authorization here is the generic backend role authorization.
+      - The comment is understandible vague and thus contact Clint George for further discussion
+    */
 
-    if (verifyMaster.length === 0) {
-      return res.status(403).json({
-        success: false,
-        message: "Master not authorized",
-      });
-    }
+    // Verify master authorization
+    // const [verifyMaster] = await db
+    //   .promise()
+    //   .query(`SELECT masterId FROM role_hierarchy WHERE slaveId = ?`, [
+    //     slaveId,
+    //   ]);
+
+    // if (verifyMaster.length === 0) {
+    //   return res.status(403).json({
+    //     success: false,
+    //     message: "Master not authorized",
+    //   });
+    // }
 
     // Fetch request details
     const [fetchDetails] = await db

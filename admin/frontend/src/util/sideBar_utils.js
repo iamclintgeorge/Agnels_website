@@ -172,6 +172,10 @@ export const PERMISSIONS_CONFIG = {
     component: "nba_naac",
     roles: ["superAdmin", "admin"],
   },
+  iqac: {
+    component: "iqac",
+    roles: ["superAdmin", "admin", "principal"],
+  },
   logs: {
     component: "logs",
     roles: ["superAdmin"],
