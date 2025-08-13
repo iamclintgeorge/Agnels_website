@@ -41,6 +41,10 @@ import Nonteaching_staff from "./pages/HumanResources/nonteachingstaff";
 import StudentsCorner from "./pages/StudentsCorner/StudentsCorner";
 import RolePermissionManager from "./pages/rolePermission";
 import ManageFacultyStaff from "./pages/manageFacultyStaff";
+import AdminAdmissions from "./pages/AdminAdmissions";
+import ImportantLinksAdmin from "./pages/ImportantLinksAdmin";
+import AdminDownloadManagement from "./pages/AdminDownloadManagement.jsx";
+import IQACAdmin from "./pages/IQAC/IQACAdmin.jsx";
 
 // IIC
 import Iic_ambassador from "./pages/IIC/iic_ambassador";
@@ -179,6 +183,10 @@ const App = () => {
               </PrivateRoute>
             }
           />
+          <Route path="/admission" element={<AdminAdmissions />} />
+          <Route path="/downloads" element={<AdminDownloadManagement />} />
+          <Route path="/iqac" element={<IQACAdmin />} />
+          <Route path="/important-links" element={<ImportantLinksAdmin />} />
           <Route
             path="/roleHierarchy"
             element={

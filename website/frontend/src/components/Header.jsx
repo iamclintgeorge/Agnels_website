@@ -170,6 +170,12 @@ const Header = () => {
                 Fee Payment
               </a>
             </li>
+            <li className="hidden md:inline">|</li>
+            <li className="hover:underline">
+              <Link to="/iqac" className="text-white">
+                IQAC
+              </Link>
+            </li>
 
             <li className="ml-4 mt-[-3px]">
               <div
@@ -430,6 +436,13 @@ const Header = () => {
             >
               Fee Payment
             </a>
+            <Link
+              to="/iqac"
+              className="text-white text-base"
+              onClick={() => setIsBottomMenuOpen(false)}
+            >
+              IQAC
+            </Link>
           </nav>
 
           {/* Login Button at the Bottom */}
