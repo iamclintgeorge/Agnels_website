@@ -247,12 +247,7 @@ export const researchPdfUpdateController = async (req, res) => {
     const oldPdf = await findResearchPdfById(id);
     if (!oldPdf) {
       // Clean up the uploaded file if the record doesn't exist
-      const tempPath = path.join(
-        process.cwd(),
-        "public",
-        "Uploads",
-        file.filename
-      );
+      const tempPath = path.join(process.cwd(), "public", "cdn", file.filename);
       await fs
         .unlink(tempPath)
         .catch((err) => console.error("Error cleaning up temp file:", err));

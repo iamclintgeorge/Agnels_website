@@ -10,7 +10,7 @@ import {
 // Configure multer for document uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "public/uploads/admissions");
+    cb(null, "public/cdn/admissions");
   },
   filename: (req, file, cb) => {
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
