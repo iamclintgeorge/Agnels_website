@@ -25,9 +25,11 @@ export const applyAdmissionController = async (req, res) => {
     }
 
     // Prepare document paths
-    const photoPath = files?.photo ? `/uploads/admissions/${files.photo[0].filename}` : null;
+    const photoPath = files?.photo
+      ? `/cdn/admissions/${files.photo[0].filename}`
+      : null;
     const documentPaths = files?.documents
-      ? files.documents.map((file) => `/uploads/admissions/${file.filename}`)
+      ? files.documents.map((file) => `/cdn/admissions/${file.filename}`)
       : [];
 
     const applicationData = {
@@ -50,7 +52,9 @@ export const applyAdmissionController = async (req, res) => {
     });
   } catch (error) {
     console.error("Admission application error:", error);
-    res.status(500).json({ message: "Error submitting admission application." });
+    res
+      .status(500)
+      .json({ message: "Error submitting admission application." });
   }
 };
 
@@ -59,7 +63,9 @@ export const getAdmissionController = async (req, res) => {
     const { id } = req.params;
     const application = await getAdmissionApplicationById(id);
     if (!application) {
-      return res.status(404).json({ message: "Admission application not found." });
+      return res
+        .status(404)
+        .json({ message: "Admission application not found." });
     }
     res.json(application);
   } catch (error) {
