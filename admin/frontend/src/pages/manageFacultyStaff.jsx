@@ -86,9 +86,9 @@ const ManageFacultyStaff = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen p-6">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-3xl font-bold text-gray-900 mb-4">
+        <h1 className="text-3xl font-inter font-bold text-gray-900 mb-4">
           Manage Faculty & Staff
         </h1>
 
@@ -98,9 +98,9 @@ const ManageFacultyStaff = () => {
             <button
               key={dept.id}
               onClick={() => setSelectedDeptId(dept.id)}
-              className={`px-4 py-2 rounded-md whitespace-nowrap ${
+              className={`px-4 py-2 whitespace-nowrap ${
                 dept.id === selectedDeptId
-                  ? "bg-blue-600 text-white"
+                  ? "bg-[#0C2340] text-white"
                   : "bg-gray-200 text-gray-700 hover:bg-gray-300"
               }`}
             >
@@ -110,19 +110,21 @@ const ManageFacultyStaff = () => {
         </div>
 
         {loading ? (
-          <p className="text-center text-gray-500">Loading data...</p>
+          <p className="text-center font-inter text-gray-500">
+            Loading data...
+          </p>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {filteredFaculties.map((faculty) => (
               <div
                 key={faculty.id}
                 onClick={() => openEditModal(faculty)}
-                className="cursor-pointer bg-white rounded-lg shadow-md p-4 border border-gray-200 hover:shadow-lg transition-shadow"
+                className="cursor-pointer p-4 border-2 border-gray-300 hover:shadow-lg transition-shadow"
               >
                 <img
                   src={faculty.image || "/img/no_user.jpg"}
                   alt={faculty.name}
-                  className="w-full h-48 object-cover rounded-md mb-4"
+                  className="w-full h-48 object-contain rounded-md mb-4"
                 />
                 <h3 className="text-lg font-semibold text-gray-800">
                   {faculty.name}
