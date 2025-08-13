@@ -48,6 +48,19 @@ dotenv.config();
 const port = process.env.port;
 const app = express();
 
+// Allowed hosts (only fcrit.ac.in for your use case)
+const ALLOWED_HOSTS = new Set([
+  "fcrit.ac.in",
+]);
+
+// Simple private IP guard
+const isPrivateHost = (hostname) => {
+  const ipV4 = /^(?:\d{1,3}\.){3}\d{1,3}$/.test(hostname);
+  const ipV6 = /^[a-f0-9:]+$/i.test(hostname) && hostname.includes(":");
+  if (ipV4 || ipV6) return true;
+  if (hostname === "localhost" || hostname.endsWith(".local")) return true;
+  return false;
+};
 // Middlewares
 app.use(
   cors({
@@ -111,6 +124,78 @@ app.use("/api/department", compActivityRoutes); //Not in Use But Clint had creat
 app.use("/api/profile", profileRoutes);
 app.use("/api/studentcorner", studentcornerRoutes);
 app.use("/api/department/research", researchRoutes);
+
+app.get("/api/image-proxy", async (req, res) => {
+  try {
+    const { url } = req.query;
+    if (!url || typeof url !== "string") {
+      return res.status(400).send("Missing or invalid url");
+    }
+
+    // Validate URL
+    let parsed;
+    try {
+      parsed = new URL(url);
+    } catch {
+      return res.status(400).send("Invalid URL");
+    }
+
+    // Enforce protocol
+    if (!["https:", "http:"].includes(parsed.protocol)) {
+      return res.status(400).send("Unsupported protocol");
+    }
+
+    // Disallow private/localhost and require allowlisted hosts
+    if (isPrivateHost(parsed.hostname) || !ALLOWED_HOSTS.has(parsed.hostname)) {
+      return res.status(403).send("Host not allowed");
+    }
+
+    // Fetch with timeout
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 8000);
+
+    const upstream = await fetch(parsed.toString(), {
+      method: "GET",
+      redirect: "follow",
+      signal: controller.signal,
+    }).catch((e) => {
+      if (e.name === "AbortError") return { ok: false, status: 504 };
+      throw e;
+    });
+    clearTimeout(timeout);
+
+    if (!upstream || !upstream.ok) {
+      return res.status(upstream?.status || 502).send("Upstream error");
+    }
+
+    // Restrict to images only
+    const contentType = upstream.headers.get("content-type") || "";
+    if (!contentType.startsWith("image/")) {
+      return res.status(415).send("Unsupported media type");
+    }
+
+    // CORS and security headers
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    res.setHeader("Content-Type", contentType);
+    res.setHeader("Cache-Control", "public, max-age=86400");
+    res.setHeader("X-Content-Type-Options", "nosniff");
+
+    // Pass through ETag if available
+    const etag = upstream.headers.get("etag");
+    if (etag) res.setHeader("ETag", etag);
+
+    // Stream response (memory efficient)
+    if (upstream.body && upstream.body.pipe) {
+      upstream.body.pipe(res);
+    } else {
+      const buf = Buffer.from(await upstream.arrayBuffer());
+      res.send(buf);
+    }
+  } catch (e) {
+    console.error("Image proxy error:", e);
+    if (!res.headersSent) res.status(500).send("Proxy error");
+  }
+});
 
 // New department routes
 app.use("/api/department/home", computerRoutes); //Wprking
