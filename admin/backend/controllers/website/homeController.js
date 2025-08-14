@@ -122,7 +122,18 @@ export const announcementsCreateController = async (req, res) => {
   // console.log("hi");
   const sql =
     "INSERT INTO announcements (subject, description, attachment, created_by) VALUES (?, ?, ?, ?)";
-  const { subject, description, attachment, created_by } = req.body;
+
+  // const content =
+  //   typeof req.body.content === "string"
+  //     ? JSON.parse(req.body.content)
+  //     : req.body.content;
+
+  // const { subject, description, attachment, created_by } = content;
+
+  const { subject, description, attachment, created_by } = JSON.parse(
+    req.body.content
+  );
+
   try {
     const values = [subject, description, attachment, created_by];
     const [result] = await db.promise().query(sql, values);
@@ -150,7 +161,9 @@ export const announcementsEditController = async (req, res) => {
   // console.log("hi");
   const sql =
     "UPDATE announcements SET subject = ?, description = ?, attachment = ?, created_by = ? WHERE id = ?";
-  const { subject, description, attachment, created_by } = req.body;
+  const { subject, description, attachment, created_by } = JSON.parse(
+    req.body.content
+  );
   const { id } = req.params;
   try {
     const values = [subject, description, attachment, created_by, id];
@@ -164,7 +177,7 @@ export const announcementsEditController = async (req, res) => {
 
 export const announcementsDeleteController = async (req, res) => {
   console.log("hi");
-  const sql = `UPDATE announcements SET deleted = '1' WHERE id = ?`;
+  const sql = `DELETE FROM announcements WHERE id = ?`;
   const { id } = req.params;
   console.log(id);
   try {
@@ -182,7 +195,9 @@ export const achievementsCreateController = async (req, res) => {
     INSERT INTO home_achievements
       (subject, description, attachment, created_by, Type)
     VALUES (?,?,?,?,?)`;
-  const { subject, description, attachment, created_by, Type } = req.body;
+  const { subject, description, attachment, created_by, Type } = JSON.parse(
+    req.body.content
+  );
   try {
     await db
       .promise()
@@ -212,7 +227,9 @@ export const achievementsEditController = async (req, res) => {
     UPDATE home_achievements
     SET subject = ?, description = ?, attachment = ?, created_by = ?, Type = ?
     WHERE id = ?`;
-  const { subject, description, attachment, created_by, Type } = req.body;
+  const { subject, description, attachment, created_by, Type } = JSON.parse(
+    req.body.content
+  );
   const { id } = req.params;
   try {
     await db
@@ -249,7 +266,11 @@ export const admissionsCreateController = async (req, res) => {
     INSERT INTO home_admissions
       (subject, description, attachment, created_by, Type)
     VALUES (?,?,?,?,?)`;
-  const { subject, description, attachment, created_by, Type } = req.body;
+  console.log(req.body.content);
+  const { subject, description, attachment, created_by, Type } = JSON.parse(
+    req.body.content
+  );
+
   try {
     await db
       .promise()
@@ -279,7 +300,9 @@ export const admissionsEditController = async (req, res) => {
     UPDATE home_admissions
     SET subject = ?, description = ?, attachment = ?, created_by = ?, Type = ?
     WHERE id = ?`;
-  const { subject, description, attachment, created_by, Type } = req.body;
+  const { subject, description, attachment, created_by, Type } = JSON.parse(
+    req.body.content
+  );
   const { id } = req.params;
   try {
     await db
@@ -315,7 +338,9 @@ export const circularsCreateController = async (req, res) => {
     INSERT INTO home_circulars
       (subject, description, attachment, created_by)
     VALUES (?,?,?,?)`;
-  const { subject, description, attachment, created_by } = req.body;
+  const { subject, description, attachment, created_by } = JSON.parse(
+    req.body.content
+  );
   try {
     await db
       .promise()
@@ -345,7 +370,9 @@ export const circularsEditController = async (req, res) => {
     UPDATE home_circulars
     SET subject = ?, description = ?, attachment = ?, created_by = ?
     WHERE id = ?`;
-  const { subject, description, attachment, created_by } = req.body;
+  const { subject, description, attachment, created_by } = JSON.parse(
+    req.body.content
+  );
   const { id } = req.params;
   try {
     await db
@@ -376,19 +403,17 @@ export const circularsDeleteController = async (req, res) => {
 
 // INSERT  (Type is hard-coded to 'News')
 export const newsCreateController = async (req, res) => {
-  const sql =
-    `INSERT INTO announcements
+  const sql = `INSERT INTO announcements
       (subject, description, attachment, created_by, Type)
      VALUES (?,?,?,?, 'News')`;
 
-  const { subject, description, attachment, created_by } = req.body;
+  const { subject, description, attachment, created_by } = JSON.parse(
+    req.body.content
+  );
   try {
-    await db.promise().query(sql, [
-      subject,
-      description,
-      attachment,
-      created_by
-    ]);
+    await db
+      .promise()
+      .query(sql, [subject, description, attachment, created_by]);
     res.json({ message: "News inserted" });
   } catch (err) {
     console.error("DB-Insert Error (News):", err);
@@ -410,21 +435,18 @@ export const newsFetchController = async (_req, res) => {
 
 // UPDATE
 export const newsEditController = async (req, res) => {
-  const sql =
-    `UPDATE announcements
+  const sql = `UPDATE announcements
      SET subject = ?, description = ?, attachment = ?, created_by = ?
      WHERE id = ? AND Type = 'News'`;
 
-  const { subject, description, attachment, created_by } = req.body;
+  const { subject, description, attachment, created_by } = JSON.parse(
+    req.body.content
+  );
   const { id } = req.params;
   try {
-    await db.promise().query(sql, [
-      subject,
-      description,
-      attachment,
-      created_by,
-      id
-    ]);
+    await db
+      .promise()
+      .query(sql, [subject, description, attachment, created_by, id]);
     res.json({ message: "News updated" });
   } catch (err) {
     console.error("DB-Update Error (News):", err);

@@ -12,48 +12,12 @@ function AnnouncementsManager() {
   const [showTable, setShowTable] = useState(false);
   const [selectedRows, setSelectedRows] = useState([]);
   const [editingId, setEditingId] = useState(null);
+  const [prevContent, setprevContent] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
-
-  // const handleSubmit = async (e) => {
-  //   e.preventDefault();
-  //   const dataToSend = {
-  //     ...formData,
-  //     created_by: parseInt(formData.created_by, 10) || 0,
-  //   };
-
-  //   try {
-  //     if (editingId) {
-  //       await axios.put(
-  //         `http://localhost:3663/api/home/announcements/${editingId}`,
-  //         dataToSend
-  //       );
-  //       alert("Announcement updated successfully!");
-  //       setEditingId(null);
-  //     } else {
-  //       await axios.post(
-  //         "http://localhost:3663/api/home/announcements",
-  //         dataToSend
-  //       );
-  //       alert("Announcement added successfully!");
-  //     }
-  //     setFormData({
-  //       subject: "",
-  //       description: "",
-  //       attachment: "",
-  //       created_by: "",
-  //     });
-  //     fetchAnnouncements();
-  //   } catch (error) {
-  //     alert(
-  //       "Failed to process request: " +
-  //         (error.response?.data?.error || error.message)
-  //     );
-  //   }
-  // };
 
   //With Content Approval System
   const handleSubmit = async (e) => {
@@ -65,16 +29,49 @@ function AnnouncementsManager() {
 
     try {
       if (editingId) {
-        await axios.put(
-          `http://localhost:3663/api/home/announcements/${editingId}`,
-          dataToSend
+        const formData = new FormData();
+        formData.append("method", "PUT");
+        formData.append("section", "homepage");
+        formData.append("title", "Update Homepage Notice Board");
+        formData.append(
+          "change_summary",
+          "Update Existing Entry of Notice Board"
+        );
+        formData.append("current_content", JSON.stringify(prevContent));
+        formData.append("proposed_content", JSON.stringify(dataToSend));
+        formData.append("endpoint_url", `api/home/announcements`);
+        formData.append("id", editingId);
+
+        await axios.post(
+          `http://localhost:3663/api/content-approval/request`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
         );
         alert("Announcement updated successfully!");
         setEditingId(null);
       } else {
+        const formData = new FormData();
+        formData.append("method", "POST");
+        formData.append("section", "homepage");
+        formData.append("title", "Create Homepage Notice Board");
+        formData.append("change_summary", "Added Entry to Notice Board");
+        formData.append("current_content", "");
+        formData.append("proposed_content", JSON.stringify(dataToSend));
+        formData.append("endpoint_url", `api/home/announcements`);
+        formData.append("id", 0);
+
         await axios.post(
-          "http://localhost:3663/api/home/announcements",
-          dataToSend
+          "http://localhost:3663/api/content-approval/request",
+          formData,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
         );
         alert("Announcement added successfully!");
       }
@@ -118,24 +115,49 @@ function AnnouncementsManager() {
       created_by: announcement.created_by?.toString() || "",
     });
     setEditingId(announcement.id);
+    setprevContent(announcement);
+    console.log(editingId);
+    console.log(prevContent);
   };
 
-  const handleDelete = async (id) => {
+  //With Content Approval
+  const handleDelete = async (announcement, id) => {
+    setprevContent(announcement);
     try {
-      await axios.put(
-        `http://localhost:3663/api/home/delete-announcements/${id}`
+      const formData = new FormData();
+      formData.append("method", "DELETE");
+      formData.append("section", "homepage");
+      formData.append("title", "Delete Homepage Notice Board");
+      formData.append(
+        "change_summary",
+        "Delete Existing Entry of Notice Board"
       );
+      formData.append("current_content", JSON.stringify(prevContent));
+      formData.append("proposed_content", "");
+      formData.append("endpoint_url", `api/home/delete-announcements`);
+      formData.append("id", id);
+
+      await axios.post(
+        `http://localhost:3663/api/content-approval/request`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
       fetchAnnouncements();
     } catch (error) {
       console.error("Error deleting announcement:", error);
     }
   };
 
-  // const handleRowSelection = (id) => {
-  //   setSelectedRows((prev) =>
-  //     prev.includes(id) ? prev.filter((rowId) => rowId !== id) : [...prev, id]
-  //   );
-  // };
+  const handleRowSelection = (id) => {
+    setSelectedRows((prev) =>
+      prev.includes(id) ? prev.filter((rowId) => rowId !== id) : [...prev, id]
+    );
+  };
 
   return (
     <section className="py-10 px-5 bg-[#F7F7F7] min-h-screen">
@@ -225,7 +247,9 @@ function AnnouncementsManager() {
                       Edit
                     </button>
                     <button
-                      onClick={() => handleDelete(announcement.id)}
+                      onClick={() =>
+                        handleDelete(announcement, announcement.id)
+                      }
                       className="bg-red-500 text-white py-1 px-2 rounded-md"
                     >
                       Delete

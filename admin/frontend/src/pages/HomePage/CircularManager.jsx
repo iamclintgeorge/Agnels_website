@@ -6,11 +6,12 @@ function CircularManager() {
     subject: "",
     description: "",
     attachment: "",
-    created_by: ""
+    created_by: "",
   });
   const [circulars, setCirculars] = useState([]);
   const [showTable, setShowTable] = useState(false);
   const [editingId, setEditingId] = useState(null);
+  const [prevContent, setprevContent] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -21,26 +22,67 @@ function CircularManager() {
     e.preventDefault();
     const payload = {
       ...formData,
-      created_by: parseInt(formData.created_by, 10) || 0
+      created_by: parseInt(formData.created_by, 10) || 0,
     };
 
     try {
       if (editingId) {
-        await axios.put(
-          `http://localhost:3663/api/home/circulars/${editingId}`,
-          payload
+        const formData = new FormData();
+        formData.append("method", "PUT");
+        formData.append("section", "homepage");
+        formData.append("title", "Update Homepage Circulars");
+        formData.append(
+          "change_summary",
+          "Update Existing Entry of Circulars Section"
         );
+        formData.append("current_content", JSON.stringify(prevContent));
+        formData.append("proposed_content", JSON.stringify(payload));
+        formData.append("endpoint_url", `api/home/circulars`);
+        formData.append("id", editingId);
+
+        await axios.post(
+          `http://localhost:3663/api/content-approval/request`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        // await axios.put(
+        //   `http://localhost:3663/api/home/circulars/${editingId}`,
+        //   payload
+        // );
         alert("Circular updated!");
         setEditingId(null);
       } else {
-        await axios.post("http://localhost:3663/api/home/circulars", payload);
+        const formData = new FormData();
+        formData.append("method", "POST");
+        formData.append("section", "homepage");
+        formData.append("title", "Create Homepage Circulars");
+        formData.append("change_summary", "Added Entry to Circulars Section");
+        formData.append("current_content", "");
+        formData.append("proposed_content", JSON.stringify(payload));
+        formData.append("endpoint_url", `api/home/circulars`);
+        formData.append("id", 0);
+
+        await axios.post(
+          "http://localhost:3663/api/content-approval/request",
+          formData,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
         alert("Circular added!");
       }
       setFormData({
         subject: "",
         description: "",
         attachment: "",
-        created_by: ""
+        created_by: "",
       });
       fetchCirculars();
     } catch (err) {
@@ -63,14 +105,39 @@ function CircularManager() {
       subject: row.subject,
       description: row.description,
       attachment: row.attachment,
-      created_by: row.created_by.toString()
+      created_by: row.created_by.toString(),
     });
     setEditingId(row.id);
+    setprevContent(row);
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (row, id) => {
+    setprevContent(row);
     try {
-      await axios.put(`http://localhost:3663/api/home/delete-circulars/${id}`);
+      const formData = new FormData();
+      formData.append("method", "DELETE");
+      formData.append("section", "homepage");
+      formData.append("title", "Delete Homepage Circular");
+      formData.append(
+        "change_summary",
+        "Delete Existing Entry of Circulars Section"
+      );
+      formData.append("current_content", JSON.stringify(prevContent));
+      formData.append("proposed_content", "");
+      formData.append("endpoint_url", `api/home/delete-circulars`);
+      formData.append("id", id);
+
+      await axios.post(
+        `http://localhost:3663/api/content-approval/request`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      // await axios.put(`http://localhost:3663/api/home/delete-circulars/${id}`);
       fetchCirculars();
     } catch (err) {
       console.error("Delete error:", err);
@@ -168,7 +235,7 @@ function CircularManager() {
                       Edit
                     </button>
                     <button
-                      onClick={() => handleDelete(row.id)}
+                      onClick={() => handleDelete(row, row.id)}
                       className="bg-red-500 text-white py-1 px-2 rounded-md"
                     >
                       Delete

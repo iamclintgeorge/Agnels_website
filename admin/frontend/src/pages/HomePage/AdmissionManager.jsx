@@ -7,11 +7,12 @@ function AdmissionManager() {
     description: "",
     attachment: "",
     created_by: "",
-    Type: ""                // ← no default
+    Type: "", // ← no default
   });
   const [admissions, setAdmissions] = useState([]);
   const [showTable, setShowTable] = useState(false);
   const [editingId, setEditingId] = useState(null);
+  const [prevContent, setprevContent] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -26,19 +27,65 @@ function AdmissionManager() {
     }
     const payload = {
       ...formData,
-      created_by: parseInt(formData.created_by, 10) || 0
+      created_by: parseInt(formData.created_by, 10) || 0,
     };
 
     try {
       if (editingId) {
-        await axios.put(
-          `http://localhost:3663/api/home/admissions/${editingId}`,
-          payload
+        const formData = new FormData();
+        formData.append("method", "PUT");
+        formData.append("section", "homepage");
+        formData.append("title", "Update Homepage Admissions (What's New)");
+        formData.append(
+          "change_summary",
+          "Update Existing Entry of Admissions (What's New) Section"
         );
+        formData.append("current_content", JSON.stringify(prevContent));
+        formData.append("proposed_content", JSON.stringify(payload));
+        formData.append("endpoint_url", `api/home/admissions`);
+        formData.append("id", editingId);
+
+        await axios.post(
+          `http://localhost:3663/api/content-approval/request`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        // await axios.put(
+        //   `http://localhost:3663/api/home/admissions/${editingId}`,
+        //   payload
+        // );
         alert("Admission entry updated!");
         setEditingId(null);
       } else {
-        await axios.post("http://localhost:3663/api/home/admissions", payload);
+        const formData = new FormData();
+        formData.append("method", "POST");
+        formData.append("section", "homepage");
+        formData.append("title", "Create Homepage Admissions (What's New)");
+        formData.append(
+          "change_summary",
+          "Added Entry to Admissions (What's New) Section"
+        );
+        formData.append("current_content", "");
+        formData.append("proposed_content", JSON.stringify(payload));
+        formData.append("endpoint_url", `api/home/admissions`);
+        formData.append("id", 0);
+
+        await axios.post(
+          "http://localhost:3663/api/content-approval/request",
+          formData,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        // await axios.post("http://localhost:3663/api/home/admissions", payload);
         alert("Admission entry added!");
       }
       setFormData({
@@ -46,7 +93,7 @@ function AdmissionManager() {
         description: "",
         attachment: "",
         created_by: "",
-        Type: ""
+        Type: "",
       });
       fetchAdmissions();
     } catch (err) {
@@ -70,14 +117,39 @@ function AdmissionManager() {
       description: row.description,
       attachment: row.attachment,
       created_by: row.created_by.toString(),
-      Type: row.Type
+      Type: row.Type,
     });
     setEditingId(row.id);
+    setprevContent(row);
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (row, id) => {
+    setprevContent(row);
     try {
-      await axios.put(`http://localhost:3663/api/home/delete-admissions/${id}`);
+      const formData = new FormData();
+      formData.append("method", "DELETE");
+      formData.append("section", "homepage");
+      formData.append("title", "Delete Homepage Admissions (What's New)");
+      formData.append(
+        "change_summary",
+        "Delete Existing Entry of Admissions (What's New) Section"
+      );
+      formData.append("current_content", JSON.stringify(prevContent));
+      formData.append("proposed_content", "");
+      formData.append("endpoint_url", `api/home/delete-admissions`);
+      formData.append("id", id);
+
+      await axios.post(
+        `http://localhost:3663/api/content-approval/request`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      // await axios.put(`http://localhost:3663/api/home/delete-admissions/${id}`);
       fetchAdmissions();
     } catch (err) {
       console.error("Delete error:", err);
@@ -128,8 +200,10 @@ function AdmissionManager() {
             <option value="" disabled>
               ― Select Admission Type ―
             </option>
-            <option value="1st Year B. Tech">1st Year B. Tech</option>
-            <option value="Direct 2nd Year B. Tech">Direct 2nd Year B. Tech</option>
+            <option value="1st Year B.Tech">1st Year B.Tech</option>
+            <option value="Direct 2nd Year B.Tech">
+              Direct 2nd Year B.Tech
+            </option>
             <option value="M.Tech/Ph.D">M.Tech/Ph.D</option>
           </select>
 
@@ -194,7 +268,7 @@ function AdmissionManager() {
                       Edit
                     </button>
                     <button
-                      onClick={() => handleDelete(row.id)}
+                      onClick={() => handleDelete(row, row.id)}
                       className="bg-red-500 text-white py-1 px-2 rounded-md"
                     >
                       Delete

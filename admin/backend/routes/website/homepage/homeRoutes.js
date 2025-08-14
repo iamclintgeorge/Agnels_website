@@ -24,7 +24,7 @@ import {
   newsCreateController,
   newsFetchController,
   newsEditController,
-  newsDeleteController
+  newsDeleteController,
 } from "../../../controllers/website/homeController.js";
 
 import multer from "multer";
@@ -72,22 +72,22 @@ router.put("/introtext/:id", introTextUpdateController);
 router.post("/announcements", announcementsCreateController);
 router.get("/announcements", announcementsFetchController);
 router.put("/announcements/:id", announcementsEditController);
-router.put("/delete-announcements/:id", announcementsDeleteController);
+router.delete("/delete-announcements/:id", announcementsDeleteController);
 router.post("/achievements", achievementsCreateController);
 router.get("/achievements", achievementsFetchController);
 router.put("/achievements/:id", achievementsEditController);
-router.put("/delete-achievements/:id", achievementsDeleteController);
-router.post ("/admissions",       admissionsCreateController);
-router.get  ("/admissions",       admissionsFetchController);
-router.put  ("/admissions/:id",   admissionsEditController);
-router.put("/delete-admissions/:id",  admissionsDeleteController);
-router.post ("/circulars",       circularsCreateController);
-router.get  ("/circulars",       circularsFetchController);
-router.put  ("/circulars/:id",   circularsEditController);
-router.put("/delete-circulars/:id",  circularsDeleteController);
-router.post("/news",       newsCreateController);
-router.get("/news",       newsFetchController);
-router.put("/news/:id",   newsEditController);
-router.put("/delete-news/:id",   newsDeleteController);
+router.delete("/delete-achievements/:id", achievementsDeleteController);
+router.post("/admissions", admissionsCreateController);
+router.get("/admissions", admissionsFetchController);
+router.put("/admissions/:id", admissionsEditController);
+router.delete("/delete-admissions/:id", admissionsDeleteController);
+router.post("/circulars", circularsCreateController);
+router.get("/circulars", circularsFetchController);
+router.put("/circulars/:id", circularsEditController);
+router.delete("/delete-circulars/:id", circularsDeleteController);
+router.post("/news", newsCreateController);
+router.get("/news", newsFetchController);
+router.put("/news/:id", newsEditController);
+router.delete("/delete-news/:id", newsDeleteController);
 
 export default router;
