@@ -323,10 +323,36 @@ const ProfilePage = () => {
 
   const addEntry = async (field, endpoint, data) => {
     try {
-      await axios.post(
-        `http://localhost:3663/api/profile/${user.id}/${endpoint}`,
-        data
+      const formDataToSend = new FormData();
+      formDataToSend.append("method", "POST");
+      formDataToSend.append("section", "Profile");
+      formDataToSend.append("title", `Create Profile ${field}`);
+      formDataToSend.append(
+        "change_summary",
+        `Added Entry to Profile ${field}`
       );
+      formDataToSend.append("current_content", "");
+      formDataToSend.append("proposed_content", JSON.stringify(data));
+      formDataToSend.append(
+        "endpoint_url",
+        `api/profile/${user.id}/${endpoint}`
+      );
+      formDataToSend.append("id", 0);
+
+      await axios.post(
+        "http://localhost:3663/api/content-approval/request",
+        formDataToSend,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      // await axios.post(
+      //   `http://localhost:3663/api/profile/${user.id}/${endpoint}`,
+      //   data
+      // );
       toast.success(`${field} added successfully`);
       setNewEntry((prev) => ({
         ...prev,
@@ -355,35 +381,79 @@ const ProfilePage = () => {
     }
   };
 
-  const updateEntry = async (field, endpoint, data, entryId) => {
+  const updateEntry = async (field, endpoint, data, entryId, section) => {
     try {
-      const response = await axios.put(
-        `http://localhost:3663/api/profile/${user.id}/${endpoint}/${entryId}`,
-        data
+      const formData = new FormData();
+      formData.append("method", "PUT");
+      formData.append("section", "Profile");
+      formData.append("title", `Update Profile ${field}`);
+      formData.append(
+        "change_summary",
+        `Update Existing Entry of Update Profile ${field} Section`
       );
-      if (response.status === 200) {
-        toast.success(`${field} updated successfully`);
-        // Clear the editing state for this field
-        setEditingEntry((prev) => ({
-          ...prev,
-          [field.toLowerCase().replace(/\s+/g, "")]: null,
-        }));
-        // Refresh the profile data
-        await fetchProfile();
-      }
+      formData.append("current_content", JSON.stringify(prevProfile[section]));
+      formData.append("proposed_content", JSON.stringify(data));
+      formData.append("endpoint_url", `api/profile/${user.id}/${endpoint}`);
+      formData.append("id", entryId);
+
+      await axios.post(
+        `http://localhost:3663/api/content-approval/request`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      // const response = await axios.put(
+      //   `http://localhost:3663/api/profile/${user.id}/${endpoint}/${entryId}`,
+      //   data
+      // );
+      toast.success(`${field} updated successfully`);
+      // Clear the editing state for this field
+      setEditingEntry((prev) => ({
+        ...prev,
+        [field.toLowerCase().replace(/\s+/g, "")]: null,
+      }));
+      // Refresh the profile data
+      await fetchProfile();
     } catch (error) {
       console.error(`Update ${field} error:`, error);
       toast.error(`Error updating ${field}`);
     }
   };
 
-  const deleteEntry = async (field, entryId, endpoint) => {
+  const deleteEntry = async (field, entryId, endpoint, section) => {
     if (!window.confirm(`Are you sure you want to delete this ${field}?`))
       return;
     try {
-      await axios.delete(
-        `http://localhost:3663/api/profile/${user.id}/${endpoint}/${entryId}`
+      const formData = new FormData();
+      formData.append("method", "DELETE");
+      formData.append("section", "Profile");
+      formData.append("title", `Delete Profile ${field}`);
+      formData.append(
+        "change_summary",
+        `Delete Existing Entry of Profile ${field} Section`
       );
+      formData.append("current_content", JSON.stringify(prevProfile[section]));
+      formData.append("proposed_content", "");
+      formData.append("endpoint_url", `api/profile/${user.id}/${endpoint}`);
+      formData.append("id", entryId);
+
+      await axios.post(
+        `http://localhost:3663/api/content-approval/request`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      // await axios.delete(
+      //   `http://localhost:3663/api/profile/${user.id}/${endpoint}/${entryId}`
+      // );
       toast.success(`${field} deleted successfully`);
       fetchProfile();
     } catch (error) {
@@ -444,7 +514,8 @@ const ProfilePage = () => {
                         editingEntry.onlineProfile?.onlineProfile ||
                         item.onlineProfile,
                     },
-                    item.id
+                    item.id,
+                    "onlineProfiles"
                   )
                 }
                 className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors duration-200"
@@ -478,7 +549,12 @@ const ProfilePage = () => {
               </button>
               <button
                 onClick={() =>
-                  deleteEntry("Online Profile", item.id, "online-profile")
+                  deleteEntry(
+                    "Online Profile",
+                    item.id,
+                    "online-profile",
+                    "onlineProfiles"
+                  )
                 }
                 className="text-red-600 hover:text-red-800 transition-colors duration-200 flex items-center"
               >
@@ -539,7 +615,8 @@ const ProfilePage = () => {
                         editingEntry.areasOfSpecialization
                           .areasOfSpecialization,
                     },
-                    item.id
+                    item.id,
+                    "specializations"
                   )
                 }
                 className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors duration-200 flex items-center justify-center"
@@ -568,7 +645,12 @@ const ProfilePage = () => {
               </button>
               <button
                 onClick={() =>
-                  deleteEntry("Specialization", item.id, "specialization")
+                  deleteEntry(
+                    "Specialization",
+                    item.id,
+                    "specialization",
+                    "specializations"
+                  )
                 }
                 className="text-red-600 hover:text-red-800 transition-colors duration-200 flex items-center"
               >
@@ -667,7 +749,8 @@ const ProfilePage = () => {
                     "Subject Taught",
                     "subject",
                     editingEntry.subjectTaught,
-                    item.id
+                    item.id,
+                    "subjects"
                   )
                 }
                 className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors duration-200 flex items-center justify-center"
@@ -695,7 +778,9 @@ const ProfilePage = () => {
                 <HiPencil className="mr-1" /> Edit
               </button>
               <button
-                onClick={() => deleteEntry("Subject", item.id, "subject")}
+                onClick={() =>
+                  deleteEntry("Subject", item.id, "subject", "subjects")
+                }
                 className="text-red-600 hover:text-red-800 transition-colors duration-200 flex items-center"
               >
                 Delete
@@ -793,7 +878,8 @@ const ProfilePage = () => {
                     "Paper Presented",
                     "paper",
                     editingEntry.papersPresented,
-                    item.id
+                    item.id,
+                    "papers"
                   )
                 }
                 className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors duration-200 flex items-center justify-center"
@@ -832,7 +918,7 @@ const ProfilePage = () => {
                 <HiPencil className="mr-1" /> Edit
               </button>
               <button
-                onClick={() => deleteEntry("Paper", item.id, "paper")}
+                onClick={() => deleteEntry("Paper", item.id, "paper", "papers")}
                 className="text-red-600 hover:text-red-800 transition-colors duration-200 flex items-center"
               >
                 Delete
@@ -980,7 +1066,8 @@ const ProfilePage = () => {
                     "Research Project",
                     "research",
                     editingEntry.researchProjects,
-                    item.id
+                    item.id,
+                    "researches"
                   )
                 }
                 className="bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700 transition-colors duration-200 flex items-center justify-center"
@@ -1013,7 +1100,12 @@ const ProfilePage = () => {
               </button>
               <button
                 onClick={() =>
-                  deleteEntry("Research Project", item.id, "research")
+                  deleteEntry(
+                    "Research Project",
+                    item.id,
+                    "research",
+                    "researches"
+                  )
                 }
                 className="text-red-600 hover:text-red-800 transition-colors duration-200 flex items-center"
               >

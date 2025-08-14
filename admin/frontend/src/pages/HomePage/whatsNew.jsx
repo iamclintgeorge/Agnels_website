@@ -31,7 +31,7 @@ function AnnouncementsManager() {
       if (editingId) {
         const formData = new FormData();
         formData.append("method", "PUT");
-        formData.append("section", "homepage");
+        formData.append("section", "Homepage");
         formData.append("title", "Update Homepage Notice Board");
         formData.append(
           "change_summary",
@@ -56,7 +56,7 @@ function AnnouncementsManager() {
       } else {
         const formData = new FormData();
         formData.append("method", "POST");
-        formData.append("section", "homepage");
+        formData.append("section", "Homepage");
         formData.append("title", "Create Homepage Notice Board");
         formData.append("change_summary", "Added Entry to Notice Board");
         formData.append("current_content", "");
@@ -126,7 +126,7 @@ function AnnouncementsManager() {
     try {
       const formData = new FormData();
       formData.append("method", "DELETE");
-      formData.append("section", "homepage");
+      formData.append("section", "Homepage");
       formData.append("title", "Delete Homepage Notice Board");
       formData.append(
         "change_summary",

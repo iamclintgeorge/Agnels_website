@@ -30,7 +30,7 @@ function NewsManager() {
       if (editingId) {
         const formData = new FormData();
         formData.append("method", "PUT");
-        formData.append("section", "homepage");
+        formData.append("section", "Homepage");
         formData.append("title", "Update Homepage News");
         formData.append("change_summary", "Update Existing Entry of News");
         formData.append("current_content", JSON.stringify(prevContent));
@@ -52,7 +52,7 @@ function NewsManager() {
       } else {
         const formData = new FormData();
         formData.append("method", "POST");
-        formData.append("section", "homepage");
+        formData.append("section", "Homepage");
         formData.append("title", "Create Homepage News");
         formData.append("change_summary", "Added Entry to News Section");
         formData.append("current_content", "");
@@ -109,7 +109,7 @@ function NewsManager() {
     try {
       const formData = new FormData();
       formData.append("method", "DELETE");
-      formData.append("section", "homepage");
+      formData.append("section", "Homepage");
       formData.append("title", "Delete Homepage Notice Board");
       formData.append(
         "change_summary",

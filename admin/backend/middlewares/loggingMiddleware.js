@@ -37,7 +37,7 @@
 //   if (path.includes("/human-resource")) return "human_resources";
 //   if (path.includes("/content-approval")) return "content_approval";
 //   if (path.includes("/user")) return "users";
-//   if (path.includes("/home")) return "homepage";
+//   if (path.includes("/home")) return "Homepage";
 //   if (path.includes("/activity")) return "activities";
 //   if (path.includes("/pdf")) return "documents";
 

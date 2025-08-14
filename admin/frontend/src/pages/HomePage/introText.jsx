@@ -186,7 +186,7 @@ const IntroText = () => {
         "http://localhost:3663/api/content-approval/request",
         {
           method: "PUT",
-          section: "homepage",
+          section: "Homepage",
           title: "Home Page Intro Text Update",
           change_summary: "Updated intro text with enhanced formatting",
           current_content: introText[0].Content,
