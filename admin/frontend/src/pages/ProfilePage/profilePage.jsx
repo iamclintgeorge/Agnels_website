@@ -107,6 +107,21 @@ const ProfilePage = () => {
     papers: [],
     researches: [],
   });
+  const [prevProfile, setprevProfile] = useState({
+    photo: null,
+    name: "",
+    qualification: "",
+    designation: "",
+    email: "",
+    dateOfJoining: "",
+    bioData: null,
+    publications: null,
+    onlineProfiles: [],
+    specializations: [],
+    subjects: [],
+    papers: [],
+    researches: [],
+  });
 
   const [isEditing, setIsEditing] = useState({
     qualification: false,
@@ -161,6 +176,7 @@ const ProfilePage = () => {
       );
       console.log("Fetched profile:", response.data);
       setProfile(response.data);
+      setprevProfile(response.data);
     } catch (error) {
       console.error("Fetch profile error:", error);
       toast.error("Error fetching profile");
@@ -250,36 +266,52 @@ const ProfilePage = () => {
       formData.append(field, profile[field]);
     }
 
+    const formDataObj = {};
+    formData.forEach((value, key) => {
+      formDataObj[key] = value;
+    });
+
     try {
-      // const formDataToSend = new FormData();
-      // // formDataToSend.append("file", image);
-      // formDataToSend.append("method", "POST");
-      // formDataToSend.append("section", "Profile");
-      // formDataToSend.append("title", "Update Profile Personal Details");
-      // formDataToSend.append(
-      //   "change_summary",
-      //   "Update Existing Entry of Profile Personal Page pertaining to the faculties table"
-      // );
-      // formDataToSend.append("current_content", "");
-      // formDataToSend.append("proposed_content", JSON.stringify(formData));
-      // formDataToSend.append("endpoint_url", `api/profile/${user.id}`);
-      // formDataToSend.append("id", 0);
+      console.log("formDataObj", formDataObj);
+      const formDataToSend = new FormData();
+      if (profile.photo !== prevProfile.photo) {
+        formDataToSend.append("file", profile.photo);
+      }
 
-      // await axios.post(
-      //   `http://localhost:3663/api/content-approval/request`,
-      //   formDataToSend,
-      //   {
-      //     headers: { "Content-Type": "multipart/form-data" },
-      //   }
-      // );
+      if (profile.bioData !== prevProfile.bioData) {
+        formDataToSend.append("file", profile.bioData);
+      }
 
-      await axios.put(
-        `http://localhost:3663/api/profile/${user.id}`,
-        formData,
+      if (profile.publications !== prevProfile.publications) {
+        formDataToSend.append("file", profile.publications);
+      }
+      formDataToSend.append("method", "PUT");
+      formDataToSend.append("section", "Profile");
+      formDataToSend.append("title", "Update Profile Personal Details");
+      formDataToSend.append(
+        "change_summary",
+        "Update Existing Entry of Profile Personal Page pertaining to the faculties table"
+      );
+      formDataToSend.append("current_content", "");
+      formDataToSend.append("proposed_content", JSON.stringify(formDataObj));
+      formDataToSend.append("endpoint_url", `api/profile`);
+      formDataToSend.append("id", user.id);
+
+      await axios.post(
+        `http://localhost:3663/api/content-approval/request`,
+        formDataToSend,
         {
           headers: { "Content-Type": "multipart/form-data" },
         }
       );
+
+      // await axios.put(
+      //   `http://localhost:3663/api/profile/${user.id}`,
+      //   formData,
+      //   {
+      //     headers: { "Content-Type": "multipart/form-data" },
+      //   }
+      // );
       toast.success(`${field} updated successfully`);
       toggleEdit(field);
       fetchProfile();
