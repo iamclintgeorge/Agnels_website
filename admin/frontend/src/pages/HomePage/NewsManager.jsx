@@ -6,11 +6,12 @@ function NewsManager() {
     subject: "",
     description: "",
     attachment: "",
-    created_by: ""
+    created_by: "",
   });
   const [news, setNews] = useState([]);
   const [showTable, setShowTable] = useState(false);
   const [editingId, setEditingId] = useState(null);
+  const [prevContent, setprevContent] = useState("");
 
   // ─── Handlers ──────────────────────────────────────────────────────
   const handleChange = (e) => {
@@ -22,26 +23,59 @@ function NewsManager() {
     e.preventDefault();
     const payload = {
       ...formData,
-      created_by: parseInt(formData.created_by, 10) || 0
+      created_by: parseInt(formData.created_by, 10) || 0,
     };
 
     try {
       if (editingId) {
-        await axios.put(
-          `http://localhost:3663/api/home/news/${editingId}`,
-          payload
+        const formData = new FormData();
+        formData.append("method", "PUT");
+        formData.append("section", "homepage");
+        formData.append("title", "Update Homepage News");
+        formData.append("change_summary", "Update Existing Entry of News");
+        formData.append("current_content", JSON.stringify(prevContent));
+        formData.append("proposed_content", JSON.stringify(payload));
+        formData.append("endpoint_url", `api/home/news`);
+        formData.append("id", editingId);
+
+        await axios.post(
+          `http://localhost:3663/api/content-approval/request`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
         );
         alert("News updated!");
         setEditingId(null);
       } else {
-        await axios.post("http://localhost:3663/api/home/news", payload);
+        const formData = new FormData();
+        formData.append("method", "POST");
+        formData.append("section", "homepage");
+        formData.append("title", "Create Homepage News");
+        formData.append("change_summary", "Added Entry to News Section");
+        formData.append("current_content", "");
+        formData.append("proposed_content", JSON.stringify(payload));
+        formData.append("endpoint_url", `api/home/news`);
+        formData.append("id", 0);
+
+        await axios.post(
+          "http://localhost:3663/api/content-approval/request",
+          formData,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
         alert("News added!");
       }
       setFormData({
         subject: "",
         description: "",
         attachment: "",
-        created_by: ""
+        created_by: "",
       });
       fetchNews();
     } catch (err) {
@@ -64,24 +98,46 @@ function NewsManager() {
       subject: row.subject,
       description: row.description,
       attachment: row.attachment,
-      created_by: row.created_by.toString()
+      created_by: row.created_by.toString(),
     });
     setEditingId(row.id);
+    setprevContent(row);
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (row, id) => {
+    setprevContent(row);
     try {
-      await axios.put(`http://localhost:3663/api/home/delete-news/${id}`);
+      const formData = new FormData();
+      formData.append("method", "DELETE");
+      formData.append("section", "homepage");
+      formData.append("title", "Delete Homepage Notice Board");
+      formData.append(
+        "change_summary",
+        "Delete Existing Entry of Notice Board"
+      );
+      formData.append("current_content", JSON.stringify(prevContent));
+      formData.append("proposed_content", "");
+      formData.append("endpoint_url", `api/home/delete-news`);
+      formData.append("id", id);
+
+      await axios.post(
+        `http://localhost:3663/api/content-approval/request`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       fetchNews();
     } catch (err) {
       console.error("Delete error:", err);
     }
   };
 
-  // ─── JSX ───────────────────────────────────────────────────────────
   return (
     <section className="py-10 px-5 bg-[#F7F7F7] min-h-screen">
-      {/* ── FORM ─────────────────────────────────── */}
+      {/* Form */}
       <div className="max-w-2xl mx-auto bg-white p-6 rounded-lg shadow-lg">
         <h2 className="font-semibold italic text-[30px] text-[#0C2340] mb-5">
           {editingId ? "Edit News" : "Add News"}
@@ -170,7 +226,7 @@ function NewsManager() {
                       Edit
                     </button>
                     <button
-                      onClick={() => handleDelete(row.id)}
+                      onClick={() => handleDelete(row, row.id)}
                       className="bg-red-500 text-white py-1 px-2 rounded-md"
                     >
                       Delete

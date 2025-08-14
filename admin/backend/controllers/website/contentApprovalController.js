@@ -177,6 +177,8 @@ export const approveRequest = async (req, res) => {
 
     const { method, endpoint_url, content_id, proposed_content } = requestData;
 
+    console.log("requestData", requestData);
+
     // Forward based on method type
     try {
       const url = `http://localhost:3663/${endpoint_url}`;

@@ -7,11 +7,12 @@ function AchievementManager() {
     description: "",
     attachment: "",
     created_by: "",
-    Type: "Students"      // default option
+    Type: "Students", // default option
   });
   const [achievements, setAchievements] = useState([]);
   const [showTable, setShowTable] = useState(false);
   const [editingId, setEditingId] = useState(null);
+  const [prevContent, setprevContent] = useState("");
 
   /* ----------  handlers  ---------- */
   const handleChange = (e) => {
@@ -23,22 +24,68 @@ function AchievementManager() {
     e.preventDefault();
     const payload = {
       ...formData,
-      created_by: parseInt(formData.created_by, 10) || 0
+      created_by: parseInt(formData.created_by, 10) || 0,
     };
 
     try {
       if (editingId) {
-        await axios.put(
-          `http://localhost:3663/api/home/achievements/${editingId}`,
-          payload
+        const formData = new FormData();
+        formData.append("method", "PUT");
+        formData.append("section", "homepage");
+        formData.append("title", "Update Homepage Achievements (What's New)");
+        formData.append(
+          "change_summary",
+          "Update Existing Entry of Achievements (What's New) Section"
         );
+        formData.append("current_content", JSON.stringify(prevContent));
+        formData.append("proposed_content", JSON.stringify(payload));
+        formData.append("endpoint_url", `api/home/achievements`);
+        formData.append("id", editingId);
+
+        await axios.post(
+          `http://localhost:3663/api/content-approval/request`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        // await axios.put(
+        //   `http://localhost:3663/api/home/achievements/${editingId}`,
+        //   payload
+        // );
         alert("Achievement updated!");
         setEditingId(null);
       } else {
-        await axios.post(
-          "http://localhost:3663/api/home/achievements",
-          payload
+        const formData = new FormData();
+        formData.append("method", "POST");
+        formData.append("section", "homepage");
+        formData.append("title", "Create Homepage Achievements (What's New)");
+        formData.append(
+          "change_summary",
+          "Added Entry to Achievements (What's New) Section"
         );
+        formData.append("current_content", "");
+        formData.append("proposed_content", JSON.stringify(payload));
+        formData.append("endpoint_url", `api/home/achievements`);
+        formData.append("id", 0);
+
+        await axios.post(
+          "http://localhost:3663/api/content-approval/request",
+          formData,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        // await axios.post(
+        //   "http://localhost:3663/api/home/achievements",
+        //   payload
+        // );
         alert("Achievement added!");
       }
       setFormData({
@@ -46,7 +93,7 @@ function AchievementManager() {
         description: "",
         attachment: "",
         created_by: "",
-        Type: "Students"
+        Type: "Students",
       });
       fetchAchievements();
     } catch (err) {
@@ -72,16 +119,41 @@ function AchievementManager() {
       description: row.description,
       attachment: row.attachment,
       created_by: row.created_by.toString(),
-      Type: row.Type
+      Type: row.Type,
     });
     setEditingId(row.id);
+    setprevContent(row);
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (row, id) => {
+    setprevContent(row);
     try {
-      await axios.put(
-        `http://localhost:3663/api/home/delete-achievements/${id}`
+      const formData = new FormData();
+      formData.append("method", "DELETE");
+      formData.append("section", "homepage");
+      formData.append("title", "Delete Homepage Achievements (What's New)");
+      formData.append(
+        "change_summary",
+        "Delete Existing Entry of Achievements (What's New) Section"
       );
+      formData.append("current_content", JSON.stringify(prevContent));
+      formData.append("proposed_content", "");
+      formData.append("endpoint_url", `api/home/delete-achievements`);
+      formData.append("id", id);
+
+      await axios.post(
+        `http://localhost:3663/api/content-approval/request`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      // await axios.put(
+      //   `http://localhost:3663/api/home/delete-achievements/${id}`
+      // );
       fetchAchievements();
     } catch (err) {
       console.error("Delete error:", err);
@@ -192,7 +264,7 @@ function AchievementManager() {
                       Edit
                     </button>
                     <button
-                      onClick={() => handleDelete(row.id)}
+                      onClick={() => handleDelete(row, row.id)}
                       className="bg-red-500 text-white py-1 px-2 rounded-md"
                     >
                       Delete
