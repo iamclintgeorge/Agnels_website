@@ -258,6 +258,10 @@ const ApprovalDashboard = () => {
           <p className="text-sm text-gray-600 mb-2">
             <span className="font-medium">Section:</span> {request.section}
           </p>
+          <p className="text-sm text-gray-600 mb-2">
+            <span className="font-medium">Requested By:</span>{" "}
+            {request.req_username}
+          </p>
         </div>
 
         <div className="flex items-center gap-2 ml-4">
@@ -344,6 +348,10 @@ const ApprovalDashboard = () => {
               </p>
               <p className="text-sm text-gray-600">
                 <span className="font-medium">Section:</span> {request.section}
+              </p>
+              <p className="text-sm text-gray-600 mb-2">
+                <span className="font-medium">Requested By:</span>{" "}
+                {request.req_username}
               </p>
               <p className="text-sm text-gray-600">
                 <span className="font-medium">Status:</span>{" "}

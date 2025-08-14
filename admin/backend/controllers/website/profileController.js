@@ -19,6 +19,7 @@ import {
 } from "../../models/website/profileModel.js";
 import fs from "fs/promises";
 import path from "path";
+import fsi from "fs";
 
 export const getProfileController = async (req, res) => {
   try {
@@ -37,12 +38,49 @@ export const getProfileController = async (req, res) => {
 export const updateProfileController = async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, qualification, designation, email, dateOfJoining } = req.body;
-    const files = req.files;
+    const {
+      name,
+      qualification,
+      designation,
+      email,
+      dateOfJoining,
+      imageFilename,
+      photo,
+      bioData,
+      publications,
+    } = JSON.parse(req.body.content);
+    let imageUrl = null;
+
+    console.log(
+      "name, qualification, designation, email, dateOfJoining, imageFilename",
+      name,
+      qualification,
+      designation,
+      email,
+      dateOfJoining,
+      imageFilename,
+      photo,
+      bioData,
+      publications
+    );
+
+    if (imageFilename) {
+      const pendingPath = path.join("public/cdn/pending", imageFilename);
+      const finalPath = path.join("public/cdn", imageFilename);
+
+      // Move image if it exists
+      if (fsi.existsSync(pendingPath)) {
+        fsi.renameSync(pendingPath, finalPath);
+      }
+
+      imageUrl = `/cdn/${imageFilename}`; // Set imageUrl if imageFilename is present
+    }
 
     // Debug incoming data
-    console.log("Request body:", req.body);
-    console.log("Files:", files);
+    // console.log("Files:", files);
+    console.log("photo:", photo);
+    console.log("bioData:", bioData);
+    console.log("publications:", publications);
 
     // Validate required fields
     if (!name || !qualification || !designation || !email || !dateOfJoining) {
@@ -58,11 +96,9 @@ export const updateProfileController = async (req, res) => {
       designation,
       email,
       dateOfJoining,
-      photo: files?.photo ? `/cdn/${files.photo[0].filename}` : null,
-      bioData: files?.bioData ? `/cdn/${files.bioData[0].filename}` : null,
-      publications: files?.publications
-        ? `/cdn/${files.publications[0].filename}`
-        : null,
+      photo: photo ? imageUrl : null,
+      bioData: bioData ? imageUrl : null,
+      publications: publications ? imageUrl : null,
     };
 
     const updatedProfile = await updateProfile(id, updateData);
