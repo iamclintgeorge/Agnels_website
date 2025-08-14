@@ -31,7 +31,7 @@ function AchievementManager() {
       if (editingId) {
         const formData = new FormData();
         formData.append("method", "PUT");
-        formData.append("section", "homepage");
+        formData.append("section", "Homepage");
         formData.append("title", "Update Homepage Achievements (What's New)");
         formData.append(
           "change_summary",
@@ -61,7 +61,7 @@ function AchievementManager() {
       } else {
         const formData = new FormData();
         formData.append("method", "POST");
-        formData.append("section", "homepage");
+        formData.append("section", "Homepage");
         formData.append("title", "Create Homepage Achievements (What's New)");
         formData.append(
           "change_summary",
@@ -130,7 +130,7 @@ function AchievementManager() {
     try {
       const formData = new FormData();
       formData.append("method", "DELETE");
-      formData.append("section", "homepage");
+      formData.append("section", "Homepage");
       formData.append("title", "Delete Homepage Achievements (What's New)");
       formData.append(
         "change_summary",

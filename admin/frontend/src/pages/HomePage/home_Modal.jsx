@@ -35,7 +35,7 @@ const ImgModal = () => {
     const formData = new FormData();
     formData.append("file", image); // File object
     formData.append("method", "POST");
-    formData.append("section", "homepage");
+    formData.append("section", "Homepage");
     formData.append("title", "Upload Homepage Image Carousel");
     formData.append("change_summary", "Added Image to Carousel");
     formData.append("current_content", "");
@@ -90,7 +90,7 @@ const ImgModal = () => {
 
       const formData = new FormData();
       formData.append("method", "DELETE");
-      formData.append("section", "homepage");
+      formData.append("section", "Homepage");
       formData.append("title", "Delete Carousel Image");
       formData.append("change_summary", "Deleted Image from homepage Carousel");
       formData.append("current_content", JSON.stringify(currentContent));

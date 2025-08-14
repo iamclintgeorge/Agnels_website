@@ -29,7 +29,7 @@ function CircularManager() {
       if (editingId) {
         const formData = new FormData();
         formData.append("method", "PUT");
-        formData.append("section", "homepage");
+        formData.append("section", "Homepage");
         formData.append("title", "Update Homepage Circulars");
         formData.append(
           "change_summary",
@@ -59,7 +59,7 @@ function CircularManager() {
       } else {
         const formData = new FormData();
         formData.append("method", "POST");
-        formData.append("section", "homepage");
+        formData.append("section", "Homepage");
         formData.append("title", "Create Homepage Circulars");
         formData.append("change_summary", "Added Entry to Circulars Section");
         formData.append("current_content", "");
@@ -116,7 +116,7 @@ function CircularManager() {
     try {
       const formData = new FormData();
       formData.append("method", "DELETE");
-      formData.append("section", "homepage");
+      formData.append("section", "Homepage");
       formData.append("title", "Delete Homepage Circular");
       formData.append(
         "change_summary",

@@ -119,7 +119,7 @@ export const updateProfileController = async (req, res) => {
 export const addOnlineProfileController = async (req, res) => {
   try {
     const { id } = req.params;
-    const { description } = req.body;
+    const { description } = JSON.parse(req.body.content);
     if (!description) {
       return res.status(400).json({ message: "Description is required" });
     }
@@ -134,7 +134,7 @@ export const addOnlineProfileController = async (req, res) => {
 export const addSpecializationController = async (req, res) => {
   try {
     const { id } = req.params;
-    const { description } = req.body;
+    const { description } = JSON.parse(req.body.content);
     if (!description) {
       return res.status(400).json({ message: "Description is required" });
     }
@@ -149,7 +149,7 @@ export const addSpecializationController = async (req, res) => {
 export const addSubjectController = async (req, res) => {
   try {
     const { id } = req.params;
-    const { subject, type, semester } = req.body;
+    const { subject, type, semester } = JSON.parse(req.body.content);
     if (!subject || !type || !semester) {
       return res
         .status(400)
@@ -166,7 +166,7 @@ export const addSubjectController = async (req, res) => {
 export const addPaperController = async (req, res) => {
   try {
     const { id } = req.params;
-    const { title, description, link } = req.body;
+    const { title, description, link } = JSON.parse(req.body.content);
     if (!title || !description) {
       return res
         .status(400)
@@ -184,7 +184,7 @@ export const addResearchController = async (req, res) => {
   try {
     const { id } = req.params;
     const { title, grant_type, funding_organization, amount, duration } =
-      req.body;
+      JSON.parse(req.body.content);
     if (
       !title ||
       !grant_type ||
@@ -282,7 +282,7 @@ export const deleteResearchController = async (req, res) => {
 export const updateOnlineProfileController = async (req, res) => {
   try {
     const { id, profileId } = req.params;
-    const { description } = req.body;
+    const { description } = JSON.parse(req.body.content);
     console.log("id, profileId, description", id, profileId, description);
 
     const updated = await updateOnlineProfile(id, profileId, description);
@@ -299,7 +299,7 @@ export const updateOnlineProfileController = async (req, res) => {
 export const updateSpecializationController = async (req, res) => {
   try {
     const { id, specId } = req.params;
-    const { description } = req.body;
+    const { description } = JSON.parse(req.body.content);
 
     const updated = await updateSpecialization(id, specId, description);
     if (!updated) {
@@ -315,7 +315,7 @@ export const updateSpecializationController = async (req, res) => {
 export const updateSubjectController = async (req, res) => {
   try {
     const { id, subjectId } = req.params;
-    const { subject, type, semester } = req.body;
+    const { subject, type, semester } = JSON.parse(req.body.content);
 
     const updated = await updateSubject(id, subjectId, {
       subject,
@@ -335,7 +335,7 @@ export const updateSubjectController = async (req, res) => {
 export const updatePaperController = async (req, res) => {
   try {
     const { id, paperId } = req.params;
-    const { title, description, link } = req.body;
+    const { title, description, link } = JSON.parse(req.body.content);
 
     const updated = await updatePaper(id, paperId, {
       title,
@@ -356,7 +356,7 @@ export const updateResearchController = async (req, res) => {
   try {
     const { id, researchId } = req.params;
     const { title, grant_type, funding_organization, amount, duration } =
-      req.body;
+      JSON.parse(req.body.content);
 
     const updated = await updateResearch(id, researchId, {
       title,
