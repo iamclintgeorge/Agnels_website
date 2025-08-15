@@ -1,20 +1,28 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import StaticPages from "../../layouts/staticPages";
-import {
-  Homee,
-  AcademicHandbook,
-  AcademicHandbookDetails,
-  AcademicCalender,
-  // APMS,
-  // LMS,
-  StakeholderFeedback,
-  // Examination,
-} from "./academicContent";
+import { Homee, AcademicCalender } from "./academicContent";
 import Examinations from "./Examinations";
+import axios from "axios";
 
 const Academics = () => {
   const navigate = useNavigate();
+  const [linkData, setLinkData] = useState([]);
+
+  useEffect(() => {
+    fetchLinks();
+  }, []);
+
+  const fetchLinks = async () => {
+    try {
+      const response = await fetch("http://localhost:3663/api/academic/links");
+      const data = await response.json();
+      console.log("Fetched link data:", data);
+      setLinkData(data.result); // Store the array of links
+    } catch (error) {
+      console.log("Error fetching academic links:", error);
+    }
+  };
 
   const sidebar = [
     "Home",
@@ -30,24 +38,41 @@ const Academics = () => {
 
   const content = {
     Home: <Homee />,
-    "Academic Handbook": <AcademicHandbook />,
-    "Academic Handbook for Honours and Minors": <AcademicHandbookDetails />,
     "Academic Calendar": <AcademicCalender />,
-    "Stakeholder Feedback on Syllabus": <StakeholderFeedback />,
   };
 
   const handleTabClick = (tab) => {
     if (tab === "Examinations") {
-      navigate("/examinations-page"); // Navigate to examinations page
-    } else if (tab === "APMS") {
-      window.open("https://apms.fcrit.ac.in/apms/index.php", "_blank");
-    } else if (tab === "LMS") {
-      window.open("http://lms.fcrit.ac.in/moodle/", "_blank");
-    } else if (tab === "Fee Approval Proposal for Academic Year 2025-26") {
-      window.open(
-        "https://fcrit.ac.in/static_pdfs/FeeApproval2025-26.pdf",
-        "_blank"
+      navigate("/examinations-page");
+    } else if (tab === "Academic Handbook") {
+      const match = linkData.find((item) => item.title === "Academic Handbook");
+      if (match) window.open(match.url, "_blank");
+    } else if (tab === "Academic Handbook for Honours and Minors") {
+      const match = linkData.find(
+        (item) =>
+          item.title.includes("Honours") || item.title.includes("Minors")
       );
+      if (match) window.open(match.url, "_blank");
+    } else if (tab === "APMS") {
+      const match = linkData.find((item) => item.title === "APMS Portal");
+      if (match) window.open(match.url, "_blank");
+    } else if (tab === "LMS") {
+      const match = linkData.find(
+        (item) => item.title === "Learning Management System"
+      );
+      if (match) window.open(match.url, "_blank");
+    } else if (tab === "Fee Approval Proposal for Academic Year 2025-26") {
+      const match = linkData.find((item) =>
+        item.title.includes("Fee Approval")
+      );
+      if (match) window.open(match.url, "_blank");
+    } else if (tab === "Stakeholder Feedback on Syllabus") {
+      const match = linkData.find((item) =>
+        item.title.includes("Stakeholder Feedback")
+      );
+      if (match) window.open(match.url, "_blank");
+    } else {
+      console.warn("No handler for tab:", tab);
     }
   };
 

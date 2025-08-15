@@ -17,14 +17,12 @@ export const departmentSections = [
 ];
 
 export const academicSections = [
-  "Home",
-  "Academic Handbook",
-  "Academic Handbook Honours/Minors",
-  "Academic Calendar",
-  "Examinations",
-  "APMS",
-  "LMS",
-  "Stakeholder Feedback",
+  {
+    Home: "home",
+    "Academic Calendar": "academic_calendar",
+    Examinations: "examinations",
+    "Academic Links Management": "academic_links",
+  },
 ];
 
 export const aboutSections = [
