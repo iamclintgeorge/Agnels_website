@@ -1,122 +1,57 @@
 import db from "../../config/db.js";
 
 // Academic Home Models
-export const academicHomeCreate = async (
-  title,
-  description,
-  hero_image_url,
-  created_by
-) => {
-  const query = `
-    INSERT INTO academic_home (title, description, hero_image_url, created_by) 
-    VALUES (?, ?, ?, ?)
-  `;
-  const values = [title, description, hero_image_url, created_by];
-
-  try {
-    const [result] = await db.promise().query(query, values);
-    return result;
-  } catch (error) {
-    console.error("Database insertion error:", error);
-    throw error;
-  }
-};
-// export const academicHomeFetch = async () => {
+// export const academicHomeCreate = async (
+//   title,
+//   description,
+//   hero_image_url,
+//   created_by
+// ) => {
 //   const query = `
-//     SELECT
-//       h.*,
-//       CONCAT('[', GROUP_CONCAT(
-//         CONCAT(
-//           '{',
-//             '"id":', s.id, ',',
-//             '"section_type":"', s.section_type, '",',
-//             '"title":"', REPLACE(s.title, '"', '\\"'), '",',
-//             '"description":"', REPLACE(s.description, '"', '\\"'), '",',
-//             '"icon":"', s.icon, '",',
-//             '"order_index":', s.order_index, ',',
-//             '"is_active":', s.is_active, ',',
-//             '"admin_cards":', (
-//               SELECT CONCAT('[', GROUP_CONCAT(
-//                 CONCAT(
-//                   '{',
-//                     '"id":', ac.id, ',',
-//                     '"title":"', REPLACE(ac.title, '"', '\\"'), '",',
-//                     '"description":"', REPLACE(ac.description, '"', '\\"'), '",',
-//                     '"icon":"', ac.icon, '",',
-//                     '"order_index":', ac.order_index, ',',
-//                     '"is_active":', ac.is_active,
-//                   '}'
-//                 )
-//               ), ']')
-//               FROM academic_admin_cards ac
-//               WHERE ac.section_id = s.id AND ac.deleted = '0'
-//             ),
-//           '}'
-//         )
-//       ), ']') AS sections
-//     FROM academic_home h
-//     LEFT JOIN academic_home_sections s ON h.id = s.home_id AND s.deleted = '0'
-//     WHERE h.deleted = '0'
-//     GROUP BY h.id
-//     ORDER BY h.created_at DESC
+//     INSERT INTO academic_home (title, description, hero_image_url, created_by)
+//     VALUES (?, ?, ?, ?)
 //   `;
+//   const values = [title, description, hero_image_url, created_by];
 
 //   try {
-//     const [rows] = await db.promise().query(query);
-//     return rows;
+//     const [result] = await db.promise().query(query, values);
+//     return result;
 //   } catch (error) {
-//     console.error("Database fetch error:", error);
+//     console.error("Database insertion error:", error);
 //     throw error;
 //   }
 // };
+
 export const academicHomeFetch = async () => {
-  const query = `
-    SELECT 
-      h.*,
-      IFNULL(JSON_ARRAYAGG(
-        JSON_OBJECT(
-          'id', s.id,
-          'section_type', s.section_type,
-          'title', s.title,
-          'description', s.description,
-          'icon', s.icon,
-          'order_index', s.order_index,
-          'is_active', s.is_active,
-          'admin_cards', IFNULL((
-            SELECT JSON_ARRAYAGG(
-              JSON_OBJECT(
-                'id', ac.id,
-                'title', ac.title,
-                'description', ac.description,
-                'icon', ac.icon,
-                'order_index', ac.order_index,
-                'is_active', ac.is_active
-              )
-            )
-            FROM academic_admin_cards ac
-            WHERE ac.section_id = s.id AND ac.deleted = '0'
-          ), JSON_ARRAY())
-        )
-      ), JSON_ARRAY()) AS sections
-    FROM academic_home h
-    LEFT JOIN academic_home_sections s ON h.id = s.home_id AND s.deleted = '0'
-    WHERE h.deleted = '0'
-    GROUP BY h.id
-    ORDER BY h.created_at DESC
-  `;
+  const query = `SELECT * FROM infoText WHERE Section = 'academic_home'`;
 
   try {
     const [rows] = await db.promise().query(query);
-    const parsedRows = rows.map((row) => ({
-      ...row,
-      sections:
-        typeof row.sections === "string"
-          ? JSON.parse(row.sections)
-          : row.sections,
-    }));
-    return parsedRows;
+    return rows;
   } catch (error) {
     console.error("Database fetch error:", error);
+    throw error;
+  }
+};
+
+export const academicHomeTextUpdate = async (id, content) => {
+  if (!id || id === "undefined") {
+    throw new Error("Invalid ID provided for update");
+  }
+
+  const query = `
+    UPDATE infoText
+    SET Content = ? 
+    WHERE id = ?;
+  `;
+  const values = [content, id];
+
+  try {
+    const [result] = await db.promise().query(query, values);
+    if (result.affectedRows === 0) return null;
+    return { id, content };
+  } catch (error) {
+    console.error("Database update error:", error);
     throw error;
   }
 };
@@ -535,8 +470,8 @@ export const academicCalendarDelete = async (id) => {
 
 // export const examinationFetch = async () => {
 //   const query = `
-//     SELECT * FROM examinations 
-//     WHERE deleted = '0' 
+//     SELECT * FROM examinations
+//     WHERE deleted = '0'
 //     ORDER BY created_at DESC
 //   `;
 
@@ -571,8 +506,8 @@ export const academicCalendarDelete = async (id) => {
 //   created_by
 // ) => {
 //   const query = `
-//     UPDATE examinations 
-//     SET exam_type = ?, semester = ?, year = ?, timetable_url = ?, result_url = ?, notification = ?, created_by = ? 
+//     UPDATE examinations
+//     SET exam_type = ?, semester = ?, year = ?, timetable_url = ?, result_url = ?, notification = ?, created_by = ?
 //     WHERE id = ?
 //   `;
 //   const values = [
@@ -597,8 +532,8 @@ export const academicCalendarDelete = async (id) => {
 
 // export const examinationDelete = async (id) => {
 //   const query = `
-//     UPDATE examinations 
-//     SET deleted = '1' 
+//     UPDATE examinations
+//     SET deleted = '1'
 //     WHERE id = ?
 //   `;
 
@@ -791,18 +726,30 @@ export const stakeholderFeedbackDelete = async (id) => {
   }
 };
 
-
-
 // ==================== EXAMINATIONS TIMETABLE CRUD ====================
 
 // Create examination timetable
-export const examinationCreate = async (title, description, academic_year, semester, exam_type, pdf_url, created_by) => {
+export const examinationCreate = async (
+  title,
+  description,
+  academic_year,
+  semester,
+  exam_type,
+  pdf_url
+) => {
   const query = `
-    INSERT INTO examinations (title, description, academic_year, semester, exam_type, pdf_url, created_by)
-    VALUES (?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO examinations (title, description, academic_year, semester, exam_type, pdf_url)
+    VALUES (?, ?, ?, ?, ?, ?)
   `;
-  const values = [title, description, academic_year, semester, exam_type, pdf_url, created_by];
-  
+  const values = [
+    title,
+    description,
+    academic_year,
+    semester,
+    exam_type,
+    pdf_url,
+  ];
+
   try {
     const [result] = await db.promise().query(query, values);
     return result;
@@ -820,13 +767,13 @@ export const examinationFetch = async () => {
     WHERE is_active = TRUE 
     ORDER BY academic_year DESC, semester, exam_type
   `;
-  
+
   try {
     const [rows] = await db.promise().query(query);
-    
+
     // Group by academic year and semester to match frontend structure
     const grouped = {};
-    rows.forEach(row => {
+    rows.forEach((row) => {
       if (!grouped[row.academic_year]) {
         grouped[row.academic_year] = {};
       }
@@ -838,10 +785,10 @@ export const examinationFetch = async () => {
         link: row.pdf_url,
         id: row.id,
         title: row.title,
-        description: row.description
+        description: row.description,
       });
     });
-    
+
     return grouped;
   } catch (error) {
     console.error("Database fetch error:", error);
@@ -852,7 +799,7 @@ export const examinationFetch = async () => {
 // Get examination by ID
 export const getExaminationById = async (id) => {
   const query = `SELECT * FROM examinations WHERE id = ? AND is_active = TRUE`;
-  
+
   try {
     const [rows] = await db.promise().query(query, [id]);
     return rows[0];
@@ -863,14 +810,30 @@ export const getExaminationById = async (id) => {
 };
 
 // Edit examination
-export const examinationEdit = async (id, title, description, academic_year, semester, exam_type, pdf_url) => {
+export const examinationEdit = async (
+  id,
+  title,
+  description,
+  academic_year,
+  semester,
+  exam_type,
+  pdf_url
+) => {
   const query = `
     UPDATE examinations 
     SET title = ?, description = ?, academic_year = ?, semester = ?, exam_type = ?, pdf_url = ?, updated_at = CURRENT_TIMESTAMP
     WHERE id = ?
   `;
-  const values = [title, description, academic_year, semester, exam_type, pdf_url, id];
-  
+  const values = [
+    title,
+    description,
+    academic_year,
+    semester,
+    exam_type,
+    pdf_url,
+    id,
+  ];
+
   try {
     const [result] = await db.promise().query(query, values);
     return result;
@@ -883,7 +846,7 @@ export const examinationEdit = async (id, title, description, academic_year, sem
 // Delete examination (soft delete)
 export const examinationDelete = async (id) => {
   const query = `UPDATE examinations SET is_active = FALSE WHERE id = ?`;
-  
+
   try {
     const [result] = await db.promise().query(query, [id]);
     return result;
@@ -896,13 +859,17 @@ export const examinationDelete = async (id) => {
 // ==================== EXAMINATION SLIDES CRUD ====================
 
 // Create slide
-export const examinationSlideCreate = async (title, image_url, display_order, created_by) => {
+export const examinationSlideCreate = async (
+  title,
+  image_url,
+  display_order
+) => {
   const query = `
-    INSERT INTO examination_slides (title, image_url, display_order, created_by)
-    VALUES (?, ?, ?, ?)
+    INSERT INTO examination_slides (title, image_url, display_order)
+    VALUES (?, ?, ?)
   `;
-  const values = [title, image_url, display_order, created_by];
-  
+  const values = [title, image_url, display_order];
+
   try {
     const [result] = await db.promise().query(query, values);
     return result;
@@ -920,15 +887,15 @@ export const examinationSlidesFetch = async () => {
     WHERE is_active = TRUE 
     ORDER BY display_order ASC
   `;
-  
+
   try {
     const [rows] = await db.promise().query(query);
-    return rows.map(row => ({
+    return rows.map((row) => ({
       id: row.id,
       title: row.title,
       image: row.image_url,
       display_order: row.display_order,
-      created_at: row.created_at
+      created_at: row.created_at,
     }));
   } catch (error) {
     console.error("Database fetch error:", error);
@@ -939,7 +906,7 @@ export const examinationSlidesFetch = async () => {
 // Get slide by ID
 export const getExaminationSlideById = async (id) => {
   const query = `SELECT * FROM examination_slides WHERE id = ? AND is_active = TRUE`;
-  
+
   try {
     const [rows] = await db.promise().query(query, [id]);
     return rows[0];
@@ -950,14 +917,19 @@ export const getExaminationSlideById = async (id) => {
 };
 
 // Edit slide
-export const examinationSlideEdit = async (id, title, image_url, display_order) => {
+export const examinationSlideEdit = async (
+  id,
+  title,
+  image_url,
+  display_order
+) => {
   const query = `
     UPDATE examination_slides 
     SET title = ?, image_url = ?, display_order = ?, updated_at = CURRENT_TIMESTAMP
     WHERE id = ?
   `;
   const values = [title, image_url, display_order, id];
-  
+
   try {
     const [result] = await db.promise().query(query, values);
     return result;
@@ -970,7 +942,7 @@ export const examinationSlideEdit = async (id, title, image_url, display_order) 
 // Delete slide
 export const examinationSlideDelete = async (id) => {
   const query = `UPDATE examination_slides SET is_active = FALSE WHERE id = ?`;
-  
+
   try {
     const [result] = await db.promise().query(query, [id]);
     return result;
@@ -983,13 +955,17 @@ export const examinationSlideDelete = async (id) => {
 // ==================== EXAMINATION NOTIFICATIONS CRUD ====================
 
 // Create notification
-export const examinationNotificationCreate = async (title, description, is_new, created_by) => {
+export const examinationNotificationCreate = async (
+  title,
+  description,
+  is_new
+) => {
   const query = `
-    INSERT INTO examination_notifications (title, description, is_new, created_by)
-    VALUES (?, ?, ?, ?)
+    INSERT INTO examination_notifications (title, description, is_new)
+    VALUES (?, ?, ?)
   `;
-  const values = [title, description, is_new, created_by];
-  
+  const values = [title, description, is_new];
+
   try {
     const [result] = await db.promise().query(query, values);
     return result;
@@ -1007,15 +983,15 @@ export const examinationNotificationsFetch = async () => {
     WHERE is_active = TRUE 
     ORDER BY created_at DESC
   `;
-  
+
   try {
     const [rows] = await db.promise().query(query);
-    return rows.map(row => ({
+    return rows.map((row) => ({
       id: row.id,
       title: row.title,
       description: row.description,
       isNew: row.is_new,
-      created_at: row.created_at
+      created_at: row.created_at,
     }));
   } catch (error) {
     console.error("Database fetch error:", error);
@@ -1026,7 +1002,7 @@ export const examinationNotificationsFetch = async () => {
 // Get notification by ID
 export const getExaminationNotificationById = async (id) => {
   const query = `SELECT * FROM examination_notifications WHERE id = ? AND is_active = TRUE`;
-  
+
   try {
     const [rows] = await db.promise().query(query, [id]);
     return rows[0];
@@ -1037,14 +1013,19 @@ export const getExaminationNotificationById = async (id) => {
 };
 
 // Edit notification
-export const examinationNotificationEdit = async (id, title, description, is_new) => {
+export const examinationNotificationEdit = async (
+  id,
+  title,
+  description,
+  is_new
+) => {
   const query = `
     UPDATE examination_notifications 
     SET title = ?, description = ?, is_new = ?, updated_at = CURRENT_TIMESTAMP
     WHERE id = ?
   `;
   const values = [title, description, is_new, id];
-  
+
   try {
     const [result] = await db.promise().query(query, values);
     return result;
@@ -1057,7 +1038,7 @@ export const examinationNotificationEdit = async (id, title, description, is_new
 // Delete notification
 export const examinationNotificationDelete = async (id) => {
   const query = `UPDATE examination_notifications SET is_active = FALSE WHERE id = ?`;
-  
+
   try {
     const [result] = await db.promise().query(query, [id]);
     return result;
@@ -1070,13 +1051,13 @@ export const examinationNotificationDelete = async (id) => {
 // ==================== EXAMINATION FORMS CRUD ====================
 
 // Create form
-export const examinationFormCreate = async (name, description, pdf_url, created_by) => {
+export const examinationFormCreate = async (name, description, pdf_url) => {
   const query = `
-    INSERT INTO examination_forms (name, description, pdf_url, created_by)
-    VALUES (?, ?, ?, ?)
+    INSERT INTO examination_forms (name, description, pdf_url)
+    VALUES (?, ?, ?)
   `;
-  const values = [name, description, pdf_url, created_by];
-  
+  const values = [name, description, pdf_url];
+
   try {
     const [result] = await db.promise().query(query, values);
     return result;
@@ -1094,15 +1075,15 @@ export const examinationFormsFetch = async () => {
     WHERE is_active = TRUE 
     ORDER BY created_at DESC
   `;
-  
+
   try {
     const [rows] = await db.promise().query(query);
-    return rows.map(row => ({
+    return rows.map((row) => ({
       id: row.id,
       name: row.name,
       description: row.description,
       link: row.pdf_url,
-      created_at: row.created_at
+      created_at: row.created_at,
     }));
   } catch (error) {
     console.error("Database fetch error:", error);
@@ -1113,7 +1094,7 @@ export const examinationFormsFetch = async () => {
 // Get form by ID
 export const getExaminationFormById = async (id) => {
   const query = `SELECT * FROM examination_forms WHERE id = ? AND is_active = TRUE`;
-  
+
   try {
     const [rows] = await db.promise().query(query, [id]);
     return rows[0];
@@ -1131,7 +1112,7 @@ export const examinationFormEdit = async (id, name, description, pdf_url) => {
     WHERE id = ?
   `;
   const values = [name, description, pdf_url, id];
-  
+
   try {
     const [result] = await db.promise().query(query, values);
     return result;
@@ -1144,7 +1125,7 @@ export const examinationFormEdit = async (id, name, description, pdf_url) => {
 // Delete form
 export const examinationFormDelete = async (id) => {
   const query = `UPDATE examination_forms SET is_active = FALSE WHERE id = ?`;
-  
+
   try {
     const [result] = await db.promise().query(query, [id]);
     return result;
@@ -1157,13 +1138,13 @@ export const examinationFormDelete = async (id) => {
 // ==================== EXAMINATION ARCHIVES CRUD ====================
 
 // Create archive
-export const examinationArchiveCreate = async (year, title, pdf_url, created_by) => {
+export const examinationArchiveCreate = async (year, title, pdf_url) => {
   const query = `
-    INSERT INTO examination_archives (year, title, pdf_url, created_by)
-    VALUES (?, ?, ?, ?)
+    INSERT INTO examination_archives (year, title, pdf_url)
+    VALUES (?, ?, ?)
   `;
-  const values = [year, title, pdf_url, created_by];
-  
+  const values = [year, title, pdf_url];
+
   try {
     const [result] = await db.promise().query(query, values);
     return result;
@@ -1181,15 +1162,15 @@ export const examinationArchivesFetch = async () => {
     WHERE is_active = TRUE 
     ORDER BY year DESC
   `;
-  
+
   try {
     const [rows] = await db.promise().query(query);
-    return rows.map(row => ({
+    return rows.map((row) => ({
       id: row.id,
       year: row.year,
       title: row.title,
       link: row.pdf_url,
-      created_at: row.created_at
+      created_at: row.created_at,
     }));
   } catch (error) {
     console.error("Database fetch error:", error);
@@ -1200,7 +1181,7 @@ export const examinationArchivesFetch = async () => {
 // Get archive by ID
 export const getExaminationArchiveById = async (id) => {
   const query = `SELECT * FROM examination_archives WHERE id = ? AND is_active = TRUE`;
-  
+
   try {
     const [rows] = await db.promise().query(query, [id]);
     return rows[0];
@@ -1218,7 +1199,7 @@ export const examinationArchiveEdit = async (id, year, title, pdf_url) => {
     WHERE id = ?
   `;
   const values = [year, title, pdf_url, id];
-  
+
   try {
     const [result] = await db.promise().query(query, values);
     return result;
@@ -1231,7 +1212,7 @@ export const examinationArchiveEdit = async (id, year, title, pdf_url) => {
 // Delete archive
 export const examinationArchiveDelete = async (id) => {
   const query = `UPDATE examination_archives SET is_active = FALSE WHERE id = ?`;
-  
+
   try {
     const [result] = await db.promise().query(query, [id]);
     return result;

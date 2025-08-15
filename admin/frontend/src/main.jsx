@@ -34,8 +34,6 @@ import AboutUsManager from "./pages/AboutUsManager/AboutUsManager";
 import ResearchAdmin from "./pages/research/ResearchAdmin";
 import AdminNIRF from "./pages/AdminNIRF";
 import AdminNBANAAC from "./pages/AdminNBANAAC";
-import AcademicAdmin from "./pages/Academics/AcademicAdmin";
-import AcademicHandbook from "./pages/Academics/AcademicHandbook";
 import Teaching_staff from "./pages/HumanResources/teachingstaff";
 import Nonteaching_staff from "./pages/HumanResources/nonteachingstaff";
 import StudentsCorner from "./pages/StudentsCorner/StudentsCorner";
@@ -85,6 +83,10 @@ import ActivityLogs from "./pages/AuditLogs/ActivityLogs";
 
 //Utility Components
 import UploadFile from "./pages/uploadFile/uploadFile";
+import AcademicHome from "./pages/Academics/AcademicHome.jsx";
+import AcademicCalendar from "./pages/Academics/AcademicCalendar.jsx";
+import AcademicExaminations from "./pages/Academics/AcademicExaminations.jsx";
+import AcademicLinks from "./pages/Academics/AcademicLinks.jsx";
 
 const App = () => {
   return (
@@ -160,18 +162,34 @@ const App = () => {
           />
           <Route path="/department/home" element={<DeptHome />} />
           <Route
-            path="/academic/handbook"
+            path="/academics/home"
             element={
               <PrivateRoute permission="academics">
-                <AcademicHandbook />
+                <AcademicHome />
               </PrivateRoute>
             }
           />
           <Route
-            path="/academics"
+            path="/academics/academic_calendar"
             element={
               <PrivateRoute permission="academics">
-                <AcademicAdmin />
+                <AcademicCalendar />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/academics/examinations"
+            element={
+              <PrivateRoute permission="academics">
+                <AcademicExaminations />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/academics/academic_links"
+            element={
+              <PrivateRoute permission="academics">
+                <AcademicLinks />
               </PrivateRoute>
             }
           />

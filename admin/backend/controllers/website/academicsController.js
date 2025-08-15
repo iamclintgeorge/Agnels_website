@@ -1,6 +1,7 @@
 import {
   academicHandbookCreate,
   academicHandbookFetch,
+  academicHomeTextUpdate,
   getHandbookById,
   academicHandbookEdit,
   academicHandbookDelete,
@@ -9,7 +10,6 @@ import {
   academicCalendarEdit,
   academicCalendarDelete,
   getCalendarById,
-  
   academicLinksCreate,
   getAcademicLinkById,
   academicLinksFetch,
@@ -20,11 +20,11 @@ import {
   stakeholderFeedbackFetch,
   stakeholderFeedbackEdit,
   stakeholderFeedbackDelete,
-  academicHomeCreate,
+  // academicHomeCreate,
   academicHomeFetch,
-  academicHomeEdit,
-  academicHomeDelete,
-  getAcademicHomeById,
+  // academicHomeEdit,
+  // academicHomeDelete,
+  // getAcademicHomeById,
   academicHomeSectionCreate,
   academicHomeSectionEdit,
   academicHomeSectionDelete,
@@ -55,30 +55,30 @@ import {
   examinationArchivesFetch,
   getExaminationArchiveById,
   examinationArchiveEdit,
-  examinationArchiveDelete
+  examinationArchiveDelete,
 } from "../../models/website/academicModel.js"; // Adjust path as needed
 
 // Academic Home Controllers
-export const academicHomeCreateController = async (req, res) => {
-  const { title, description, created_by } = req.body;
-  const hero_image_url = req.file ? `/cdn/${req.file.filename}` : null;
+// export const academicHomeCreateController = async (req, res) => {
+//   const { title, description, created_by } = req.body;
+//   const hero_image_url = req.file ? `/cdn/${req.file.filename}` : null;
 
-  try {
-    const result = await academicHomeCreate(
-      title,
-      description,
-      hero_image_url,
-      created_by
-    );
-    res.json({
-      message: "Academic Home created successfully",
-      id: result.insertId,
-    });
-  } catch (error) {
-    console.error("Academic Home Creation Error: ", error);
-    res.status(500).json({ message: "Error creating academic home" });
-  }
-};
+//   try {
+//     const result = await academicHomeCreate(
+//       title,
+//       description,
+//       hero_image_url,
+//       created_by
+//     );
+//     res.json({
+//       message: "Academic Home created successfully",
+//       id: result.insertId,
+//     });
+//   } catch (error) {
+//     console.error("Academic Home Creation Error: ", error);
+//     res.status(500).json({ message: "Error creating academic home" });
+//   }
+// };
 
 export const academicHomeFetchController = async (req, res) => {
   try {
@@ -91,43 +91,23 @@ export const academicHomeFetchController = async (req, res) => {
 };
 
 export const academicHomeEditController = async (req, res) => {
-  const { title, description, created_by } = req.body;
-  const { id } = req.params;
-
   try {
-    // Get existing home data first
-    const existingHome = await getAcademicHomeById(id);
+    const { id } = req.params;
+    const { content } = req.body;
 
-    let hero_image_url = existingHome.hero_image_url; // Keep existing image by default
-
-    // Only update image if a new file was uploaded
-    if (req.file) {
-      hero_image_url = `/cdn/${req.file.filename}`;
+    if (!content) {
+      return res.status(400).json({ message: "Content is required" });
     }
 
-    const result = await academicHomeEdit(
-      id,
-      title,
-      description,
-      hero_image_url,
-      created_by
-    );
-    res.json({ message: "Academic Home updated successfully" });
-  } catch (error) {
-    console.error("Academic Home Edit Error: ", error);
-    res.status(500).json({ message: "Error updating academic home" });
-  }
-};
+    const updatedText = await academicHomeTextUpdate(id, content);
+    if (!updatedText) {
+      return res.status(404).json({ message: "Text not found" });
+    }
 
-export const academicHomeDeleteController = async (req, res) => {
-  const { id } = req.params;
-
-  try {
-    const result = await academicHomeDelete(id);
-    res.json({ message: "Academic Home deleted successfully" });
+    res.json({ message: "Text updated successfully", content: updatedText });
   } catch (error) {
-    console.error("Academic Home Delete Error: ", error);
-    res.status(500).json({ message: "Error deleting academic home" });
+    console.error("Update error:", error);
+    res.status(500).json({ message: "Error updating Academic Home text" });
   }
 };
 
@@ -665,9 +645,9 @@ export const stakeholderFeedbackDeleteController = async (req, res) => {
   }
 };
 
-
 export const examinationCreateController = async (req, res) => {
-  const { title, description, academic_year, semester, exam_type, created_by } = req.body;
+  const { title, description, academic_year, semester, exam_type, created_by } =
+    req.body;
   const pdf_url = req.file ? `/cdn/${req.file.filename}` : null;
 
   try {
@@ -680,7 +660,7 @@ export const examinationCreateController = async (req, res) => {
       pdf_url,
       created_by
     );
-    
+
     res.json({
       success: true,
       message: "Examination timetable created successfully",
@@ -688,9 +668,9 @@ export const examinationCreateController = async (req, res) => {
     });
   } catch (error) {
     console.error("Examination Creation Error: ", error);
-    res.status(500).json({ 
-      success: false, 
-      message: "Error creating examination timetable" 
+    res.status(500).json({
+      success: false,
+      message: "Error creating examination timetable",
     });
   }
 };
@@ -711,14 +691,14 @@ export const examinationFetchController = async (req, res) => {
         slides: slides,
         notifications: notifications,
         forms: forms,
-        archives: archives
-      }
+        archives: archives,
+      },
     });
   } catch (error) {
     console.error("Examination Fetch Error: ", error);
-    res.status(500).json({ 
-      success: false, 
-      message: "Error fetching examinations" 
+    res.status(500).json({
+      success: false,
+      message: "Error fetching examinations",
     });
   }
 };
@@ -729,23 +709,23 @@ export const examinationGetByIdController = async (req, res) => {
 
   try {
     const examination = await getExaminationById(id);
-    
+
     if (!examination) {
-      return res.status(404).json({ 
-        success: false, 
-        message: "Examination not found" 
+      return res.status(404).json({
+        success: false,
+        message: "Examination not found",
       });
     }
 
     res.json({
       success: true,
-      data: examination
+      data: examination,
     });
   } catch (error) {
     console.error("Examination Get Error: ", error);
-    res.status(500).json({ 
-      success: false, 
-      message: "Error fetching examination" 
+    res.status(500).json({
+      success: false,
+      message: "Error fetching examination",
     });
   }
 };
@@ -754,18 +734,20 @@ export const examinationGetByIdController = async (req, res) => {
 export const examinationEditController = async (req, res) => {
   const { id } = req.params;
   const { title, description, academic_year, semester, exam_type } = req.body;
-  
+
   try {
     const existingExam = await getExaminationById(id);
-    
+
     if (!existingExam) {
-      return res.status(404).json({ 
-        success: false, 
-        message: "Examination not found" 
+      return res.status(404).json({
+        success: false,
+        message: "Examination not found",
       });
     }
 
-    const pdf_url = req.file ? `/cdn/${req.file.filename}` : existingExam.pdf_url;
+    const pdf_url = req.file
+      ? `/cdn/${req.file.filename}`
+      : existingExam.pdf_url;
 
     const result = await examinationEdit(
       id,
@@ -780,13 +762,13 @@ export const examinationEditController = async (req, res) => {
     res.json({
       success: true,
       message: "Examination updated successfully",
-      affectedRows: result.affectedRows
+      affectedRows: result.affectedRows,
     });
   } catch (error) {
     console.error("Examination Edit Error: ", error);
-    res.status(500).json({ 
-      success: false, 
-      message: "Error updating examination" 
+    res.status(500).json({
+      success: false,
+      message: "Error updating examination",
     });
   }
 };
@@ -797,17 +779,17 @@ export const examinationDeleteController = async (req, res) => {
 
   try {
     const result = await examinationDelete(id);
-    
+
     res.json({
       success: true,
       message: "Examination deleted successfully",
-      affectedRows: result.affectedRows
+      affectedRows: result.affectedRows,
     });
   } catch (error) {
     console.error("Examination Delete Error: ", error);
-    res.status(500).json({ 
-      success: false, 
-      message: "Error deleting examination" 
+    res.status(500).json({
+      success: false,
+      message: "Error deleting examination",
     });
   }
 };
@@ -820,9 +802,9 @@ export const examinationSlideCreateController = async (req, res) => {
   const image_url = req.file ? `/cdn/${req.file.filename}` : null;
 
   if (!image_url) {
-    return res.status(400).json({ 
-      success: false, 
-      message: "Image file is required" 
+    return res.status(400).json({
+      success: false,
+      message: "Image file is required",
     });
   }
 
@@ -833,7 +815,7 @@ export const examinationSlideCreateController = async (req, res) => {
       display_order || 0,
       created_by
     );
-    
+
     res.json({
       success: true,
       message: "Examination slide created successfully",
@@ -841,9 +823,9 @@ export const examinationSlideCreateController = async (req, res) => {
     });
   } catch (error) {
     console.error("Slide Creation Error: ", error);
-    res.status(500).json({ 
-      success: false, 
-      message: "Error creating examination slide" 
+    res.status(500).json({
+      success: false,
+      message: "Error creating examination slide",
     });
   }
 };
@@ -854,23 +836,23 @@ export const examinationSlideGetByIdController = async (req, res) => {
 
   try {
     const slide = await getExaminationSlideById(id);
-    
+
     if (!slide) {
-      return res.status(404).json({ 
-        success: false, 
-        message: "Slide not found" 
+      return res.status(404).json({
+        success: false,
+        message: "Slide not found",
       });
     }
 
     res.json({
       success: true,
-      data: slide
+      data: slide,
     });
   } catch (error) {
     console.error("Slide Get Error: ", error);
-    res.status(500).json({ 
-      success: false, 
-      message: "Error fetching slide" 
+    res.status(500).json({
+      success: false,
+      message: "Error fetching slide",
     });
   }
 };
@@ -879,18 +861,20 @@ export const examinationSlideGetByIdController = async (req, res) => {
 export const examinationSlideEditController = async (req, res) => {
   const { id } = req.params;
   const { title, display_order } = req.body;
-  
+
   try {
     const existingSlide = await getExaminationSlideById(id);
-    
+
     if (!existingSlide) {
-      return res.status(404).json({ 
-        success: false, 
-        message: "Slide not found" 
+      return res.status(404).json({
+        success: false,
+        message: "Slide not found",
       });
     }
 
-    const image_url = req.file ? `/cdn/${req.file.filename}` : existingSlide.image_url;
+    const image_url = req.file
+      ? `/cdn/${req.file.filename}`
+      : existingSlide.image_url;
 
     const result = await examinationSlideEdit(
       id,
@@ -902,13 +886,13 @@ export const examinationSlideEditController = async (req, res) => {
     res.json({
       success: true,
       message: "Slide updated successfully",
-      affectedRows: result.affectedRows
+      affectedRows: result.affectedRows,
     });
   } catch (error) {
     console.error("Slide Edit Error: ", error);
-    res.status(500).json({ 
-      success: false, 
-      message: "Error updating slide" 
+    res.status(500).json({
+      success: false,
+      message: "Error updating slide",
     });
   }
 };
@@ -919,17 +903,17 @@ export const examinationSlideDeleteController = async (req, res) => {
 
   try {
     const result = await examinationSlideDelete(id);
-    
+
     res.json({
       success: true,
       message: "Slide deleted successfully",
-      affectedRows: result.affectedRows
+      affectedRows: result.affectedRows,
     });
   } catch (error) {
     console.error("Slide Delete Error: ", error);
-    res.status(500).json({ 
-      success: false, 
-      message: "Error deleting slide" 
+    res.status(500).json({
+      success: false,
+      message: "Error deleting slide",
     });
   }
 };
@@ -947,7 +931,7 @@ export const examinationSlideDeleteController = async (req, res) => {
 //       is_new || true,
 //       created_by
 //     );
-    
+
 //     res.json({
 //       success: true,
 //       message: "Notification created successfully",
@@ -955,9 +939,9 @@ export const examinationSlideDeleteController = async (req, res) => {
 //     });
 //   } catch (error) {
 //     console.error("Notification Creation Error: ", error);
-//     res.status(500).json({ 
-//       success: false, 
-//       message: "Error creating notification" 
+//     res.status(500).json({
+//       success: false,
+//       message: "Error creating notification"
 //     });
 //   }
 // };
@@ -967,9 +951,9 @@ export const examinationNotificationCreateController = async (req, res) => {
 
   // Validation
   if (!title) {
-    return res.status(400).json({ 
-      success: false, 
-      message: "Title is required" 
+    return res.status(400).json({
+      success: false,
+      message: "Title is required",
     });
   }
 
@@ -978,9 +962,9 @@ export const examinationNotificationCreateController = async (req, res) => {
       title,
       description || null,
       is_new !== undefined ? is_new : true,
-      created_by || 'Admin'  // Default fallback
+      created_by || "Admin" // Default fallback
     );
-    
+
     res.json({
       success: true,
       message: "Notification created successfully",
@@ -988,9 +972,9 @@ export const examinationNotificationCreateController = async (req, res) => {
     });
   } catch (error) {
     console.error("Notification Creation Error: ", error);
-    res.status(500).json({ 
-      success: false, 
-      message: "Error creating notification" 
+    res.status(500).json({
+      success: false,
+      message: "Error creating notification",
     });
   }
 };
@@ -1001,23 +985,23 @@ export const examinationNotificationGetByIdController = async (req, res) => {
 
   try {
     const notification = await getExaminationNotificationById(id);
-    
+
     if (!notification) {
-      return res.status(404).json({ 
-        success: false, 
-        message: "Notification not found" 
+      return res.status(404).json({
+        success: false,
+        message: "Notification not found",
       });
     }
 
     res.json({
       success: true,
-      data: notification
+      data: notification,
     });
   } catch (error) {
     console.error("Notification Get Error: ", error);
-    res.status(500).json({ 
-      success: false, 
-      message: "Error fetching notification" 
+    res.status(500).json({
+      success: false,
+      message: "Error fetching notification",
     });
   }
 };
@@ -1026,14 +1010,14 @@ export const examinationNotificationGetByIdController = async (req, res) => {
 export const examinationNotificationEditController = async (req, res) => {
   const { id } = req.params;
   const { title, description, is_new } = req.body;
-  
+
   try {
     const existingNotification = await getExaminationNotificationById(id);
-    
+
     if (!existingNotification) {
-      return res.status(404).json({ 
-        success: false, 
-        message: "Notification not found" 
+      return res.status(404).json({
+        success: false,
+        message: "Notification not found",
       });
     }
 
@@ -1047,13 +1031,13 @@ export const examinationNotificationEditController = async (req, res) => {
     res.json({
       success: true,
       message: "Notification updated successfully",
-      affectedRows: result.affectedRows
+      affectedRows: result.affectedRows,
     });
   } catch (error) {
     console.error("Notification Edit Error: ", error);
-    res.status(500).json({ 
-      success: false, 
-      message: "Error updating notification" 
+    res.status(500).json({
+      success: false,
+      message: "Error updating notification",
     });
   }
 };
@@ -1064,17 +1048,17 @@ export const examinationNotificationDeleteController = async (req, res) => {
 
   try {
     const result = await examinationNotificationDelete(id);
-    
+
     res.json({
       success: true,
       message: "Notification deleted successfully",
-      affectedRows: result.affectedRows
+      affectedRows: result.affectedRows,
     });
   } catch (error) {
     console.error("Notification Delete Error: ", error);
-    res.status(500).json({ 
-      success: false, 
-      message: "Error deleting notification" 
+    res.status(500).json({
+      success: false,
+      message: "Error deleting notification",
     });
   }
 };
@@ -1087,9 +1071,9 @@ export const examinationFormCreateController = async (req, res) => {
   const pdf_url = req.file ? `/cdn/${req.file.filename}` : null;
 
   if (!pdf_url) {
-    return res.status(400).json({ 
-      success: false, 
-      message: "PDF file is required" 
+    return res.status(400).json({
+      success: false,
+      message: "PDF file is required",
     });
   }
 
@@ -1100,7 +1084,7 @@ export const examinationFormCreateController = async (req, res) => {
       pdf_url,
       created_by
     );
-    
+
     res.json({
       success: true,
       message: "Examination form created successfully",
@@ -1108,9 +1092,9 @@ export const examinationFormCreateController = async (req, res) => {
     });
   } catch (error) {
     console.error("Form Creation Error: ", error);
-    res.status(500).json({ 
-      success: false, 
-      message: "Error creating examination form" 
+    res.status(500).json({
+      success: false,
+      message: "Error creating examination form",
     });
   }
 };
@@ -1121,23 +1105,23 @@ export const examinationFormGetByIdController = async (req, res) => {
 
   try {
     const form = await getExaminationFormById(id);
-    
+
     if (!form) {
-      return res.status(404).json({ 
-        success: false, 
-        message: "Form not found" 
+      return res.status(404).json({
+        success: false,
+        message: "Form not found",
       });
     }
 
     res.json({
       success: true,
-      data: form
+      data: form,
     });
   } catch (error) {
     console.error("Form Get Error: ", error);
-    res.status(500).json({ 
-      success: false, 
-      message: "Error fetching form" 
+    res.status(500).json({
+      success: false,
+      message: "Error fetching form",
     });
   }
 };
@@ -1146,36 +1130,33 @@ export const examinationFormGetByIdController = async (req, res) => {
 export const examinationFormEditController = async (req, res) => {
   const { id } = req.params;
   const { name, description } = req.body;
-  
+
   try {
     const existingForm = await getExaminationFormById(id);
-    
+
     if (!existingForm) {
-      return res.status(404).json({ 
-        success: false, 
-        message: "Form not found" 
+      return res.status(404).json({
+        success: false,
+        message: "Form not found",
       });
     }
 
-    const pdf_url = req.file ? `/cdn/${req.file.filename}` : existingForm.pdf_url;
+    const pdf_url = req.file
+      ? `/cdn/${req.file.filename}`
+      : existingForm.pdf_url;
 
-    const result = await examinationFormEdit(
-      id,
-      name,
-      description,
-      pdf_url
-    );
+    const result = await examinationFormEdit(id, name, description, pdf_url);
 
     res.json({
       success: true,
       message: "Form updated successfully",
-      affectedRows: result.affectedRows
+      affectedRows: result.affectedRows,
     });
   } catch (error) {
     console.error("Form Edit Error: ", error);
-    res.status(500).json({ 
-      success: false, 
-      message: "Error updating form" 
+    res.status(500).json({
+      success: false,
+      message: "Error updating form",
     });
   }
 };
@@ -1186,17 +1167,17 @@ export const examinationFormDeleteController = async (req, res) => {
 
   try {
     const result = await examinationFormDelete(id);
-    
+
     res.json({
       success: true,
       message: "Form deleted successfully",
-      affectedRows: result.affectedRows
+      affectedRows: result.affectedRows,
     });
   } catch (error) {
     console.error("Form Delete Error: ", error);
-    res.status(500).json({ 
-      success: false, 
-      message: "Error deleting form" 
+    res.status(500).json({
+      success: false,
+      message: "Error deleting form",
     });
   }
 };
@@ -1209,9 +1190,9 @@ export const examinationArchiveCreateController = async (req, res) => {
   const pdf_url = req.file ? `/cdn/${req.file.filename}` : null;
 
   if (!pdf_url) {
-    return res.status(400).json({ 
-      success: false, 
-      message: "PDF file is required" 
+    return res.status(400).json({
+      success: false,
+      message: "PDF file is required",
     });
   }
 
@@ -1222,7 +1203,7 @@ export const examinationArchiveCreateController = async (req, res) => {
       pdf_url,
       created_by
     );
-    
+
     res.json({
       success: true,
       message: "Examination archive created successfully",
@@ -1230,9 +1211,9 @@ export const examinationArchiveCreateController = async (req, res) => {
     });
   } catch (error) {
     console.error("Archive Creation Error: ", error);
-    res.status(500).json({ 
-      success: false, 
-      message: "Error creating examination archive" 
+    res.status(500).json({
+      success: false,
+      message: "Error creating examination archive",
     });
   }
 };
@@ -1243,23 +1224,23 @@ export const examinationArchiveGetByIdController = async (req, res) => {
 
   try {
     const archive = await getExaminationArchiveById(id);
-    
+
     if (!archive) {
-      return res.status(404).json({ 
-        success: false, 
-        message: "Archive not found" 
+      return res.status(404).json({
+        success: false,
+        message: "Archive not found",
       });
     }
 
     res.json({
       success: true,
-      data: archive
+      data: archive,
     });
   } catch (error) {
     console.error("Archive Get Error: ", error);
-    res.status(500).json({ 
-      success: false, 
-      message: "Error fetching archive" 
+    res.status(500).json({
+      success: false,
+      message: "Error fetching archive",
     });
   }
 };
@@ -1268,36 +1249,33 @@ export const examinationArchiveGetByIdController = async (req, res) => {
 export const examinationArchiveEditController = async (req, res) => {
   const { id } = req.params;
   const { year, title } = req.body;
-  
+
   try {
     const existingArchive = await getExaminationArchiveById(id);
-    
+
     if (!existingArchive) {
-      return res.status(404).json({ 
-        success: false, 
-        message: "Archive not found" 
+      return res.status(404).json({
+        success: false,
+        message: "Archive not found",
       });
     }
 
-    const pdf_url = req.file ? `/cdn/${req.file.filename}` : existingArchive.pdf_url;
+    const pdf_url = req.file
+      ? `/cdn/${req.file.filename}`
+      : existingArchive.pdf_url;
 
-    const result = await examinationArchiveEdit(
-      id,
-      year,
-      title,
-      pdf_url
-    );
+    const result = await examinationArchiveEdit(id, year, title, pdf_url);
 
     res.json({
       success: true,
       message: "Archive updated successfully",
-      affectedRows: result.affectedRows
+      affectedRows: result.affectedRows,
     });
   } catch (error) {
     console.error("Archive Edit Error: ", error);
-    res.status(500).json({ 
-      success: false, 
-      message: "Error updating archive" 
+    res.status(500).json({
+      success: false,
+      message: "Error updating archive",
     });
   }
 };
@@ -1308,17 +1286,17 @@ export const examinationArchiveDeleteController = async (req, res) => {
 
   try {
     const result = await examinationArchiveDelete(id);
-    
+
     res.json({
       success: true,
       message: "Archive deleted successfully",
-      affectedRows: result.affectedRows
+      affectedRows: result.affectedRows,
     });
   } catch (error) {
     console.error("Archive Delete Error: ", error);
-    res.status(500).json({ 
-      success: false, 
-      message: "Error deleting archive" 
+    res.status(500).json({
+      success: false,
+      message: "Error deleting archive",
     });
   }
 };

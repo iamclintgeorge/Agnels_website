@@ -138,8 +138,8 @@ const DynamicSideBar = () => {
   };
 
   const handleAcademicSectionSelect = (section) => {
-    localStorage.setItem("academicSection", section);
-    navigate("/academics");
+    const section_url = academicSections[0][section]; // Access the first object
+    navigate(`/academics/${section_url}`);
     setTimeout(() => {
       window.dispatchEvent(
         new CustomEvent("academic-section-selected", {
@@ -392,13 +392,13 @@ const DynamicSideBar = () => {
             </p>
             {openSections.academic && (
               <div className="pt-2 pr-8 pl-4 leading-7 space-y-4">
-                {academicSections.map((section) => (
+                {Object.keys(academicSections[0]).map((key) => (
                   <p
-                    key={section}
+                    key={key}
                     className="cursor-pointer"
-                    onClick={() => handleAcademicSectionSelect(section)}
+                    onClick={() => handleAcademicSectionSelect(key)}
                   >
-                    {section}
+                    {key}
                   </p>
                 ))}
               </div>

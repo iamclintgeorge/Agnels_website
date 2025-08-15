@@ -252,10 +252,10 @@ import {
   stakeholderFeedbackFetchController,
   stakeholderFeedbackEditController,
   stakeholderFeedbackDeleteController,
-  academicHomeCreateController,
+  // academicHomeCreateController,
   academicHomeFetchController,
   academicHomeEditController,
-  academicHomeDeleteController,
+  // academicHomeDeleteController,
   academicHomeSectionCreateController,
   academicHomeSectionEditController,
   academicHomeSectionDeleteController,
@@ -348,10 +348,10 @@ const examinationFileUpload = (req, res, next) => {
 const router = express.Router();
 
 // Academic Home Routes
-router.post("/home-create", optionalFileUpload, academicHomeCreateController);
+// router.post("/home-create", optionalFileUpload, academicHomeCreateController);
 router.get("/home", academicHomeFetchController);
-router.put("/home/:id", optionalFileUpload, academicHomeEditController);
-router.put("/delete-home/:id", academicHomeDeleteController);
+router.put("/home/:id", academicHomeEditController);
+// router.put("/delete-home/:id", academicHomeDeleteController);
 
 // Academic Home Sections Routes
 router.post("/home-section-create", academicHomeSectionCreateController);
@@ -395,11 +395,7 @@ router.post(
 );
 router.get("/examinations", examinationFetchController);
 router.get("/examinations/:id", examinationGetByIdController);
-router.put(
-  "/examinations/:id",
-  optionalFileUpload,
-  examinationEditController
-);
+router.put("/examinations/:id", optionalFileUpload, examinationEditController);
 router.put("/delete-examinations/:id", examinationDeleteController);
 
 // ==================== EXAMINATION SLIDES ROUTES ====================
@@ -421,12 +417,18 @@ router.post(
   "/examination-notifications-create",
   examinationNotificationCreateController
 );
-router.get("/examination-notifications/:id", examinationNotificationGetByIdController);
+router.get(
+  "/examination-notifications/:id",
+  examinationNotificationGetByIdController
+);
 router.put(
   "/examination-notifications/:id",
   examinationNotificationEditController
 );
-router.put("/delete-examination-notifications/:id", examinationNotificationDeleteController);
+router.put(
+  "/delete-examination-notifications/:id",
+  examinationNotificationDeleteController
+);
 
 // ==================== EXAMINATION FORMS ROUTES ====================
 router.post(
@@ -454,7 +456,10 @@ router.put(
   optionalFileUpload,
   examinationArchiveEditController
 );
-router.put("/delete-examination-archives/:id", examinationArchiveDeleteController);
+router.put(
+  "/delete-examination-archives/:id",
+  examinationArchiveDeleteController
+);
 
 // Academic Links Routes
 router.post("/links-create", academicLinksCreateController);
