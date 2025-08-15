@@ -9,25 +9,15 @@ export const Home = () => {
       </h1>
 
       <p className="text-md text-gray-700 mb-6 leading-relaxed">
-        Graduate school can be one of the most exciting, challenging, and
-        enriching experiences in a student's life. Whether you're pursuing a
-        Master's, Doctoral, or Graduate professional degree, it's essential to
-        have a one-point contact that helps you navigate through your years in
-        the institute.
+        In a student’s life, graduate school can be one of the most exciting,
+        challenging and enriching experiences that one undertakes. Whether one
+        is pursuing their Masters, Doctoral or Graduate professional degree, it
+        is good to have a one point contact which will help you navigate your
+        way through your years in the institute. In the Students’ Corner you
+        will find tools, resources, clubs, and programs which will not only help
+        you be an integral part of the institute, but also have a great holistic
+        experience.
       </p>
-
-      <p className="text-md text-gray-700 mb-6 leading-relaxed">
-        The Students' Corner provides you with tools, resources, clubs, and
-        programs that will not only help you become an integral part of the
-        institute but also ensure you have a great and holistic experience
-        during your time here.
-      </p>
-
-      <div className="mt-8">
-        <button className="btn-primary px-6 py-3 font-semibold rounded-lg shadow-lg">
-          Learn More
-        </button>
-      </div>
     </>
   );
 };
@@ -35,7 +25,10 @@ export const Home = () => {
 // Code of Conduct Component
 export const CodeOfConduct = () => {
   return (
-    <div className="p-8 bg-gray-50 min-h-screen font-sans">
+    <div className=" min-h-screen">
+      <h1 className="text-3xl font-playfair font-semibold mb-10">
+        Code of Conduct
+      </h1>
       {/* Embedding PDF using iframe */}
       <iframe
         src="src\assets\pdfs\CodeofConductStudents.pdf"
@@ -50,8 +43,10 @@ export const CodeOfConduct = () => {
 // Student Council Component
 export const StudentCouncil = () => {
   return (
-    <div className="min-h-screen bg-gray-50 font-sans p-8">
-      <h1 className="text-3xl font-bold  mb-6">Student Council</h1>
+    <div className="min-h-screen font-librefranklin">
+      <h1 className="text-3xl font-playfair font-semibold  mb-10">
+        Student Council
+      </h1>
       <p className="text-gray-700 mb-4">
         The student council is a body which represents the entire student
         community and undertakes the organization of various events and fests in
@@ -72,7 +67,9 @@ export const StudentCouncil = () => {
       </p>
 
       {/* Members Section */}
-      <h2 className="text-2xl font-semibold mt-8 mb-4">Council Members</h2>
+      <h2 className="text-2xl font-librefranklin font-semibold mt-8 mb-4">
+        Council Members
+      </h2>
       <table className="table-auto w-full border-collapse border border-gray-200">
         <thead>
           <tr className="bg-blue-100">
@@ -110,7 +107,9 @@ export const StudentCouncil = () => {
       </table>
 
       {/* Reports Section */}
-      <h2 className="text-2xl font-semibold mt-8 mb-4">Reports</h2>
+      <h2 className="text-2xl font-semibold font-librefranklin mt-8 mb-4">
+        Reports
+      </h2>
       <table className="table-auto w-full border-collapse border border-gray-200 mb-6">
         <thead>
           <tr className="bg-blue-100">
@@ -126,27 +125,27 @@ export const StudentCouncil = () => {
           <tr>
             <td className="border border-gray-300 px-4 py-2">FACES</td>
             <td className="border border-gray-300 px-4 py-2">
-              <a href="#" className="text-blue-500 underline">
+              <a href="#" className="text-black underline">
                 Download
               </a>
             </td>
             <td className="border border-gray-300 px-4 py-2">
-              <a href="#" className="text-blue-500 underline">
+              <a href="#" className="text-black underline">
                 Download
               </a>
             </td>
             <td className="border border-gray-300 px-4 py-2">
-              <a href="#" className="text-blue-500 underline">
+              <a href="#" className="text-black underline">
                 Download
               </a>
             </td>
             <td className="border border-gray-300 px-4 py-2">
-              <a href="#" className="text-blue-500 underline">
+              <a href="#" className="text-black underline">
                 Download
               </a>
             </td>
             <td className="border border-gray-300 px-4 py-2">
-              <a href="#" className="text-blue-500 underline">
+              <a href="#" className="text-black underline">
                 Download
               </a>
             </td>
@@ -154,27 +153,27 @@ export const StudentCouncil = () => {
           <tr>
             <td className="border border-gray-300 px-4 py-2">ETAMAX</td>
             <td className="border border-gray-300 px-4 py-2">
-              <a href="#" className="text-blue-500 underline">
+              <a href="#" className="text-black underline">
                 Download
               </a>
             </td>
             <td className="border border-gray-300 px-4 py-2">
-              <a href="#" className="text-blue-500 underline">
+              <a href="#" className="text-black underline">
                 Download
               </a>
             </td>
             <td className="border border-gray-300 px-4 py-2">
-              <a href="#" className="text-blue-500 underline">
+              <a href="#" className="text-black underline">
                 Download
               </a>
             </td>
             <td className="border border-gray-300 px-4 py-2">
-              <a href="#" className="text-blue-500 underline">
+              <a href="#" className="text-black underline">
                 Download
               </a>
             </td>
             <td className="border border-gray-300 px-4 py-2">
-              <a href="#" className="text-blue-500 underline">
+              <a href="#" className="text-black underline">
                 Download
               </a>
             </td>
@@ -189,13 +188,13 @@ export const StudentCouncil = () => {
 export const ProfessionalBodies = () => {
   return (
     <>
-      <h2 className="text-3xl font-semibold mb-8 text-center heading-premium">
+      <h2 className="text-3xl font-semibold mb-10 font-playfair">
         Professional Bodies
       </h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {/* First body */}
-        <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
+        <div className="p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
           <div className="flex items-center mb-4">
             <img
               src="src/assets/imgs/csi.png"
@@ -218,7 +217,7 @@ export const ProfessionalBodies = () => {
         </div>
 
         {/* Second body */}
-        <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
+        <div className="p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
           <div className="flex items-center mb-4">
             <img
               src="src/assets/imgs/sae.png"
@@ -238,7 +237,7 @@ export const ProfessionalBodies = () => {
         </div>
 
         {/* Third body */}
-        <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
+        <div className="p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
           <div className="flex items-center mb-4">
             <img
               src="src/assets/imgs/ieee.png"
@@ -258,7 +257,7 @@ export const ProfessionalBodies = () => {
         </div>
 
         {/* Fourth body */}
-        <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
+        <div className="p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
           <div className="flex items-center mb-4">
             <img
               src="src/assets/imgs/iei.jpg"
@@ -278,7 +277,7 @@ export const ProfessionalBodies = () => {
         </div>
 
         {/* Fifth body */}
-        <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
+        <div className="p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
           <div className="flex items-center mb-4">
             <img
               src="src/assets/imgs/csi.png"
@@ -301,7 +300,7 @@ export const ProfessionalBodies = () => {
         </div>
 
         {/* Sixth body */}
-        <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
+        <div className="p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
           <div className="flex items-center mb-4">
             <img
               src="src/assets/imgs/ishrae.jpg"
@@ -322,7 +321,7 @@ export const ProfessionalBodies = () => {
         </div>
 
         {/* Seventh body */}
-        <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
+        <div className="p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
           <div className="flex items-center mb-4">
             <img
               src="src/assets/imgs/iete2.jpg"
@@ -348,9 +347,11 @@ export const ProfessionalBodies = () => {
 // National Service Scheme Component
 export const NSS = () => {
   return (
-    <div className="p-8 bg-gray-50 min-h-screen font-sans">
+    <div className="min-h-screen font-librefranklin">
       {/* Header Section */}
-      <h1 className="text-3xl font-bold mb-6">National Service Scheme (NSS)</h1>
+      <h1 className="text-3xl font-playfair font-semibold mb-10">
+        National Service Scheme (NSS)
+      </h1>
 
       {/* Introduction Section */}
       <p className="text-gray-700 mb-4">
@@ -436,7 +437,7 @@ export const NSS = () => {
             <tr key={index} className={index % 2 === 0 ? "bg-gray-50" : ""}>
               <td className="border border-gray-300 px-4 py-2">{year}</td>
               <td className="border border-gray-300 px-4 py-2">
-                <a href="#" className="text-blue-500 underline">
+                <a href="#" className="text-black underline">
                   {report}
                 </a>
               </td>
@@ -452,13 +453,13 @@ export const NSS = () => {
 export const StudentClubs = () => {
   return (
     <>
-      <h2 className="text-3xl font-semibold mb-8 text-center heading-premium">
+      <h2 className="text-3xl font-semibold mb-10 font-playfair">
         Student Clubs
       </h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {/* Agnel Robotics Club */}
-        <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
+        <div className="p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
           <div className="flex items-center mb-4">
             <img
               src="src/assets/imgs/agnels-robotic-club.png"
@@ -471,12 +472,14 @@ export const StudentClubs = () => {
             Promotes hands-on learning and innovation in robotics.
           </p>
           <div className="mt-auto">
-            <button className="btn-primary w-full px-4 py-2 rounded">Read More</button>
+            <button className="btn-primary w-full px-4 py-2 rounded">
+              Read More
+            </button>
           </div>
         </div>
 
         {/* Agnel Sports Club */}
-        <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
+        <div className="p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
           <div className="flex items-center mb-4">
             <img
               src="src/assets/imgs/sports-club.jpeg"
@@ -489,12 +492,14 @@ export const StudentClubs = () => {
             Encouraging fitness and teamwork through sports.
           </p>
           <div className="mt-auto">
-            <button className="btn-primary w-full px-4 py-2 rounded">Read More</button>
+            <button className="btn-primary w-full px-4 py-2 rounded">
+              Read More
+            </button>
           </div>
         </div>
 
         {/* Drama Club */}
-        <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
+        <div className="p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
           <div className="flex items-center mb-4">
             <img
               src="src/assets/imgs/drama-club.jpeg"
@@ -507,12 +512,14 @@ export const StudentClubs = () => {
             Platform for students passionate about theatre and performing arts.
           </p>
           <div className="mt-auto">
-            <button className="btn-primary w-full px-4 py-2 rounded">Read More</button>
+            <button className="btn-primary w-full px-4 py-2 rounded">
+              Read More
+            </button>
           </div>
         </div>
 
         {/* AI and Deep Learning Club */}
-        <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
+        <div className="p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
           <div className="flex items-center mb-4">
             <img
               src="src/assets/imgs/artificial-intelligence-and-deep-learning-club.jpeg"
@@ -525,12 +532,14 @@ export const StudentClubs = () => {
             Exploring cutting-edge AI technologies and real-world applications.
           </p>
           <div className="mt-auto">
-            <button className="btn-primary w-full px-4 py-2 rounded">Read More</button>
+            <button className="btn-primary w-full px-4 py-2 rounded">
+              Read More
+            </button>
           </div>
         </div>
 
         {/* Music Club */}
-        <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
+        <div className="p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
           <div className="flex items-center mb-4">
             <img
               src="src/assets/imgs/music-club.jpeg"
@@ -543,12 +552,14 @@ export const StudentClubs = () => {
             A community for students to express themselves musically.
           </p>
           <div className="mt-auto">
-            <button className="btn-primary w-full px-4 py-2 rounded">Read More</button>
+            <button className="btn-primary w-full px-4 py-2 rounded">
+              Read More
+            </button>
           </div>
         </div>
 
         {/* College Magazine */}
-        <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
+        <div className="p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
           <div className="flex items-center mb-4">
             <img
               src="src/assets/imgs/college-magazine.jpeg"
@@ -561,12 +572,14 @@ export const StudentClubs = () => {
             Curating creativity through student-led publishing.
           </p>
           <div className="mt-auto">
-            <button className="btn-primary w-full px-4 py-2 rounded">Read More</button>
+            <button className="btn-primary w-full px-4 py-2 rounded">
+              Read More
+            </button>
           </div>
         </div>
 
         {/* Coders' Club */}
-        <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
+        <div className="p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 flex flex-col">
           <div className="flex items-center mb-4">
             <img
               src="src/assets/imgs/coders-club.jpeg"
@@ -579,12 +592,13 @@ export const StudentClubs = () => {
             For programmers and tech enthusiasts to build and compete.
           </p>
           <div className="mt-auto">
-            <button className="btn-primary w-full px-4 py-2 rounded">Read More</button>
+            <button className="btn-primary w-full px-4 py-2 rounded">
+              Read More
+            </button>
           </div>
         </div>
       </div>
     </>
-
   );
 };
 
@@ -592,7 +606,7 @@ export const StudentClubs = () => {
 export const Infrastructure = () => {
   return (
     <>
-      <h2 className="text-3xl font-extrabold text-black mb-12 text-center heading-premium">
+      <h2 className="text-3xl font-semibold text-black mb-12 font-playfair">
         Infrastructure
       </h2>
 
@@ -765,7 +779,9 @@ export const Infrastructure = () => {
 export const CulturalActivities = () => {
   return (
     <>
-      <p className="text-2xl font-bold mb-4">No content yet</p>
+      <p className="text-xl font-semibold font-librefranklin mb-4">
+        No content yet
+      </p>
     </>
   );
 };
@@ -775,7 +791,9 @@ export const AntiRagging = () => {
   return (
     <>
       {/* Header Section */}
-      <h1 className="text-3xl font-bold text-red-600 mb-6">Anti Ragging</h1>
+      <h1 className="text-3xl font-playfair font-semibold mb-10">
+        Anti Ragging
+      </h1>
 
       {/* Content Section */}
       <p className="text-gray-700 mb-4">
@@ -790,16 +808,14 @@ export const AntiRagging = () => {
         In order to ensure that ragging does not take place in the institute in
         any form, the institute has constituted an
         <strong> Anti-Ragging Committee</strong>, which would conduct raids,
-        detect cases (if any), and suggest preventive measures.
-      </p>
-      <p className="text-gray-700 mb-4">
-        Any student becoming a victim of ragging should immediately inform the
-        members of the Anti-Ragging Committee.
+        detect cases (if any), and suggest preventive measures. Any student
+        becoming a victim of ragging should immediately inform the members of
+        the Anti-Ragging Committee.
       </p>
 
       {/* Call to Action */}
       <div className="mt-8">
-        <h2 className="text-2xl font-semibold text-red-600 mb-4">
+        <h2 className="text-2xl font-semibold font-librefranklin mb-4">
           Contact the Anti-Ragging Committee
         </h2>
         <p className="text-gray-700">
@@ -815,6 +831,9 @@ export const AntiRagging = () => {
 export const Survey = () => {
   return (
     <>
+      <h1 className="text-3xl font-playfair font-semibold mb-10">
+        Student Satisfaction Survey
+      </h1>
       <div className="main-container" style={{ paddingBottom: 5 }}>
         {/*  Main-container start */}
         <div className="container ">
@@ -830,8 +849,8 @@ export const Survey = () => {
               height="600px"
             >
               <p>
-                <b>Error:</b>: This browser does not support PDFs. Please download the
-                PDF to view it:{" "}
+                <b>Error:</b>: This browser does not support PDFs. Please
+                download the PDF to view it:{" "}
                 <a href="https://fcrit.ac.in/static_pdfs/feedback/SSS_23_24.pdf">
                   Download PDF
                 </a>

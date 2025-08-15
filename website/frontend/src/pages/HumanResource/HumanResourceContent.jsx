@@ -22,12 +22,13 @@ export const Teaching_Staff = () => {
   };
 
   return (
-    <div className="p-4 bg-white shadow rounded-lg mt-4">
-      <h2 className="text-3xl font-semibold">List of Teaching Staff</h2>
-      <div className="border-t-2 border-blue-500 my-4"></div>
+    <div className="">
+      <h2 className="text-3xl font-playfair font-semibold mb-10">
+        List of Teaching Staff
+      </h2>
       {error && <p className="text-red-500">{error}</p>}
       {pdfs.length > 0 ? (
-        <ul className="list-disc pl-5 mt-2">
+        <ul>
           {pdfs.map((pdf, idx) => (
             <li key={idx}>
               <a
@@ -69,10 +70,11 @@ export const Non_Teaching_Staff = () => {
   };
 
   return (
-    <div className="p-4 bg-white shadow rounded-lg mt-4">
-      <h2 className="text-3xl font-semibold">List of Non-Teaching Staff</h2>
-      <div className="border-t-2 border-blue-500 my-4"></div>
-      <h1 className="text-2xl font-semibold mt-12 mb-6">
+    <div className="">
+      <h2 className="text-3xl font-playfair font-semibold mb-10">
+        List of Non-Teaching Staff
+      </h2>
+      <h1 className="text-xl font-librefranklin font-semibold mt-12 mb-6">
         Non-Technical/Administrative Staff
       </h1>
 

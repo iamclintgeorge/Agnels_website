@@ -17,9 +17,12 @@ export const AdmissionPro = () => {
         "http://localhost:3663/api/admissions/sections/admission_process"
       );
       console.log("Fetched admission process content:", response.data);
-      
+
       const apiContent = response.data?.content;
-      if (apiContent && Object.prototype.hasOwnProperty.call(apiContent, "content")) {
+      if (
+        apiContent &&
+        Object.prototype.hasOwnProperty.call(apiContent, "content")
+      ) {
         setContent(apiContent.content || "");
       } else {
         // Fallback content if API fails
@@ -88,7 +91,7 @@ PhD Programs:
 
   if (loading) {
     return (
-      <div className="p-8 bg-gray-50 min-h-screen font-sans">
+      <div className="min-h-screen font-librefranklin">
         <div className="flex justify-center items-center py-20">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
         </div>
@@ -97,9 +100,9 @@ PhD Programs:
   }
 
   return (
-    <div className="p-8 bg-gray-50 min-h-screen font-sans">
-      <div className="mb-8">
-        <h1 className="text-3xl font-light text-black mb-3 heading-premium">
+    <div className="min-h-screen font-sans">
+      <div className="">
+        <h1 className="text-3xl font-playfair font-semibold text-black mb-3 heading-premium">
           Admission Process
         </h1>
       </div>
@@ -127,9 +130,12 @@ export const UnderG = () => {
         "http://localhost:3663/api/admissions/sections/admission_undergraduate"
       );
       console.log("Fetched undergraduate content:", response.data);
-      
+
       const apiContent = response.data?.content;
-      if (apiContent && Object.prototype.hasOwnProperty.call(apiContent, "content")) {
+      if (
+        apiContent &&
+        Object.prototype.hasOwnProperty.call(apiContent, "content")
+      ) {
         setContent(apiContent.content || "");
       } else {
         // Fallback content
@@ -179,7 +185,7 @@ Students seeking admission to the second year of the undergraduate programs thro
 
   if (loading) {
     return (
-      <div className="p-8 bg-gray-50 min-h-screen font-sans">
+      <div className="min-h-screen font-sans">
         <div className="flex justify-center items-center py-20">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
         </div>
@@ -188,9 +194,9 @@ Students seeking admission to the second year of the undergraduate programs thro
   }
 
   return (
-    <div className="p-8 bg-gray-50 min-h-screen font-sans">
-      <div className="text-center mb-12">
-        <h1 className="text-3xl font-extralight text-black mb-3 heading-premium">
+    <div className="min-h-screen font-librefranklin">
+      <div className="">
+        <h1 className="text-3xl font-playfair font-semibold text-black mb-10">
           Undergraduate Admissions
         </h1>
       </div>
@@ -216,9 +222,12 @@ export const PostG = () => {
         "http://localhost:3663/api/admissions/sections/admission_postgraduate"
       );
       console.log("Fetched postgraduate content:", response.data);
-      
+
       const apiContent = response.data?.content;
-      if (apiContent && Object.prototype.hasOwnProperty.call(apiContent, "content")) {
+      if (
+        apiContent &&
+        Object.prototype.hasOwnProperty.call(apiContent, "content")
+      ) {
         setContent(apiContent.content || "");
       } else {
         setContent(`Allotment of Seats for the Masters Program would be done through the centralized process.
@@ -249,7 +258,7 @@ Eligibility & Admission Process:
 
   if (loading) {
     return (
-      <div className="p-8 bg-gray-50 min-h-screen font-sans">
+      <div className="min-h-screen font-sans">
         <div className="flex justify-center items-center py-20">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
         </div>
@@ -258,9 +267,9 @@ Eligibility & Admission Process:
   }
 
   return (
-    <div className="p-8 bg-gray-50 min-h-screen font-sans">
-      <div className="text-center mb-12">
-        <h1 className="text-3xl font-extralight text-black mb-3 heading-premium">
+    <div className="min-h-screen font-librefranklin">
+      <div className="">
+        <h1 className="text-3xl font-playfair font-semibold text-black mb-10">
           Post Graduate Admissions
         </h1>
       </div>
@@ -286,9 +295,12 @@ export const PhD = () => {
         "http://localhost:3663/api/admissions/sections/admission_phd"
       );
       console.log("Fetched PhD content:", response.data);
-      
+
       const apiContent = response.data?.content;
-      if (apiContent && Object.prototype.hasOwnProperty.call(apiContent, "content")) {
+      if (
+        apiContent &&
+        Object.prototype.hasOwnProperty.call(apiContent, "content")
+      ) {
         setContent(apiContent.content || "");
       } else {
         setContent(`Application Form for PhD: Please check the institute website or advertisements in the newspapers for the application form.
@@ -331,7 +343,7 @@ Eligibility:
 
   if (loading) {
     return (
-      <div className="p-8 bg-gray-50 min-h-screen font-sans">
+      <div className="min-h-screen font-sans">
         <div className="flex justify-center items-center py-20">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
         </div>
@@ -340,9 +352,9 @@ Eligibility:
   }
 
   return (
-    <div className="p-8 bg-gray-50 min-h-screen font-sans">
-      <div className="text-center mb-12">
-        <h1 className="text-3xl font-extralight text-black mb-3 heading-premium">
+    <div className="min-h-screen font-librefranklin">
+      <div className="">
+        <h1 className="text-3xl font-playfair font-semibold text-black mb-10">
           PhD Admissions
         </h1>
       </div>
@@ -368,9 +380,12 @@ export const Fees = () => {
         "http://localhost:3663/api/admissions/sections/admission_fee_payment"
       );
       console.log("Fetched fee payment content:", response.data);
-      
+
       const apiContent = response.data?.content;
-      if (apiContent && Object.prototype.hasOwnProperty.call(apiContent, "content")) {
+      if (
+        apiContent &&
+        Object.prototype.hasOwnProperty.call(apiContent, "content")
+      ) {
         setContent(apiContent.content || "");
       } else {
         setContent(`Please proceed with the fee payment by clicking the button below:
@@ -389,7 +404,7 @@ Pay Fees: https://www.eduqfix.com/PayDirect/#/student/pay/XxoRsO6mfiXGAnQY1R64lG
 
   if (loading) {
     return (
-      <div className="p-8 bg-gray-50 min-h-screen font-sans">
+      <div className="min-h-screen font-sans">
         <div className="flex justify-center items-center py-20">
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
         </div>
@@ -398,9 +413,9 @@ Pay Fees: https://www.eduqfix.com/PayDirect/#/student/pay/XxoRsO6mfiXGAnQY1R64lG
   }
 
   return (
-    <div className="p-8 bg-gray-50 min-h-screen flex flex-col items-center justify-center font-sans">
-      <div className="text-center mb-12">
-        <h1 className="text-3xl font-extralight text-gray-900 mb-6 heading-premium">
+    <div className="min-h-screen flex flex-col items-center justify-center font-librefranklin">
+      <div className="text-center mb-5">
+        <h1 className="text-3xl font-extralight text-gray-900  heading-premium">
           Fee Payment
         </h1>
       </div>

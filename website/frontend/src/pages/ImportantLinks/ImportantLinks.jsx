@@ -10,7 +10,9 @@ const ImportantLinks = () => {
       try {
         setLoading(true);
         setError(null);
-        const response = await fetch("http://localhost:3663/api/important-links");
+        const response = await fetch(
+          "http://localhost:3663/api/important-links"
+        );
         const result = await response.json();
         if (result.success) {
           setLinks(result.data || []);
@@ -45,15 +47,19 @@ const ImportantLinks = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-10">
+    <div className="min-h-screen py-10">
       <div className="max-w-5xl mx-auto px-4">
-        <div className="bg-white shadow rounded-lg overflow-hidden">
+        <div className="overflow-hidden">
           <div className="px-6 py-4 border-b">
-            <h1 className="text-2xl font-bold text-gray-800">Important Links</h1>
+            <h1 className="text-3xl font-playfair font-semibold text-gray-800 text-center mb-5">
+              Important Links
+            </h1>
           </div>
 
           {links.length === 0 ? (
-            <div className="p-6 text-center text-gray-600">No links available.</div>
+            <div className="p-6 text-center text-gray-600">
+              No links available.
+            </div>
           ) : (
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-100">
@@ -71,13 +77,15 @@ const ImportantLinks = () => {
                   const href = (item.link || "").trim();
                   return (
                     <tr key={item.id || idx}>
-                      <td className="px-6 py-4 whitespace-nowrap text-gray-700 align-middle">{idx + 1}</td>
+                      <td className="px-6 py-4 whitespace-nowrap text-gray-700 align-middle">
+                        {idx + 1}
+                      </td>
                       <td className="px-6 py-4 align-middle">
                         <a
                           href={href}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="text-blue-600 hover:underline break-words"
+                          className="text-black hover:underline break-words"
                         >
                           {item.title}
                         </a>
@@ -95,4 +103,3 @@ const ImportantLinks = () => {
 };
 
 export default ImportantLinks;
-
