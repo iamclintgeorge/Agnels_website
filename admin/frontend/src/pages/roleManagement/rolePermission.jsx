@@ -15,6 +15,7 @@ const RolePermissionManager = () => {
   const [roles, setRoles] = useState([]);
   const [editingRole, setEditingRole] = useState(null);
   const [isCreateMode, setIsCreateMode] = useState(false);
+  const [isRoleEditMode, setIsRoleEditMode] = useState(false);
   const [isPermissionCreateMode, setIsPermissionCreateMode] = useState(false);
   const [selectedTab, setSelectedTab] = useState("roles");
   const [userRoles, setUserRoles] = useState([]);
@@ -23,12 +24,21 @@ const RolePermissionManager = () => {
     name: "",
     displayName: "",
     permissions: [],
+    category: "",
   });
+  const [facultyList, setFacultyList] = useState([]);
+  const [selectedFacultyIds, setSelectedFacultyIds] = useState([]);
+  const [searchFaculty, setSearchFaculty] = useState("");
+  const [roleName, setRoleName] = useState("");
 
   useEffect(() => {
     fetchPermissions();
     fetchRoles();
   }, []);
+
+  useEffect(() => {
+    fetchFaculties();
+  }, [isRoleEditMode]);
 
   const fetchRoles = async () => {
     try {
@@ -36,6 +46,17 @@ const RolePermissionManager = () => {
       setUserRoles(rolesRes.data);
       setRoles(rolesRes.data);
       console.log(rolesRes.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchFaculties = async () => {
+    try {
+      const facRes = await axios.get(
+        "http://localhost:3663/api/faculties?limit=1000"
+      );
+      setFacultyList(facRes.data);
     } catch (error) {
       console.log(error);
     }
@@ -112,19 +133,60 @@ const RolePermissionManager = () => {
     }
   };
 
-  // CREATE PERMISSION
-  const handleCreatePermission = async (permission) => {
+  // Handle Edit User Role
+  const handleEditUserRole = async () => {
     try {
-      const response = await axios.post(
-        "http://localhost:3663/api/permission",
-        permission
+      console.log("selectedFacultyIds", selectedFacultyIds);
+      console.log("roleName", roleName);
+      const response = await axios.put(
+        "http://localhost:3663/api/role/user-role",
+        {
+          userId: selectedFacultyIds,
+          role: roleName,
+        }
       );
-      if (response.status !== 201)
-        throw new Error("Failed to create permission");
-      fetchPermissions();
+      setIsRoleEditMode(false);
     } catch (error) {
-      console.error("Error creating permission:", error);
-      alert("Failed to create permission. Please try again.");
+      console.error("Error updating user roles:", error);
+      alert("Failed to update user roles. Please try again.");
+    }
+  };
+
+  // CREATE PERMISSION
+  // const handleCreatePermission = async () => {
+  //   try {
+  //     const response = await axios.post(
+  //       "http://localhost:3663/api/permission",
+  //       permission
+  //     );
+  //     if (response.status !== 201)
+  //       throw new Error("Failed to create permission");
+  //     fetchPermissions();
+  //   } catch (error) {
+  //     console.error("Error creating permission:", error);
+  //     alert("Failed to create permission. Please try again.");
+  //   }
+  // };
+
+  const handleCreatePermission = async () => {
+    if (newRole.name && newRole.displayName) {
+      try {
+        const response = await axios.post(
+          "http://localhost:3663/api/permission",
+          {
+            name: newRole.name.toLowerCase().replace(/\s+/g, "_"),
+            displayName: newRole.displayName,
+            permissions: newRole.permissions,
+          }
+        );
+        if (response.status !== 201) throw new Error("Failed to create role");
+        fetchRoles();
+        setNewRole({ name: "", displayName: "", permissions: [] });
+        setIsCreateMode(false);
+      } catch (error) {
+        console.error("Error creating role:", error);
+        alert("Failed to create role. Please try again.");
+      }
     }
   };
 
@@ -258,6 +320,31 @@ const RolePermissionManager = () => {
     </div>
   );
 
+  const RoleEditor = ({ targetRole }) => (
+    <div className="space-y-2 mt-8">
+      <h1 className="text-lg font-inter font-semibold pb-0 mb-0">
+        Select New Role:
+      </h1>
+      {targetRole
+        .sort((a, b) => a.displayName.localeCompare(b.displayName))
+        .map((role) => (
+          <label
+            key={role.id}
+            className="flex items-center space-x-2 cursor-pointer"
+          >
+            <input
+              type="radio"
+              name="role"
+              checked={targetRole.permissions?.includes(role.id)}
+              onChange={() => setRoleName(role.name)}
+              className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+            />
+            <span className="text-sm text-gray-700">{role.displayName}</span>
+          </label>
+        ))}
+    </div>
+  );
+
   return (
     <div className="min-h-screen p-6">
       <div className="max-w-7xl mx-auto">
@@ -302,16 +389,28 @@ const RolePermissionManager = () => {
 
         {selectedTab === "roles" && (
           <div>
-            {/* Create New Role Button */}
-            <div className="mb-6">
-              <button
-                onClick={() => setIsCreateMode(true)}
-                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
-              >
-                <Plus size={16} />
-                <span>Create New Role</span>
-              </button>
+            <div className="flex mb-6">
+              <div className="">
+                <button
+                  onClick={() => setIsCreateMode(true)}
+                  className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
+                >
+                  <Plus size={16} />
+                  <span>Create New Role</span>
+                </button>
+              </div>
+
+              <div className="ml-4">
+                <button
+                  onClick={() => setIsRoleEditMode(true)}
+                  className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
+                >
+                  <Edit2 size={16} />
+                  <span>Change User Role</span>
+                </button>
+              </div>
             </div>
+            {/* Create New Role Button */}
 
             {/* Create Role Modal */}
             {isCreateMode && (
@@ -375,6 +474,98 @@ const RolePermissionManager = () => {
                     </button>
                     <button
                       onClick={handleCreateRole}
+                      className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                    >
+                      Create Role
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Edit User Role Modal */}
+            {isRoleEditMode && (
+              <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                <div className="bg-white rounded-lg p-6 w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+                  <div className="flex justify-between items-center mb-4">
+                    <h2 className="text-xl font-semibold">Edit User Role</h2>
+                    <button
+                      onClick={() => setIsRoleEditMode(false)}
+                      className="text-gray-500 hover:text-gray-700"
+                    >
+                      <X size={20} />
+                    </button>
+                  </div>
+
+                  {/* {/* Faculty option */}
+                  <div className="mt-4">
+                    <input
+                      type="text"
+                      value={searchFaculty}
+                      onChange={(e) => setSearchFaculty(e.target.value)}
+                      placeholder="Search faculty by name..."
+                      className="w-full mb-2 px-3 py-2 border border-gray-300 rounded-md"
+                    />
+                    <div className="max-h-48 overflow-y-auto border border-gray-200 rounded p-2 space-y-1">
+                      {facultyList
+                        .filter((f) =>
+                          f.name
+                            .toLowerCase()
+                            .includes(searchFaculty.toLowerCase())
+                        )
+                        .map((faculty) => (
+                          <div key={faculty.id} className="flex items-center">
+                            <input
+                              type="checkbox"
+                              value={faculty.id}
+                              onChange={(e) => {
+                                const updated = e.target.checked
+                                  ? [...selectedFacultyIds, faculty.id]
+                                  : selectedFacultyIds.filter(
+                                      (id) => id !== faculty.id
+                                    );
+                                setSelectedFacultyIds(updated);
+                              }}
+                              checked={selectedFacultyIds.includes(faculty.id)}
+                              className="h-4 w-4 text-blue-600 border-gray-300 rounded"
+                            />
+                            <span className="ml-2 text-sm">{faculty.name}</span>
+                          </div>
+                        ))}
+                    </div>
+                  </div>
+
+                  <div className="mt-10">
+                    <h1 className="text-lg font-inter font-semibold">
+                      Selected Faculties:
+                    </h1>
+                    {selectedFacultyIds.length === 0 ? (
+                      <p>No user selected</p>
+                    ) : (
+                      selectedFacultyIds.map((facultyId) => {
+                        const faculty = facultyList.find(
+                          (f) => f.id === facultyId
+                        );
+                        return faculty ? (
+                          <div key={facultyId}>
+                            <div>{faculty.name}</div>
+                          </div>
+                        ) : null;
+                      })
+                    )}
+                  </div>
+
+                  <RoleEditor targetRole={roles} />
+
+                  <div className="flex justify-end space-x-3 mt-6">
+                    <button
+                      onClick={() => setIsRoleEditMode(false)}
+                      className="px-4 py-2 text-gray-700 border border-gray-300 rounded-md hover:bg-gray-50"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      onClick={handleEditUserRole}
                       className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
                     >
                       Create Role
@@ -473,8 +664,8 @@ const RolePermissionManager = () => {
 
         {selectedTab === "permissions" && (
           <div>
-            {/* Create New Role Button */}
-            <div className="mb-6">
+            {/* Create New Permission Button */}
+            {/* <div className="mb-6">
               <button
                 onClick={() => setIsPermissionCreateMode(true)}
                 className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center space-x-2"
@@ -482,10 +673,10 @@ const RolePermissionManager = () => {
                 <Plus size={16} />
                 <span>Create New Permission</span>
               </button>
-            </div>
+            </div> */}
 
             {/* Create Permission Modal */}
-            {isPermissionCreateMode && (
+            {/* {isPermissionCreateMode && (
               <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                 <div className="bg-white rounded-lg p-6 w-full max-w-4xl max-h-[90vh] overflow-y-auto">
                   <div className="flex justify-between items-center mb-4">
@@ -538,9 +729,9 @@ const RolePermissionManager = () => {
                       </label>
                       <input
                         type="text"
-                        value={newRole.name}
+                        value={newRole.category}
                         onChange={(e) =>
-                          setNewRole({ ...newRole, name: e.target.value })
+                          setNewRole({ ...newRole, category: e.target.value })
                         }
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                         placeholder="e.g., Content"
@@ -556,7 +747,7 @@ const RolePermissionManager = () => {
                       Cancel
                     </button>
                     <button
-                      // onClick={handleCreateRole}
+                      onClick={handleCreatePermission}
                       className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
                     >
                       Create Permission
@@ -564,8 +755,8 @@ const RolePermissionManager = () => {
                   </div>
                 </div>
               </div>
-            )}
-            <div className="bg-white rounded-lg shadow-md p-6">
+            )} */}
+            <div className="shadow-md p-6">
               <h2 className="text-xl font-semibold mb-4">
                 Available Permissions
               </h2>

@@ -15,6 +15,16 @@ export const updateRole = async (id, name, displayName, permissions) => {
   await db.promise().query(query, values);
 };
 
+export const updateUserRole = async (userIds, role) => {
+  const query = "UPDATE users SET role = ? WHERE id = ?";
+
+  // Loop through userIds and update each role
+  for (let userId of userIds) {
+    const values = [role, userId];
+    await db.promise().query(query, values);
+  }
+};
+
 export const deleteRole = async (id) => {
   const query = "DELETE FROM roles WHERE id = ?";
   await db.promise().query(query, [id]);

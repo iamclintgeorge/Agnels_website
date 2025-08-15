@@ -39,7 +39,7 @@ import AcademicHandbook from "./pages/Academics/AcademicHandbook";
 import Teaching_staff from "./pages/HumanResources/teachingstaff";
 import Nonteaching_staff from "./pages/HumanResources/nonteachingstaff";
 import StudentsCorner from "./pages/StudentsCorner/StudentsCorner";
-import RolePermissionManager from "./pages/rolePermission";
+import RolePermissionManager from "./pages//roleManagement/rolePermission.jsx";
 import ManageFacultyStaff from "./pages/manageFacultyStaff";
 import AdminAdmissions from "./pages/AdminAdmissions";
 import ImportantLinksAdmin from "./pages/ImportantLinksAdmin";
