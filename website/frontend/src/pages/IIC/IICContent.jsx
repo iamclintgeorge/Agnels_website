@@ -23,13 +23,15 @@ export const Institutions_Innovation_Council = () => {
   }, []);
 
   return (
-    <div className="p-8 bg-white min-h-screen font-sans text-gray-900">
-      <h1 className="text-4xl font-semibold mb-6">
+    <div className="min-h-screen font-sans text-gray-900">
+      <h1 className="text-3xl font-playfair font-semibold mb-10">
         Institution's Innovation Council (IIC)
       </h1>
-      <div className="border-t-2 border-blue-500 my-4"></div>
       {error && <p className="text-red-500">{error}</p>}
-      <div dangerouslySetInnerHTML={{ __html: content }} />
+      <div
+        className="text-base"
+        dangerouslySetInnerHTML={{ __html: content }}
+      />
     </div>
   );
 };
@@ -68,11 +70,10 @@ export const Innovation_and_Startup_Policy = () => {
   }, []);
 
   return (
-    <div className="p-8 bg-white min-h-screen font-sans text-gray-900">
-      <h1 className="text-3xl font-semibold mb-6">
+    <div className="min-h-screen font-sans text-gray-900">
+      <h1 className="text-3xl font-playfair font-semibold mb-10">
         Innovation and Startup Policy
       </h1>
-      <div className="border-t-2 border-blue-500 my-4"></div>
 
       {error && <p className="text-red-500">{error}</p>}
       <div dangerouslySetInnerHTML={{ __html: text }} className="mb-8" />
@@ -103,20 +104,20 @@ export const Innovation_and_Startup_Policy = () => {
 
 //3. Innovation Ambassador
 export const Innovation_Ambassador = () => (
-  <div className="p-4 bg-white shadow rounded-lg mt-4">
-    <h2 className="text-3xl font-semibold">Innovation Ambassador</h2>
-    <div className="border-t-2 border-blue-500 my-4"></div>
+  <div className="mt-4">
+    <h2 className="text-3xl font-playfair mb-10 font-semibold">
+      Innovation Ambassador
+    </h2>
     <p className="text-lg text-gray-700 mb-6 leading-relaxed"></p>
   </div>
 );
 
 //4. Centre of Innovation and Entrepreneurship
 export const Centre_of_Innovation_and_Entrepreneurship = () => (
-  <div className="p-4 bg-white shadow rounded-lg mt-4">
-    <h2 className="text-3xl font-semibold">
+  <div className="mt-4">
+    <h2 className="text-3xl font-playfair mb-10 font-semibold">
       Centre of Innovation and Entrepreneurship
     </h2>
-    <div className="border-t-2 border-blue-500 my-4"></div>
     <p className="text-lg text-gray-700 mb-6 leading-relaxed"></p>
   </div>
 );
