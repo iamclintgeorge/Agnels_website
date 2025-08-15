@@ -6,7 +6,10 @@ const Section = ({ title, sectionKey }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get("http://localhost:3663/api/iqac/sections/" + encodeURIComponent(sectionKey));
+        const res = await axios.get(
+          "http://localhost:3663/api/iqac/sections/" +
+            encodeURIComponent(sectionKey)
+        );
         setHtml(res.data?.content?.content ?? res.data?.content ?? "");
       } catch (_e) {
         setHtml("");
@@ -15,10 +18,9 @@ const Section = ({ title, sectionKey }) => {
     fetchData();
   }, [sectionKey]);
   return (
-    <div id="vm" className="p-4 bg-white shadow rounded-lg mt-4">
+    <div id="vm" className="mt-4">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-4xl font-semibold mb-6">{title}</h1>
-        <div className="border-t-2 border-blue-500 my-4"></div>
+        <h1 className="text-3xl font-playfair font-semibold mb-10">{title}</h1>
         <div dangerouslySetInnerHTML={{ __html: html }} />
       </div>
     </div>

@@ -3,9 +3,9 @@ import React from "react";
 // Placement Home Component
 export const TP_Home = () => {
   return (
-    <div className="p-8 bg-white min-h-screen font-sans text-gray-900">
+    <div className="min-h-screen font-sans text-gray-900">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-4xl font-semibold text-center text-black mb-6 heading-premium">
+        <h1 className="text-4xl font-semibold text-black mb-6 font-playfair">
           Training and Placement Cell
         </h1>
 
@@ -33,16 +33,16 @@ export const TP_Home = () => {
 // Vision & Mission Component
 export const VisionandMission = () => {
   return (
-    <div id="vm" className="p-4 bg-white shadow rounded-lg mt-4">
-      <h2 className="text-2xl font-semibold heading-premium">Vision</h2>
-      <hr className="text-xl border-t-2 border-blue-500 mt-2" />
-      <p className="mt-2 text-xl">
+    <div id="vm" className="rounded-lg mt-4 font-librefranklin">
+      <h2 className="text-2xl font-semibold font-playfair">Vision</h2>
+      <hr className="text-xl border-t-2 border-gray-200 mt-2" />
+      <p className="mt-2 text-base mb-14">
         To provide quality placement to all eligible students.
       </p>
 
-      <h2 className="text-2xl font-semibold mt-6 heading-premium">Mission</h2>
-      <hr className="border-t-2 border-blue-500 mt-2" />
-      <ol className="text-xl mt-2 list-decimal pl-6">
+      <h2 className="text-2xl font-semibold mt-6 font-playfair">Mission</h2>
+      <hr className="border-t-2 border-gray-200 mt-2" />
+      <ol className="text-base mt-2 list-decimal pl-6 mb-14">
         <li>
           To provide appropriate training to achieve the highest possible
           percentage of placement.
@@ -53,11 +53,11 @@ export const VisionandMission = () => {
         </li>
       </ol>
 
-      <h2 className="text-2xl font-semibold mt-6">
+      <h2 className="text-2xl font-playfair font-semibold mt-6  ">
         Objectives of Training & Placement
       </h2>
-      <hr className="text-xl border-t-2 border-blue-500 mt-2" />
-      <p className="mt-2 text-xl">
+      <hr className="text-xl border-t-2 border-gray-200 mt-2" />
+      <p className="mt-2 text-base">
         To provide quality placement to all eligible students.
       </p>
     </div>
@@ -67,13 +67,12 @@ export const VisionandMission = () => {
 // Code of Conduct Component
 export const CodeOfConduct = () => {
   return (
-    <div id="gr" className="p-4 bg-white shadow rounded-lg mt-4">
-      <h2 className="text-3xl font-semibold">
+    <div id="gr" className="mt-4 font-librefranklin">
+      <h2 className="text-3xl font-playfair font-semibold mb-10">
         Placement Student Code of Conduct
       </h2>
-      <hr className="border-t-2 border-blue-500 mt-4" />
       <h3 className="text-xl font-semibold mt-2">Introduction:</h3>
-      <p className="text- lg text-justify">
+      <p className="text-base text-justify">
         The code of conduct for the training and placement students is
         applicable in two aspects in below mentioned points. The first aspect
         involves conduct of students during the training and registration for
@@ -84,7 +83,7 @@ export const CodeOfConduct = () => {
       <h3 className="text-xl font-semibold mt-4">
         Conduct for Training and Registration Process
       </h3>
-      <ol className="text-lg list-decimal pl-6 text-justify">
+      <ol className="text-base list-decimal pl-6 text-justify">
         <li>
           Candidate should follow all the instructions provided by the Training
           and Placement Cell (TPC).
@@ -114,7 +113,7 @@ export const CodeOfConduct = () => {
       <h3 className="text-xl font-semibold mt-4">
         Conduct During Campus Placement Process
       </h3>
-      <ol className="text-lg list-decimal pl-6 text-justify">
+      <ol className="text-base list-decimal pl-6 text-justify">
         <li>
           Students have to follow guidelines as mentioned in the placement
           policy during orientation program at the beginning of academic year.
@@ -178,24 +177,24 @@ export const CodeOfConduct = () => {
 // Placement Officer Component
 export const Placement_Officer = () => {
   return (
-    <div className="p-8 bg-white min-h-screen font-sans text-gray-900">
+    <div className="min-h-screen font-librefranklin text-gray-900">
       <div className="max-w-4xl mx-auto">
-        <h1 className="text-4xl font-semibold text-black mb-6">
+        <h1 className="text-4xl font-playfair font-semibold text-black mb-6">
           Placement Officer
         </h1>
 
-        <div className="border-t-2 border-blue-500 my-4"></div>
+        <div className="border-t-2 border-gray-200 my-4"></div>
 
         <p className="text-lg text-gray-700 mb-6 leading-relaxed">
           Dr. Mahendra Rane <br /> Mobile: 9819072834
         </p>
-        <div className="border-t-2 border-blue-500 my-4"></div>
+        <div className="border-t-2 border-gray-200 my-4"></div>
 
         <p className="text-lg text-gray-700 mb-6 leading-relaxed">
           Assistant Placement Officer <br /> Prof. Deepak Devasagayam <br />{" "}
           Mobile: 9920827263
         </p>
-        <div className="border-t-2 border-blue-500 my-4"></div>
+        <div className="border-t-2 border-gray-200 my-4"></div>
 
         <p className="text-lg text-gray-700 mb-6 leading-relaxed">
           Tel: +91 22 2771000/27661924 extn 106 <br /> Email:
@@ -209,7 +208,7 @@ export const Placement_Officer = () => {
 // Placement Team Component
 export const Placement_Team = () => {
   return (
-    <div className="p-8 bg-gray-50 min-h-screen font-sans">
+    <div className="min-h-screen font-sans">
       {/* Embedding PDF using iframe */}
       {/* <iframe
         src="src\assets\pdfs\FCRIT_Placement_team_2019-20.pdf"
