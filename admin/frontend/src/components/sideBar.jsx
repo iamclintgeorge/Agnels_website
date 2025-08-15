@@ -502,14 +502,16 @@ const DynamicSideBar = () => {
 
         {/* Downloads Page */}
         {hasPermission("downloads") && (
-          <>
-            <Link to="/downloads" className="flex justify-between pr-8">
-              Downloads Page <span>&gt;</span>
-            </Link>
-            <Link to="/important-links" className="flex justify-between pr-8">
-              Important Links <span>&gt;</span>
-            </Link>
-          </>
+          <Link to="/downloads" className="flex justify-between pr-8">
+            Downloads Page <span>&gt;</span>
+          </Link>
+        )}
+
+        {/* Important Links */}
+        {hasPermission("important_links") && (
+          <Link to="/important-links" className="flex justify-between pr-8">
+            Important Links <span>&gt;</span>
+          </Link>
         )}
 
         {/* IQAC */}
