@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import StaticPages from "../../layouts/staticPages";
-import { Homee, AcademicCalender } from "./academicContent";
+import { Homee } from "./academicHome";
+import { AcademicCalender } from "./academic_calendar";
 import Examinations from "./Examinations";
 import axios from "axios";
 
