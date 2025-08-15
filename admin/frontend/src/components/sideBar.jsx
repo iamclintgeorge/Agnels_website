@@ -76,6 +76,18 @@ const DynamicSideBar = () => {
     return userPermissions.includes(permission);
   };
 
+  const includePermission = (suffix) => {
+    if (!userPermissions.length) return false;
+    if (userPermissions.includes("all")) return true;
+    const normalizedSuffix = suffix.toLowerCase(); // Normalize case
+    return userPermissions.some((permission) =>
+      permission
+        .toLowerCase()
+        .replace(/[^a-zA-Z0-9]/g, "")
+        .endsWith(normalizedSuffix)
+    );
+  };
+
   const hasDepartmentAccess = () => {
     return Object.keys(PERMISSIONS_CONFIG).some(
       (perm) => perm.startsWith("departments.") && hasPermission(perm)
@@ -296,7 +308,7 @@ const DynamicSideBar = () => {
         )}
 
         {/* HOD Desk Section */}
-        {hasPermission("hod-desk") && (
+        {includePermission("hod") && (
           <div>
             <p
               className="cursor-pointer flex justify-between items-center pr-8"
@@ -313,33 +325,32 @@ const DynamicSideBar = () => {
             </p>
             {openSections.hodDesk && (
               <div className="pt-4 pr-8 pl-4 leading-7 space-y-4">
-                {(user.role === "compHod" || user.role === "superAdmin") && (
+                {hasPermission("comp_hod") && (
                   <Link to="/hod-desk/computer" className="block">
                     <p>Computer Engineering</p>
                   </Link>
                 )}
-                {(user.role === "mechHod" || user.role === "superAdmin") && (
+                {hasPermission("mech_hod") && (
                   <Link to="/hod-desk/mechanical" className="block">
                     <p>Mechanical Engineering</p>
                   </Link>
                 )}
-                {(user.role === "extcHod" || user.role === "superAdmin") && (
+                {hasPermission("extc_hod") && (
                   <Link to="/hod-desk/extc" className="block">
                     <p>EXTC</p>
                   </Link>
                 )}
-                {(user.role === "electricalHod" ||
-                  user.role === "superAdmin") && (
+                {hasPermission("elect_hod") && (
                   <Link to="/hod-desk/electrical" className="block">
                     <p>Electrical Engineering</p>
                   </Link>
                 )}
-                {(user.role === "itHod" || user.role === "superAdmin") && (
+                {hasPermission("cse_hod") && (
                   <Link to="/hod-desk/it" className="block">
                     <p>Computer Science and Engineering (Prev. IT)</p>
                   </Link>
                 )}
-                {(user.role === "bshHod" || user.role === "superAdmin") && (
+                {hasPermission("bsh_hod") && (
                   <Link to="/hod-desk/bsh" className="block">
                     <p>Basic Science and Humanities</p>
                   </Link>

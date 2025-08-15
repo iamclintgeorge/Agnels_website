@@ -1,6 +1,7 @@
 import {
   createRole,
   updateRole,
+  updateUserRole,
   deleteRole,
   createPermission,
   updatePermission,
@@ -28,6 +29,18 @@ export const updateRoleController = async (req, res) => {
     res
       .status(500)
       .json({ message: "Failed to update role", error: error.message });
+  }
+};
+
+export const updateUserRoleController = async (req, res) => {
+  try {
+    const { userId, role } = req.body;
+    await updateUserRole(userId, role);
+    res.status(200).json({ userId, role });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Failed to update user role", error: error.message });
   }
 };
 

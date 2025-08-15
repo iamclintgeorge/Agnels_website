@@ -15,6 +15,7 @@ import {
 import {
   createRoleController,
   updateRoleController,
+  updateUserRoleController,
   deleteRoleController,
   createPermissionController,
   updatePermissionController,
@@ -42,6 +43,12 @@ router.put(
   authMiddleware,
   checkPermission("manage_users"),
   updateRoleController
+);
+router.put(
+  "/role/user-role",
+  authMiddleware,
+  checkPermission("manage_users"),
+  updateUserRoleController
 );
 router.delete(
   "/role/:id",
