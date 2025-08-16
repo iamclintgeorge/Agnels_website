@@ -52,6 +52,39 @@ export const loginUser = async (emailId, password) => {
   }
 };
 
+export const changeUserPassword = async (userId, oldPassword, newPassword) => {
+  const getUserQuery = "SELECT password FROM users WHERE id = ?";
+  const updatePasswordQuery = "UPDATE users SET password = ? WHERE id = ?";
+
+  try {
+    // 1) Get current user password from database
+    const [userRows] = await db.promise().query(getUserQuery, [userId]);
+    const user = userRows[0];
+
+    if (!user) {
+      return { success: false, message: "User not found" };
+    }
+
+    // 2) Verify old password
+    const isOldPasswordCorrect = await bcrypt.compare(oldPassword, user.password);
+    if (!isOldPasswordCorrect) {
+      return { success: false, message: "Current password is incorrect" };
+    }
+
+    // 3) Hash new password - USING SAME PARAMETERS AS SIGNUP
+    const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+
+    // 4) Update password in database
+    await db.promise().query(updatePasswordQuery, [hashedNewPassword, userId]);
+
+    return { success: true, message: "Password changed successfully" };
+    
+  } catch (error) {
+    console.error("Error changing password:", error);
+    throw new Error("Failed to change password");
+  }
+};
+
 //Fetch User Roles
 export const fetchRoles = async (req, res) => {
   const query = "SELECT * FROM roles";

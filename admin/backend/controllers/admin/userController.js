@@ -4,7 +4,53 @@ import {
   loginUser,
   fetchRoles,
   fetchPermissions,
+  changeUserPassword,
 } from "../../models/admin/userModels.js";
+
+export const changePasswordController = async (req, res) => {
+  try {
+    const { oldPassword, newPassword } = req.body;
+
+    // Check if user is logged in
+    if (!req.session.user) {
+      return res.status(401).json({ message: "Not authenticated. Please log in." });
+    }
+
+    // Validation
+    if (!oldPassword || !newPassword) {
+      return res.status(400).json({ message: "Both old and new passwords are required" });
+    }
+
+    // if (newPassword.length < 6) {
+    //   return res.status(400).json({ message: "New password must be at least 6 characters long" });
+    // }
+
+    // if (oldPassword === newPassword) {
+    //   return res.status(400).json({ message: "New password must be different from the old password" });
+    // }
+
+    // Get user ID from session
+    const userId = req.session.user.id;
+
+    // Change password
+    const result = await changeUserPassword(userId, oldPassword, newPassword);
+    
+    if (!result.success) {
+      return res.status(400).json({ message: result.message });
+    }
+
+    res.status(200).json({
+      message: "Password changed successfully",
+    });
+  } catch (err) {
+    console.error("Change password error:", err);
+    res.status(500).json({ 
+      message: "Internal Server Error", 
+      error: err.message 
+    });
+  }
+};
+
 
 export const signupController = async (req, res) => {
   try {

@@ -5,6 +5,7 @@ import {
   logoutController,
   fetchrolesController,
   fetchpermissionsController,
+  changePasswordController,
 } from "../../controllers/admin/userController.js";
 import {
   authMiddleware,
@@ -26,6 +27,7 @@ const router = express.Router();
 
 router.post("/signup", signupController);
 router.post("/login", loginController);
+router.post("/change-password", changePasswordController);
 router.post("/signout", logoutController);
 router.get("/check-auth", authMiddleware, checkAuth);
 router.get("/fetchroles", fetchrolesController);
