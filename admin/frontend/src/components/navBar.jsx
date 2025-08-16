@@ -74,9 +74,11 @@ const NavBar = () => {
                 </p>
               </div>
             </Link>
-            <div className="hidden md:block">
-              <SearchBar />
-            </div>
+            {user.role == "superAdmin" && (
+              <div className="hidden md:block">
+                <SearchBar />
+              </div>
+            )}
             <div className="text-white flex flex-row text-sm pr-10">
               {/* <p
                 className="cursor-pointer mr-5 pt-[22px] font-light font-inter"
