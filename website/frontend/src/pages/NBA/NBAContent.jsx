@@ -151,14 +151,19 @@
 
 // export { HomeContent, NBAContent, NAACContent };
 
-
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import "react-quill/dist/quill.snow.css";
 
 const backendBaseUrl = "http://localhost:3663"; // Backend URL
 
 const HomeContent = () => {
-  const [data, setData] = useState({ content: "", image_urls: [], pdf_url: null, pdf_title: null });
+  const [data, setData] = useState({
+    content: "",
+    image_urls: [],
+    pdf_url: null,
+    pdf_title: null,
+  });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -166,9 +171,12 @@ const HomeContent = () => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const response = await axios.get("http://localhost:3663/api/nba-naac/home", {
-          withCredentials: true,
-        });
+        const response = await axios.get(
+          "http://localhost:3663/api/nba-naac/home",
+          {
+            withCredentials: true,
+          }
+        );
         console.log("API Response:", response.data);
         setData(response.data);
         setError(null);
@@ -185,20 +193,32 @@ const HomeContent = () => {
   console.log("Current Data State:", data);
 
   if (loading) {
-    return <div className="p-8 bg-gray-50 min-h-screen font-sans">Loading...</div>;
+    return (
+      <div className="p-8 bg-gray-50 min-h-screen font-sans">Loading...</div>
+    );
   }
 
   if (error) {
-    return <div className="p-8 bg-gray-50 min-h-screen font-sans text-red-500">{error}</div>;
+    return (
+      <div className="p-8 bg-gray-50 min-h-screen font-sans text-red-500">
+        {error}
+      </div>
+    );
   }
 
   return (
-    <div className="p-8 bg-gray-50 min-h-screen font-sans">
-      <h1 className="text-3xl font-semibold mb-6">NBA/NAAC Home</h1>
-      <div className="border-t-2 border-blue-500 my-4"></div>
-      <div className="mb-6 text-lg">
-        {data.content && data.content.trim() !== "" ? data.content : "No content available"}
-      </div>
+    <div className="min-h-screen font-librefranklin">
+      <h1 className="text-3xl font-playfair font-semibold mb-6">
+        NBA/NAAC Home
+      </h1>
+      <div className=""></div>
+      <div
+        className="mb-6 text-lg ql-editor"
+        dangerouslySetInnerHTML={{
+          __html: data.content?.trim() || "No content available",
+        }}
+      />
+
       {Array.isArray(data.image_urls) && data.image_urls.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6">
           {data.image_urls.map((url, index) => (
@@ -207,22 +227,30 @@ const HomeContent = () => {
               src={`${backendBaseUrl}${url}`}
               alt={`Home Image ${index + 1}`}
               className="w-full h-48 object-cover rounded"
-              onError={(e) => console.error(`Failed to load image: ${backendBaseUrl}${url}`)}
+              onError={(e) =>
+                console.error(`Failed to load image: ${backendBaseUrl}${url}`)
+              }
             />
           ))}
         </div>
       ) : (
-        <p className="mb-6">No images available</p>
+        ""
       )}
       {data.pdf_url && (
         <div>
-          <h3 className="text-lg font-medium mb-2">{data.pdf_title || "Document"}</h3>
+          <h3 className="text-lg font-medium mb-2">
+            {data.pdf_title || "Document"}
+          </h3>
           <iframe
             src={`${backendBaseUrl}${data.pdf_url}`}
             width="100%"
             height="800px"
             title={data.pdf_title || "Document"}
-            onError={(e) => console.error(`Failed to load PDF: ${backendBaseUrl}${data.pdf_url}`)}
+            onError={(e) =>
+              console.error(
+                `Failed to load PDF: ${backendBaseUrl}${data.pdf_url}`
+              )
+            }
           />
         </div>
       )}
@@ -240,9 +268,12 @@ const NBAContent = () => {
     const fetchFiles = async () => {
       try {
         setLoading(true);
-        const response = await axios.get("http://localhost:3663/api/nba-naac/files/NBA", {
-          withCredentials: true,
-        });
+        const response = await axios.get(
+          "http://localhost:3663/api/nba-naac/files/NBA",
+          {
+            withCredentials: true,
+          }
+        );
         console.log("NBA Files Response:", response.data);
         setFiles(response.data);
         setError(null);
@@ -257,11 +288,17 @@ const NBAContent = () => {
   }, []);
 
   if (loading) {
-    return <div className="p-8 bg-gray-50 min-h-screen font-sans">Loading...</div>;
+    return (
+      <div className="p-8 bg-gray-50 min-h-screen font-sans">Loading...</div>
+    );
   }
 
   if (error) {
-    return <div className="p-8 bg-gray-50 min-h-screen font-sans text-red-500">{error}</div>;
+    return (
+      <div className="p-8 bg-gray-50 min-h-screen font-sans text-red-500">
+        {error}
+      </div>
+    );
   }
 
   return (
@@ -312,9 +349,12 @@ const NAACContent = () => {
     const fetchFiles = async () => {
       try {
         setLoading(true);
-        const response = await axios.get("http://localhost:3663/api/nba-naac/files/NAAC", {
-          withCredentials: true,
-        });
+        const response = await axios.get(
+          "http://localhost:3663/api/nba-naac/files/NAAC",
+          {
+            withCredentials: true,
+          }
+        );
         console.log("NAAC Files Response:", response.data);
         setFiles(response.data);
         setError(null);
@@ -329,11 +369,17 @@ const NAACContent = () => {
   }, []);
 
   if (loading) {
-    return <div className="p-8 bg-gray-50 min-h-screen font-sans">Loading...</div>;
+    return (
+      <div className="p-8 bg-gray-50 min-h-screen font-sans">Loading...</div>
+    );
   }
 
   if (error) {
-    return <div className="p-8 bg-gray-50 min-h-screen font-sans text-red-500">{error}</div>;
+    return (
+      <div className="p-8 bg-gray-50 min-h-screen font-sans text-red-500">
+        {error}
+      </div>
+    );
   }
 
   return (
