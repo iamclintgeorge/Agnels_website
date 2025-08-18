@@ -112,15 +112,20 @@
 
 
 // NBAContent.jsx
-
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import "react-quill/dist/quill.snow.css";
 
 const backendBaseUrl = "http://localhost:3663";
 
 // Home Content component (remains unchanged)
 const HomeContent = () => {
-  const [data, setData] = useState({ content: "", image_urls: [], pdf_url: null, pdf_title: null });
+  const [data, setData] = useState({
+    content: "",
+    image_urls: [],
+    pdf_url: null,
+    pdf_title: null,
+  });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
