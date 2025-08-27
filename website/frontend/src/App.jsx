@@ -27,6 +27,7 @@ import IIC from "./pages/IIC/IIC";
 import NIRF from "./pages/NIRF/NIRF";
 import HumanResource from "./pages/HumanResource/HumanResource";
 import NbaNaaC from "./pages/NBA/NBA.jsx";
+import MumbaiUniversity from "./pages/AboutUs/mumbaiUniversity.jsx";
 
 function App() {
   // Fix: Redirect /pdfs/... requests directly to the browser
@@ -65,6 +66,7 @@ function App() {
 
           {/* Other Pages */}
           <Route path="/aboutus" element={<Aboutus />} />
+          <Route path="/aboutus/mumbai-university" element={<MumbaiUniversity />} />
           <Route
             path="/research_Publications"
             element={<Research_Publications />}
